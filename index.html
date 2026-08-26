@@ -248,63 +248,47 @@
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
   <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
-  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-3.5 py-2 flex items-center justify-between">
+  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-900 sticky top-0 z-40 px-3.5 py-2.5 flex items-center justify-between">
     
-    <!-- Left: VIP Log In Button (Public Guest View) OR VIP Profile Info (Logged In View) -->
-    <div id="headerGuestView" class="flex items-center gap-2">
-      <!-- Top Left VIP Login Button -->
-      <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
-        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-        <span>VIP Log In</span>
-      </button>
-
-      <div class="flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-900/80 px-2 py-1 rounded-lg border border-zinc-800/60">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="headerWifiStatusText">📶 Empire Wi-Fi</span>
-      </div>
-    </div>
-
-    <div id="headerVipView" class="hidden flex items-center gap-2">
-      <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs">
-        <span id="vipAvatarLetter">A</span>
-      </div>
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="font-bold text-white text-xs" id="vipMemberNameDisplay">Alex M.</span>
-          <span class="text-[9px] bg-amber-950 text-amber-400 font-semibold px-1 rounded border border-amber-800/50" id="vipTierDisplay">GOLD VIP</span>
+    <!-- Left: Spacer / VIP Profile Info (Balanced 80px) -->
+    <div class="w-20 flex items-center justify-start">
+      <div id="headerVipView" class="hidden flex items-center gap-1.5">
+        <div class="w-7 h-7 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs">
+          <span id="vipAvatarLetter">A</span>
         </div>
-        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[11px] text-zinc-300 font-medium hover:text-amber-400 transition">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="headerSeatDisplay" class="font-semibold text-amber-400">Floating VIP Tab #409</span>
-          <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
-        </button>
+        <div class="truncate">
+          <span class="font-bold text-white text-xs block truncate" id="vipMemberNameDisplay">Alex M.</span>
+        </div>
       </div>
     </div>
 
     <!-- Center: Official Empire Hookah Lounge Emblem (Tap to Open Welcome/Rules) -->
     <div class="flex items-center justify-center">
-      <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-8 h-8 rounded-full border border-amber-500/40 object-cover cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.2)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
+      <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-10 h-10 rounded-full border border-amber-500/40 object-cover cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.25)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
     </div>
 
-    <!-- Right: Guest Balance / VIP Actions -->
-    <div id="headerGuestRightView" class="flex items-center gap-1.5 w-[70px] justify-end">
-      <!-- Minimalist balance space -->
-    </div>
+    <!-- Right: VIP Log In Button (Public Guest View) OR VIP Actions (Logged In View) (Balanced 80px) -->
+    <div class="w-20 flex items-center justify-end">
+      <!-- Public Guest Mode: VIP Log In Button on Right -->
+      <div id="headerGuestView" class="flex items-center justify-end">
+        <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-2.5 py-1.5 rounded-xl text-xs flex items-center gap-1 shadow-md shadow-amber-500/20 transition active:scale-95">
+          <i data-lucide="lock" class="w-3 h-3"></i>
+          <span>VIP Login</span>
+        </button>
+      </div>
 
-    <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
-      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95" title="View VIP Stash &amp; Smoke History">
-        <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span id="headerVipPointsBadge">⭐ 750</span>
-      </button>
-
-      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95">
-        <i data-lucide="flame" class="w-3.5 h-3.5 text-red-400"></i>
-        <span>Coals</span>
-      </button>
-
-      <button onclick="vipLogout()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white p-1.5 rounded-lg text-xs transition active:scale-95" title="Log Out / Return to Public Menu">
-        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-      </button>
+      <div id="headerVipRightView" class="hidden flex items-center gap-1">
+        <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-1.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-0.5 transition active:scale-95" title="View VIP Stash">
+          <i data-lucide="award" class="w-3 h-3 text-amber-400"></i>
+          <span id="headerVipPointsBadge">750</span>
+        </button>
+        <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-1.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-0.5 transition active:scale-95" title="Request Coal Service">
+          <i data-lucide="flame" class="w-3 h-3 text-red-400"></i>
+        </button>
+        <button onclick="vipLogout()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white p-1 rounded-lg text-xs transition active:scale-95" title="Log Out">
+          <i data-lucide="log-out" class="w-3 h-3"></i>
+        </button>
+      </div>
     </div>
 
   </header>
@@ -337,22 +321,13 @@
     <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
     <div id="customer-view-menu" class="customer-panel flex flex-col gap-2.5">
       
-      <!-- 1. Ambient Lounge Policies & Pricing Strip (Seamless, No Bulky Card) -->
-      <div class="flex items-center justify-between text-xs px-1 text-zinc-400 font-medium tracking-tight">
-        <div class="flex items-center gap-1.5 text-zinc-400">
-          <span id="menuRuleAgeBadge">🔞 21+</span>
-          <span class="text-zinc-700">·</span>
-          <span id="menuRulePipeBadge">👥 2 / Pipe</span>
-          <span class="text-zinc-700">·</span>
-          <span id="menuLoungeHours" class="text-zinc-500">5PM–2AM</span>
-        </div>
-        <div class="flex items-center gap-2 text-zinc-300">
-          <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35</strong></span>
-          <span class="text-zinc-700">·</span>
-          <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25</strong></span>
-          <span class="text-zinc-700">·</span>
-          <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38</strong></span>
-        </div>
+      <!-- 1. Ambient Lounge Pricing Rates Strip (Clean, Rates Only) -->
+      <div class="flex items-center justify-center gap-4 text-xs py-1 text-zinc-300 font-medium tracking-tight">
+        <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35.00</strong></span>
+        <span class="text-zinc-700">·</span>
+        <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25.00</strong></span>
+        <span class="text-zinc-700">·</span>
+        <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38.00</strong></span>
       </div>
 
       <!-- 2. Menu Sub-Tabs Switcher (House Blends is Default Subtab) -->
@@ -802,20 +777,20 @@
 
   <!-- ==================== INITIAL LANDING & WELCOME LOUNGE MODAL ==================== -->
   <div id="welcomeLoungeModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex flex-col justify-end sm:justify-center items-center p-3 transition-opacity duration-300">
-    <div id="welcomeLoungeSheet" class="w-full max-w-sm bg-zinc-950 border border-amber-500/30 rounded-3xl p-5 shadow-2xl space-y-4 text-center transition-transform duration-300 relative">
+    <div id="welcomeLoungeSheet" class="w-full max-w-sm bg-zinc-950/85 backdrop-blur-2xl border border-amber-500/40 rounded-3xl p-5 shadow-2xl space-y-4 text-center transition-transform duration-300 relative">
       
       <!-- Top Drag Bar / Dismiss Handle -->
       <div onclick="closeWelcomeLoungeModal()" class="w-12 h-1 bg-zinc-700 hover:bg-zinc-500 rounded-full mx-auto mb-1 cursor-pointer"></div>
       
-      <!-- Official Empire Hookah Lounge Logo -->
+      <!-- Official Empire Hookah Lounge Logo (Larger, Centered) -->
       <div class="flex flex-col items-center justify-center pt-1">
-        <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-24 h-24 rounded-full border-2 border-amber-500/40 object-cover shadow-[0_0_25px_rgba(229,169,60,0.25)] mx-auto mb-2" />
-        <div class="text-[11px] font-bold text-amber-400 tracking-widest uppercase">EMPIRE HOOKAH LOUNGE</div>
+        <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-32 h-32 rounded-full border-2 border-amber-500/50 object-cover shadow-[0_0_35px_rgba(229,169,60,0.3)] mx-auto mb-2" />
+        <div class="text-xs font-bold text-amber-400 tracking-widest uppercase">EMPIRE HOOKAH LOUNGE</div>
         <div class="text-[10px] text-zinc-500 font-semibold tracking-wider uppercase">EST. 2010 • PHOENIX, AZ</div>
       </div>
 
       <!-- About Empire Story (Dynamic & Editable from Owner Suite) -->
-      <div class="text-left bg-black/70 p-3 rounded-2xl border border-zinc-850 space-y-1">
+      <div class="text-left bg-black/40 p-3.5 rounded-2xl border border-zinc-800/80 space-y-1">
         <div class="flex items-center justify-between">
           <h4 id="welcomeAboutTitle" class="text-xs font-bold uppercase tracking-wider text-amber-400">About Empire</h4>
           <span class="text-[9px] text-zinc-500 uppercase font-semibold">Bespoke Lounge</span>
@@ -825,18 +800,25 @@
         </p>
       </div>
 
-      <!-- Strict House Policies (21+ and 2 per pipe) -->
-      <div class="grid grid-cols-2 gap-2 text-center">
-        <div class="p-2.5 rounded-2xl bg-black/70 border border-zinc-850">
-          <div class="text-base mb-0.5">🔞</div>
-          <div class="text-xs font-bold text-zinc-200" id="welcomeAgeText">21+ Physical ID</div>
-          <div class="text-[10px] text-zinc-400">Required for Entry</div>
-        </div>
-        <div class="p-2.5 rounded-2xl bg-black/70 border border-zinc-850">
-          <div class="text-base mb-0.5">👥</div>
-          <div class="text-xs font-bold text-zinc-200" id="welcomePipeText">2 Guests Max</div>
-          <div class="text-[10px] text-zinc-400">Per Hookah Pipe</div>
-        </div>
+      <!-- House Lounge Policies (Clean Bullet Points with Federal Law Link) -->
+      <div class="text-left bg-black/40 p-3.5 rounded-2xl border border-zinc-800/80 space-y-2 text-xs">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Lounge House Policies</div>
+        <ul class="space-y-2 text-zinc-300">
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 font-bold text-sm leading-none">•</span>
+            <div>
+              <span>Minimum 21+ of age with valid physical government ID required.</span>
+              <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-0.5 text-amber-400/90 hover:text-amber-300 underline font-medium text-[11px] ml-1">
+                <span>Federal Tobacco 21 Law</span>
+                <i data-lucide="external-link" class="w-3 h-3 inline"></i>
+              </a>
+            </div>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 font-bold text-sm leading-none">•</span>
+            <span>Maximum of 2 guests per hookah pipe.</span>
+          </li>
+        </ul>
       </div>
 
       <!-- Swipe Down or Tap Action Button -->
@@ -1159,6 +1141,27 @@
       if (b.includes('starbuzz')) return BRAND_WATERMARKS.starbuzz;
       if (b.includes('adalya')) return BRAND_WATERMARKS.adalya;
       return BRAND_WATERMARKS.empire;
+    }
+
+    function getBrandLogoWatermarkHtml(brandName) {
+      if (!brandName) {
+        return `<img src="empire-logo.png" alt="Empire" class="max-h-16 max-w-[100px] object-contain filter grayscale brightness-200 contrast-125 opacity-[0.10] group-hover:opacity-[0.20] transition-opacity duration-300 pointer-events-none select-none" />`;
+      }
+      const b = brandName.toLowerCase().replace(/[^a-z]/g, '');
+      let src = null;
+      if (b.includes('empire')) src = 'empire-logo.png';
+      else if (b.includes('fakher')) src = 'logos/al fahker.png';
+      else if (b.includes('blackburn')) src = 'logos/black burn.png';
+      else if (b.includes('darkside')) src = 'logos/darkside.png';
+      else if (b.includes('deus')) src = 'logos/deus.png';
+      else if (b.includes('eternal')) src = 'logos/eternak_smoke_logo___87676.webp';
+      else if (b.includes('starbuzz')) src = 'logos/starbuzz.png';
+      else if (b.includes('tangiers')) src = 'logos/Tangiers simple.jpg';
+
+      if (src) {
+        return `<img src="${src}" alt="${brandName}" class="max-h-16 max-w-[110px] object-contain filter grayscale brightness-200 contrast-125 opacity-[0.10] group-hover:opacity-[0.20] transition-opacity duration-300 pointer-events-none select-none" />`;
+      }
+      return `<div class="w-20 h-20 opacity-[0.09] group-hover:opacity-[0.18] transition-opacity duration-300 text-white fill-current flex items-center justify-center">${getBrandWatermark(brandName)}</div>`;
     }
 
     const STOKED_MASTER_INVENTORY = [
@@ -1933,17 +1936,7 @@
       const pricing = CustomerStash.getLoungePricing();
       const inventory = CustomerStash.getInventory();
 
-      // 1. Hero rules & pricing badges
-      const ageBadge = document.getElementById('menuRuleAgeBadge');
-      const pipeBadge = document.getElementById('menuRulePipeBadge');
-      const hoursEl = document.getElementById('menuLoungeHours');
-      const noticeEl = document.getElementById('menuPolicyNotice');
-
-      if (ageBadge) ageBadge.textContent = `🔞 ${rules.ageReq || '21+ Required'}`;
-      if (pipeBadge) pipeBadge.textContent = `👥 ${rules.pipeLimit || '2 Guests / Pipe'}`;
-      if (hoursEl) hoursEl.textContent = rules.hours || 'Daily: 5:00 PM – 2:00 AM';
-      if (noticeEl) noticeEl.textContent = rules.policyNotice || 'Minimum 1 pipe per 2 guests.';
-
+      // 1. Lounge Pricing Rates Strip
       const origEl = document.getElementById('menuPriceOriginal');
       const refillEl = document.getElementById('menuPriceRefill');
       const tanEl = document.getElementById('menuPriceTangiers');
@@ -1978,9 +1971,9 @@
           card.onclick = () => openMenuItemDetailModal(mix.id, 'house');
 
           card.innerHTML = `
-            <!-- Empire Lounge Watermark in Pure White -->
-            <div class="absolute -right-3 -bottom-3 w-28 h-28 pointer-events-none opacity-[0.08] group-hover:opacity-[0.16] transition-opacity duration-300 text-white fill-current flex items-center justify-center overflow-hidden">
-              ${BRAND_WATERMARKS.empire}
+            <!-- Empire Lounge Watermark along Bottom Right -->
+            <div class="absolute right-2 -bottom-2 max-w-[120px] max-h-16 pointer-events-none flex items-end justify-end overflow-hidden">
+              ${getBrandLogoWatermarkHtml('empire')}
             </div>
 
             <div class="relative z-10 flex items-start justify-between gap-3">
@@ -2026,15 +2019,14 @@
         const createFlavorCard = (item) => {
           const isOut = item.stock === 'out_of_stock';
           const buzz = getBuzzInfo(item.strength || 7);
-          const brandWatermark = getBrandWatermark(item.brand);
           const card = document.createElement('div');
           card.className = `relative overflow-hidden group rounded-2xl lounge-menu-card p-3.5 cursor-pointer active:scale-[0.99] select-none ${isOut ? 'opacity-50 pointer-events-none' : ''}`;
           card.onclick = () => openMenuItemDetailModal(item.id, 'flavor');
 
           card.innerHTML = `
-            <!-- Brand Logo Watermark in Pure White -->
-            <div class="absolute -right-3 -bottom-3 w-28 h-28 pointer-events-none opacity-[0.08] group-hover:opacity-[0.16] transition-opacity duration-300 text-white fill-current flex items-center justify-center overflow-hidden">
-              ${brandWatermark}
+            <!-- Brand Logo Watermark along Bottom Right -->
+            <div class="absolute right-2 -bottom-2 max-w-[120px] max-h-16 pointer-events-none flex items-end justify-end overflow-hidden">
+              ${getBrandLogoWatermarkHtml(item.brand)}
             </div>
 
             <div class="relative z-10 flex items-start justify-between gap-3">
@@ -3158,13 +3150,9 @@
       const rules = CustomerStash.getLoungeRules();
       const titleEl = document.getElementById('welcomeAboutTitle');
       const bodyEl = document.getElementById('welcomeAboutBody');
-      const ageEl = document.getElementById('welcomeAgeText');
-      const pipeEl = document.getElementById('welcomePipeText');
 
       if (titleEl) titleEl.textContent = rules.aboutTitle || 'About Empire';
       if (bodyEl) bodyEl.textContent = rules.aboutBody || 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.';
-      if (ageEl) ageEl.textContent = rules.ageReq || '21+ Physical ID';
-      if (pipeEl) pipeEl.textContent = rules.pipeLimit || '2 Guests Max';
 
       const modal = document.getElementById('welcomeLoungeModal');
       if (modal) {
