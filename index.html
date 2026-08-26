@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Mix Lab &amp; Ordering</title>
+  <title>Empire Hookah Lounge — Est. 2010</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#090C12" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -22,6 +22,7 @@
             brand: {
               gold: '#E5A93C',
               accent: '#A855F7',
+              accentPink: '#EC4899',
               darkBg: '#090C12',
               cardBg: '#121622',
               cardBorder: '#1F283D',
@@ -59,11 +60,11 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     
-    /* 3D MECHANICAL ROTARY CYLINDER WHEEL DRUM (Inspired by Stoked Lab) */
+    /* 3D MECHANICAL ROTARY CYLINDER WHEEL DRUM (Stoked Physics) */
     .cylinder-wheel-container {
       position: relative;
       width: 100%;
-      height: 220px;
+      height: 200px;
       overflow: hidden;
       perspective: 900px;
       touch-action: none;
@@ -81,9 +82,9 @@
     .cylinder-target-slot {
       position: absolute;
       top: 50%;
-      left: 12px;
-      right: 12px;
-      height: 52px;
+      left: 10px;
+      right: 10px;
+      height: 48px;
       transform: translateY(-50%);
       background: rgba(168, 85, 247, 0.12);
       border-top: 1.5px solid rgba(168, 85, 247, 0.6);
@@ -98,23 +99,23 @@
       top: 50%;
       left: 0;
       width: 100%;
-      margin-top: -26px;
+      margin-top: -24px;
       transform-style: preserve-3d;
     }
     .cylinder-item-row {
       position: absolute;
       width: 100%;
-      height: 52px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 20px;
       border: none;
       background: transparent;
       color: #E2E8F0;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      transform-origin: center center -120px;
+      transform-origin: center center -110px;
       transition: opacity 0.12s ease, transform 0.1s ease;
       cursor: pointer;
     }
@@ -125,9 +126,9 @@
     }
     .cylinder-color-bar {
       width: 5px;
-      height: 24px;
+      height: 22px;
       border-radius: 4px;
-      margin-right: 12px;
+      margin-right: 10px;
       flex-shrink: 0;
     }
 
@@ -142,9 +143,9 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 text-slate-200">
+<body class="min-h-screen flex flex-col items-center justify-start pb-24 md:pb-12 text-slate-200">
 
-  <!-- ==================== 1. TOP APP BAR ==================== -->
+  <!-- ==================== 1. TOP APP BAR (CLEAN, NO REDUNDANT TABS) ==================== -->
   <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
     <!-- Brand Crest & Table Selector -->
     <div class="flex items-center gap-2.5">
@@ -164,67 +165,126 @@
       <div onclick="openTableModal()" class="cursor-pointer">
         <div class="flex items-center gap-1.5">
           <span class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</span>
-          <span class="text-[8px] bg-slate-800 text-slate-400 font-mono px-1 py-0.2 rounded">EST. 2010</span>
+          <span class="text-[8px] bg-purple-950 text-purple-300 font-mono px-1 py-0.2 rounded border border-purple-800/40">EST. 2010</span>
         </div>
         <div class="flex items-center gap-1 text-[11px] text-brand-accent font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="currentTableDisplay">Table #6 (VIP)</span>
+          <span id="currentTableDisplay">Table #6 (VIP Lounge)</span>
           <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
         </div>
       </div>
     </div>
 
-    <!-- Quick Profile & Call Coals -->
+    <!-- Right Controls: Profile & Square Link -->
     <div class="flex items-center gap-2">
-      <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95">
-        <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
-        <span>Coals</span>
-      </button>
-
-      <!-- Account Button -->
-      <div onclick="openAccountModal()" class="cursor-pointer flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2 py-1 rounded-full transition">
+      <!-- Square Profile Pill -->
+      <div onclick="openAccountModal()" class="cursor-pointer flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-full transition">
         <img id="headerAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-5 h-5 rounded-full object-cover ring-1 ring-purple-500" />
         <span class="text-xs font-bold text-white" id="headerUserName">Alex</span>
+        <span class="text-[9px] text-brand-gold font-bold flex items-center gap-0.5">
+          <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
+          <span>21+</span>
+        </span>
       </div>
     </div>
   </header>
 
-  <!-- ==================== MAIN SIMPLIFIED VIEW ==================== -->
+  <!-- ==================== MAIN ORDERING & SESSION VIEW ==================== -->
   <main class="w-full max-w-lg px-3.5 pt-3 flex flex-col gap-3">
 
-    <!-- 1. ACTIVE BOWL SUMMARY & SPECTRUM RIBBON -->
+    <!-- 1. SESSION LIFECYCLE & PARTY BAR -->
+    <section class="glass-card rounded-2xl p-3.5 relative overflow-hidden border border-purple-500/25">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-700/50" id="sessionStatusTag">
+            ● SESSION ACTIVE #6010
+          </span>
+        </div>
+        <div class="flex items-center gap-1.5 text-xs text-slate-400">
+          <i data-lucide="timer" class="w-3.5 h-3.5 text-brand-accent"></i>
+          <span id="sessionTimer">38 mins elapsed</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xs font-bold text-white flex items-center gap-1.5">
+            <span id="partyHostName">Alex's Group</span>
+            <span class="text-[10px] text-slate-400 font-normal">(3 connected)</span>
+          </h2>
+          <p class="text-[11px] text-slate-300 mt-0.5">
+            Live Tab: <span class="text-brand-gold font-semibold" id="tableTabAmount">$35.00</span>
+          </p>
+        </div>
+
+        <!-- Party Guests -->
+        <div class="flex -space-x-2 overflow-hidden items-center">
+          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Alex (Host)" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" />
+          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Maya" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" />
+          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Sam" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" />
+          <div onclick="openShareTableModal()" class="h-7 w-7 rounded-full bg-slate-800 ring-2 ring-brand-darkBg flex items-center justify-center text-[10px] font-bold text-purple-400 cursor-pointer">
+            +1
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Session Lifecycle Action Buttons -->
+      <div class="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-slate-800/80">
+        <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
+          <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
+          <span>Request Fresh Coals</span>
+        </button>
+        <button onclick="openFinishSessionModal()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
+          <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Finish Session &amp; Pay</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. RUSSIAN & TANGIERS MIX LAB (NO BOWL PORTIONS CARD!) -->
     <section class="glass-card rounded-2xl p-3.5 border border-purple-500/20">
       
       <!-- Top Title & Strength -->
       <div class="flex justify-between items-center mb-2">
         <div class="flex items-center gap-1.5">
-          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">Custom Mix</span>
-          <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40" id="buzzBadge">7.8/10 DARK LEAF</span>
+          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-accent"></i>
+          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">Russian &amp; Tangiers Mix</span>
         </div>
-        <span class="text-xs font-bold text-brand-gold font-mono-nums" id="totalGramsSummary">22.0g • 100%</span>
+        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40" id="buzzBadge">
+          7.6/10 DARK LEAF
+        </span>
       </div>
+
+      <!-- Mix Name Input -->
+      <input 
+        type="text" 
+        id="mixNameInput"
+        value="Pink Cane Sensation" 
+        placeholder="Name your custom mix..."
+        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 mb-2.5"
+      />
 
       <!-- Spectrum Gradient Ribbon -->
       <div id="spectrumRibbon" class="spectrum-track w-full mb-3"></div>
 
-      <!-- SELECTED FLAVOR SLOTS (Max 3 Slots) -->
+      <!-- ACTIVE FLAVOR SLOTS (Direct Steppers, % & Grams) -->
       <div class="space-y-2" id="flavorSlotsContainer">
         <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- 2. MECHANICAL 3D ROTARY CYLINDER DIAL (Flavor / Detail Selector) -->
-    <section class="glass-card rounded-2xl p-3.5 border border-purple-500/30 relative">
+    <!-- 3. 3D MECHANICAL ROTARY CYLINDER DIAL (Flavor Selection) -->
+    <section class="glass-card rounded-2xl p-3 border border-purple-500/30 relative">
       <div class="flex justify-between items-center mb-1 px-1">
         <div class="flex items-center gap-1.5">
           <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
-          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Russian &amp; Tangiers Shisha Dial</span>
+          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Russian &amp; Tangiers Dial</span>
         </div>
-        <span class="text-[10px] text-purple-300 font-medium">Scroll / Drag wheel to pick</span>
+        <span class="text-[10px] text-purple-300">Scroll / Drag drum</span>
       </div>
 
-      <!-- Brand Filter Tabs for Rotary Wheel -->
-      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1.5 mb-1" id="wheelBrandTabs">
+      <!-- Brand Filter Tabs -->
+      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 mb-1" id="wheelBrandTabs">
         <!-- Injected via JS -->
       </div>
 
@@ -250,55 +310,92 @@
       <!-- 1-Tap Add To Bowl Confirmation Button -->
       <button 
         onclick="confirmWheelSelection()" 
-        class="mt-2.5 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
+        class="mt-2 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
       >
-        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-        <span id="wheelConfirmBtnText">Add Selected Flavor to Mix</span>
+        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+        <span id="wheelConfirmBtnText">+ Add to Mix</span>
       </button>
     </section>
 
-    <!-- 3. BOWL HARDWARE PILLS (1-Tap Selection) -->
-    <div class="grid grid-cols-3 gap-2">
-      <button onclick="selectBowlType('phunnel', 35, 'Oblako Phunnel (22g)', 22)" id="bowl-phunnel" class="bowl-pill p-2 rounded-xl border-2 border-purple-500 bg-purple-500/15 text-center transition">
-        <span class="block text-xs font-bold text-white">Russian Phunnel</span>
-        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$35.00</span>
-        <span class="block text-[9px] text-slate-400">22g • Oblako</span>
-      </button>
-
-      <button onclick="selectBowlType('tangiers', 38, 'Tangiers Clay (24g)', 24)" id="bowl-tangiers" class="bowl-pill p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
-        <span class="block text-xs font-bold text-white">Tangiers Clay</span>
-        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$38.00</span>
-        <span class="block text-[9px] text-slate-400">24g • Heavy Buzz</span>
-      </button>
-
-      <button onclick="selectBowlType('fruit', 48, 'Fresh Fruit Head (35g)', 35)" id="bowl-fruit" class="bowl-pill p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
-        <span class="block text-xs font-bold text-white">Fruit Head</span>
-        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$48.00</span>
-        <span class="block text-[9px] text-slate-400">35g • Pineapple</span>
-      </button>
-    </div>
-
-    <!-- 4. SIMPLE STICKY ORDER BUTTON BAR -->
-    <div class="sticky bottom-2.5 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
+    <!-- 4. ORDER DISPATCH BAR WITH LIFECYCLE TAGGING (First Bowl vs Refill / Repack) -->
+    <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
       <div>
-        <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-bold">Total Bowl Price</span>
-        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$35.00</span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[9px] uppercase tracking-wider text-purple-300 font-bold block" id="orderTypeLabel">[REFILL / REPACK]</span>
+          <span class="text-[9px] text-slate-400 font-mono" id="orderBowlGrams">22g portion</span>
+        </div>
+        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$25.00</span>
       </div>
       
       <div class="flex items-center gap-2">
-        <button onclick="sendOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3.5 rounded-xl transition active:scale-95">
-          + Table Tab
+        <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
+          + Add to Tab
         </button>
-        <button onclick="sendOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
+        <button onclick="dispatchOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
           <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
-          <span>Pack &amp; Light</span>
+          <span id="orderBtnActionText">Order Refill</span>
         </button>
       </div>
     </div>
 
   </main>
 
-  <!-- ==================== ACCOUNT SETUP MODAL (Stoked Style) ==================== -->
+  <!-- ==================== FINISH SESSION & CLOSE TAB MODAL ==================== -->
+  <div id="finishSessionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-brand-cardBg border border-emerald-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <i data-lucide="receipt" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Finish Session &amp; Tab</h3>
+            <p class="text-[10px] text-slate-400">Table #6 • 3 Connected Guests</p>
+          </div>
+        </div>
+        <button onclick="closeFinishSessionModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <!-- Itemized Receipt Summary -->
+      <div class="my-3 space-y-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
+        <div class="flex justify-between text-slate-300">
+          <span>1x Initial Russian Bowl (Pink Cane)</span>
+          <span class="font-bold font-mono-nums">$35.00</span>
+        </div>
+        <div class="flex justify-between text-slate-400 text-[11px]" id="modalRefillRow">
+          <span>1x Refill / Repack (Lady Killer)</span>
+          <span class="font-bold font-mono-nums">$25.00</span>
+        </div>
+        <div class="flex justify-between text-slate-400 text-[11px]">
+          <span>Coal Service &amp; Ice Tips</span>
+          <span class="text-emerald-400 font-bold">Included ✓</span>
+        </div>
+        <div class="pt-2 border-t border-slate-800 flex justify-between text-sm font-bold text-white">
+          <span>Total Balance</span>
+          <span class="text-brand-gold font-mono-nums" id="finishModalTotal">$60.00</span>
+        </div>
+      </div>
+
+      <!-- Tip Selection -->
+      <div class="mb-3">
+        <label class="text-[10px] text-slate-400 font-semibold block mb-1">Add Gratuity for Coal Master &amp; Staff</label>
+        <div class="grid grid-cols-4 gap-1.5 text-center">
+          <button onclick="selectTip(15)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">15%</button>
+          <button onclick="selectTip(18)" class="tip-btn p-1.5 bg-purple-600 border border-purple-500 text-white rounded-lg text-xs font-bold">18%</button>
+          <button onclick="selectTip(20)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">20%</button>
+          <button onclick="selectTip(25)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">25%</button>
+        </div>
+      </div>
+
+      <!-- Final Square Checkout Button -->
+      <button onclick="completeSessionCloseout()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+        <i data-lucide="credit-card" class="w-4 h-4"></i>
+        <span>Pay &amp; Close Tab with Square</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ACCOUNT SETUP MODAL ==================== -->
   <div id="accountModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-cardBg border border-purple-500/40 rounded-2xl max-w-sm w-full max-h-[90vh] overflow-y-auto p-4 shadow-2xl">
       
@@ -354,7 +451,7 @@
     </div>
   </div>
 
-  <!-- ==================== TABLE / QR SWITCHER MODAL ==================== -->
+  <!-- ==================== TABLE MODAL ==================== -->
   <div id="tableModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-cardBg border border-purple-500/30 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2 border-b border-slate-800">
@@ -417,7 +514,11 @@
       "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
     ];
 
-    // State
+    // Session State
+    let isSessionActive = true;
+    let roundCount = 1; // 1 = First Bowl, 2+ = Refill / Repack
+    let totalTabBalance = 35.00;
+
     let userAccount = {
       name: 'Alex',
       handle: '@alex_ehl',
@@ -429,7 +530,11 @@
       { id: 'mh-pinkman', percent: 70 },
       { id: 'tan-cane-mint', percent: 30 }
     ];
-    let bowl = { id: 'phunnel', price: 35, grams: 22, name: 'Oblako Phunnel' };
+
+    // Standardized Russian Bowl portion: 22g
+    const STANDARD_BOWL_GRAMS = 22;
+    const FIRST_BOWL_PRICE = 35.00;
+    const REFILL_BOWL_PRICE = 25.00;
 
     // Rotary Wheel State
     let selectedBrandFilter = 'all';
@@ -444,7 +549,6 @@
 
     // ==================== 3D ROTARY CYLINDER WHEEL CONTROLLER ====================
     function initRotaryWheel() {
-      // Build brand filter tabs
       const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Element'];
       const tabsContainer = document.getElementById('wheelBrandTabs');
       tabsContainer.innerHTML = '';
@@ -452,7 +556,7 @@
       brands.forEach(b => {
         const btn = document.createElement('button');
         const isActive = (b === selectedBrandFilter);
-        btn.className = `text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
+        btn.className = `text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
         btn.textContent = b === 'all' ? 'All Brands' : b;
         btn.onclick = () => {
           selectedBrandFilter = b;
@@ -480,7 +584,7 @@
         if (!isVisible) return;
 
         // 3D Cylinder Mathematics
-        const yOffset = diff * 48;
+        const yOffset = diff * 44;
         const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
         const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
         const rotateX = diff * -14;
@@ -506,21 +610,19 @@
             <span class="truncate">${item.name}</span>
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-            <span class="text-[10px] text-purple-300 font-bold">Str ${item.strength}</span>
+            <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+            <span class="text-[9px] text-purple-300 font-bold">Str ${item.strength}</span>
           </div>
         `;
         track.appendChild(row);
       });
 
-      // Update button text
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (activeItem) {
         document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Mix`;
       }
     }
 
-    // Touch & Wheel Event Handlers for 3D Drum
     function handleWheelScroll(e) {
       e.preventDefault();
       const count = filteredWheelItems.length;
@@ -546,7 +648,7 @@
       touchStartY = currentY;
       touchAccumulator += delta;
 
-      const step = 32;
+      const step = 28;
       const count = filteredWheelItems.length;
       if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
         wheelSelectedIndex++;
@@ -564,19 +666,17 @@
       touchAccumulator = 0;
     }
 
-    // Confirm Wheel Selection
     function confirmWheelSelection() {
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (!activeItem) return;
 
       const existing = activeFlavors.find(f => f.id === activeItem.id);
       if (existing) {
-        showToast('ℹ️ Already in Mix', `${activeItem.name} is already in your bowl.`);
+        showToast('ℹ️ Already in Mix', `${activeItem.name} is in your bowl.`);
         return;
       }
 
       if (activeFlavors.length >= 3) {
-        // Replace last flavor
         activeFlavors[activeFlavors.length - 1].id = activeItem.id;
         showToast('🔄 Swapped', `Replaced slot with ${activeItem.name}.`);
       } else {
@@ -616,7 +716,7 @@
         if (!item) return;
 
         totalStrength += (item.strength * (slot.percent / 100));
-        const grams = ((bowl.grams * slot.percent) / 100).toFixed(1);
+        const grams = ((STANDARD_BOWL_GRAMS * slot.percent) / 100).toFixed(1);
 
         const row = document.createElement('div');
         row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5';
@@ -650,11 +750,19 @@
         container.appendChild(row);
       });
 
-      // 3. Update Buzz Badge
+      // 3. Update Buzz Badge & Tagging
       const roundedStr = (totalStrength).toFixed(1);
       document.getElementById('buzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
-      document.getElementById('totalGramsSummary').textContent = `${bowl.grams}g • 100%`;
-      document.getElementById('totalPriceText').textContent = `$${bowl.price.toFixed(2)}`;
+
+      // Update Order Pricing & Action Tag
+      const currentPrice = roundCount === 1 ? FIRST_BOWL_PRICE : REFILL_BOWL_PRICE;
+      const tagLabel = roundCount === 1 ? '[START SESSION - FIRST BOWL]' : '[REFILL / REPACK]';
+      const actionText = roundCount === 1 ? 'Start & Order' : 'Order Refill';
+
+      document.getElementById('totalPriceText').textContent = `$${currentPrice.toFixed(2)}`;
+      document.getElementById('orderTypeLabel').textContent = tagLabel;
+      document.getElementById('orderBtnActionText').textContent = actionText;
+      document.getElementById('tableTabAmount').textContent = `$${totalTabBalance.toFixed(2)}`;
 
       renderIcons();
     }
@@ -694,32 +802,58 @@
       renderMixSummary();
     }
 
-    function selectBowlType(id, price, name, grams) {
-      bowl = { id, price, name, grams };
-      document.querySelectorAll('.bowl-pill').forEach(b => {
-        b.classList.remove('border-2', 'border-purple-500', 'bg-purple-500/15');
-        b.classList.add('border', 'border-slate-800', 'bg-slate-900/60');
-      });
-      const active = document.getElementById(`bowl-${id}`);
-      if (active) {
-        active.classList.add('border-2', 'border-purple-500', 'bg-purple-500/15');
-        active.classList.remove('border', 'border-slate-800', 'bg-slate-900/60');
+    // ==================== DISPATCH & SESSION LIFECYCLE ====================
+    function dispatchOrder(mode) {
+      const currentPrice = roundCount === 1 ? FIRST_BOWL_PRICE : REFILL_BOWL_PRICE;
+      const orderType = roundCount === 1 ? 'FIRST_BOWL' : 'REFILL_REPACK';
+      const mixName = document.getElementById('mixNameInput').value || 'Russian Shisha Mix';
+
+      totalTabBalance += (roundCount === 1 ? 0 : REFILL_BOWL_PRICE); // First bowl was $35
+      roundCount++;
+
+      if (mode === 'square') {
+        showToast('💳 Square Profile Checkout', `Authorizing $${currentPrice.toFixed(2)} [${orderType}] with Square.`);
+      } else {
+        showToast('👑 Added to Table Tab', `"${mixName}" [${orderType}] sent to coal master.`);
       }
+
       renderMixSummary();
     }
 
-    // ==================== DISPATCH & COALS ====================
-    function sendOrder(mode) {
-      const total = bowl.price;
-      if (mode === 'square') {
-        showToast('💳 Square Profile Checkout', `Authorizing $${total.toFixed(2)} with Square.`);
-      } else {
-        showToast('👑 Added to Table Tab', `Bowl dispatched to staff for Table #${currentTable.num}.`);
-      }
+    function requestCoalService() {
+      showToast('🔥 Coal Alert Dispatched', `[COAL_SERVICE] Staff alerted for Table #${currentTable.num}.`);
     }
 
-    function requestCoalService() {
-      showToast('🔥 Coal Alert Dispatched', `Staff alerted for Table #${currentTable.num}.`);
+    // Finish Session Modal
+    function openFinishSessionModal() {
+      document.getElementById('finishModalTotal').textContent = `$${totalTabBalance.toFixed(2)}`;
+      document.getElementById('finishSessionModal').classList.remove('hidden');
+    }
+
+    function closeFinishSessionModal() {
+      document.getElementById('finishSessionModal').classList.add('hidden');
+    }
+
+    function selectTip(pct) {
+      document.querySelectorAll('.tip-btn').forEach(b => {
+        b.classList.remove('bg-purple-600', 'border-purple-500', 'text-white');
+        b.classList.add('bg-slate-900', 'border-slate-800');
+      });
+      event.target.classList.add('bg-purple-600', 'border-purple-500', 'text-white');
+      event.target.classList.remove('bg-slate-900', 'border-slate-800');
+
+      const tipAmt = (totalTabBalance * pct) / 100;
+      const grandTotal = totalTabBalance + tipAmt;
+      document.getElementById('finishModalTotal').textContent = `$${grandTotal.toFixed(2)} ($${tipAmt.toFixed(2)} tip)`;
+    }
+
+    function completeSessionCloseout() {
+      closeFinishSessionModal();
+      showToast('🏁 Session Closed', `Table #${currentTable.num} tab paid & closed via Square. Thank you!`);
+      // Reset for next session
+      roundCount = 1;
+      totalTabBalance = 35.00;
+      renderMixSummary();
     }
 
     // ==================== ACCOUNT SYSTEM ====================
@@ -772,6 +906,10 @@
       showToast('📍 Table Selected', `Switched to Table #${num}.`);
     }
 
+    function openShareTableModal() {
+      showToast('🔗 Table PIN: #' + currentTable.pin, 'Share PIN #6010 with friends sitting at Table #' + currentTable.num);
+    }
+
     function showToast(title, msg) {
       const t = document.getElementById('toast');
       document.getElementById('toastIcon').textContent = title.split(' ')[0];
@@ -781,7 +919,7 @@
       setTimeout(() => {
         t.classList.remove('opacity-100', 'translate-y-0');
         t.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-      }, 2200);
+      }, 2400);
     }
 
     // PWA SW
