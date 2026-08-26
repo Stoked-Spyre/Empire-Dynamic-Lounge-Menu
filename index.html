@@ -64,7 +64,7 @@
     .cylinder-wheel-container {
       position: relative;
       width: 100%;
-      height: 200px;
+      height: 190px;
       overflow: hidden;
       perspective: 900px;
       touch-action: none;
@@ -82,9 +82,9 @@
     .cylinder-target-slot {
       position: absolute;
       top: 50%;
-      left: 10px;
-      right: 10px;
-      height: 48px;
+      left: 8px;
+      right: 8px;
+      height: 46px;
       transform: translateY(-50%);
       background: rgba(168, 85, 247, 0.12);
       border-top: 1.5px solid rgba(168, 85, 247, 0.6);
@@ -99,21 +99,21 @@
       top: 50%;
       left: 0;
       width: 100%;
-      margin-top: -24px;
+      margin-top: -23px;
       transform-style: preserve-3d;
     }
     .cylinder-item-row {
       position: absolute;
       width: 100%;
-      height: 48px;
+      height: 46px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      padding: 0 18px;
       border: none;
       background: transparent;
       color: #E2E8F0;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       transform-origin: center center -110px;
       transition: opacity 0.12s ease, transform 0.1s ease;
@@ -126,17 +126,10 @@
     }
     .cylinder-color-bar {
       width: 5px;
-      height: 22px;
+      height: 20px;
       border-radius: 4px;
       margin-right: 10px;
       flex-shrink: 0;
-    }
-
-    /* Gradient Ribbon */
-    .spectrum-track {
-      height: 10px;
-      border-radius: 999px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 12px rgba(168,85,247,0.2);
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -145,9 +138,9 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-24 md:pb-12 text-slate-200">
 
-  <!-- ==================== 1. TOP APP BAR (CLEAN, NO REDUNDANT TABS) ==================== -->
-  <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
-    <!-- Brand Crest & Table Selector -->
+  <!-- ==================== 1. TOP APP BAR ==================== -->
+  <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
+    <!-- Brand Crest & Table Switcher -->
     <div class="flex items-center gap-2.5">
       <div onclick="openTableModal()" class="cursor-pointer w-9 h-9 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center p-1 shadow-md hover:scale-105 transition" title="Tap to switch Table">
         <svg viewBox="0 0 100 100" class="w-full h-full text-slate-200">
@@ -175,9 +168,8 @@
       </div>
     </div>
 
-    <!-- Right Controls: Profile & Square Link -->
+    <!-- Right Controls: Profile & 21+ -->
     <div class="flex items-center gap-2">
-      <!-- Square Profile Pill -->
       <div onclick="openAccountModal()" class="cursor-pointer flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2.5 py-1 rounded-full transition">
         <img id="headerAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-5 h-5 rounded-full object-cover ring-1 ring-purple-500" />
         <span class="text-xs font-bold text-white" id="headerUserName">Alex</span>
@@ -189,98 +181,94 @@
     </div>
   </header>
 
-  <!-- ==================== MAIN ORDERING & SESSION VIEW ==================== -->
-  <main class="w-full max-w-lg px-3.5 pt-3 flex flex-col gap-3">
+  <!-- ==================== 2. MAIN NAVIGATION TABS (ORDER vs EVENTS) ==================== -->
+  <div class="w-full max-w-lg px-4 pt-2.5">
+    <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-950/80 border border-slate-800 rounded-xl">
+      <button onclick="switchTab('order')" id="tab-btn-order" class="tab-btn py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 bg-purple-600 text-white shadow-md">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span>Order &amp; Mix</span>
+      </button>
+      <button onclick="switchTab('events')" id="tab-btn-events" class="tab-btn py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200">
+        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+        <span>Daily Specials &amp; Events</span>
+      </button>
+    </div>
+  </div>
 
-    <!-- 1. SESSION LIFECYCLE & PARTY BAR -->
-    <section class="glass-card rounded-2xl p-3.5 relative overflow-hidden border border-purple-500/25">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-700/50" id="sessionStatusTag">
-            ● SESSION ACTIVE #6010
-          </span>
-        </div>
-        <div class="flex items-center gap-1.5 text-xs text-slate-400">
-          <i data-lucide="timer" class="w-3.5 h-3.5 text-brand-accent"></i>
-          <span id="sessionTimer">38 mins elapsed</span>
+  <!-- ==================== TAB 1: ORDER & MIX TAB ==================== -->
+  <main id="tab-order" class="tab-panel w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3">
+
+    <!-- A. SESSION LIFECYCLE & PARTY BAR -->
+    <section class="glass-card rounded-2xl p-3 relative overflow-hidden border border-purple-500/25">
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-700/50" id="sessionStatusTag">
+          ● ACTIVE TAB #6010
+        </span>
+        <div class="flex items-center gap-1 text-[11px] text-slate-400">
+          <i data-lucide="timer" class="w-3 h-3 text-brand-accent"></i>
+          <span>Active 42m</span>
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <div>
           <h2 class="text-xs font-bold text-white flex items-center gap-1.5">
-            <span id="partyHostName">Alex's Group</span>
-            <span class="text-[10px] text-slate-400 font-normal">(3 connected)</span>
+            <span>Alex's Table Session</span>
+            <span class="text-[10px] text-slate-400 font-normal">(3 Guests)</span>
           </h2>
           <p class="text-[11px] text-slate-300 mt-0.5">
-            Live Tab: <span class="text-brand-gold font-semibold" id="tableTabAmount">$35.00</span>
+            Tab Balance: <span class="text-brand-gold font-semibold font-mono-nums" id="tableTabAmount">$35.00</span>
           </p>
         </div>
 
-        <!-- Party Guests -->
         <div class="flex -space-x-2 overflow-hidden items-center">
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Alex (Host)" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" />
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Maya" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" />
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Sam" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" />
-          <div onclick="openShareTableModal()" class="h-7 w-7 rounded-full bg-slate-800 ring-2 ring-brand-darkBg flex items-center justify-center text-[10px] font-bold text-purple-400 cursor-pointer">
-            +1
-          </div>
+          <img class="inline-block h-6 w-6 rounded-full ring-2 ring-brand-darkBg object-cover" title="Alex (Host)" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" />
+          <img class="inline-block h-6 w-6 rounded-full ring-2 ring-brand-darkBg object-cover" title="Maya" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" />
+          <img class="inline-block h-6 w-6 rounded-full ring-2 ring-brand-darkBg object-cover" title="Sam" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" />
         </div>
       </div>
 
-      <!-- Quick Session Lifecycle Action Buttons -->
-      <div class="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-slate-800/80">
+      <!-- Quick Coals & Finish Actions -->
+      <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2 border-t border-slate-800/80">
         <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
           <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
-          <span>Request Fresh Coals</span>
+          <span>Call Fresh Coals</span>
         </button>
         <button onclick="openFinishSessionModal()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
           <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>Finish Session &amp; Pay</span>
+          <span>Finish &amp; Close Tab</span>
         </button>
       </div>
     </section>
 
-    <!-- 2. RUSSIAN & TANGIERS MIX LAB (NO BOWL PORTIONS CARD!) -->
-    <section class="glass-card rounded-2xl p-3.5 border border-purple-500/20">
+    <!-- B. ACTIVE BOWL FLAVOR LIST (NO %, SIMPLE BRAND TIED SELECTION) -->
+    <section class="glass-card rounded-2xl p-3 border border-purple-500/20">
       
-      <!-- Top Title & Strength -->
+      <!-- Top Title & Strength Rating -->
       <div class="flex justify-between items-center mb-2">
         <div class="flex items-center gap-1.5">
           <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-accent"></i>
-          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">Russian &amp; Tangiers Mix</span>
+          <span class="text-xs font-bold text-white uppercase tracking-wider">Active Flavor Selection</span>
         </div>
         <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40" id="buzzBadge">
-          7.6/10 DARK LEAF
+          DARK LEAF BLEND
         </span>
       </div>
 
-      <!-- Mix Name Input -->
-      <input 
-        type="text" 
-        id="mixNameInput"
-        value="Pink Cane Sensation" 
-        placeholder="Name your custom mix..."
-        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 mb-2.5"
-      />
-
-      <!-- Spectrum Gradient Ribbon -->
-      <div id="spectrumRibbon" class="spectrum-track w-full mb-3"></div>
-
-      <!-- ACTIVE FLAVOR SLOTS (Direct Steppers, % & Grams) -->
+      <!-- Selected Flavors Chips List (1 to 3 Flavors) -->
       <div class="space-y-2" id="flavorSlotsContainer">
-        <!-- Rendered dynamically -->
+        <!-- Injected via JS -->
       </div>
     </section>
 
-    <!-- 3. 3D MECHANICAL ROTARY CYLINDER DIAL (Flavor Selection) -->
+    <!-- C. 3D ROTARY CYLINDER DIAL (TIED TO BRAND & FLAVORS) -->
     <section class="glass-card rounded-2xl p-3 border border-purple-500/30 relative">
       <div class="flex justify-between items-center mb-1 px-1">
         <div class="flex items-center gap-1.5">
           <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
           <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Russian &amp; Tangiers Dial</span>
         </div>
-        <span class="text-[10px] text-purple-300">Scroll / Drag drum</span>
+        <span class="text-[10px] text-purple-300">Scroll drum to pick</span>
       </div>
 
       <!-- Brand Filter Tabs -->
@@ -302,7 +290,7 @@
           <div class="cylinder-target-slot"></div>
           <!-- 3D Drum Items Track -->
           <div class="cylinder-drum-track" id="cylinderDrumTrack">
-            <!-- 3D item rows populated via JS -->
+            <!-- Populated via JS -->
           </div>
         </div>
       </div>
@@ -317,30 +305,117 @@
       </button>
     </section>
 
-    <!-- 4. ORDER DISPATCH BAR WITH LIFECYCLE TAGGING (First Bowl vs Refill / Repack) -->
-    <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-[9px] uppercase tracking-wider text-purple-300 font-bold block" id="orderTypeLabel">[REFILL / REPACK]</span>
-          <span class="text-[9px] text-slate-400 font-mono" id="orderBowlGrams">22g portion</span>
-        </div>
-        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$25.00</span>
-      </div>
+    <!-- D. SUBMISSION QUALIFIERS & DYNAMIC PRICING ENGINE BAR -->
+    <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex flex-col gap-2">
       
-      <div class="flex items-center gap-2">
-        <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
-          + Add to Tab
-        </button>
-        <button onclick="dispatchOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
-          <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
-          <span id="orderBtnActionText">Order Refill</span>
-        </button>
+      <!-- Qualifiers / Flagged Status Badges -->
+      <div class="flex items-center gap-1.5 flex-wrap" id="qualifiersContainer">
+        <!-- Injected dynamically based on bowl composition & flags -->
+      </div>
+
+      <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+        <div>
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-bold" id="qualifierHeadline">Qualified Bowl Price</span>
+          <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$25.00</span>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2 px-3 rounded-xl transition active:scale-95">
+            + Add to Tab
+          </button>
+          <button onclick="dispatchOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+            <span id="orderBtnActionText">Order Refill</span>
+          </button>
+        </div>
       </div>
     </div>
 
   </main>
 
-  <!-- ==================== FINISH SESSION & CLOSE TAB MODAL ==================== -->
+  <!-- ==================== TAB 2: EVENTS & DAILY SPECIALS TAB ==================== -->
+  <section id="tab-events" class="tab-panel hidden w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3.5">
+    
+    <!-- Daily Special Spotlight -->
+    <div class="glass-card rounded-2xl p-4 border border-brand-gold/40 relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-brand-gold/10 rounded-full blur-xl pointer-events-none"></div>
+      <div class="flex justify-between items-center mb-1.5">
+        <span class="text-[10px] font-extrabold bg-amber-500/20 text-brand-gold px-2 py-0.5 rounded-full border border-amber-500/40">
+          TODAY'S LOUNGE SPECIAL
+        </span>
+        <span class="text-xs text-brand-gold font-bold">$25 Special Rate</span>
+      </div>
+      <h3 class="text-sm font-bold text-white">🇷🇺 Russian Dark Leaf Tasting Night</h3>
+      <p class="text-xs text-slate-300 mt-1">All MustHave and Darkside craft mixes discounted to $25.00 all night with complimentary iced fruit base upgrade.</p>
+      
+      <button onclick="applyEventSpecial('Russian Dark Leaf Special', ['mh-pinkman', 'ds-falling-star'], 25)" class="mt-3 w-full bg-brand-gold hover:bg-brand-goldHover text-brand-darkBg text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 shadow-md transition active:scale-98">
+        <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+        <span>Load Today's Special Mix ($25)</span>
+      </button>
+    </div>
+
+    <!-- Weekly Lounge Schedule Cards -->
+    <div class="space-y-2.5">
+      <h4 class="text-xs uppercase tracking-wider text-slate-400 font-bold px-1">Coordinated Lounge Events</h4>
+      
+      <!-- Event 1 -->
+      <div class="glass-card rounded-2xl p-3.5 border border-slate-800 flex items-start justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex flex-col items-center justify-center flex-shrink-0 text-purple-300">
+            <span class="text-[9px] font-bold uppercase">WED</span>
+            <span class="text-xs font-extrabold">27</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white">Tangiers &amp; Moroccan Tea Night</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Complimentary freshly brewed loose-leaf mint teapot with any Tangiers Noir bowl.</p>
+            <span class="inline-block mt-1.5 text-[9px] bg-slate-900 text-purple-300 font-semibold px-2 py-0.5 rounded border border-slate-800">8:00 PM – 1:00 AM</span>
+          </div>
+        </div>
+        <button onclick="showToast('🎟️ RSVP Confirmed', 'You are on the guest list for Tangiers & Tea Night.')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg font-bold">
+          RSVP
+        </button>
+      </div>
+
+      <!-- Event 2 -->
+      <div class="glass-card rounded-2xl p-3.5 border border-slate-800 flex items-start justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/30 flex flex-col items-center justify-center flex-shrink-0 text-pink-300">
+            <span class="text-[9px] font-bold uppercase">FRI</span>
+            <span class="text-xs font-extrabold">29</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white">Deep House &amp; Shisha Sessions</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">Live resident DJ set, ambient neon visuals, and exclusive BlackBurn Shock flavor debuts.</p>
+            <span class="inline-block mt-1.5 text-[9px] bg-slate-900 text-pink-300 font-semibold px-2 py-0.5 rounded border border-slate-800">9:30 PM – 2:00 AM</span>
+          </div>
+        </div>
+        <button onclick="showToast('🎟️ RSVP Confirmed', 'VIP Table reservation request sent to staff.')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg font-bold">
+          RSVP
+        </button>
+      </div>
+
+      <!-- Event 3 -->
+      <div class="glass-card rounded-2xl p-3.5 border border-slate-800 flex items-start justify-between gap-3">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex flex-col items-center justify-center flex-shrink-0 text-emerald-300">
+            <span class="text-[9px] font-bold uppercase">SUN</span>
+            <span class="text-xs font-extrabold">31</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-white">Sunday Industry &amp; Hospitality Night</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5">50% off all refills for restaurant, bar, and lounge workers with proof of employment.</p>
+            <span class="inline-block mt-1.5 text-[9px] bg-slate-900 text-emerald-300 font-semibold px-2 py-0.5 rounded border border-slate-800">All Day &amp; Night</span>
+          </div>
+        </div>
+        <button onclick="showToast('🎟️ Industry Pass', 'Show staff your hospitality badge for 50% refill discount.')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg font-bold">
+          Pass
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==================== FINISH SESSION MODAL ==================== -->
   <div id="finishSessionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-cardBg border border-emerald-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
@@ -356,27 +431,21 @@
         <button onclick="closeFinishSessionModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <!-- Itemized Receipt Summary -->
       <div class="my-3 space-y-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
         <div class="flex justify-between text-slate-300">
-          <span>1x Initial Russian Bowl (Pink Cane)</span>
+          <span>1x Initial Russian Bowl</span>
           <span class="font-bold font-mono-nums">$35.00</span>
         </div>
-        <div class="flex justify-between text-slate-400 text-[11px]" id="modalRefillRow">
-          <span>1x Refill / Repack (Lady Killer)</span>
-          <span class="font-bold font-mono-nums">$25.00</span>
-        </div>
         <div class="flex justify-between text-slate-400 text-[11px]">
-          <span>Coal Service &amp; Ice Tips</span>
+          <span>Coal Service &amp; Rotations</span>
           <span class="text-emerald-400 font-bold">Included ✓</span>
         </div>
         <div class="pt-2 border-t border-slate-800 flex justify-between text-sm font-bold text-white">
           <span>Total Balance</span>
-          <span class="text-brand-gold font-mono-nums" id="finishModalTotal">$60.00</span>
+          <span class="text-brand-gold font-mono-nums" id="finishModalTotal">$35.00</span>
         </div>
       </div>
 
-      <!-- Tip Selection -->
       <div class="mb-3">
         <label class="text-[10px] text-slate-400 font-semibold block mb-1">Add Gratuity for Coal Master &amp; Staff</label>
         <div class="grid grid-cols-4 gap-1.5 text-center">
@@ -387,7 +456,6 @@
         </div>
       </div>
 
-      <!-- Final Square Checkout Button -->
       <button onclick="completeSessionCloseout()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
         <i data-lucide="credit-card" class="w-4 h-4"></i>
         <span>Pay &amp; Close Tab with Square</span>
@@ -395,10 +463,9 @@
     </div>
   </div>
 
-  <!-- ==================== ACCOUNT SETUP MODAL ==================== -->
+  <!-- ==================== ACCOUNT MODAL ==================== -->
   <div id="accountModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-cardBg border border-purple-500/40 rounded-2xl max-w-sm w-full max-h-[90vh] overflow-y-auto p-4 shadow-2xl">
-      
       <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center text-brand-accent">
@@ -413,41 +480,31 @@
       </div>
 
       <form onsubmit="handleSaveAccount(event)" class="mt-3 space-y-3">
-        <!-- Avatar Selector -->
         <div>
           <label class="text-[11px] text-slate-400 font-semibold block mb-1.5">Choose Avatar</label>
-          <div class="flex items-center gap-2" id="avatarPickerContainer">
-            <!-- Avatars injected via JS -->
-          </div>
+          <div class="flex items-center gap-2" id="avatarPickerContainer"></div>
         </div>
-
         <div>
           <label class="text-[11px] text-slate-400 font-semibold block mb-1">Display Name *</label>
           <input type="text" id="accDisplayName" required value="Alex" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
         </div>
-
         <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Handle / Username</label>
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Handle</label>
           <input type="text" id="accHandle" value="@alex_ehl" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
         </div>
-
         <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Phone (for Square Tab &amp; SMS Coals Alert)</label>
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Phone Number (Square Card on File)</label>
           <input type="tel" id="accPhone" value="(602) 555-0199" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
         </div>
-
-        <!-- 21+ Age Certification -->
         <label class="flex items-center gap-2 p-2.5 bg-slate-950/70 rounded-xl border border-slate-800 cursor-pointer">
           <input type="checkbox" id="accAgeCheck" checked required class="rounded bg-slate-800 border-slate-700 text-purple-500 focus:ring-0 w-4 h-4" />
-          <span class="text-[11px] font-semibold text-slate-300">I certify I am 21+ years old with valid government ID.</span>
+          <span class="text-[11px] font-semibold text-slate-300">I certify I am 21+ with valid government ID.</span>
         </label>
-
         <div class="pt-2 flex gap-2">
           <button type="button" onclick="closeAccountModal()" class="flex-1 bg-slate-900 border border-slate-800 text-slate-300 text-xs font-bold py-2 rounded-xl">Cancel</button>
           <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg">Save Profile</button>
         </div>
       </form>
-
     </div>
   </div>
 
@@ -493,18 +550,18 @@
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT & 3D ROTARY WHEEL ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
   <script>
-    // Master Russian & Tangiers Flavor Catalog
+    // Master Russian & Tangiers Flavor Catalog (Tied to Brands)
     const CATALOG = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', color: '#EC4899', strength: 7, desc: 'Raspberry, Grapefruit & Strawberry', profile: ['Berry', 'Citrus'] },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir)', brand: 'Tangiers', color: '#10B981', strength: 9, desc: 'Natural Sweet Cane Peppermint', profile: ['Mint', 'Heavy'] },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', color: '#F59E0B', strength: 8, desc: 'Passionfruit & Mango Medley', profile: ['Fruity'] },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', color: '#84CC16', strength: 8, desc: 'Jasmine Green Tea Herbal Leaf', profile: ['Tea'] },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', color: '#FB923C', strength: 9, desc: 'Spiced Floral Kashmir & Peach', profile: ['Spiced', 'Heavy'] },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', color: '#38BDF8', strength: 6, desc: 'Pure Sub-Zero Siberian Chill', profile: ['Ice'] },
-      { id: 'el-waffle', name: 'Belgian Waffle', brand: 'Element', color: '#D97706', strength: 7, desc: 'Caramelized Butter & Waffle Dough', profile: ['Dessert'] },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', color: '#6366F1', strength: 9, desc: 'The Deepest Freeze in Shisha', profile: ['Extreme Ice'] }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', color: '#EC4899', tier: 'russian_dark', strength: 7, desc: 'Raspberry, Grapefruit & Strawberry' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', color: '#38BDF8', tier: 'russian_dark', strength: 6, desc: 'Sub-Zero Siberian Chill' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir)', brand: 'Tangiers', color: '#10B981', tier: 'tangiers_premium', strength: 9, desc: 'Natural Cane Peppermint Dark Leaf' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', color: '#FB923C', tier: 'tangiers_premium', strength: 9, desc: 'Spiced Floral Kashmir & Ripe Peach' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', color: '#F59E0B', tier: 'russian_dark', strength: 8, desc: 'Passionfruit & Mango Tropical Medley' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', color: '#6366F1', tier: 'russian_dark', strength: 9, desc: 'Deep Siberian Freeze' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', color: '#84CC16', tier: 'russian_dark', strength: 8, desc: 'Jasmine Green Tea Herbal Leaf' },
+      { id: 'el-waffle', name: 'Belgian Waffle', brand: 'Element', color: '#D97706', tier: 'russian_dark', strength: 7, desc: 'Caramelized Butter & Waffle Dough' }
     ];
 
     const AVATARS = [
@@ -514,10 +571,10 @@
       "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
     ];
 
-    // Session State
-    let isSessionActive = true;
-    let roundCount = 1; // 1 = First Bowl, 2+ = Refill / Repack
+    // Session State & Pricing Logic
+    let roundCount = 2; // Active session on refill
     let totalTabBalance = 35.00;
+    let isEventSpecialApplied = false;
 
     let userAccount = {
       name: 'Alex',
@@ -526,15 +583,9 @@
       avatar: AVATARS[0]
     };
     let currentTable = { num: 6, name: 'VIP Lounge Couch', pin: '6010' };
-    let activeFlavors = [
-      { id: 'mh-pinkman', percent: 70 },
-      { id: 'tan-cane-mint', percent: 30 }
-    ];
-
-    // Standardized Russian Bowl portion: 22g
-    const STANDARD_BOWL_GRAMS = 22;
-    const FIRST_BOWL_PRICE = 35.00;
-    const REFILL_BOWL_PRICE = 25.00;
+    
+    // Active Flavors in Bowl (List of IDs, NO % SLIDERS!)
+    let activeFlavors = ['mh-pinkman', 'tan-cane-mint'];
 
     // Rotary Wheel State
     let selectedBrandFilter = 'all';
@@ -547,7 +598,59 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    // ==================== 3D ROTARY CYLINDER WHEEL CONTROLLER ====================
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('bg-purple-600', 'text-white', 'shadow-md');
+        b.classList.add('text-slate-400');
+      });
+
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      activeBtn.classList.add('bg-purple-600', 'text-white', 'shadow-md');
+      activeBtn.classList.remove('text-slate-400');
+      renderIcons();
+    }
+
+    // ==================== DYNAMIC PRICING & QUALIFIERS ENGINE ====================
+    function evaluateBowlQualifiers() {
+      const selectedItems = activeFlavors.map(id => CATALOG.find(c => c.id === id)).filter(Boolean);
+      const qualifiers = [];
+      let basePrice = 30.00; // Standard Base Hookah
+
+      const hasTangiers = selectedItems.some(i => i.tier === 'tangiers_premium' || i.brand === 'Tangiers');
+      const hasRussian = selectedItems.some(i => i.tier === 'russian_dark');
+
+      // 1. Brand Tier Qualifiers
+      if (hasTangiers) {
+        basePrice = 38.00;
+        qualifiers.push({ label: 'TANGIERS NOIR PREMIUM', color: 'bg-amber-950/80 text-brand-gold border-amber-700/50' });
+      } else if (hasRussian) {
+        basePrice = 35.00;
+        qualifiers.push({ label: 'RUSSIAN DARK LEAF', color: 'bg-purple-950/80 text-purple-300 border-purple-700/50' });
+      } else {
+        qualifiers.push({ label: 'HOUSE BLONDE', color: 'bg-slate-900 text-slate-300 border-slate-700' });
+      }
+
+      // 2. Session Lifecycle Qualifier (First Bowl vs Refill)
+      if (roundCount > 1) {
+        basePrice = Math.max(20.00, basePrice - 10.00); // $10 Refill discount
+        qualifiers.push({ label: 'SESSION REFILL -$10', color: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/50' });
+      } else {
+        qualifiers.push({ label: 'FIRST BOWL', color: 'bg-indigo-950/80 text-indigo-300 border-indigo-700/50' });
+      }
+
+      // 3. Event Special Qualifier
+      if (isEventSpecialApplied) {
+        basePrice = 25.00;
+        qualifiers.push({ label: 'TODAY SPECIAL LOCKED: $25', color: 'bg-pink-950/80 text-pink-300 border-pink-700/50' });
+      }
+
+      return { price: basePrice, qualifiers };
+    }
+
+    // ==================== 3D ROTARY WHEEL (BRAND TIED) ====================
     function initRotaryWheel() {
       const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Element'];
       const tabsContainer = document.getElementById('wheelBrandTabs');
@@ -583,8 +686,7 @@
         const isVisible = Math.abs(diff) <= 3;
         if (!isVisible) return;
 
-        // 3D Cylinder Mathematics
-        const yOffset = diff * 44;
+        const yOffset = diff * 42;
         const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
         const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
         const rotateX = diff * -14;
@@ -619,7 +721,7 @@
 
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (activeItem) {
-        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Mix`;
+        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" (${activeItem.brand})`;
       }
     }
 
@@ -670,161 +772,120 @@
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (!activeItem) return;
 
-      const existing = activeFlavors.find(f => f.id === activeItem.id);
-      if (existing) {
-        showToast('ℹ️ Already in Mix', `${activeItem.name} is in your bowl.`);
+      if (activeFlavors.includes(activeItem.id)) {
+        showToast('ℹ️ Already Selected', `${activeItem.name} is in your mix.`);
         return;
       }
 
       if (activeFlavors.length >= 3) {
-        activeFlavors[activeFlavors.length - 1].id = activeItem.id;
+        // Swap last slot
+        activeFlavors[activeFlavors.length - 1] = activeItem.id;
         showToast('🔄 Swapped', `Replaced slot with ${activeItem.name}.`);
       } else {
-        activeFlavors.push({ id: activeItem.id, percent: 30 });
-        const split = Math.floor(100 / activeFlavors.length);
-        activeFlavors.forEach((f, i) => {
-          f.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split;
-        });
-        showToast('✨ Added to Bowl', `${activeItem.name} slotted into mix.`);
+        activeFlavors.push(activeItem.id);
+        showToast('✨ Added', `${activeItem.name} (${activeItem.brand}) added.`);
       }
 
-      renderMixSummary();
+      renderOrderSummary();
     }
 
-    // ==================== MIX LAB RENDERING ====================
-    function renderMixSummary() {
-      // 1. Build Gradient
-      const ribbon = document.getElementById('spectrumRibbon');
-      let gradParts = [];
-      let cum = 0;
-      activeFlavors.forEach(f => {
-        const item = CATALOG.find(c => c.id === f.id) || CATALOG[0];
-        const col = item ? item.color : '#8B5CF6';
-        const start = cum;
-        cum += f.percent;
-        gradParts.push(`${col} ${start}% ${cum}%`);
-      });
-      ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
-
-      // 2. Render Slots
+    // ==================== ORDER SUMMARY RENDERING ====================
+    function renderOrderSummary() {
       const container = document.getElementById('flavorSlotsContainer');
       container.innerHTML = '';
 
       let totalStrength = 0;
-      activeFlavors.forEach((slot, index) => {
-        const item = CATALOG.find(c => c.id === slot.id);
+      activeFlavors.forEach((flavorId, idx) => {
+        const item = CATALOG.find(c => c.id === flavorId);
         if (!item) return;
 
-        totalStrength += (item.strength * (slot.percent / 100));
-        const grams = ((STANDARD_BOWL_GRAMS * slot.percent) / 100).toFixed(1);
+        totalStrength += item.strength;
 
         const row = document.createElement('div');
-        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5';
+        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2.5';
         row.innerHTML = `
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
+            <span class="w-2 h-7 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
             <div class="truncate">
-              <div class="flex items-center gap-1">
+              <div class="flex items-center gap-1.5">
                 <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded">${item.brand}</span>
+                <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded font-bold">${item.brand}</span>
               </div>
+              <p class="text-[10px] text-slate-400 truncate mt-0.5">${item.desc}</p>
             </div>
           </div>
 
-          <div class="flex items-center gap-1.5">
-            <div class="text-right">
-              <span class="text-xs font-bold text-brand-gold font-mono-nums">${slot.percent}%</span>
-              <span class="text-[9px] text-slate-500 block font-mono-nums">${grams}g</span>
-            </div>
-            
-            <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-800">
-              <button onclick="adjustPercent(${index}, -5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">-</button>
-              <button onclick="adjustPercent(${index}, 5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">+</button>
-            </div>
-
-            <button onclick="removeFlavor(${index})" class="text-slate-500 hover:text-red-400 p-1">
-              <i data-lucide="trash-2" class="w-3 h-3"></i>
-            </button>
-          </div>
+          <button onclick="removeFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-1 flex-shrink-0" title="Remove">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
         `;
         container.appendChild(row);
       });
 
-      // 3. Update Buzz Badge & Tagging
-      const roundedStr = (totalStrength).toFixed(1);
-      document.getElementById('buzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      // Update Buzz Rating
+      const avgStrength = (totalStrength / Math.max(1, activeFlavors.length)).toFixed(1);
+      document.getElementById('buzzBadge').textContent = `${avgStrength}/10 ${avgStrength >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
 
-      // Update Order Pricing & Action Tag
-      const currentPrice = roundCount === 1 ? FIRST_BOWL_PRICE : REFILL_BOWL_PRICE;
-      const tagLabel = roundCount === 1 ? '[START SESSION - FIRST BOWL]' : '[REFILL / REPACK]';
-      const actionText = roundCount === 1 ? 'Start & Order' : 'Order Refill';
+      // Update Evaluation Qualifiers and Price
+      const { price, qualifiers } = evaluateBowlQualifiers();
+      document.getElementById('totalPriceText').textContent = `$${price.toFixed(2)}`;
+      
+      const qContainer = document.getElementById('qualifiersContainer');
+      qContainer.innerHTML = '';
+      qualifiers.forEach(q => {
+        const span = document.createElement('span');
+        span.className = `text-[9px] font-extrabold px-2 py-0.5 rounded border ${q.color}`;
+        span.textContent = `✦ ${q.label}`;
+        qContainer.appendChild(span);
+      });
 
-      document.getElementById('totalPriceText').textContent = `$${currentPrice.toFixed(2)}`;
-      document.getElementById('orderTypeLabel').textContent = tagLabel;
-      document.getElementById('orderBtnActionText').textContent = actionText;
+      document.getElementById('orderBtnActionText').textContent = roundCount === 1 ? 'Start & Order' : 'Order Refill';
       document.getElementById('tableTabAmount').textContent = `$${totalTabBalance.toFixed(2)}`;
 
       renderIcons();
     }
 
-    function adjustPercent(index, delta) {
-      if (activeFlavors.length === 1) return;
-      let cur = activeFlavors[index].percent;
-      let next = Math.max(10, Math.min(90, cur + delta));
-      if (next === cur) return;
-
-      const diff = next - cur;
-      activeFlavors[index].percent = next;
-      const otherCount = activeFlavors.length - 1;
-      const otherDelta = -(diff / otherCount);
-
-      activeFlavors.forEach((f, i) => {
-        if (i !== index) f.percent = Math.round(f.percent + otherDelta);
-      });
-
-      let sum = activeFlavors.reduce((a, b) => a + b.percent, 0);
-      if (sum !== 100) {
-        activeFlavors[index === 0 ? 1 : 0].percent += (100 - sum);
-      }
-      renderMixSummary();
-    }
-
     function removeFlavor(index) {
       if (activeFlavors.length <= 1) {
-        showToast('⚠️ Bowl Requirement', 'Must have at least 1 flavor in your bowl.');
+        showToast('⚠️ Requirement', 'Please keep at least 1 flavor in your bowl.');
         return;
       }
       activeFlavors.splice(index, 1);
-      const split = Math.floor(100 / activeFlavors.length);
-      activeFlavors.forEach((f, i) => {
-        f.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split;
-      });
-      renderMixSummary();
+      renderOrderSummary();
     }
 
-    // ==================== DISPATCH & SESSION LIFECYCLE ====================
-    function dispatchOrder(mode) {
-      const currentPrice = roundCount === 1 ? FIRST_BOWL_PRICE : REFILL_BOWL_PRICE;
-      const orderType = roundCount === 1 ? 'FIRST_BOWL' : 'REFILL_REPACK';
-      const mixName = document.getElementById('mixNameInput').value || 'Russian Shisha Mix';
+    // Apply Event Special
+    function applyEventSpecial(name, flavorIds, specialPrice) {
+      activeFlavors = [...flavorIds];
+      isEventSpecialApplied = true;
+      switchTab('order');
+      renderOrderSummary();
+      showToast('⚡ Special Loaded', `${name} ($${specialPrice}) applied to your bowl.`);
+    }
 
-      totalTabBalance += (roundCount === 1 ? 0 : REFILL_BOWL_PRICE); // First bowl was $35
+    // ==================== DISPATCH & SQUARE CHECKOUT ====================
+    function dispatchOrder(mode) {
+      const { price } = evaluateBowlQualifiers();
+      const orderType = roundCount === 1 ? 'FIRST_BOWL' : 'REFILL_REPACK';
+
+      totalTabBalance += (roundCount === 1 ? price : price);
       roundCount++;
+      isEventSpecialApplied = false;
 
       if (mode === 'square') {
-        showToast('💳 Square Profile Checkout', `Authorizing $${currentPrice.toFixed(2)} [${orderType}] with Square.`);
+        showToast('💳 Square Profile Checkout', `Authorizing $${price.toFixed(2)} [${orderType}] via Square.`);
       } else {
-        showToast('👑 Added to Table Tab', `"${mixName}" [${orderType}] sent to coal master.`);
+        showToast('👑 Added to Table Tab', `Bowl [${orderType}] ($${price.toFixed(2)}) dispatched to staff.`);
       }
 
-      renderMixSummary();
+      renderOrderSummary();
     }
 
     function requestCoalService() {
-      showToast('🔥 Coal Alert Dispatched', `[COAL_SERVICE] Staff alerted for Table #${currentTable.num}.`);
+      showToast('🔥 Coal Alert Dispatched', `Staff alerted for Table #${currentTable.num}.`);
     }
 
-    // Finish Session Modal
+    // Finish Session & Close Tab
     function openFinishSessionModal() {
       document.getElementById('finishModalTotal').textContent = `$${totalTabBalance.toFixed(2)}`;
       document.getElementById('finishSessionModal').classList.remove('hidden');
@@ -849,14 +910,13 @@
 
     function completeSessionCloseout() {
       closeFinishSessionModal();
-      showToast('🏁 Session Closed', `Table #${currentTable.num} tab paid & closed via Square. Thank you!`);
-      // Reset for next session
+      showToast('🏁 Tab Paid & Closed', `Table #${currentTable.num} session closed via Square. Thank you!`);
       roundCount = 1;
       totalTabBalance = 35.00;
-      renderMixSummary();
+      renderOrderSummary();
     }
 
-    // ==================== ACCOUNT SYSTEM ====================
+    // Account & Table Helpers
     function openAccountModal() {
       const container = document.getElementById('avatarPickerContainer');
       container.innerHTML = '';
@@ -878,9 +938,7 @@
       document.getElementById('accountModal').classList.remove('hidden');
     }
 
-    function closeAccountModal() {
-      document.getElementById('accountModal').classList.add('hidden');
-    }
+    function closeAccountModal() { document.getElementById('accountModal').classList.add('hidden'); }
 
     function handleSaveAccount(e) {
       e.preventDefault();
@@ -896,7 +954,6 @@
       showToast('✓ Profile Updated', `Saved profile for ${userAccount.name}.`);
     }
 
-    // ==================== TABLE ROUTING ====================
     function openTableModal() { document.getElementById('tableModal').classList.remove('hidden'); }
     function closeTableModal() { document.getElementById('tableModal').classList.add('hidden'); }
     function setTable(num, name, pin) {
@@ -904,10 +961,6 @@
       document.getElementById('currentTableDisplay').textContent = `Table #${num} (${name.split(' ')[0]})`;
       closeTableModal();
       showToast('📍 Table Selected', `Switched to Table #${num}.`);
-    }
-
-    function openShareTableModal() {
-      showToast('🔗 Table PIN: #' + currentTable.pin, 'Share PIN #6010 with friends sitting at Table #' + currentTable.num);
     }
 
     function showToast(title, msg) {
@@ -922,13 +975,6 @@
       }, 2400);
     }
 
-    // PWA SW
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
     // Init
     window.addEventListener('DOMContentLoaded', () => {
       const savedAcc = localStorage.getItem('empire_user_account');
@@ -938,7 +984,7 @@
         document.getElementById('headerAvatarImg').src = userAccount.avatar;
       }
       initRotaryWheel();
-      renderMixSummary();
+      renderOrderSummary();
     });
   </script>
 </body>
