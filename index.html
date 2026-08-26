@@ -292,8 +292,138 @@
     </div>
   </header>
 
-  <!-- ==================== 2. MAIN STOKED MIX LAB VIEW ==================== -->
-  <main class="w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3">
+  <!-- Top Navigation View Switcher -->
+  <nav class="w-full max-w-lg px-3.5 pt-2.5 pb-1">
+    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950/90 border border-zinc-800 rounded-2xl text-xs font-bold shadow-lg">
+      <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-brand-gold text-black flex items-center justify-center gap-1.5 shadow-md font-extrabold text-[12px] transition active:scale-95">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span>Menu</span>
+      </button>
+      <button onclick="switchCustomerTab('lab')" id="cust-tab-lab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
+        <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Mix Lab</span>
+      </button>
+      <button onclick="switchCustomerTab('rewards')" id="cust-tab-rewards" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
+        <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>VIP Stash</span>
+      </button>
+      <button onclick="switchCustomerTab('tab')" id="cust-tab-tab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
+        <i data-lucide="receipt" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>My Tab</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
+  <main class="w-full max-w-lg px-3.5 pt-1.5 flex flex-col gap-3">
+
+    <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
+    <div id="customer-view-menu" class="customer-panel flex flex-col gap-3">
+      
+      <!-- 1. Lounge Policies & Pricing Hero Banner -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-base">👑</span>
+            <div>
+              <h2 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE LOUNGE MENU</h2>
+              <p class="text-[11px] text-zinc-400 font-mono" id="menuLoungeHours">Daily: 5:00 PM – 2:00 AM</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 flex-wrap justify-end">
+            <span class="text-[10px] font-bold bg-red-950 text-red-300 border border-red-800/80 px-2 py-0.5 rounded-full" id="menuRuleAgeBadge">🔞 21+ Required</span>
+            <span class="text-[10px] font-bold bg-zinc-900 text-brand-gold border border-amber-800/50 px-2 py-0.5 rounded-full" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
+          </div>
+        </div>
+
+        <!-- General Pricing Quick Bar -->
+        <div class="grid grid-cols-3 gap-1.5 pt-1 text-center font-mono">
+          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
+            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Original Hookah</span>
+            <span class="text-xs font-bold text-brand-gold" id="menuPriceOriginal">$35.00</span>
+          </div>
+          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
+            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Refill / Repack</span>
+            <span class="text-xs font-bold text-emerald-400" id="menuPriceRefill">$25.00</span>
+          </div>
+          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
+            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Tangiers Noir</span>
+            <span class="text-xs font-bold text-brand-gold" id="menuPriceTangiers">$38.00</span>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-zinc-400 italic text-center" id="menuPolicyNotice">
+          Minimum 1 pipe per 2 guests. 90-minute lounge session per round.
+        </p>
+      </section>
+
+      <!-- 2. Menu Sub-Tabs Switcher -->
+      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950 rounded-xl border border-zinc-850 text-xs font-bold">
+        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-brand-gold text-black font-extrabold text-[12px] flex items-center justify-center gap-1 shadow-sm">
+          <span>👑 House Mixes</span>
+        </button>
+        <button onclick="switchMenuSubTab('flavors')" id="menu-subtab-flavors" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+          <span>🍃 Single Flavors</span>
+        </button>
+        <button onclick="switchMenuSubTab('drinks')" id="menu-subtab-drinks" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+          <span>☕ Drinks &amp; Tea</span>
+        </button>
+      </div>
+
+      <!-- 3. Sub-Tab 1: House Mixes -->
+      <div id="menu-view-house" class="menu-sub-panel space-y-2.5">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- 4. Sub-Tab 2: Master Flavors with Filter System -->
+      <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
+        
+        <!-- Flavor Profile Filter Chips -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">
+            <span>Filter Tasting Profile:</span>
+            <span id="flavorFilterActiveCount" class="text-brand-gold">13 Flavors</span>
+          </div>
+          <div class="flex gap-1 overflow-x-auto no-scrollbar py-0.5" id="flavorProfileFilterBar">
+            <button onclick="filterFlavorsByProfile('all')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm" data-profile="all">All Profiles</button>
+            <button onclick="filterFlavorsByProfile('Mints')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Mints">🍃 Mint &amp; Ice</button>
+            <button onclick="filterFlavorsByProfile('Berries')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Berries">🍓 Berries &amp; Fruit</button>
+            <button onclick="filterFlavorsByProfile('Citrus')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Citrus">🍋 Citrus</button>
+            <button onclick="filterFlavorsByProfile('Dessert')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Dessert">🍰 Dessert &amp; Cream</button>
+            <button onclick="filterFlavorsByProfile('Warm Spices')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Warm Spices">🪵 Spices &amp; Floral</button>
+            <button onclick="filterFlavorsByProfile('Tea')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Tea">🫖 Tea &amp; Herbal</button>
+          </div>
+        </div>
+
+        <!-- Region Origin Filter Chips -->
+        <div class="space-y-1">
+          <div class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">
+            <span>Filter Origin Region:</span>
+          </div>
+          <div class="flex gap-1 overflow-x-auto no-scrollbar py-0.5" id="flavorRegionFilterBar">
+            <button onclick="filterFlavorsByRegion('all')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm" data-region="all">All Regions</button>
+            <button onclick="filterFlavorsByRegion('Russia')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="Russia">🇷🇺 Russia</button>
+            <button onclick="filterFlavorsByRegion('USA')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="USA">🇺🇸 USA</button>
+            <button onclick="filterFlavorsByRegion('UAE')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="UAE">🇦🇪 UAE</button>
+            <button onclick="filterFlavorsByRegion('Turkey')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="Turkey">🇹🇷 Turkey</button>
+          </div>
+        </div>
+
+        <!-- Flavors List Container -->
+        <div class="space-y-2" id="menuFlavorsContainer">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- 5. Sub-Tab 3: Drinks & Tea Bar -->
+      <div id="menu-view-drinks" class="menu-sub-panel hidden space-y-2.5">
+        <!-- Injected via JS -->
+      </div>
+
+    </div>
+
+    <!-- ==================== VIEW 2: STOKED MIX LAB (INTERACTIVE) ==================== -->
+    <div id="customer-view-lab" class="customer-panel hidden flex flex-col gap-3">
 
     <!-- 1. DYNAMIC IN YOUR BOWL TRAY (POPS UP DYNAMICALLY ABOVE THE DIAL) -->
     <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5 transition-all">
@@ -437,7 +567,29 @@
       </div>
     </div>
 
+    </div>
+
   </main>
+
+  <!-- ==================== FLOATING BOTTOM MOBILE NAVIGATION DOCK ==================== -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-zinc-800/80 px-4 py-2 flex justify-around items-center backdrop-blur-md">
+    <button onclick="switchCustomerTab('menu')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-menu">
+      <i data-lucide="book-open" class="w-4 h-4 text-brand-gold"></i>
+      <span class="text-[10px] font-bold">Menu</span>
+    </button>
+    <button onclick="switchCustomerTab('lab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-lab">
+      <i data-lucide="flask-conical" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">Mix Lab</span>
+    </button>
+    <button onclick="openRewardsLoyaltyModal()" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-rewards">
+      <i data-lucide="award" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">Rewards</span>
+    </button>
+    <button onclick="openEndSessionModal()" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
+      <i data-lucide="receipt" class="w-4 h-4"></i>
+      <span class="text-[10px] font-bold">Checkout</span>
+    </button>
+  </nav>
 
   <!-- ==================== DYNAMIC ZONE-GROUPED LOUNGE SEAT ASSIGNMENT MODAL ==================== -->
   <div id="seatAssignModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -672,27 +824,27 @@
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'] },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'] },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'] },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'] },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'] },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'] },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'] },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'] },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'] },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'] },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 3, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'], region: 'UAE', countryFlag: '🇦🇪' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 2, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 3, stock: 'out_of_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'], region: 'Turkey', countryFlag: '🇹🇷' }
     ];
 
     const EMPIRE_HOUSE_MIXES = [
-      { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'Lounge Signature Blend', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899' },
-      { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Arctic Freeze & Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1' },
-      { id: 'mix-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Spiced Floral Kashmir & Sweet Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], badge: 'Rich', color: '#FB923C' },
-      { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C' },
-      { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
+      { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'Lounge Signature Blend', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899', desc: 'Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.' },
+      { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Arctic Freeze & Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1', desc: 'Earthy jasmine green tea paired with sub-zero arctic freeze.' },
+      { id: 'mix-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Spiced Floral Kashmir & Sweet Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], badge: 'Rich', color: '#FB923C', desc: 'Aromatic Indian spices with ripe peach and warm vanilla rice pudding.' },
+      { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C', desc: 'Cane mint, tropical mango passion, and crisp Siberian chill.' },
+      { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316', desc: 'Sparkling Valencia orange soda balanced by tangy pink grapefruit.' }
     ];
     const DEFAULT_ZONES = [
       { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
@@ -722,6 +874,46 @@
         if (!local) {
           localStorage.setItem('empire_stoked_stash', JSON.stringify(STOKED_MASTER_INVENTORY));
           return STOKED_MASTER_INVENTORY;
+        }
+        const parsed = JSON.parse(local);
+        parsed.forEach(item => {
+          const match = STOKED_MASTER_INVENTORY.find(m => m.id === item.id);
+          if (match) {
+            if (!item.region) item.region = match.region;
+            if (!item.countryFlag) item.countryFlag = match.countryFlag;
+            if (!item.profiles) item.profiles = match.profiles;
+          }
+        });
+        return parsed;
+      }
+
+      static getLoungeRules() {
+        const local = localStorage.getItem('empire_lounge_rules');
+        if (!local) {
+          const defaultRules = {
+            ageReq: '21+ ID Required',
+            pipeLimit: '2 Guests Max per Pipe',
+            policyNotice: 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
+            hours: 'Daily: 5:00 PM – 2:00 AM'
+          };
+          localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
+          return defaultRules;
+        }
+        return JSON.parse(local);
+      }
+
+      static getLoungePricing() {
+        const local = localStorage.getItem('empire_pricing_config');
+        if (!local) {
+          const defaultPricing = {
+            originalPrice: 35.00,
+            refillPrice: 25.00,
+            tangiersPrice: 38.00,
+            samovarPrice: 14.00,
+            coffeePrice: 8.00
+          };
+          localStorage.setItem('empire_pricing_config', JSON.stringify(defaultPricing));
+          return defaultPricing;
         }
         return JSON.parse(local);
       }
@@ -795,9 +987,340 @@
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
     let touchStartY = null;
-    let touchAccumulator = 0;
+    let activeCustomerTab = 'menu';
+    let activeMenuSubTab = 'house';
+    let selectedFlavorProfileFilter = 'all';
+    let selectedFlavorRegionFilter = 'all';
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
+
+    function switchCustomerTab(tabId) {
+      activeCustomerTab = tabId;
+      document.querySelectorAll('.customer-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.cust-nav-btn').forEach(b => {
+        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
+        b.classList.add('text-zinc-400');
+      });
+      document.querySelectorAll('.cust-dock-btn').forEach(b => {
+        b.classList.remove('text-brand-gold');
+        b.classList.add('text-zinc-400');
+      });
+
+      const activePanel = document.getElementById(`customer-view-${tabId}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`cust-tab-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+
+      const activeDockBtn = document.getElementById(`dock-tab-${tabId}`);
+      if (activeDockBtn) {
+        activeDockBtn.classList.add('text-brand-gold');
+        activeDockBtn.classList.remove('text-zinc-400');
+      }
+
+      if (tabId === 'menu') renderCustomerMenu();
+      if (tabId === 'lab') renderMixLab();
+      if (tabId === 'rewards') openRewardsLoyaltyModal();
+      if (tabId === 'tab') openEndSessionModal();
+      renderIcons();
+    }
+
+    function switchMenuSubTab(subTabId) {
+      activeMenuSubTab = subTabId;
+      document.querySelectorAll('.menu-sub-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.menu-sub-btn').forEach(b => {
+        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
+        b.classList.add('text-zinc-400');
+      });
+
+      const activeSubPanel = document.getElementById(`menu-view-${subTabId}`);
+      if (activeSubPanel) activeSubPanel.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`menu-subtab-${subTabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+
+      renderIcons();
+    }
+
+    function renderCustomerMenu() {
+      const rules = CustomerStash.getLoungeRules();
+      const pricing = CustomerStash.getLoungePricing();
+      const inventory = CustomerStash.getInventory();
+
+      // 1. Hero rules & pricing badges
+      const ageBadge = document.getElementById('menuRuleAgeBadge');
+      const pipeBadge = document.getElementById('menuRulePipeBadge');
+      const hoursEl = document.getElementById('menuLoungeHours');
+      const noticeEl = document.getElementById('menuPolicyNotice');
+
+      if (ageBadge) ageBadge.textContent = `🔞 ${rules.ageReq || '21+ Required'}`;
+      if (pipeBadge) pipeBadge.textContent = `👥 ${rules.pipeLimit || '2 Guests / Pipe'}`;
+      if (hoursEl) hoursEl.textContent = rules.hours || 'Daily: 5:00 PM – 2:00 AM';
+      if (noticeEl) noticeEl.textContent = rules.policyNotice || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.';
+
+      const origEl = document.getElementById('menuPriceOriginal');
+      const refillEl = document.getElementById('menuPriceRefill');
+      const tanEl = document.getElementById('menuPriceTangiers');
+
+      if (origEl) origEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+      if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
+      if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
+
+      // 2. Render Sub-Tab 1: House Mixes
+      const houseCont = document.getElementById('menu-view-house');
+      if (houseCont) {
+        houseCont.innerHTML = '';
+        EMPIRE_HOUSE_MIXES.forEach((mix, idx) => {
+          let totalStrength = 0;
+          let ribbonGradients = [];
+          let cumPct = 0;
+          let recipeList = [];
+
+          mix.flavors.forEach((fId, fIdx) => {
+            const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+            const pct = mix.ratios[fIdx] || 50;
+            const grams = ((22 * pct) / 100).toFixed(1);
+            totalStrength += ((item.strength || 7) * (pct / 100));
+            const start = cumPct;
+            cumPct += pct;
+            ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
+            recipeList.push({ item, pct, grams });
+          });
+
+          const buzzVal = parseFloat(totalStrength.toFixed(1));
+          const buzz = getBuzzInfo(buzzVal);
+
+          const card = document.createElement('div');
+          card.className = 'obsidian-card rounded-2xl p-3.5 border border-zinc-800 space-y-2.5 transition-all hover:border-amber-500/40';
+          card.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono">${mix.badge || '👑 House Blend'}</span>
+                  <h3 class="font-bold text-white text-xs">${mix.name}</h3>
+                </div>
+                <p class="text-[12px] text-zinc-400 mt-0.5">${mix.tagline}</p>
+              </div>
+
+              <span class="text-xs font-mono font-extrabold text-brand-gold bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-800">
+                $${(pricing.originalPrice || 35.00).toFixed(2)}
+              </span>
+            </div>
+
+            <!-- Miniature Gradient Track Ribbon -->
+            <div class="h-2 rounded-full overflow-hidden w-full border border-zinc-800" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
+
+            <div class="flex flex-wrap items-center justify-between gap-1.5">
+              <!-- Buzz Pill Indicator -->
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}">
+                <span>${buzz.icon}</span>
+                <span>${buzz.level}/10</span>
+                <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
+                <span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>
+              </span>
+
+              <button onclick="toggleHouseMixDetails('${mix.id}')" class="text-[11px] font-bold text-zinc-400 hover:text-white flex items-center gap-1 bg-zinc-900 px-2 py-1 rounded-lg border border-zinc-800">
+                <span>Composition</span>
+                <i data-lucide="chevron-down" class="w-3 h-3"></i>
+              </button>
+            </div>
+
+            <!-- Expandable Bowl Composition Details -->
+            <div id="composition-${mix.id}" class="hidden pt-2 border-t border-zinc-850 space-y-2 text-xs">
+              <div class="space-y-1.5 bg-black/60 p-2.5 rounded-xl border border-zinc-850">
+                <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Bowl Composition Breakdown (22g Pack):</span>
+                ${recipeList.map(r => `
+                  <div class="flex justify-between items-center text-[12px]">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
+                      <span class="font-bold text-white">${r.item.name}</span>
+                      <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 rounded">${r.item.brand}</span>
+                      <span class="text-[10px] text-zinc-500">${r.item.countryFlag || '🌍'}</span>
+                    </div>
+                    <span class="font-mono text-brand-gold font-bold">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
+                  </div>
+                `).join('')}
+              </div>
+
+              <p class="text-[11px] text-zinc-400 italic">${mix.desc || 'Signature handcrafted shisha bowl blend.'}</p>
+
+              <button onclick="loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+                <span>Order Mix / Open in Mix Lab →</span>
+              </button>
+            </div>
+          `;
+          houseCont.appendChild(card);
+        });
+      }
+
+      // 3. Render Sub-Tab 2: Master Flavors
+      const flavorsCont = document.getElementById('menuFlavorsContainer');
+      if (flavorsCont) {
+        flavorsCont.innerHTML = '';
+        
+        let filtered = inventory;
+        if (selectedFlavorProfileFilter !== 'all') {
+          filtered = filtered.filter(item => item.profiles && item.profiles.some(p => p.toLowerCase().includes(selectedFlavorProfileFilter.toLowerCase())));
+        }
+        if (selectedFlavorRegionFilter !== 'all') {
+          filtered = filtered.filter(item => item.region && item.region.toLowerCase().includes(selectedFlavorRegionFilter.toLowerCase()));
+        }
+
+        const countEl = document.getElementById('flavorFilterActiveCount');
+        if (countEl) countEl.textContent = `${filtered.length} Flavors`;
+
+        if (filtered.length === 0) {
+          flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found matching the selected filters.</div>`;
+        }
+
+        filtered.forEach(item => {
+          const isOut = item.stock === 'out_of_stock';
+          const buzz = getBuzzInfo(item.strength || 7);
+          const card = document.createElement('div');
+          card.className = `obsidian-card rounded-2xl p-3 border transition-all ${isOut ? 'bg-zinc-950/40 border-zinc-900 opacity-60' : 'border-zinc-800 hover:border-zinc-700'}`;
+          card.innerHTML = `
+            <div class="flex justify-between items-start gap-2">
+              <div class="flex items-start gap-2.5 min-w-0 flex-1">
+                <span class="w-2.5 h-10 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
+                    <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1.5 py-0.2 rounded font-bold">${item.brand}</span>
+                    <span class="text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.2 rounded font-mono">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+                    ${isOut ? '<span class="text-[9px] bg-red-950 text-red-300 border border-red-800 font-extrabold px-1.5 py-0.2 rounded">OUT OF STOCK ✕</span>' : ''}
+                  </div>
+                  <p class="text-[11px] text-zinc-400 mt-0.5">${item.desc}</p>
+                  
+                  <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
+                    <!-- Buzz Pill -->
+                    <span class="inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[10px] font-mono font-bold border ${buzz.badgeClass}">
+                      <span>${buzz.icon}</span>
+                      <span>Str ${item.strength || 7}/10 (${buzz.category})</span>
+                    </span>
+                    <!-- Tasting Profile Tags -->
+                    ${(item.profiles || []).map(p => `<span class="text-[10px] bg-zinc-950 text-zinc-400 border border-zinc-850 px-1.5 py-0.2 rounded">#${p}</span>`).join('')}
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex flex-col items-end gap-1 flex-shrink-0">
+                <button 
+                  onclick="${isOut ? '' : `addSingleFlavorAndGoToLab('${item.id}')`}" 
+                  class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 ${isOut ? 'bg-zinc-900 text-zinc-600 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-goldHover text-black shadow-md'}"
+                  ${isOut ? 'disabled' : ''}
+                >
+                  <i data-lucide="${isOut ? 'slash' : 'plus'}" class="w-3 h-3"></i>
+                  <span>${isOut ? 'Out' : '+ Add'}</span>
+                </button>
+              </div>
+            </div>
+          `;
+          flavorsCont.appendChild(card);
+        });
+      }
+
+      // 4. Render Sub-Tab 3: Drinks & Samovar Bar
+      const drinksCont = document.getElementById('menu-view-drinks');
+      if (drinksCont) {
+        const drinksList = [
+          { id: 'samovar-pot', name: 'Russian Samovar Teapot', icon: '🫖', price: (pricing.samovarPrice || 14.00), desc: 'Traditional wood/charcoal brewed Samovar served with fresh mint sprigs, lemon wheels, and wild berry preserve. Serves 2–4.' },
+          { id: 'sand-coffee', name: 'Turkish Sand-Brewed Coffee', icon: '☕', price: (pricing.coffeePrice || 8.00), desc: 'Authentic finely ground Arabica slowly heated on quartz hot sand with crushed green cardamom & thick crema.' },
+          { id: 'moroccan-tea', name: 'Moroccan Royal Mint Tea', icon: '🌿', price: 7.00, desc: 'High-pour gunpowder green tea infused with fresh spearmint leaves and raw turbinado sugar.' },
+          { id: 'redbull', name: 'Red Bull Energy Drink', icon: '⚡', price: 6.00, desc: 'Regular, Sugar-Free, or Tropical Edition (chilled 12oz can).' },
+          { id: 'san-pell', name: 'San Pellegrino Sparkling Water', icon: '🧊', price: 6.00, desc: 'Italian sparkling mineral water with fresh lime wheels.' }
+        ];
+
+        drinksCont.innerHTML = `
+          <div class="obsidian-card rounded-2xl p-3 space-y-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-white block mb-1">☕ Samovar Station &amp; Beverages</span>
+            <div class="space-y-2">
+              ${drinksList.map(d => `
+                <div class="bg-black p-3 rounded-xl border border-zinc-800 flex items-center justify-between gap-2.5">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="text-2xl flex-shrink-0">${d.icon}</span>
+                    <div>
+                      <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-white text-xs">${d.name}</span>
+                        <span class="text-xs font-bold text-brand-gold font-mono">$${d.price.toFixed(2)}</span>
+                      </div>
+                      <p class="text-[11px] text-zinc-400 mt-0.5">${d.desc}</p>
+                    </div>
+                  </div>
+                  <button onclick="addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl text-xs font-bold flex-shrink-0 active:scale-95">
+                    + Order
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      renderIcons();
+    }
+
+    function toggleHouseMixDetails(mixId) {
+      const el = document.getElementById(`composition-${mixId}`);
+      if (el) {
+        el.classList.toggle('hidden');
+        renderIcons();
+      }
+    }
+
+    function filterFlavorsByProfile(prof) {
+      selectedFlavorProfileFilter = prof;
+      document.querySelectorAll('.flavor-prof-btn').forEach(b => {
+        if (b.getAttribute('data-profile') === prof) {
+          b.className = 'flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm';
+        } else {
+          b.className = 'flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap';
+        }
+      });
+      renderCustomerMenu();
+    }
+
+    function filterFlavorsByRegion(reg) {
+      selectedFlavorRegionFilter = reg;
+      document.querySelectorAll('.flavor-reg-btn').forEach(b => {
+        if (b.getAttribute('data-region') === reg) {
+          b.className = 'flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm';
+        } else {
+          b.className = 'flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap';
+        }
+      });
+      renderCustomerMenu();
+    }
+
+    function loadHouseMixAndGoToLab(mixId) {
+      selectHouseMix(mixId);
+      switchCustomerTab('lab');
+      showToast('👑 Signature Loaded', 'House blend loaded into your bowl ready to tweak!');
+    }
+
+    function addSingleFlavorAndGoToLab(flavorId) {
+      const inventory = CustomerStash.getInventory();
+      const item = inventory.find(i => i.id === flavorId);
+      if (!item || item.stock === 'out_of_stock') {
+        showToast('⚠️ Out of Stock', 'This flavor is currently out of stock.');
+        return;
+      }
+      activeFlavors = [{ id: flavorId, percent: 100 }];
+      activeMixName = item.name;
+      renderMixLab();
+      switchCustomerTab('lab');
+      showToast('🍃 Flavor Added', `${item.name} loaded as 100% bowl in Mix Lab.`);
+    }
+
+    function addDrinkToTab(name, price, icon) {
+      showToast('☕ Drink Added', `${icon} ${name} ($${price.toFixed(2)}) added to your active order.`);
+    }
 
     function updateVipPointsHeader() {
       const member = CustomerStash.getCurrentVipMember();
@@ -1541,6 +2064,9 @@
       renderMixLab();
       setupCustomerSpectrumDragListeners();
       updateVipPointsHeader();
+      renderCustomerMenu();
+      switchCustomerTab('menu');
+      renderIcons();
     });
   </script>
 </body>

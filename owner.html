@@ -204,10 +204,14 @@
   <main id="ownerMainApp" class="w-full max-w-2xl px-3.5 pt-3 flex flex-col gap-3.5">
     
     <!-- Navigation Tabs for Owner Controls -->
-    <div class="grid grid-cols-5 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
+    <div class="grid grid-cols-6 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
       <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[12px]">
         <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
         <span>Floor</span>
+      </button>
+      <button onclick="switchOwnerTab('rules')" id="owner-tab-rules" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
+        <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Menu 📜</span>
       </button>
       <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
         <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
@@ -337,6 +341,126 @@
 
         </div>
       </div>
+    </div>
+
+    <!-- MODULE: LOUNGE RULES, MENU & GENERAL PRICING (OWNER ONLY) -->
+    <div id="owner-view-rules" class="owner-panel hidden flex flex-col gap-3.5">
+      
+      <!-- Card 1: Lounge Rules & Age Policies -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="shield-check" class="w-4 h-4 text-brand-gold"></i>
+              Lounge Policies &amp; Operating Rules
+            </h3>
+            <p class="text-[12px] text-zinc-400">Controls policy badges and session rules displayed on customer &amp; staff menus</p>
+          </div>
+          <span class="text-[11px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-900">
+            🟢 Active
+          </span>
+        </div>
+
+        <div class="space-y-2.5 bg-zinc-950 p-3 rounded-xl border border-zinc-850 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Age Requirement</label>
+              <input type="text" id="ownerRuleAgeReq" value="21+ ID Required" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+            </div>
+            <div>
+              <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Max Guests Per Pipe</label>
+              <input type="text" id="ownerRulePipeLimit" value="2 Guests Max per Pipe" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">General Policy / Session Notice</label>
+            <input type="text" id="ownerRulePolicyNotice" value="Minimum 1 pipe per 2 guests. 90-minute lounge session per round." class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-gold" />
+          </div>
+
+          <div>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Operating Hours</label>
+            <input type="text" id="ownerRuleHours" value="Daily: 5:00 PM – 2:00 AM" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-brand-gold" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Hookah & Beverage Base Pricing -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-3">
+        <div>
+          <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="dollar-sign" class="w-4 h-4 text-brand-gold"></i>
+            General Lounge Menu Pricing
+          </h3>
+          <p class="text-[12px] text-zinc-400">Sets base bowl prices, refill discounts, and premium tobacco upcharges</p>
+        </div>
+
+        <div class="space-y-2.5 bg-zinc-950 p-3 rounded-xl border border-zinc-850 text-xs">
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="text-[11px] text-zinc-400 font-bold uppercase block mb-1">Original Hookah</label>
+              <div class="flex items-center gap-1">
+                <span class="text-brand-gold font-bold">$</span>
+                <input type="number" step="0.50" id="ownerPriceOriginal" value="35.00" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold font-mono focus:outline-none focus:border-brand-gold" />
+              </div>
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-400 font-bold uppercase block mb-1">Refill / Repack</label>
+              <div class="flex items-center gap-1">
+                <span class="text-brand-gold font-bold">$</span>
+                <input type="number" step="0.50" id="ownerPriceRefill" value="25.00" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold font-mono focus:outline-none focus:border-brand-gold" />
+              </div>
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-400 font-bold uppercase block mb-1">Tangiers Surcharge</label>
+              <div class="flex items-center gap-1">
+                <span class="text-brand-gold font-bold">$</span>
+                <input type="number" step="0.50" id="ownerPriceTangiers" value="38.00" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold font-mono focus:outline-none focus:border-brand-gold" />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1 border-t border-zinc-900">
+            <div>
+              <label class="text-[11px] text-zinc-400 font-bold uppercase block mb-1">Samovar Teapot (Serves 2-4)</label>
+              <div class="flex items-center gap-1">
+                <span class="text-brand-gold font-bold">$</span>
+                <input type="number" step="0.50" id="ownerPriceSamovar" value="14.00" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold font-mono focus:outline-none focus:border-brand-gold" />
+              </div>
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-400 font-bold uppercase block mb-1">Turkish Sand Coffee</label>
+              <div class="flex items-center gap-1">
+                <span class="text-brand-gold font-bold">$</span>
+                <input type="number" step="0.50" id="ownerPriceCoffee" value="8.00" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold font-mono focus:outline-none focus:border-brand-gold" />
+              </div>
+            </div>
+          </div>
+
+          <button onclick="saveLoungeRulesAndPricing()" class="w-full py-2.5 bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 mt-2">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Save Rules &amp; Menu Pricing ✓</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Real-Time Flavor Stock Availability & Out-of-Stock Slasher -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-gold"></i>
+              Live Menu Stock Availability &amp; Slasher
+            </h3>
+            <p class="text-[12px] text-zinc-400">1-tap toggle to mark flavors out of stock — slashes out item across all menus</p>
+          </div>
+        </div>
+
+        <div class="space-y-1.5" id="ownerMenuStockList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
     </div>
 
     <!-- MODULE 2: TAX RATES & SURCHARGES (OWNER ONLY) -->
@@ -620,16 +744,19 @@
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 3, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'], region: 'UAE', countryFlag: '🇦🇪' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 2, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 3, grams: 0, stock: 'out_of_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'], region: 'Turkey', countryFlag: '🇹🇷' }
     ];
 
     const DEFAULT_TAX_CONFIG = {
@@ -695,6 +822,41 @@
       static saveZones(z) {
         localStorage.setItem('empire_custom_zones', JSON.stringify(z));
       }
+      static getLoungeRules() {
+        const local = localStorage.getItem('empire_lounge_rules');
+        if (!local) {
+          const defaultRules = {
+            ageReq: '21+ ID Required',
+            pipeLimit: '2 Guests Max per Pipe',
+            policyNotice: 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
+            hours: 'Daily: 5:00 PM – 2:00 AM'
+          };
+          localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
+          return defaultRules;
+        }
+        return JSON.parse(local);
+      }
+      static saveLoungeRules(r) {
+        localStorage.setItem('empire_lounge_rules', JSON.stringify(r));
+      }
+      static getLoungePricing() {
+        const local = localStorage.getItem('empire_pricing_config');
+        if (!local) {
+          const defaultPricing = {
+            originalPrice: 35.00,
+            refillPrice: 25.00,
+            tangiersPrice: 38.00,
+            samovarPrice: 14.00,
+            coffeePrice: 8.00
+          };
+          localStorage.setItem('empire_pricing_config', JSON.stringify(defaultPricing));
+          return defaultPricing;
+        }
+        return JSON.parse(local);
+      }
+      static saveLoungePricing(p) {
+        localStorage.setItem('empire_pricing_config', JSON.stringify(p));
+      }
       static getTaxConfig() {
         const local = localStorage.getItem('empire_tax_config');
         if (!local) return DEFAULT_TAX_CONFIG;
@@ -714,7 +876,17 @@
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
         if (!local) return STOKED_MASTER_INVENTORY;
-        return JSON.parse(local);
+        const parsed = JSON.parse(local);
+        // Ensure missing fields like region/countryFlag/profiles are hydrated
+        parsed.forEach(item => {
+          const match = STOKED_MASTER_INVENTORY.find(m => m.id === item.id);
+          if (match) {
+            if (!item.region) item.region = match.region;
+            if (!item.countryFlag) item.countryFlag = match.countryFlag;
+            if (!item.profiles) item.profiles = match.profiles;
+          }
+        });
+        return parsed;
       }
       static saveInventory(i) {
         localStorage.setItem('empire_stoked_stash', JSON.stringify(i));
@@ -798,6 +970,7 @@
       }
 
       if (tabId === 'builder') { renderOwnerZoneTabs(); renderOwnerCanvas(); }
+      if (tabId === 'rules') renderOwnerMenuAndRulesUI();
       if (tabId === 'tax') loadTaxSettingsUI();
       if (tabId === 'pipes') renderOwnerPipesList();
       if (tabId === 'stash') renderOwnerStashList();
@@ -1320,24 +1493,124 @@
 
     function renderOwnerStashList() {
       const container = document.getElementById('ownerStashList');
+      if (!container) return;
       container.innerHTML = '';
       const stash = OwnerStore.getInventory();
 
       stash.forEach(item => {
+        const isOut = item.stock === 'out_of_stock';
         const div = document.createElement('div');
-        div.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between text-xs';
+        div.className = `p-2.5 rounded-xl border flex items-center justify-between text-xs transition-all ${isOut ? 'bg-zinc-950/60 border-zinc-900 opacity-60' : 'bg-black border-zinc-800'}`;
         div.innerHTML = `
           <div class="flex items-center gap-2">
             <span class="w-2 h-6 rounded-full" style="background: ${item.color};"></span>
             <div>
-              <span class="font-bold text-white block">${item.name} (${item.brand})</span>
-              <span class="text-[12px] text-zinc-400 font-mono">${item.grams}g remaining</span>
+              <span class="font-bold text-white block ${isOut ? 'line-through text-zinc-500' : ''}">${item.name} (${item.brand})</span>
+              <span class="text-[12px] text-zinc-400 font-mono">${item.grams}g remaining • ${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
             </div>
           </div>
-          <span class="text-[12px] font-bold text-brand-gold bg-zinc-900 px-2 py-0.5 rounded">${item.stock.replace('_', ' ')}</span>
+          <button onclick="toggleFlavorStock('${item.id}')" class="text-[11px] font-bold px-2.5 py-1 rounded-lg border transition active:scale-95 ${isOut ? 'bg-red-950/80 text-red-300 border-red-800' : 'bg-emerald-950/80 text-emerald-300 border-emerald-800'}">
+            ${isOut ? '🔴 Out of Stock' : '🟢 In Stock'}
+          </button>
         `;
         container.appendChild(div);
       });
+    }
+
+    function renderOwnerMenuAndRulesUI() {
+      const rules = OwnerStore.getLoungeRules();
+      const pricing = OwnerStore.getLoungePricing();
+      const stash = OwnerStore.getInventory();
+
+      const ageInput = document.getElementById('ownerRuleAgeReq');
+      const pipeLimitInput = document.getElementById('ownerRulePipeLimit');
+      const policyInput = document.getElementById('ownerRulePolicyNotice');
+      const hoursInput = document.getElementById('ownerRuleHours');
+
+      if (ageInput) ageInput.value = rules.ageReq || '21+ ID Required';
+      if (pipeLimitInput) pipeLimitInput.value = rules.pipeLimit || '2 Guests Max per Pipe';
+      if (policyInput) policyInput.value = rules.policyNotice || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.';
+      if (hoursInput) hoursInput.value = rules.hours || 'Daily: 5:00 PM – 2:00 AM';
+
+      const origInput = document.getElementById('ownerPriceOriginal');
+      const refillInput = document.getElementById('ownerPriceRefill');
+      const tanInput = document.getElementById('ownerPriceTangiers');
+      const samovarInput = document.getElementById('ownerPriceSamovar');
+      const coffeeInput = document.getElementById('ownerPriceCoffee');
+
+      if (origInput) origInput.value = (pricing.originalPrice || 35.00).toFixed(2);
+      if (refillInput) refillInput.value = (pricing.refillPrice || 25.00).toFixed(2);
+      if (tanInput) tanInput.value = (pricing.tangiersPrice || 38.00).toFixed(2);
+      if (samovarInput) samovarInput.value = (pricing.samovarPrice || 14.00).toFixed(2);
+      if (coffeeInput) coffeeInput.value = (pricing.coffeePrice || 8.00).toFixed(2);
+
+      const stockCont = document.getElementById('ownerMenuStockList');
+      if (stockCont) {
+        stockCont.innerHTML = '';
+        stash.forEach(item => {
+          const isOut = item.stock === 'out_of_stock';
+          const buzz = getBuzzInfo(item.strength || 7);
+          const div = document.createElement('div');
+          div.className = `p-2.5 rounded-xl border flex items-center justify-between transition-all ${isOut ? 'bg-zinc-950/60 border-zinc-900 opacity-60' : 'bg-black border-zinc-800'}`;
+          div.innerHTML = `
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <span class="w-2.5 h-7 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
+              <div class="truncate">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
+                  <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1.5 py-0.2 rounded font-bold">${item.brand}</span>
+                  <span class="text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.2 rounded">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+                </div>
+                <div class="flex items-center gap-2 text-[11px] text-zinc-400 mt-0.5">
+                  <span>${buzz.icon} Str ${item.strength || 7}/10 (${buzz.category})</span>
+                  <span>•</span>
+                  <span>${(item.profiles || []).map(p => `#${p}`).join(' ')}</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="toggleFlavorStock('${item.id}')" class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition active:scale-95 ${isOut ? 'bg-red-950/80 text-red-300 border border-red-800' : 'bg-emerald-950/80 text-emerald-300 border border-emerald-800'}">
+              <span>${isOut ? '🔴 Out of Stock' : '🟢 In Stock'}</span>
+            </button>
+          `;
+          stockCont.appendChild(div);
+        });
+      }
+    }
+
+    function toggleFlavorStock(flavorId) {
+      const stash = OwnerStore.getInventory();
+      const item = stash.find(i => i.id === flavorId);
+      if (item) {
+        item.stock = item.stock === 'out_of_stock' ? 'in_stock' : 'out_of_stock';
+        OwnerStore.saveInventory(stash);
+        renderOwnerMenuAndRulesUI();
+        renderOwnerStashList();
+        showToast(
+          item.stock === 'in_stock' ? '🟢 Back in Stock' : '🔴 Marked Out of Stock',
+          `${item.name} is now ${item.stock === 'in_stock' ? 'available on menus' : 'slashed out on menus'}.`
+        );
+      }
+    }
+
+    function saveLoungeRulesAndPricing() {
+      const rules = {
+        ageReq: document.getElementById('ownerRuleAgeReq')?.value || '21+ ID Required',
+        pipeLimit: document.getElementById('ownerRulePipeLimit')?.value || '2 Guests Max per Pipe',
+        policyNotice: document.getElementById('ownerRulePolicyNotice')?.value || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
+        hours: document.getElementById('ownerRuleHours')?.value || 'Daily: 5:00 PM – 2:00 AM'
+      };
+      const pricing = {
+        originalPrice: parseFloat(document.getElementById('ownerPriceOriginal')?.value) || 35.00,
+        refillPrice: parseFloat(document.getElementById('ownerPriceRefill')?.value) || 25.00,
+        tangiersPrice: parseFloat(document.getElementById('ownerPriceTangiers')?.value) || 38.00,
+        samovarPrice: parseFloat(document.getElementById('ownerPriceSamovar')?.value) || 14.00,
+        coffeePrice: parseFloat(document.getElementById('ownerPriceCoffee')?.value) || 8.00
+      };
+
+      OwnerStore.saveLoungeRules(rules);
+      OwnerStore.saveLoungePricing(pricing);
+      showToast('📜 Rules & Pricing Saved', 'Customer and staff menus updated in real time.');
     }
 
     function getBuzzInfo(buzzRating) {
@@ -1526,6 +1799,7 @@
       loadTaxSettingsUI();
       renderOwnerPipesList();
       renderOwnerStashList();
+      renderOwnerMenuAndRulesUI();
       renderOwnerRewardsUI();
       renderIcons();
     });

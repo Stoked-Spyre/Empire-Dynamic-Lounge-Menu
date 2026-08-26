@@ -821,29 +821,99 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="kdsTicketQueue"></div>
     </div>
 
+    <!-- ==================== TAB 5: STAFF MENU & CATALOG VIEW ==================== -->
+    <div id="staff-view-menu" class="staff-panel hidden flex flex-col gap-3">
+      <!-- Rules & Pricing Summary Banner -->
+      <div class="bg-black/90 p-3 rounded-2xl border border-zinc-800 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-4 h-4 text-brand-gold"></i>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Live Lounge Menu &amp; Rules</h3>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="text-[10px] font-bold bg-red-950 text-red-300 px-2 py-0.5 rounded-full" id="staffMenuAgeBadge">🔞 21+ Required</span>
+            <span class="text-[10px] font-bold bg-zinc-900 text-brand-gold px-2 py-0.5 rounded-full" id="staffMenuPipeBadge">👥 2 Guests / Pipe</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-1 text-center font-mono text-xs">
+          <div class="bg-zinc-950 p-1.5 rounded-lg border border-zinc-850">
+            <span class="text-[10px] text-zinc-500 block uppercase font-sans">Original</span>
+            <span class="font-bold text-brand-gold" id="staffMenuPriceOriginal">$35.00</span>
+          </div>
+          <div class="bg-zinc-950 p-1.5 rounded-lg border border-zinc-850">
+            <span class="text-[10px] text-zinc-500 block uppercase font-sans">Refill</span>
+            <span class="font-bold text-emerald-400" id="staffMenuPriceRefill">$25.00</span>
+          </div>
+          <div class="bg-zinc-950 p-1.5 rounded-lg border border-zinc-850">
+            <span class="text-[10px] text-zinc-500 block uppercase font-sans">Tangiers</span>
+            <span class="font-bold text-brand-gold" id="staffMenuPriceTangiers">$38.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Staff Menu Sub-Tabs Switcher -->
+      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950 rounded-xl border border-zinc-850 text-xs font-bold">
+        <button onclick="switchStaffMenuSubTab('house')" id="staff-subtab-house" class="staff-menu-sub-btn py-1.5 rounded-lg bg-brand-gold text-black font-extrabold text-[12px] flex items-center justify-center gap-1 shadow-sm">
+          <span>👑 House Mixes</span>
+        </button>
+        <button onclick="switchStaffMenuSubTab('flavors')" id="staff-subtab-flavors" class="staff-menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+          <span>🍃 Master Flavors</span>
+        </button>
+        <button onclick="switchStaffMenuSubTab('drinks')" id="staff-subtab-drinks" class="staff-menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+          <span>☕ Samovar / Drinks</span>
+        </button>
+      </div>
+
+      <!-- Sub-Tab 1: House Mixes -->
+      <div id="staff-menu-view-house" class="staff-menu-sub-panel space-y-2"></div>
+
+      <!-- Sub-Tab 2: Master Flavors -->
+      <div id="staff-menu-view-flavors" class="staff-menu-sub-panel hidden space-y-2">
+        <div class="flex gap-1 overflow-x-auto no-scrollbar py-0.5" id="staffFlavorFilterBar">
+          <button onclick="filterStaffFlavors('all')" class="staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm" data-filter="all">All Flavors</button>
+          <button onclick="filterStaffFlavors('in_stock')" class="staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 whitespace-nowrap" data-filter="in_stock">🟢 In Stock Only</button>
+          <button onclick="filterStaffFlavors('Russian')" class="staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 whitespace-nowrap" data-filter="Russian">🇷🇺 Russia</button>
+          <button onclick="filterStaffFlavors('USA')" class="staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 whitespace-nowrap" data-filter="USA">🇺🇸 USA</button>
+        </div>
+        <div class="space-y-1.5" id="staffFlavorsContainer"></div>
+      </div>
+
+      <!-- Sub-Tab 3: Samovar & Drinks -->
+      <div id="staff-menu-view-drinks" class="staff-menu-sub-panel hidden space-y-2">
+        <div class="space-y-1.5" id="staffDrinksContainer"></div>
+      </div>
+
+    </div>
+
   </main>
 
   <!-- ==================== NATIVE MOBILE FIXED BOTTOM APP NAVIGATION ==================== -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/90 px-3 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.8)]">
-    <div class="max-w-lg mx-auto grid grid-cols-4 gap-1 items-center">
-      <button onclick="switchStaffTab('seating')" id="staff-tab-seating" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
-        <i data-lucide="map" class="w-5 h-5 mb-0.5"></i>
-        <span class="text-[12px] font-bold tracking-tight">Floor</span>
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/90 px-2 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.8)]">
+    <div class="max-w-lg mx-auto grid grid-cols-5 gap-1 items-center">
+      <button onclick="switchStaffTab('seating')" id="staff-tab-seating" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
+        <i data-lucide="map" class="w-4 h-4 mb-0.5"></i>
+        <span class="text-[11px] font-bold tracking-tight">Floor</span>
       </button>
 
-      <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-brand-gold font-bold transition active:scale-95 bg-amber-500/10 border border-amber-500/30 shadow-sm">
-        <i data-lucide="flask-conical" class="w-5 h-5 mb-0.5 text-brand-gold"></i>
-        <span class="text-[12px] font-bold tracking-tight">Mix Lab</span>
+      <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-brand-gold font-bold transition active:scale-95 bg-amber-500/10 border border-amber-500/30 shadow-sm">
+        <i data-lucide="flask-conical" class="w-4 h-4 mb-0.5 text-brand-gold"></i>
+        <span class="text-[11px] font-bold tracking-tight">Mix Lab</span>
       </button>
 
-      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
-        <i data-lucide="tablet" class="w-5 h-5 mb-0.5"></i>
-        <span class="text-[12px] font-bold tracking-tight">POS Tabs</span>
+      <button onclick="switchStaffTab('menu')" id="staff-tab-menu" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
+        <i data-lucide="book-open" class="w-4 h-4 mb-0.5"></i>
+        <span class="text-[11px] font-bold tracking-tight">Menu</span>
       </button>
 
-      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
-        <i data-lucide="flame" class="w-5 h-5 mb-0.5"></i>
-        <span class="text-[12px] font-bold tracking-tight">Coal KDS</span>
+      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
+        <i data-lucide="tablet" class="w-4 h-4 mb-0.5"></i>
+        <span class="text-[11px] font-bold tracking-tight">POS Tabs</span>
+      </button>
+
+      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95">
+        <i data-lucide="flame" class="w-4 h-4 mb-0.5"></i>
+        <span class="text-[11px] font-bold tracking-tight">Coal KDS</span>
       </button>
     </div>
   </nav>
@@ -975,19 +1045,19 @@
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze' },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'], region: 'Russia', countryFlag: '🇷🇺' },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 3, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'], region: 'UAE', countryFlag: '🇦🇪' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 2, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'], region: 'USA', countryFlag: '🇺🇸' },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 3, grams: 250, stock: 'out_of_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'], region: 'Turkey', countryFlag: '🇹🇷' }
     ];
 
     const EMPIRE_HOUSE_MIXES = [
@@ -1058,6 +1128,40 @@
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
         if (!local) return STOKED_MASTER_INVENTORY;
+        const parsed = JSON.parse(local);
+        parsed.forEach(item => {
+          const match = STOKED_MASTER_INVENTORY.find(m => m.id === item.id);
+          if (match) {
+            if (!item.region) item.region = match.region;
+            if (!item.countryFlag) item.countryFlag = match.countryFlag;
+            if (!item.profiles) item.profiles = match.profiles;
+          }
+        });
+        return parsed;
+      }
+      static getLoungeRules() {
+        const local = localStorage.getItem('empire_lounge_rules');
+        if (!local) {
+          return {
+            ageReq: '21+ ID Required',
+            pipeLimit: '2 Guests Max per Pipe',
+            policyNotice: 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
+            hours: 'Daily: 5:00 PM – 2:00 AM'
+          };
+        }
+        return JSON.parse(local);
+      }
+      static getLoungePricing() {
+        const local = localStorage.getItem('empire_pricing_config');
+        if (!local) {
+          return {
+            originalPrice: 35.00,
+            refillPrice: 25.00,
+            tangiersPrice: 38.00,
+            samovarPrice: 14.00,
+            coffeePrice: 8.00
+          };
+        }
         return JSON.parse(local);
       }
       static getPipes() {
@@ -1165,6 +1269,8 @@
 
     let activePosTable = { num: 'Table 6 (6-Top)', name: 'Table', balance: 35.00 };
     let currentStaffTab = 'lab';
+    let selectedStaffMenuSubTab = 'house';
+    let selectedStaffFlavorFilter = 'all';
 
     let activeKdsTimers = [
       { id: 'kds-1', table: 'Table 6 (6-Top)', mix: 'MustHave Pinkman (70%) + Tangiers Cane Mint (30%)', startTime: Date.now() - (19 * 60 * 1000) }
@@ -1176,7 +1282,7 @@
       currentStaffTab = tabId;
       document.querySelectorAll('.staff-panel').forEach(p => p.classList.add('hidden'));
       document.querySelectorAll('.staff-nav-btn').forEach(b => {
-        b.className = 'staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95 border border-transparent';
+        b.className = 'staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-zinc-400 hover:text-zinc-200 transition active:scale-95 border border-transparent';
         const icon = b.querySelector('i, svg');
         if (icon) {
           icon.classList.remove('text-brand-gold');
@@ -1187,7 +1293,7 @@
       document.getElementById(`staff-view-${tabId}`).classList.remove('hidden');
       const activeBtn = document.getElementById(`staff-tab-${tabId}`);
       if (activeBtn) {
-        activeBtn.className = 'staff-nav-btn flex flex-col items-center justify-center py-1.5 px-2 rounded-xl text-brand-gold font-bold transition active:scale-95 bg-amber-500/10 border border-amber-500/30 shadow-sm';
+        activeBtn.className = 'staff-nav-btn flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-brand-gold font-bold transition active:scale-95 bg-amber-500/10 border border-amber-500/30 shadow-sm';
         const icon = activeBtn.querySelector('i, svg');
         if (icon) {
           icon.classList.remove('text-zinc-400');
@@ -1203,9 +1309,185 @@
         updateDispatchSummary(); 
         setupSpectrumDragListeners();
       }
+      if (tabId === 'menu') renderStaffMenu();
       if (tabId === 'pos') populatePosQuickSeats();
       if (tabId === 'kds') renderKdsQueue();
       renderIcons();
+    }
+
+    function switchStaffMenuSubTab(subTabId) {
+      selectedStaffMenuSubTab = subTabId;
+      document.querySelectorAll('.staff-menu-sub-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.staff-menu-sub-btn').forEach(b => {
+        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
+        b.classList.add('text-zinc-400');
+      });
+
+      const activeSubPanel = document.getElementById(`staff-menu-view-${subTabId}`);
+      if (activeSubPanel) activeSubPanel.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`staff-subtab-${subTabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+
+      renderIcons();
+    }
+
+    function renderStaffMenu() {
+      const rules = StaffStash.getLoungeRules();
+      const pricing = StaffStash.getLoungePricing();
+      const stash = StaffStash.getInventory();
+
+      const ageEl = document.getElementById('staffMenuAgeBadge');
+      const pipeEl = document.getElementById('staffMenuPipeBadge');
+      if (ageEl) ageEl.textContent = `🔞 ${rules.ageReq || '21+ Required'}`;
+      if (pipeEl) pipeEl.textContent = `👥 ${rules.pipeLimit || '2 Guests / Pipe'}`;
+
+      const origEl = document.getElementById('staffMenuPriceOriginal');
+      const refillEl = document.getElementById('staffMenuPriceRefill');
+      const tanEl = document.getElementById('staffMenuPriceTangiers');
+      if (origEl) origEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+      if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
+      if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
+
+      // 1. House Mixes
+      const houseCont = document.getElementById('staff-menu-view-house');
+      if (houseCont) {
+        houseCont.innerHTML = '';
+        EMPIRE_HOUSE_MIXES.forEach(mix => {
+          let totalStrength = 0;
+          mix.flavors.forEach((fId, idx) => {
+            const item = stash.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+            const pct = mix.ratios[idx] || 50;
+            totalStrength += ((item.strength || 7) * (pct / 100));
+          });
+          const buzz = getBuzzInfo(totalStrength);
+
+          const card = document.createElement('div');
+          card.className = 'bg-black p-3 rounded-xl border border-zinc-800 flex items-center justify-between gap-2 text-xs';
+          card.innerHTML = `
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded font-mono">${mix.badge}</span>
+                <span class="font-bold text-white text-xs truncate">${mix.name}</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded border ${buzz.badgeClass} font-mono">${buzz.icon} ${buzz.level} ${buzz.category}</span>
+              </div>
+              <span class="text-[11px] text-zinc-400 block truncate mt-0.5">${mix.tagline}</span>
+            </div>
+            <button onclick="loadStaffHouseMixToLab('${mix.id}')" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl font-bold text-xs flex items-center gap-1 flex-shrink-0 active:scale-95">
+              <i data-lucide="flask-conical" class="w-3 h-3"></i>
+              <span>Send to Lab</span>
+            </button>
+          `;
+          houseCont.appendChild(card);
+        });
+      }
+
+      // 2. Master Flavors
+      const flvCont = document.getElementById('staffFlavorsContainer');
+      if (flvCont) {
+        flvCont.innerHTML = '';
+        let list = stash;
+        if (selectedStaffFlavorFilter === 'in_stock') {
+          list = list.filter(i => i.stock !== 'out_of_stock');
+        } else if (selectedStaffFlavorFilter === 'Russian') {
+          list = list.filter(i => i.category === 'russian' || i.region === 'Russia');
+        } else if (selectedStaffFlavorFilter === 'USA') {
+          list = list.filter(i => i.category === 'tangiers' || i.region === 'USA');
+        }
+
+        list.forEach(item => {
+          const isOut = item.stock === 'out_of_stock';
+          const buzz = getBuzzInfo(item.strength || 7);
+          const div = document.createElement('div');
+          div.className = `p-2.5 rounded-xl border flex items-center justify-between gap-2 text-xs transition-all ${isOut ? 'bg-zinc-950/40 border-zinc-900 opacity-60' : 'bg-black border-zinc-800'}`;
+          div.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <span class="w-2 h-7 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
+              <div class="truncate">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
+                  <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 rounded">${item.brand}</span>
+                  <span class="text-[10px] text-zinc-400 font-mono">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+                  ${isOut ? '<span class="text-[9px] bg-red-950 text-red-300 font-bold px-1 rounded">OUT OF STOCK</span>' : ''}
+                </div>
+                <span class="text-[11px] text-zinc-400 block truncate">${buzz.icon} Str ${item.strength || 7}/10 • ${(item.profiles || []).join(', ')}</span>
+              </div>
+            </div>
+            <button onclick="${isOut ? '' : `addStaffFlavorToMix('${item.id}')`}" class="px-2.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 flex-shrink-0 active:scale-95 ${isOut ? 'bg-zinc-900 text-zinc-600 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-goldHover text-black'}" ${isOut ? 'disabled' : ''}>
+              <span>+ Add</span>
+            </button>
+          `;
+          flvCont.appendChild(div);
+        });
+      }
+
+      // 3. Drinks
+      const drinksCont = document.getElementById('staffDrinksContainer');
+      if (drinksCont) {
+        const drinks = [
+          { name: 'Russian Samovar Teapot', price: (pricing.samovarPrice || 14.00), icon: '🫖', desc: 'Serves 2–4 with mint & preserve' },
+          { name: 'Turkish Sand Coffee', price: (pricing.coffeePrice || 8.00), icon: '☕', desc: 'Quartz sand brewed with cardamom' },
+          { name: 'Moroccan Royal Mint Tea', price: 7.00, icon: '🌿', desc: 'Gunpowder green tea & spearmint' },
+          { name: 'Red Bull Energy Drink', price: 6.00, icon: '⚡', desc: '12oz Chilled' },
+          { name: 'San Pellegrino Sparkling Water', price: 6.00, icon: '🧊', desc: 'Sparkling mineral bottle' }
+        ];
+
+        drinksCont.innerHTML = drinks.map(d => `
+          <div class="bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">${d.icon}</span>
+              <div>
+                <span class="font-bold text-white block">${d.name} ($${d.price.toFixed(2)})</span>
+                <span class="text-[11px] text-zinc-400">${d.desc}</span>
+              </div>
+            </div>
+            <button onclick="quickAddDrinkToActiveTab('${d.name}', ${d.price})" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl font-bold text-xs active:scale-95">
+              + Tab
+            </button>
+          </div>
+        `).join('');
+      }
+
+      renderIcons();
+    }
+
+    function filterStaffFlavors(filter) {
+      selectedStaffFlavorFilter = filter;
+      document.querySelectorAll('.staff-flv-btn').forEach(b => {
+        if (b.getAttribute('data-filter') === filter) {
+          b.className = 'staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm';
+        } else {
+          b.className = 'staff-flv-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 whitespace-nowrap';
+        }
+      });
+      renderStaffMenu();
+    }
+
+    function loadStaffHouseMixToLab(mixId) {
+      selectHouseMix(mixId);
+      switchStaffTab('lab');
+      showToast('👑 House Mix Selected', 'Blend loaded into Staff Mix Lab ready to dispatch.');
+    }
+
+    function addStaffFlavorToMix(flavorId) {
+      activeMixName = null;
+      const exists = activeFlavors.find(f => f.id === flavorId);
+      if (!exists) {
+        activeFlavors.push({ id: flavorId, percent: 30 });
+        const split = Math.floor(100 / activeFlavors.length);
+        activeFlavors.forEach((p, i) => { p.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split; });
+      }
+      switchStaffTab('lab');
+      showToast('🍃 Added to Bowl', 'Flavor added into Staff Mix Lab.');
+    }
+
+    function quickAddDrinkToActiveTab(name, price) {
+      currentOrderDrinks.push({ name, price });
+      updateRightPanelProducts();
+      showToast('☕ Drink Added', `${name} ($${price.toFixed(2)}) added to current dispatch.`);
     }
 
     function setFloorViewMode(mode) {
