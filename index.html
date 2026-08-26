@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Stoked Lab Dial</title>
+  <title>Empire Hookah Lounge — Stoked Lab</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0B0E14" />
+  <meta name="theme-color" content="#000000" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
@@ -19,15 +19,20 @@
       theme: {
         extend: {
           colors: {
+            obsidian: {
+              black: '#000000',
+              bg: '#05070A',
+              card: '#0D1117',
+              cardHover: '#131822',
+              surface: '#161B26',
+              border: '#1E2533',
+              borderLight: 'rgba(255, 255, 255, 0.08)'
+            },
             brand: {
               gold: '#E5A93C',
-              goldHover: '#C88F2A',
-              purple: '#A855F7',
-              darkBg: '#090C12',
-              surface: '#121622',
-              surfaceHover: '#1B2234',
-              border: '#1F283D',
-              coal: '#FF4141',
+              goldHover: '#D4973B',
+              slate: '#94A3B8',
+              coal: '#EF4444',
               emerald: '#10B981'
             }
           }
@@ -41,12 +46,8 @@
     
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #090C12;
+      background: #000000;
       color: #E2E8F0;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15), transparent 45%),
-        radial-gradient(circle at 100% 100%, rgba(229, 169, 60, 0.06), transparent 40%);
-      background-attachment: fixed;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       -webkit-user-select: none;
@@ -54,25 +55,24 @@
     .font-crest { font-family: 'Cinzel', serif; }
     .font-mono-nums { font-family: 'JetBrains Mono', monospace; }
     
-    .stoked-lab-card {
-      background: rgba(18, 22, 34, 0.92);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .obsidian-card {
+      background: #0D1117;
+      border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     /* STOKED VERTICAL RULER STATION DIAL (LEFT COLUMN) */
     .v-ruler-sidebar {
-      width: 130px;
+      width: 125px;
       flex-shrink: 0;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      padding-right: 4px;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      padding-right: 3px;
       overflow-y: auto;
       max-height: 220px;
     }
     .v-ruler-track {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2.5px;
     }
     .v-ruler-mark-station {
       position: relative;
@@ -80,36 +80,35 @@
       align-items: center;
       justify-content: space-between;
       padding: 6px 8px 6px 10px;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 0.76rem;
       font-weight: 700;
-      color: #94A3B8;
+      color: #8E9BAE;
       background: transparent;
-      transition: all 0.15s ease;
+      transition: all 0.12s ease;
       border-left: 2.5px solid transparent;
     }
     .v-ruler-mark-station:hover {
       color: #FFFFFF;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
     }
     .v-ruler-mark-station.active {
       color: #FFFFFF;
-      background: rgba(168, 85, 247, 0.15);
-      border-left: 2.5px solid #A855F7;
-      box-shadow: inset 0 0 12px rgba(168, 85, 247, 0.15);
+      background: rgba(229, 169, 60, 0.1);
+      border-left: 2.5px solid #E5A93C;
     }
     .v-ruler-station-count {
-      font-size: 0.65rem;
+      font-size: 0.64rem;
       font-family: 'JetBrains Mono', monospace;
       color: #64748B;
-      background: rgba(0, 0, 0, 0.4);
+      background: #05070A;
       padding: 1px 4px;
       border-radius: 4px;
     }
     .v-ruler-mark-station.active .v-ruler-station-count {
-      color: #D8B4FE;
-      background: rgba(168, 85, 247, 0.3);
+      color: #E5A93C;
+      background: rgba(229, 169, 60, 0.2);
     }
 
     /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM (RIGHT COLUMN) */
@@ -136,12 +135,12 @@
       right: 4px;
       height: 44px;
       transform: translateY(-50%);
-      background: rgba(168, 85, 247, 0.14);
-      border-top: 1.5px solid rgba(168, 85, 247, 0.65);
-      border-bottom: 1.5px solid rgba(168, 85, 247, 0.65);
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border-top: 1.5px solid rgba(229, 169, 60, 0.7);
+      border-bottom: 1.5px solid rgba(229, 169, 60, 0.7);
+      border-radius: 8px;
       pointer-events: none;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 0 10px rgba(168, 85, 247, 0.18);
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(229, 169, 60, 0.1);
       z-index: 5;
     }
     .cylinder-drum-track {
@@ -162,7 +161,7 @@
       padding: 0 12px;
       border: none;
       background: transparent;
-      color: #CBD5E1;
+      color: #94A3B8;
       font-size: 0.84rem;
       font-weight: 700;
       transform-origin: center center -110px;
@@ -172,35 +171,34 @@
     .cylinder-item-row.active {
       color: #FFFFFF;
       font-weight: 800;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
     }
     .cylinder-color-bar {
-      width: 4px;
+      width: 3.5px;
       height: 18px;
-      border-radius: 3px;
+      border-radius: 2px;
       margin-right: 8px;
       flex-shrink: 0;
     }
 
     /* CONTINUOUS SPECTRUM GRADIENT TRACK */
     .spectrum-track {
-      height: 8px;
+      height: 7px;
       border-radius: 999px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 12px rgba(168,85,247,0.25);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200">
+<body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
-  <!-- ==================== 1. TOP APP BAR ==================== -->
-  <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
+  <!-- ==================== 1. TOP APP BAR (FLAT OBSIDIAN OLED) ==================== -->
+  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
     <!-- Brand Crest -->
     <div class="flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center p-1 shadow-md">
-        <svg viewBox="0 0 100 100" class="w-full h-full text-slate-200">
+      <div class="w-9 h-9 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center p-1 shadow-md">
+        <svg viewBox="0 0 100 100" class="w-full h-full text-slate-300">
           <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 2" />
           <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5" />
           <line x1="22" y1="22" x2="78" y2="78" stroke="currentColor" stroke-width="1.5" />
@@ -215,23 +213,23 @@
       <div>
         <div class="flex items-center gap-1.5">
           <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
-          <span class="text-[8px] bg-purple-950 text-purple-300 font-mono px-1 py-0.2 rounded border border-purple-800/40">EST. 2010</span>
+          <span class="text-[8px] bg-zinc-900 text-zinc-400 font-mono px-1 py-0.2 rounded border border-zinc-800">EST. 2010</span>
         </div>
-        <div class="flex items-center gap-1 text-[11px] text-brand-purple font-semibold">
+        <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="headerTableDisplay">Table #6 (VIP Lounge)</span>
+          <span id="headerTableDisplay" class="text-slate-200">Table #6 (VIP Lounge)</span>
         </div>
       </div>
     </div>
 
     <!-- Right Controls: Coals & 21+ -->
     <div class="flex items-center gap-2">
-      <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition active:scale-95">
+      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
         <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
         <span>Coals</span>
       </button>
 
-      <div class="flex items-center gap-1 bg-slate-900 border border-slate-800 px-2 py-1 rounded-full text-[10px] text-brand-gold font-bold">
+      <div class="flex items-center gap-1 bg-zinc-950 border border-zinc-800 px-2 py-1 rounded-full text-[10px] text-brand-gold font-bold">
         <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
         <span>21+</span>
       </div>
@@ -242,13 +240,13 @@
   <main class="w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3">
 
     <!-- 1. DYNAMIC IN YOUR BOWL TRAY (POPS UP DYNAMICALLY ABOVE THE DIAL) -->
-    <section class="stoked-lab-card rounded-2xl p-3.5 border border-purple-500/30 transition-all">
+    <section class="obsidian-card rounded-2xl p-3.5 transition-all">
       <div class="flex justify-between items-center mb-1.5">
         <div class="flex items-center gap-1.5">
-          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-accent"></i>
+          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
           <span class="text-xs font-bold text-white uppercase tracking-wider">In Your Bowl Mix</span>
         </div>
-        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/50 font-mono" id="labBuzzBadge">
+        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800 font-mono" id="labBuzzBadge">
           7.6/10 DARK LEAF
         </span>
       </div>
@@ -263,14 +261,14 @@
     </section>
 
     <!-- 2. STOKED SPLIT DIAL: BRAND LIST & DIAL (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
-    <section class="stoked-lab-card rounded-2xl p-3 border border-purple-500/30">
+    <section class="obsidian-card rounded-2xl p-3">
       
       <div class="flex justify-between items-center mb-2 px-1">
         <div class="flex items-center gap-1.5">
-          <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
+          <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
           <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
         </div>
-        <span class="text-[10px] text-purple-300 font-medium">Select Brand • Spin Drum</span>
+        <span class="text-[10px] text-zinc-400 font-medium">Select Brand • Spin Drum</span>
       </div>
 
       <!-- Dual Split Layout: Brands on Left, Flavor Drum on Right -->
@@ -307,21 +305,21 @@
       <!-- 1-Tap Add To Bowl Confirmation Button -->
       <button 
         onclick="confirmWheelSelection()" 
-        class="mt-2.5 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
+        class="mt-2.5 w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 transition active:scale-98"
       >
-        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+        <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span id="wheelConfirmBtnText">+ Add to Bowl</span>
       </button>
     </section>
 
     <!-- 3. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
-    <section class="stoked-lab-card rounded-2xl p-3 border border-slate-800">
+    <section class="obsidian-card rounded-2xl p-3">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
           <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
           Bowl Profiles &amp; Tasting Notes
         </span>
-        <span class="text-[9px] text-emerald-400 font-bold bg-emerald-950/70 border border-emerald-800/50 px-2 py-0.5 rounded">
+        <span class="text-[9px] text-emerald-400 font-bold bg-zinc-950 border border-emerald-900/40 px-2 py-0.5 rounded">
           Standard 22g Pack
         </span>
       </div>
@@ -333,20 +331,20 @@
     </section>
 
     <!-- 4. STICKY ORDER SUBMISSION & TAB DISPATCH BAR -->
-    <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
+    <div class="sticky bottom-2 z-30 bg-black/95 border border-zinc-800 p-3 rounded-2xl shadow-2xl flex items-center justify-between">
       <div>
         <div class="flex items-center gap-1.5">
-          <span class="text-[9px] uppercase tracking-wider text-purple-300 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
-          <span class="text-[9px] text-slate-400 font-mono">Table #6</span>
+          <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
+          <span class="text-[9px] text-zinc-500 font-mono">Table #6</span>
         </div>
         <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$35.00</span>
       </div>
       
       <div class="flex items-center gap-2">
-        <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
+        <button onclick="dispatchOrder('tab')" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
           + Add to Tab
         </button>
-        <button onclick="openEndSessionModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
+        <button onclick="openEndSessionModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
           <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
           <span>Pay with Square</span>
         </button>
@@ -356,47 +354,47 @@
   </main>
 
   <!-- ==================== END SESSION SQUARE CHECKOUT MODAL ==================== -->
-  <div id="endSessionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-surface border border-emerald-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
-      <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
+  <div id="endSessionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
         <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
             <i data-lucide="shield-check" class="w-4 h-4"></i>
           </div>
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Square Web Payments</h3>
-            <p class="text-[10px] text-slate-400">Table #6 • 21+ Verified</p>
+            <p class="text-[10px] text-zinc-400">Table #6 • 21+ Verified</p>
           </div>
         </div>
-        <button onclick="closeEndSessionModal()" class="text-slate-400 hover:text-white text-xs bg-slate-900 px-2 py-1 rounded-lg">✕</button>
+        <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <div class="my-3 space-y-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
-        <div class="flex justify-between text-slate-300">
+      <div class="my-3 space-y-2 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
+        <div class="flex justify-between text-zinc-300">
           <span>Active Table #6 Balance</span>
           <span class="font-bold font-mono-nums" id="checkoutSubtotal">$35.00</span>
         </div>
-        <div class="flex justify-between text-slate-400 text-[11px]">
+        <div class="flex justify-between text-zinc-400 text-[11px]">
           <span>Coal Service &amp; Rotations</span>
           <span class="text-emerald-400 font-bold">Included ✓</span>
         </div>
-        <div class="pt-2 border-t border-slate-800 flex justify-between text-sm font-bold text-white">
+        <div class="pt-2 border-t border-zinc-800 flex justify-between text-sm font-bold text-white">
           <span>Final Total</span>
           <span class="text-brand-gold font-mono-nums" id="checkoutGrandTotal">$35.00</span>
         </div>
       </div>
 
       <div class="mb-3">
-        <label class="text-[10px] text-slate-400 font-semibold block mb-1">Add Gratuity for Staff</label>
+        <label class="text-[10px] text-zinc-400 font-semibold block mb-1">Add Gratuity for Staff</label>
         <div class="grid grid-cols-4 gap-1.5 text-center">
-          <button onclick="selectCheckoutTip(15)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">15%</button>
-          <button onclick="selectCheckoutTip(18)" class="tip-btn p-1.5 bg-purple-600 border border-purple-500 text-white rounded-lg text-xs font-bold">18%</button>
-          <button onclick="selectCheckoutTip(20)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">20%</button>
-          <button onclick="selectCheckoutTip(25)" class="tip-btn p-1.5 bg-slate-900 border border-slate-800 hover:border-purple-500 rounded-lg text-xs font-bold">25%</button>
+          <button onclick="selectCheckoutTip(15)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">15%</button>
+          <button onclick="selectCheckoutTip(18)" class="tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-lg text-xs font-bold">18%</button>
+          <button onclick="selectCheckoutTip(20)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">20%</button>
+          <button onclick="selectCheckoutTip(25)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">25%</button>
         </div>
       </div>
 
-      <button onclick="processSquarePayment()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+      <button onclick="processSquarePayment()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
         <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         <span>Pay with Square &amp; End Session</span>
       </button>
@@ -404,14 +402,13 @@
   </div>
 
   <!-- ==================== TOAST ==================== -->
-  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-purple-500 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 text-xs font-semibold">
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-zinc-900 border border-zinc-700 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 text-xs font-semibold">
     <span id="toastIcon">✨</span>
     <span id="toastMsg">Action updated</span>
   </div>
 
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
-    // Master Stoked Shisha Inventory Data
     const STOKED_MASTER_INVENTORY = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
@@ -439,12 +436,10 @@
       }
     }
 
-    // Active Selection (Starts with Pink Cane)
     let activeFlavors = ['mh-pinkman', 'tan-cane-mint'];
     let roundCount = 1;
     let tabBalance = 35.00;
 
-    // Dial State
     let selectedBrandStation = 'all';
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
@@ -453,7 +448,6 @@
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
-    // ==================== STOKED BRANDS VERTICAL STATION DIAL ====================
     function initBrandStationDial() {
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
@@ -502,7 +496,6 @@
       renderDrumTrack();
     }
 
-    // ==================== STOKED 3D MECHANICAL ROTARY FLAVOR WHEEL ====================
     function renderDrumTrack() {
       const track = document.getElementById('cylinderDrumTrack');
       track.innerHTML = '';
@@ -538,8 +531,8 @@
             <span class="truncate">${item.name}</span>
           </div>
           <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-            <span class="text-[9px] text-purple-300 font-bold">Str ${item.strength}</span>
+            <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+            <span class="text-[9px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
           </div>
         `;
         track.appendChild(row);
@@ -597,11 +590,10 @@
       renderMixLab();
     }
 
-    // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
       
-      // 1. Build Multi-Stop Spectrum Gradient
+      // 1. Build Spectrum Gradient
       const ribbon = document.getElementById('spectrumRibbon');
       let gradParts = [];
       let cum = 0;
@@ -612,7 +604,7 @@
 
       activeFlavors.forEach(id => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
-        const col = item.color || '#A855F7';
+        const col = item.color || '#E5A93C';
         const start = cum;
         cum += slicePercent;
         gradParts.push(`${col} ${start}% ${cum}%`);
@@ -631,54 +623,40 @@
       activeFlavors.forEach((id, idx) => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
         const row = document.createElement('div');
-        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
+        row.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
         row.innerHTML = `
           <div class="flex items-center gap-2 min-w-0 flex-1">
             <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
             <div class="truncate">
               <div class="flex items-center gap-1.5">
                 <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] bg-slate-800 text-slate-300 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
               </div>
             </div>
           </div>
 
-          <button onclick="removeFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-1 flex-shrink-0" title="Remove from mix">
+          <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0" title="Remove from mix">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         `;
         container.appendChild(row);
       });
 
-      // 3. Render Bowl Profiles & Tasting Notes Badges at the Bottom
+      // 3. Render Bowl Profiles & Tasting Notes Badges
       const profileContainer = document.getElementById('bowlProfileBadges');
       profileContainer.innerHTML = '';
 
       const profileEmojis = {
-        'Mints': '🍃',
-        'Ice': '❄️',
-        'Cooling': '🧊',
-        'Extreme Ice': '🥶',
-        'Berries': '🍓',
-        'Citrus': '🍋',
-        'Sweet': '🍯',
-        'Tropical': '🥭',
-        'Dessert': '🍰',
-        'Creamy': '🥛',
-        'Warm Spices': '🪵',
-        'Floral': '🌸',
-        'Orchard Fruit': '🍑',
-        'Beverage': '🥤',
-        'Tea': '🫖',
-        'Herbal': '🌿',
-        'Anise': '⭐',
-        'Heavy Nicotine': '⚡'
+        'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓',
+        'Citrus': '🍋', 'Sweet': '🍯', 'Tropical': '🥭', 'Dessert': '🍰', 'Creamy': '🥛',
+        'Warm Spices': '🪵', 'Floral': '🌸', 'Orchard Fruit': '🍑', 'Beverage': '🥤',
+        'Tea': '🫖', 'Herbal': '🌿', 'Anise': '⭐', 'Heavy Nicotine': '⚡'
       };
 
       activeProfilesSet.forEach(prof => {
         const emoji = profileEmojis[prof] || '✦';
         const span = document.createElement('span');
-        span.className = 'text-[9px] font-bold bg-slate-900 text-slate-300 px-2 py-0.5 rounded-lg border border-slate-800 flex items-center gap-1';
+        span.className = 'text-[9px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
         span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
         profileContainer.appendChild(span);
       });
@@ -738,11 +716,11 @@
 
     function selectCheckoutTip(pct) {
       document.querySelectorAll('.tip-btn').forEach(b => {
-        b.classList.remove('bg-purple-600', 'border-purple-500', 'text-white');
-        b.classList.add('bg-slate-900', 'border-slate-800');
+        b.classList.remove('bg-brand-gold', 'border-brand-gold', 'text-black');
+        b.classList.add('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
       });
-      event.target.classList.add('bg-purple-600', 'border-purple-500', 'text-white');
-      event.target.classList.remove('bg-slate-900', 'border-slate-800');
+      event.target.classList.add('bg-brand-gold', 'border-brand-gold', 'text-black');
+      event.target.classList.remove('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
 
       const tipAmt = (tabBalance * pct) / 100;
       const grandTotal = tabBalance + tipAmt;
