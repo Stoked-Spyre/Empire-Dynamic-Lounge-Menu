@@ -329,8 +329,8 @@
     <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
     <div id="customer-view-menu" class="customer-panel flex flex-col gap-3">
       
-      <!-- 1. Lounge Policies & Pricing Hero Banner -->
-      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
+      <!-- 1. Lounge Policies & Pricing Hero Banner (Clean Typographic Layout - NO PILLS) -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-2">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="text-base">👑</span>
@@ -339,14 +339,15 @@
               <p class="text-[11px] text-zinc-400 font-mono" id="menuLoungeHours">Daily: 5:00 PM – 2:00 AM</p>
             </div>
           </div>
-          <div class="flex items-center gap-1.5 flex-wrap justify-end">
-            <span class="text-[10px] font-bold bg-red-950 text-red-300 border border-red-800/80 px-2 py-0.5 rounded-full" id="menuRuleAgeBadge">🔞 21+ Required</span>
-            <span class="text-[10px] font-bold bg-zinc-900 text-brand-gold border border-amber-800/50 px-2 py-0.5 rounded-full" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
+          <div class="flex items-center gap-1.5 text-[11px] font-mono justify-end">
+            <span class="text-red-400 font-semibold" id="menuRuleAgeBadge">🔞 21+ Required</span>
+            <span class="text-zinc-600">•</span>
+            <span class="text-brand-gold font-semibold" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
           </div>
         </div>
 
         <!-- General Pricing Quick Bar -->
-        <div class="grid grid-cols-3 gap-1.5 pt-1 text-center font-mono">
+        <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-center font-mono">
           <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
             <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Original Hookah</span>
             <span class="text-xs font-bold text-brand-gold" id="menuPriceOriginal">$35.00</span>
@@ -384,37 +385,27 @@
         <!-- Injected via JS -->
       </div>
 
-      <!-- 4. Sub-Tab 2: Master Flavors with Filter System -->
+      <!-- 4. Sub-Tab 2: Master Flavors with Filter System (Clean Segment Strip - NO PILLS) -->
       <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
         
-        <!-- Flavor Profile Filter Chips -->
-        <div class="space-y-1">
-          <div class="flex items-center justify-between text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">
-            <span>Filter Tasting Profile:</span>
-            <span id="flavorFilterActiveCount" class="text-brand-gold">13 Flavors</span>
+        <!-- Luxury Minimalist Filter Navigation Strip -->
+        <div class="bg-zinc-950 p-2.5 rounded-2xl border border-zinc-850 space-y-2">
+          <!-- Filter Dimension Switcher -->
+          <div class="flex items-center justify-between border-b border-zinc-850 pb-1.5 px-1">
+            <div class="flex items-center gap-4 text-xs">
+              <button onclick="setFilterCategory('profile')" id="filterCatBtn-profile" class="font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition">
+                Tasting Notes
+              </button>
+              <button onclick="setFilterCategory('region')" id="filterCatBtn-region" class="font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition">
+                Origin Region
+              </button>
+            </div>
+            <span id="flavorFilterActiveCount" class="text-[11px] font-mono text-brand-gold">13 Flavors</span>
           </div>
-          <div class="flex gap-1 overflow-x-auto no-scrollbar py-0.5" id="flavorProfileFilterBar">
-            <button onclick="filterFlavorsByProfile('all')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm" data-profile="all">All Profiles</button>
-            <button onclick="filterFlavorsByProfile('Mints')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Mints">🍃 Mint &amp; Ice</button>
-            <button onclick="filterFlavorsByProfile('Berries')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Berries">🍓 Berries &amp; Fruit</button>
-            <button onclick="filterFlavorsByProfile('Citrus')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Citrus">🍋 Citrus</button>
-            <button onclick="filterFlavorsByProfile('Dessert')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Dessert">🍰 Dessert &amp; Cream</button>
-            <button onclick="filterFlavorsByProfile('Warm Spices')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Warm Spices">🪵 Spices &amp; Floral</button>
-            <button onclick="filterFlavorsByProfile('Tea')" class="flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-profile="Tea">🫖 Tea &amp; Herbal</button>
-          </div>
-        </div>
 
-        <!-- Region Origin Filter Chips -->
-        <div class="space-y-1">
-          <div class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">
-            <span>Filter Origin Region:</span>
-          </div>
-          <div class="flex gap-1 overflow-x-auto no-scrollbar py-0.5" id="flavorRegionFilterBar">
-            <button onclick="filterFlavorsByRegion('all')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm" data-region="all">All Regions</button>
-            <button onclick="filterFlavorsByRegion('Russia')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="Russia">🇷🇺 Russia</button>
-            <button onclick="filterFlavorsByRegion('USA')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="USA">🇺🇸 USA</button>
-            <button onclick="filterFlavorsByRegion('UAE')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="UAE">🇦🇪 UAE</button>
-            <button onclick="filterFlavorsByRegion('Turkey')" class="flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap" data-region="Turkey">🇹🇷 Turkey</button>
+          <!-- Dynamic Text Tabs Strip (Clean Underline / Text Highlight - NO PILLS) -->
+          <div class="flex gap-4 overflow-x-auto no-scrollbar py-0.5 px-1 text-xs whitespace-nowrap" id="flavorFilterStrip">
+            <!-- Populated via JS based on filter category: Profile or Region -->
           </div>
         </div>
 
@@ -446,22 +437,20 @@
         </button>
       </div>
 
-      <!-- SOMMELIER BUZZ PILL INDICATOR -->
-      <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-zinc-950/80 rounded-xl border border-zinc-800">
+      <!-- SOMMELIER BUZZ READOUT (CLEAN TYPOGRAPHY - NO PILLS) -->
+      <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-black/60 rounded-xl border border-zinc-850 text-xs">
         <div class="flex items-center gap-2">
-          <span class="text-[12px] uppercase font-bold text-zinc-400">Buzz Level:</span>
-          <!-- Dynamic Clean Pill Indicator -->
-          <div id="labBuzzBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-extrabold border shadow-sm transition-all duration-300 bg-red-950/80 text-red-300 border-red-700/80">
+          <span class="text-[11px] uppercase font-bold text-zinc-400">Buzz Rating:</span>
+          <div class="flex items-center gap-1.5 font-mono" id="labBuzzBadge">
             <span id="labBuzzIcon">⚡</span>
-            <span id="labBuzzScoreText" class="font-mono text-xs font-black">7.6</span>
-            <span class="text-[12px] text-zinc-400 font-normal">/10</span>
-            <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
-            <span id="labBuzzCategoryText" class="text-[12px] font-sans font-extrabold tracking-wider uppercase">BOLD</span>
+            <span id="labBuzzScoreText" class="font-bold text-white text-xs">7.6</span>
+            <span class="text-[11px] text-zinc-500">/10</span>
+            <span id="labBuzzCategoryText" class="text-[10px] font-sans font-bold uppercase text-red-400">BOLD</span>
           </div>
         </div>
 
-        <!-- Customer Account Buzz History Match Pill -->
-        <div id="labGuestBuzzMatchBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-zinc-900 border-zinc-800 text-zinc-300">
+        <!-- Customer Account Buzz History Match -->
+        <div id="labGuestBuzzMatchBadge" class="text-[11px] text-zinc-400 font-mono">
           <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
         </div>
       </div>
@@ -1641,8 +1630,8 @@
         if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
 
         if (buzzPill) {
-          buzzPill.className = `inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}`;
-          buzzPill.innerHTML = `<span>${buzz.icon}</span><span>${buzz.level}/10</span><span class="w-1 h-1 rounded-full bg-current opacity-60"></span><span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>`;
+          buzzPill.className = 'flex items-center gap-1.5 text-xs font-mono';
+          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-bold text-white">${buzz.icon} ${buzz.level}/10</span><span class="text-zinc-500">•</span><span class="font-sans font-bold uppercase text-[10px] ${buzz.textColor}">${buzz.category}</span>`;
         }
 
         if (trackEl) {
@@ -1657,8 +1646,8 @@
               <div class="flex items-center gap-1.5">
                 <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
                 <span class="font-bold text-white">${r.item.name}</span>
-                <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 rounded">${r.item.brand}</span>
-                <span class="text-[10px] text-zinc-500">${r.item.countryFlag || '🌍'} ${r.item.region || 'Craft'}</span>
+                <span class="text-[10px] text-zinc-400">• ${r.item.brand}</span>
+                <span class="text-[10px] text-zinc-500">• ${r.item.countryFlag || '🌍'} ${r.item.region || 'Craft'}</span>
               </div>
               <span class="font-mono text-brand-gold font-bold">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
             </div>
@@ -1668,9 +1657,11 @@
         if (descEl) descEl.textContent = mix.desc;
         if (tagsEl) {
           tagsEl.innerHTML = `
-            <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded border border-amber-800/50">22g Pack</span>
-            <span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">Russian Craft Clay Bowl</span>
-            <span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">Kaloud Lotus HMD</span>
+            <span class="text-[10px] text-brand-gold font-bold">22g Pack</span>
+            <span class="text-zinc-600">•</span>
+            <span class="text-[10px] text-zinc-300 font-medium">Russian Craft Clay Bowl</span>
+            <span class="text-zinc-600">•</span>
+            <span class="text-[10px] text-zinc-300 font-medium">Kaloud Lotus HMD</span>
           `;
         }
 
@@ -1700,8 +1691,8 @@
         if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
 
         if (buzzPill) {
-          buzzPill.className = `inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}`;
-          buzzPill.innerHTML = `<span>${buzz.icon}</span><span>Strength ${item.strength || 7}/10</span><span class="w-1 h-1 rounded-full bg-current opacity-60"></span><span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>`;
+          buzzPill.className = 'flex items-center gap-1.5 text-xs font-mono';
+          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-bold text-white">${buzz.icon} Str ${item.strength || 7}/10</span><span class="text-zinc-500">•</span><span class="font-sans font-bold uppercase text-[10px] ${buzz.textColor}">${buzz.category}</span>`;
         }
 
         if (trackEl) {
@@ -1731,7 +1722,7 @@
 
         if (descEl) descEl.textContent = item.desc;
         if (tagsEl) {
-          tagsEl.innerHTML = (item.profiles || []).map(p => `<span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">#${p}</span>`).join('');
+          tagsEl.innerHTML = (item.profiles || []).map(p => `<span class="text-[11px] text-zinc-300">#${p}</span>`).join(' <span class="text-zinc-600">•</span> ');
         }
 
         if (actionEl) {
@@ -1767,6 +1758,77 @@
     function closeMenuItemDetailModal() {
       const modal = document.getElementById('menuItemDetailModal');
       if (modal) modal.classList.add('hidden');
+    }
+
+    let activeFilterCategory = 'profile'; // 'profile' or 'region'
+    const FLAVOR_PROFILES_LIST = [
+      { id: 'all', label: 'All Notes' },
+      { id: 'Mints', label: '🍃 Mint & Ice' },
+      { id: 'Berries', label: '🍓 Berries & Fruit' },
+      { id: 'Citrus', label: '🍋 Citrus' },
+      { id: 'Dessert', label: '🍰 Dessert & Cream' },
+      { id: 'Warm Spices', label: '🪵 Spices & Floral' },
+      { id: 'Tea', label: '🫖 Tea & Herbal' }
+    ];
+
+    const FLAVOR_REGIONS_LIST = [
+      { id: 'all', label: 'All Regions' },
+      { id: 'Russia', label: '🇷🇺 Russia' },
+      { id: 'USA', label: '🇺🇸 USA' },
+      { id: 'UAE', label: '🇦🇪 UAE' },
+      { id: 'Turkey', label: '🇹🇷 Turkey' }
+    ];
+
+    function setFilterCategory(cat) {
+      activeFilterCategory = cat;
+      const profBtn = document.getElementById('filterCatBtn-profile');
+      const regBtn = document.getElementById('filterCatBtn-region');
+      if (profBtn && regBtn) {
+        if (cat === 'profile') {
+          profBtn.className = 'font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition';
+          regBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
+        } else {
+          regBtn.className = 'font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition';
+          profBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
+        }
+      }
+      renderFlavorFilterStrip();
+    }
+
+    function renderFlavorFilterStrip() {
+      const strip = document.getElementById('flavorFilterStrip');
+      if (!strip) return;
+      strip.innerHTML = '';
+
+      if (activeFilterCategory === 'profile') {
+        FLAVOR_PROFILES_LIST.forEach(item => {
+          const isSelected = selectedFlavorProfileFilter === item.id;
+          const btn = document.createElement('button');
+          btn.onclick = () => filterFlavorsByProfile(item.id);
+          if (isSelected) {
+            btn.className = 'text-white font-bold text-xs flex items-center gap-1.5 border-b border-brand-gold pb-0.5 flex-shrink-0';
+            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span><span>${item.label}</span>`;
+          } else {
+            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
+            btn.innerHTML = `<span>${item.label}</span>`;
+          }
+          strip.appendChild(btn);
+        });
+      } else {
+        FLAVOR_REGIONS_LIST.forEach(item => {
+          const isSelected = selectedFlavorRegionFilter === item.id;
+          const btn = document.createElement('button');
+          btn.onclick = () => filterFlavorsByRegion(item.id);
+          if (isSelected) {
+            btn.className = 'text-white font-bold text-xs flex items-center gap-1.5 border-b border-brand-gold pb-0.5 flex-shrink-0';
+            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span><span>${item.label}</span>`;
+          } else {
+            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
+            btn.innerHTML = `<span>${item.label}</span>`;
+          }
+          strip.appendChild(btn);
+        });
+      }
     }
 
     function renderCustomerMenu() {
@@ -1824,31 +1886,31 @@
           card.innerHTML = `
             <div class="flex justify-between items-start">
               <div>
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded font-mono">${mix.badge || '👑 House'}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] text-brand-gold font-bold font-mono uppercase">${mix.badge || 'Craft #1'}</span>
+                  <span class="text-zinc-600">•</span>
                   <h3 class="font-bold text-white text-xs">${mix.name}</h3>
                 </div>
                 <p class="text-[11px] text-zinc-400 mt-0.5">${mix.tagline}</p>
               </div>
 
-              <span class="text-xs font-mono font-extrabold text-brand-gold bg-zinc-950 px-2 py-0.5 rounded-lg border border-zinc-800">
+              <span class="text-xs font-mono font-extrabold text-brand-gold">
                 $${(pricing.originalPrice || 35.00).toFixed(2)}
               </span>
             </div>
 
             <!-- Sleek Miniature Gradient Track Ribbon -->
-            <div class="h-1.5 rounded-full overflow-hidden w-full border border-zinc-800" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
+            <div class="h-1 rounded-full overflow-hidden w-full bg-zinc-900" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
 
-            <div class="flex items-center justify-between gap-1.5 pt-0.5">
-              <!-- Compact Micro Buzz Pill -->
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${buzz.badgeClass}">
-                <span>${buzz.icon}</span>
-                <span>${buzz.level}</span>
-                <span class="w-0.5 h-0.5 rounded-full bg-current opacity-60"></span>
-                <span class="text-[9px] font-sans font-bold uppercase">${buzz.category}</span>
-              </span>
+            <div class="flex items-center justify-between pt-0.5 text-xs">
+              <!-- Typographic Buzz Indicator (NO PILLS) -->
+              <div class="flex items-center gap-1.5 text-[11px] font-mono">
+                <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
+                <span class="font-bold text-white">${buzz.icon} ${buzz.level}</span>
+                <span class="text-[10px] font-sans font-bold uppercase ${buzz.textColor}">${buzz.category}</span>
+              </div>
 
-              <button onclick="openMenuItemDetailModal('${mix.id}', 'house')" class="text-[11px] font-bold text-zinc-300 hover:text-white flex items-center gap-1 bg-zinc-900 px-2.5 py-1 rounded-xl border border-zinc-800 hover:border-amber-500/40 transition active:scale-95">
+              <button onclick="openMenuItemDetailModal('${mix.id}', 'house')" class="text-[11px] font-bold text-brand-gold hover:text-amber-300 flex items-center gap-1 transition">
                 <span>Composition ↗</span>
               </button>
             </div>
@@ -1858,6 +1920,7 @@
       }
 
       // 3. Render Sub-Tab 2: Master Flavors
+      renderFlavorFilterStrip();
       const flavorsCont = document.getElementById('menuFlavorsContainer');
       if (flavorsCont) {
         flavorsCont.innerHTML = '';
@@ -1889,42 +1952,39 @@
 
           card.innerHTML = `
             <div class="flex justify-between items-start gap-2">
-              <div class="flex items-start gap-2 min-w-0 flex-1">
-                <span class="w-2 h-9 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
+              <div class="flex items-start gap-2.5 min-w-0 flex-1">
+                <span class="w-1.5 h-9 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
-                    <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
-                    <span class="text-[9px] bg-zinc-900 text-zinc-300 px-1 py-0.2 rounded font-mono">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
-                    ${isOut ? '<span class="text-[8px] bg-red-950 text-red-300 border border-red-800 font-extrabold px-1 py-0.2 rounded">OUT OF STOCK ✕</span>' : ''}
+                    <span class="text-[10px] text-zinc-400">• ${item.brand}</span>
+                    <span class="text-[10px] text-zinc-400 font-mono">• ${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+                    ${isOut ? '<span class="text-[9px] text-red-400 font-bold ml-1">OUT OF STOCK ✕</span>' : ''}
                   </div>
                   <p class="text-[11px] text-zinc-400 mt-0.5 truncate">${item.desc}</p>
                   
-                  <div class="flex items-center gap-1.5 flex-wrap mt-1">
-                    <!-- Compact Micro Buzz Pill -->
-                    <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full text-[9px] font-mono font-bold border ${buzz.badgeClass}">
-                      <span>${buzz.icon}</span>
-                      <span>Str ${item.strength || 7}/10 (${buzz.category})</span>
+                  <div class="flex items-center gap-2 text-[10px] text-zinc-400 mt-1 font-mono">
+                    <span class="flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
+                      <span>${buzz.icon} Str ${item.strength || 7}/10</span>
+                      <span class="uppercase font-bold ${buzz.textColor}">${buzz.category}</span>
                     </span>
-                    <!-- Tasting Profile Tags -->
-                    ${(item.profiles || []).slice(0, 2).map(p => `<span class="text-[9px] bg-zinc-950 text-zinc-400 border border-zinc-850 px-1 py-0.2 rounded">#${p}</span>`).join('')}
+                    <span class="text-zinc-600">•</span>
+                    <span class="text-zinc-400 truncate">${(item.profiles || []).join(', ')}</span>
                   </div>
                 </div>
               </div>
 
               <div class="flex flex-col items-end gap-1 flex-shrink-0">
                 ${isOut ? `
-                  <button class="px-2 py-1 rounded-xl font-bold text-[11px] bg-zinc-900 text-zinc-600 cursor-not-allowed" disabled>
-                    <i data-lucide="slash" class="w-3 h-3"></i>
-                    <span>Out</span>
-                  </button>
+                  <span class="text-[11px] text-zinc-600 font-bold">Out</span>
                 ` : isVipLoggedIn ? `
                   <button onclick="addSingleFlavorAndGoToLab('${item.id}')" class="px-2.5 py-1 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-brand-gold hover:bg-brand-goldHover text-black shadow-md">
                     <i data-lucide="plus" class="w-3 h-3"></i>
                     <span>+ Add</span>
                   </button>
                 ` : `
-                  <button onclick="openMenuItemDetailModal('${item.id}', 'flavor')" class="px-2 py-1 rounded-xl font-bold text-[11px] flex items-center gap-1 transition active:scale-95 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold">
+                  <button onclick="openMenuItemDetailModal('${item.id}', 'flavor')" class="text-[11px] font-bold text-brand-gold hover:text-white transition">
                     <span>Details ↗</span>
                   </button>
                 `}
@@ -2025,12 +2085,11 @@
               </div>
 
               <div class="flex items-center justify-between pt-1 border-t border-zinc-850">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${item.badgeClass || 'bg-red-950/80 text-red-300 border-red-700/80'}">
-                  <span>${item.icon || '⚡'}</span>
-                  <span>Buzz ${item.buzz || 7.6}/10</span>
-                  <span class="w-0.5 h-0.5 rounded-full bg-current opacity-60"></span>
-                  <span class="text-[9px] font-sans font-bold uppercase">${item.category || 'BOLD'}</span>
-                </span>
+                <div class="flex items-center gap-1.5 text-[11px] font-mono">
+                  <span class="w-1.5 h-1.5 rounded-full" style="background: ${item.dotColor || '#EF4444'};"></span>
+                  <span class="font-bold text-white">${item.icon || '⚡'} Buzz ${item.buzz || 7.6}/10</span>
+                  <span class="text-[10px] font-sans font-bold uppercase text-zinc-400">${item.category || 'BOLD'}</span>
+                </div>
 
                 <button onclick="reorderPreviousBowl('${item.mixId}')" class="px-2.5 py-1 bg-brand-gold hover:bg-brand-goldHover text-black rounded-xl font-extrabold text-[11px] flex items-center gap-1 active:scale-95 transition shadow-sm">
                   <i data-lucide="rotate-cw" class="w-3 h-3"></i>
@@ -2210,30 +2269,6 @@
       selectedAppliedReward = null;
       clearBowl();
       renderMyTabView();
-    }
-
-    function filterFlavorsByProfile(prof) {
-      selectedFlavorProfileFilter = prof;
-      document.querySelectorAll('.flavor-prof-btn').forEach(b => {
-        if (b.getAttribute('data-profile') === prof) {
-          b.className = 'flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm';
-        } else {
-          b.className = 'flavor-prof-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap';
-        }
-      });
-      renderCustomerMenu();
-    }
-
-    function filterFlavorsByRegion(reg) {
-      selectedFlavorRegionFilter = reg;
-      document.querySelectorAll('.flavor-reg-btn').forEach(b => {
-        if (b.getAttribute('data-region') === reg) {
-          b.className = 'flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-brand-gold text-black whitespace-nowrap shadow-sm';
-        } else {
-          b.className = 'flavor-reg-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap';
-        }
-      });
-      renderCustomerMenu();
     }
 
     function loadHouseMixAndGoToLab(mixId) {
@@ -2616,8 +2651,9 @@
           category: 'BLANK',
           range: 'Blank Bowl',
           icon: '🏺',
+          dotColor: '#71717A',
+          textColor: 'text-zinc-500',
           badgeClass: 'bg-zinc-900 text-zinc-400 border-zinc-800',
-          pillColor: '#71717A',
           desc: 'Empty Pack'
         };
       } else if (r <= 3.4) {
@@ -2626,8 +2662,9 @@
           category: 'MILD',
           range: '1-3 Mild',
           icon: '🍃',
-          badgeClass: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80 shadow-[0_0_12px_rgba(16,185,129,0.2)]',
-          pillColor: '#10B981',
+          dotColor: '#10B981',
+          textColor: 'text-emerald-400',
+          badgeClass: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80',
           desc: 'Blonde Leaf • Light Nicotine'
         };
       } else if (r <= 6.4) {
@@ -2636,8 +2673,9 @@
           category: 'MEDIUM',
           range: '4-6 Medium',
           icon: '⚖️',
-          badgeClass: 'bg-amber-950/90 text-amber-300 border-amber-700/80 shadow-[0_0_12px_rgba(245,158,11,0.2)]',
-          pillColor: '#F59E0B',
+          dotColor: '#F59E0B',
+          textColor: 'text-amber-400',
+          badgeClass: 'bg-amber-950/90 text-amber-300 border-amber-700/80',
           desc: 'Dark Leaf • Balanced Nicotine'
         };
       } else {
@@ -2646,8 +2684,9 @@
           category: 'BOLD',
           range: '7-10 Bold',
           icon: '⚡',
-          badgeClass: 'bg-red-950/90 text-red-300 border-red-700/80 shadow-[0_0_12px_rgba(239,68,68,0.2)]',
-          pillColor: '#EF4444',
+          dotColor: '#EF4444',
+          textColor: 'text-red-400',
+          badgeClass: 'bg-red-950/90 text-red-300 border-red-700/80',
           desc: 'Raw Dark Leaf • Heavy Nicotine'
         };
       }
@@ -2660,7 +2699,7 @@
 
       const currentMember = CustomerStash.getCurrentVipMember();
       if (!currentMember || currentMember.preferredBuzz === undefined) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-semibold bg-zinc-900 border border-zinc-800 text-zinc-400';
+        matchBadge.className = 'text-[11px] font-mono text-zinc-500';
         matchText.innerHTML = `<span>Guest Profile</span>`;
         return;
       }
@@ -2669,15 +2708,13 @@
       const prefInfo = getBuzzInfo(pref);
       const diff = bowlBuzz - pref;
 
+      matchBadge.className = 'text-[11px] font-mono text-zinc-400';
       if (Math.abs(diff) <= 0.6) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-emerald-950/90 border-emerald-800 text-emerald-300';
-        matchText.innerHTML = `<span>🟢 Matches Your Usual (${pref.toFixed(1)} ${prefInfo.category})</span>`;
+        matchText.innerHTML = `<span class="text-emerald-400 font-bold">🟢 Matches Your Usual</span> (${pref.toFixed(1)} ${prefInfo.category})`;
       } else if (diff < -0.6) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-sky-950/90 border-sky-800 text-sky-300';
-        matchText.innerHTML = `<span>🔵 Lighter than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
+        matchText.innerHTML = `<span class="text-sky-400 font-bold">🔵 Lighter than Your Usual</span> (${pref.toFixed(1)} ${prefInfo.category})`;
       } else {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-red-950/90 border-red-800 text-red-300';
-        matchText.innerHTML = `<span>🔴 Stronger than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
+        matchText.innerHTML = `<span class="text-red-400 font-bold">🔴 Stronger than Your Usual</span> (${pref.toFixed(1)} ${prefInfo.category})`;
       }
     }
 
@@ -2694,12 +2731,13 @@
       if (activeFlavors.length === 0) {
         ribbon.style.background = '#1E2533';
         document.getElementById('activeBowlTitle').textContent = 'In Your Bowl (Blank)';
-        const buzzBadge = document.getElementById('labBuzzBadge');
-        if (buzzBadge) buzzBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold border transition-all duration-300 bg-zinc-900 text-zinc-400 border-zinc-800';
         const scoreTxt = document.getElementById('labBuzzScoreText');
         if (scoreTxt) scoreTxt.textContent = '0.0';
         const catTxt = document.getElementById('labBuzzCategoryText');
-        if (catTxt) catTxt.textContent = 'EMPTY';
+        if (catTxt) {
+          catTxt.textContent = 'EMPTY';
+          catTxt.className = 'text-[10px] font-sans font-bold uppercase text-zinc-500';
+        }
         const iconTxt = document.getElementById('labBuzzIcon');
         if (iconTxt) iconTxt.textContent = '🏺';
         document.getElementById('totalPriceText').textContent = '$0.00';
@@ -2776,7 +2814,7 @@
       activeProfilesSet.forEach(prof => {
         const emoji = profileEmojis[prof] || '✦';
         const span = document.createElement('span');
-        span.className = 'text-[11px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
+        span.className = 'text-[11px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-850 flex items-center gap-1';
         span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
         profileContainer.appendChild(span);
       });
@@ -2784,17 +2822,16 @@
       const buzzVal = parseFloat(totalStrength.toFixed(1));
       const buzzInfo = getBuzzInfo(buzzVal);
 
-      // Update Buzz Pill badge & text
-      const buzzBadge = document.getElementById('labBuzzBadge');
-      if (buzzBadge) {
-        buzzBadge.className = `inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-extrabold border transition-all duration-300 ${buzzInfo.badgeClass}`;
-      }
+      // Update Buzz typographic readout
       const iconTxt = document.getElementById('labBuzzIcon');
       if (iconTxt) iconTxt.textContent = buzzInfo.icon;
       const scoreTxt = document.getElementById('labBuzzScoreText');
       if (scoreTxt) scoreTxt.textContent = buzzInfo.level;
       const catTxt = document.getElementById('labBuzzCategoryText');
-      if (catTxt) catTxt.textContent = buzzInfo.category;
+      if (catTxt) {
+        catTxt.textContent = buzzInfo.category;
+        catTxt.className = `text-[10px] font-sans font-bold uppercase ${buzzInfo.textColor}`;
+      }
 
       // Update Customer Account History comparison
       updateCustomerBuzzMatch(buzzVal);
