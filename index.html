@@ -284,7 +284,7 @@
     </div>
 
     <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
-      <button onclick="openRewardsLoyaltyModal()" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Points & Rewards">
+      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Stash & Smoke History">
         <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span id="headerVipPointsBadge">⭐ 750 Pts</span>
       </button>
@@ -569,12 +569,175 @@
         <button onclick="dispatchOrder('tab')" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
           + Add to VIP Tab
         </button>
-        <button onclick="openEndSessionModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
+        <button onclick="switchCustomerTab('tab')" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
           <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
           <span>Pay with Square</span>
         </button>
       </div>
     </div>
+
+    <!-- ==================== VIEW 3: VIP STASH & PREVIOUS BOWLS (FULL VIEW) ==================== -->
+    <div id="customer-view-rewards" class="customer-panel hidden flex flex-col gap-3">
+      
+      <!-- VIP Member Status Card -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold font-bold text-sm">
+              <span id="vipStashAvatarLetter">A</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <h3 class="font-crest font-bold text-xs text-white" id="vipStashMemberName">Alex M.</h3>
+                <span class="text-[9px] bg-amber-950 text-brand-gold font-bold font-mono px-1.5 py-0.2 rounded border border-amber-800/60" id="vipStashTierName">GOLD VIP</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 font-mono mt-0.5" id="vipStashPhone">480-555-0409 • Member since 2024</p>
+            </div>
+          </div>
+          
+          <button onclick="openSeatAssignModal()" class="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 border border-zinc-800">
+            <i data-lucide="map-pin" class="w-3 h-3 text-brand-gold"></i>
+            <span>Seat</span>
+          </button>
+        </div>
+
+        <!-- Available Points Hero Banner -->
+        <div class="bg-black/90 p-3 rounded-2xl border border-amber-500/30 text-center relative overflow-hidden">
+          <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-bold block">Available VIP Stash Points</span>
+          <span class="text-2xl font-black text-brand-gold font-mono-nums block mt-0.5" id="vipStashPointsDisplay">750 PTS</span>
+          <div class="flex items-center justify-center gap-1 text-[11px] text-emerald-400 font-semibold mt-0.5">
+            <i data-lucide="zap" class="w-3 h-3"></i>
+            <span>Earn 10 Pts per $1.00 spent on all shisha &amp; samovars</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Previous Bowls & Smoke History Section -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="history" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <h3 class="font-crest font-bold text-xs tracking-wider text-white">PREVIOUS BOWLS &amp; SMOKE HISTORY</h3>
+          </div>
+          <span class="text-[10px] text-brand-gold font-mono font-bold" id="vipSmokeHistoryCount">4 Bowls</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Review your past handcrafted blends, nicotine buzz ratings, and re-smoke your favorites in 1 tap.</p>
+
+        <!-- Previous Bowls Cards Container -->
+        <div class="space-y-2 pt-1" id="vipPreviousBowlsContainer">
+          <!-- Injected via JS with recipe, date, buzz score badge, and Re-smoke button -->
+        </div>
+      </section>
+
+      <!-- VIP Unlocked Rewards & Discount Vouchers Section -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <h3 class="font-crest font-bold text-xs tracking-wider text-white">VIP REWARD TIERS</h3>
+          </div>
+          <span class="text-[10px] text-brand-gold font-bold">Apply at Checkout</span>
+        </div>
+
+        <div class="space-y-1.5 pt-1" id="vipRewardTiersFullList">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (FULL VIEW) ==================== -->
+    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-3">
+      
+      <!-- Tab Header & Active Seat -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold">
+              <i data-lucide="receipt" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-crest font-bold text-xs tracking-wider text-white">LIVE VIP TAB SUMMARY</h3>
+              <p class="text-[11px] text-brand-gold font-mono font-semibold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</p>
+            </div>
+          </div>
+          <button onclick="openSeatAssignModal()" class="text-xs text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-xl">
+            Change Seat ⇄
+          </button>
+        </div>
+
+        <!-- Live Orders in Current Session -->
+        <div class="space-y-1.5 bg-black/80 p-3 rounded-2xl border border-zinc-850">
+          <div class="flex justify-between items-center pb-1.5 border-b border-zinc-850 text-zinc-400 font-bold uppercase text-[10px] tracking-wider">
+            <span>Session Items</span>
+            <span>Price</span>
+          </div>
+
+          <div class="space-y-1.5 text-xs" id="tabSessionItemsList">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- VIP Rewards Redemption at Checkout -->
+        <div class="bg-black/90 p-3 rounded-2xl border border-amber-500/30 space-y-2">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+              <span class="font-bold text-white text-xs">Apply Stash Reward Discount</span>
+            </div>
+            <span class="text-[11px] text-brand-gold font-mono font-bold" id="tabRewardsPointsAvailable">750 Pts</span>
+          </div>
+
+          <div class="space-y-1.5" id="tabRewardsRedeemOptions">
+            <!-- Injected via JS with 1-tap toggle button -->
+          </div>
+        </div>
+
+        <!-- Bill Total Breakdown Card -->
+        <div class="space-y-1.5 bg-black p-3 rounded-2xl border border-zinc-800 text-xs">
+          <div class="flex justify-between text-zinc-300">
+            <span>Subtotal</span>
+            <span class="font-bold font-mono-nums" id="tabViewSubtotal">$35.00</span>
+          </div>
+
+          <div id="tabViewRewardDiscountRow" class="hidden flex justify-between text-emerald-400 font-bold">
+            <span id="tabViewRewardDiscountLabel">🎁 VIP Discount</span>
+            <span class="font-mono-nums" id="tabViewRewardDiscountAmt">-$0.00</span>
+          </div>
+
+          <div class="flex justify-between text-zinc-400 text-xs">
+            <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
+            <span class="font-bold font-mono-nums text-zinc-300" id="tabViewTaxAmt">$3.01</span>
+          </div>
+
+          <div class="flex justify-between text-zinc-400 text-xs">
+            <span>Coal Master Rotations</span>
+            <span class="text-emerald-400 font-bold">Included ✓</span>
+          </div>
+
+          <!-- Gratuity Selector -->
+          <div class="pt-2 border-t border-zinc-850">
+            <label class="text-[11px] text-zinc-400 font-semibold block mb-1.5">Add Gratuity for Lounge Staff</label>
+            <div class="grid grid-cols-4 gap-1.5 text-center">
+              <button onclick="selectTabViewTip(15)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn15">15%</button>
+              <button onclick="selectTabViewTip(18)" class="tab-tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-xl text-xs font-bold" id="tabTipBtn18">18%</button>
+              <button onclick="selectTabViewTip(20)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn20">20%</button>
+              <button onclick="selectTabViewTip(25)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn25">25%</button>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-zinc-800 flex justify-between text-sm font-bold text-white">
+            <span>Grand Total</span>
+            <span class="text-brand-gold font-mono-nums" id="tabViewGrandTotal">$38.01</span>
+          </div>
+        </div>
+
+        <!-- Checkout Action Button -->
+        <button onclick="processSquarePaymentFromView()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-extrabold py-3 rounded-2xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <span>Pay with Square &amp; Close Tab</span>
+        </button>
+      </section>
 
     </div>
 
@@ -590,15 +753,74 @@
       <i data-lucide="flask-conical" class="w-4 h-4"></i>
       <span class="text-[10px] font-bold">Mix Lab</span>
     </button>
-    <button onclick="openRewardsLoyaltyModal()" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-rewards">
+    <button onclick="switchCustomerTab('rewards')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-rewards">
       <i data-lucide="award" class="w-4 h-4"></i>
-      <span class="text-[10px] font-bold">Rewards</span>
+      <span class="text-[10px] font-bold">VIP Stash</span>
     </button>
-    <button onclick="openEndSessionModal()" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
+    <button onclick="switchCustomerTab('tab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
       <i data-lucide="receipt" class="w-4 h-4"></i>
-      <span class="text-[10px] font-bold">Checkout</span>
+      <span class="text-[10px] font-bold">My Tab</span>
     </button>
   </nav>
+
+  <!-- ==================== BOTTOM SHEET MODAL FOR MENU ITEM / BLEND DETAILS ==================== -->
+  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col justify-end">
+    <div class="fixed inset-0" onclick="closeMenuItemDetailModal()"></div>
+    <div class="relative w-full max-w-lg mx-auto bg-zinc-950 border-t border-zinc-800 rounded-t-3xl p-5 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] max-h-[85vh] overflow-y-auto no-scrollbar space-y-3.5 z-10">
+      
+      <!-- Drag handle -->
+      <div class="w-10 h-1 bg-zinc-700 rounded-full mx-auto -mt-1 mb-1 cursor-pointer" onclick="closeMenuItemDetailModal()"></div>
+
+      <div class="flex justify-between items-start">
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono" id="detailModalBadge">👑 House Blend</span>
+            <h3 class="font-bold text-sm text-white" id="detailModalTitle">Pink Cane Sensation</h3>
+          </div>
+          <p class="text-xs text-zinc-400" id="detailModalTagline">Lounge Signature Blend</p>
+        </div>
+
+        <div class="text-right">
+          <span class="text-sm font-extrabold font-mono text-brand-gold" id="detailModalPrice">$35.00</span>
+          <span class="text-[10px] text-zinc-500 block">22g Pack</span>
+        </div>
+      </div>
+
+      <!-- Sommelier Buzz & Strength Row -->
+      <div class="flex items-center justify-between p-2 bg-black/80 rounded-xl border border-zinc-850 text-xs">
+        <span class="text-zinc-400 font-bold uppercase text-[10px] tracking-wider">Sommelier Buzz Profile:</span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border" id="detailModalBuzzPill">
+          <span>⚡ 7.6/10 • BOLD</span>
+        </span>
+      </div>
+
+      <!-- Visual Gradient Ratio Track -->
+      <div class="h-2 rounded-full overflow-hidden w-full border border-zinc-800" id="detailModalGradientTrack"></div>
+
+      <!-- Bowl Composition Section -->
+      <div class="space-y-1.5 bg-black/60 p-3 rounded-2xl border border-zinc-850 text-xs">
+        <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider" id="detailModalCompositionHeading">Bowl Composition Breakdown (22g Pack):</span>
+        <div class="space-y-1.5" id="detailModalCompositionList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Tasting Notes / Profiles -->
+      <div class="space-y-1">
+        <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Tasting Notes &amp; Palate:</span>
+        <p class="text-xs text-zinc-300 italic" id="detailModalDesc">Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.</p>
+        <div class="flex items-center gap-1 flex-wrap pt-1" id="detailModalProfilesTags">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="pt-1" id="detailModalActionContainer">
+        <!-- Injected via JS based on VIP logged in vs Guest mode -->
+      </div>
+
+    </div>
+  </div>
 
   <!-- ==================== VIP LOGIN & WI-FI VERIFICATION MODAL ==================== -->
   <div id="vipLoginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -925,10 +1147,131 @@
     ];
 
     const DEFAULT_VIP_MEMBERS = [
-      { id: 'vip-409', name: 'Alex M.', phone: '480-555-0409', points: 750, tier: 'Gold VIP', totalSpent: 750.00, preferredBuzz: 7.6, favoriteMix: 'Pink Cane Sensation' },
-      { id: 'vip-310', name: 'Marcus Sterling', phone: '602-555-0310', points: 1200, tier: 'Platinum VIP', totalSpent: 1200.00, preferredBuzz: 8.5, favoriteMix: 'Siberian Midnight Tea' },
-      { id: 'vip-102', name: 'Elena Rostova', phone: '623-555-0102', points: 450, tier: 'Silver VIP', totalSpent: 450.00, preferredBuzz: 2.8, favoriteMix: 'Two Apples & Mint' },
-      { id: 'vip-550', name: 'Jordan Hayes', phone: '480-555-0550', points: 280, tier: 'Silver VIP', totalSpent: 280.00, preferredBuzz: 5.2, favoriteMix: 'Fizzy Citrus Rush' }
+      { 
+        id: 'vip-409', 
+        name: 'Alex M.', 
+        phone: '480-555-0409', 
+        points: 750, 
+        tier: 'Gold VIP', 
+        totalSpent: 750.00, 
+        preferredBuzz: 7.6, 
+        favoriteMix: 'Pink Cane Sensation',
+        smokeHistory: [
+          {
+            id: 'sh-409-1',
+            mixId: 'mix-pink-cane',
+            name: 'Pink Cane Sensation',
+            date: 'Yesterday • Table 6 (6-Top)',
+            flavors: 'MustHave Pinkman (70%) + Tangiers Cane Mint (30%)',
+            buzz: 7.6,
+            category: 'BOLD',
+            icon: '⚡',
+            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
+            rating: '5.0 ★',
+            desc: 'Raspberry, grapefruit, strawberry & dark leaf cane mint'
+          },
+          {
+            id: 'sh-409-2',
+            mixId: 'mix-kashmir-velvet',
+            name: 'Kashmir Velvet Cream',
+            date: 'Aug 19 • Booth 2',
+            flavors: 'Tangiers Kashmir Peach (60%) + MustHave Milky Rice (40%)',
+            buzz: 7.6,
+            category: 'BOLD',
+            icon: '⚡',
+            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
+            rating: '4.9 ★',
+            desc: 'Spiced floral Kashmir with rich sweet rice pudding'
+          },
+          {
+            id: 'sh-409-3',
+            mixId: 'custom-tea-ice',
+            name: 'Sub-Zero Green Tea Mix',
+            date: 'Aug 12 • VIP Lounge #1',
+            flavors: 'BlackBurn Green Tea (70%) + Darkside Supernova (30%)',
+            buzz: 8.3,
+            category: 'BOLD',
+            icon: '⚡',
+            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
+            rating: '4.8 ★',
+            desc: 'High-altitude iced mountain green tea with arctic freeze'
+          },
+          {
+            id: 'sh-409-4',
+            mixId: 'mix-citrus-bliss',
+            name: 'Fizzy Citrus Rush',
+            date: 'Aug 04 • Bar Seat 3',
+            flavors: 'Tangiers Orange Soda (50%) + MustHave Pinkman (50%)',
+            buzz: 7.5,
+            category: 'BOLD',
+            icon: '⚡',
+            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
+            rating: '4.7 ★',
+            desc: 'Spiced effervescent orange soda & pink grapefruit'
+          }
+        ]
+      },
+      { 
+        id: 'vip-310', 
+        name: 'Marcus Sterling', 
+        phone: '602-555-0310', 
+        points: 1200, 
+        tier: 'Platinum VIP', 
+        totalSpent: 1200.00, 
+        preferredBuzz: 8.5, 
+        favoriteMix: 'Siberian Midnight Tea',
+        smokeHistory: [
+          {
+            id: 'sh-310-1',
+            mixId: 'mix-siberian-midnight',
+            name: 'Siberian Midnight Tea',
+            date: '3 days ago • Table 8',
+            flavors: 'BlackBurn Green Tea (70%) + Darkside Supernova (30%)',
+            buzz: 8.3,
+            category: 'BOLD',
+            icon: '⚡',
+            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
+            rating: '5.0 ★',
+            desc: 'Sub-zero Russian mint and floral cold-steeped green tea'
+          }
+        ]
+      },
+      { 
+        id: 'vip-102', 
+        name: 'Elena Rostova', 
+        phone: '623-555-0102', 
+        points: 450, 
+        tier: 'Silver VIP', 
+        totalSpent: 450.00, 
+        preferredBuzz: 2.8, 
+        favoriteMix: 'Two Apples & Mint',
+        smokeHistory: [
+          {
+            id: 'sh-102-1',
+            mixId: 'af-two-apples',
+            name: 'Classic Two Apples',
+            date: 'Last week • Patio Table 4',
+            flavors: 'Al Fakher Two Apples (100%)',
+            buzz: 3.0,
+            category: 'MILD',
+            icon: '🍃',
+            badgeClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/80',
+            rating: '5.0 ★',
+            desc: 'Classic double apple with sweet anise'
+          }
+        ]
+      },
+      { 
+        id: 'vip-550', 
+        name: 'Jordan Hayes', 
+        phone: '480-555-0550', 
+        points: 280, 
+        tier: 'Silver VIP', 
+        totalSpent: 280.00, 
+        preferredBuzz: 5.2, 
+        favoriteMix: 'Fizzy Citrus Rush',
+        smokeHistory: []
+      }
     ];
 
     class CustomerStash {
@@ -1018,10 +1361,13 @@
         }
         const parsed = JSON.parse(local);
         parsed.forEach(m => {
-          if (m.preferredBuzz === undefined) {
-            const match = DEFAULT_VIP_MEMBERS.find(dm => dm.id === m.id);
-            m.preferredBuzz = match ? match.preferredBuzz : 7.0;
-            m.favoriteMix = match ? match.favoriteMix : 'Custom Blend';
+          const match = DEFAULT_VIP_MEMBERS.find(dm => dm.id === m.id);
+          if (m.preferredBuzz === undefined && match) {
+            m.preferredBuzz = match.preferredBuzz;
+            m.favoriteMix = match.favoriteMix;
+          }
+          if ((!m.smokeHistory || m.smokeHistory.length === 0) && match && match.smokeHistory) {
+            m.smokeHistory = match.smokeHistory;
           }
         });
         return parsed;
@@ -1033,7 +1379,8 @@
 
       static getCurrentVipMember() {
         const members = this.getVipMembers();
-        return members.find(m => m.id === 'vip-409') || members[0];
+        const activeId = (typeof currentVipTabId !== 'undefined' && currentVipTabId) ? currentVipTabId.toLowerCase() : 'vip-409';
+        return members.find(m => m.id.toLowerCase() === activeId || m.id.toLowerCase() === activeId.replace('vip-', '')) || members[0];
       }
     }
 
@@ -1223,8 +1570,8 @@
 
       if (tabId === 'menu') renderCustomerMenu();
       if (tabId === 'lab') renderMixLab();
-      if (tabId === 'rewards') openRewardsLoyaltyModal();
-      if (tabId === 'tab') openEndSessionModal();
+      if (tabId === 'rewards') renderVipStashView();
+      if (tabId === 'tab') renderMyTabView();
       renderIcons();
     }
 
@@ -1246,6 +1593,180 @@
       }
 
       renderIcons();
+    }
+
+    // ==================== BOTTOM SHEET MODAL FOR BOWL COMPOSITION & FLAVORS ====================
+    function openMenuItemDetailModal(itemId, itemType) {
+      const inventory = CustomerStash.getInventory();
+      const pricing = CustomerStash.getLoungePricing();
+      const modal = document.getElementById('menuItemDetailModal');
+      if (!modal) return;
+
+      const titleEl = document.getElementById('detailModalTitle');
+      const badgeEl = document.getElementById('detailModalBadge');
+      const taglineEl = document.getElementById('detailModalTagline');
+      const priceEl = document.getElementById('detailModalPrice');
+      const buzzPill = document.getElementById('detailModalBuzzPill');
+      const trackEl = document.getElementById('detailModalGradientTrack');
+      const headingEl = document.getElementById('detailModalCompositionHeading');
+      const listEl = document.getElementById('detailModalCompositionList');
+      const descEl = document.getElementById('detailModalDesc');
+      const tagsEl = document.getElementById('detailModalProfilesTags');
+      const actionEl = document.getElementById('detailModalActionContainer');
+
+      if (itemType === 'house') {
+        const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === itemId) || EMPIRE_HOUSE_MIXES[0];
+        let totalStrength = 0;
+        let ribbonGradients = [];
+        let cumPct = 0;
+        let recipeList = [];
+
+        mix.flavors.forEach((fId, fIdx) => {
+          const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+          const pct = mix.ratios[fIdx] || 50;
+          const grams = ((22 * pct) / 100).toFixed(1);
+          totalStrength += ((item.strength || 7) * (pct / 100));
+          const start = cumPct;
+          cumPct += pct;
+          ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
+          recipeList.push({ item, pct, grams });
+        });
+
+        const buzzVal = parseFloat(totalStrength.toFixed(1));
+        const buzz = getBuzzInfo(buzzVal);
+
+        if (titleEl) titleEl.textContent = mix.name;
+        if (badgeEl) badgeEl.textContent = mix.badge || '👑 House Blend';
+        if (taglineEl) taglineEl.textContent = mix.tagline;
+        if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+
+        if (buzzPill) {
+          buzzPill.className = `inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}`;
+          buzzPill.innerHTML = `<span>${buzz.icon}</span><span>${buzz.level}/10</span><span class="w-1 h-1 rounded-full bg-current opacity-60"></span><span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>`;
+        }
+
+        if (trackEl) {
+          trackEl.classList.remove('hidden');
+          trackEl.style.background = `linear-gradient(90deg, ${ribbonGradients.join(', ')})`;
+        }
+
+        if (headingEl) headingEl.textContent = 'Bowl Composition Breakdown (22g Pack):';
+        if (listEl) {
+          listEl.innerHTML = recipeList.map(r => `
+            <div class="flex justify-between items-center text-xs p-1.5 bg-black/40 rounded-xl border border-zinc-850">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
+                <span class="font-bold text-white">${r.item.name}</span>
+                <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 rounded">${r.item.brand}</span>
+                <span class="text-[10px] text-zinc-500">${r.item.countryFlag || '🌍'} ${r.item.region || 'Craft'}</span>
+              </div>
+              <span class="font-mono text-brand-gold font-bold">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
+            </div>
+          `).join('');
+        }
+
+        if (descEl) descEl.textContent = mix.desc;
+        if (tagsEl) {
+          tagsEl.innerHTML = `
+            <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded border border-amber-800/50">22g Pack</span>
+            <span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">Russian Craft Clay Bowl</span>
+            <span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">Kaloud Lotus HMD</span>
+          `;
+        }
+
+        if (actionEl) {
+          actionEl.innerHTML = isVipLoggedIn ? `
+            <button onclick="closeMenuItemDetailModal(); loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+              <i data-lucide="flask-conical" class="w-4 h-4"></i>
+              <span>Order Mix / Open in Mix Lab →</span>
+            </button>
+          ` : `
+            <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+              <span>Log In on Lounge Wi-Fi to Self-Order</span>
+            </button>
+          `;
+        }
+
+      } else {
+        // Single Flavor Detail
+        const item = inventory.find(i => i.id === itemId) || STOKED_MASTER_INVENTORY[0];
+        const isOut = item.stock === 'out_of_stock';
+        const buzz = getBuzzInfo(item.strength || 7);
+
+        if (titleEl) titleEl.textContent = item.name;
+        if (badgeEl) badgeEl.textContent = `${item.brand} • ${item.countryFlag || '🌍'} ${item.region || 'Craft'}`;
+        if (taglineEl) taglineEl.textContent = `${item.category === 'tangiers' ? 'Tangiers Noir Dark Leaf' : item.category === 'russian' ? 'Russian Dark Leaf Craft' : 'Blonde Leaf Craft'}`;
+        if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+
+        if (buzzPill) {
+          buzzPill.className = `inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}`;
+          buzzPill.innerHTML = `<span>${buzz.icon}</span><span>Strength ${item.strength || 7}/10</span><span class="w-1 h-1 rounded-full bg-current opacity-60"></span><span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>`;
+        }
+
+        if (trackEl) {
+          trackEl.classList.remove('hidden');
+          trackEl.style.background = item.color || '#E5A93C';
+        }
+
+        if (headingEl) headingEl.textContent = 'Flavor Origin & Profile Notes:';
+        if (listEl) {
+          listEl.innerHTML = `
+            <div class="p-2.5 bg-black/40 rounded-xl border border-zinc-850 space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Brand:</span>
+                <span class="font-bold text-white">${item.brand}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Origin Region:</span>
+                <span class="font-bold text-brand-gold">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-zinc-400">Availability:</span>
+                <span class="font-bold ${isOut ? 'text-red-400' : 'text-emerald-400'}">${isOut ? 'Out of Stock ✕' : 'In Stock & Fresh ✓'}</span>
+              </div>
+            </div>
+          `;
+        }
+
+        if (descEl) descEl.textContent = item.desc;
+        if (tagsEl) {
+          tagsEl.innerHTML = (item.profiles || []).map(p => `<span class="text-[10px] bg-zinc-900 text-zinc-300 font-bold px-2 py-0.5 rounded border border-zinc-800">#${p}</span>`).join('');
+        }
+
+        if (actionEl) {
+          if (isOut) {
+            actionEl.innerHTML = `
+              <button class="w-full bg-zinc-900 text-zinc-600 font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed" disabled>
+                <i data-lucide="slash" class="w-4 h-4"></i>
+                <span>Currently Out of Stock</span>
+              </button>
+            `;
+          } else if (isVipLoggedIn) {
+            actionEl.innerHTML = `
+              <button onclick="closeMenuItemDetailModal(); addSingleFlavorAndGoToLab('${item.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>+ Add to Mix Lab Bowl</span>
+              </button>
+            `;
+          } else {
+            actionEl.innerHTML = `
+              <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span>Log In on Lounge Wi-Fi to Order</span>
+              </button>
+            `;
+          }
+        }
+      }
+
+      modal.classList.remove('hidden');
+      renderIcons();
+    }
+
+    function closeMenuItemDetailModal() {
+      const modal = document.getElementById('menuItemDetailModal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function renderCustomerMenu() {
@@ -1272,95 +1793,64 @@
       if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
       if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
 
-      // 2. Render Sub-Tab 1: House Mixes
+      // 2. Render Sub-Tab 1: House Mixes (Sleek cards with bottom sheet trigger)
       const houseCont = document.getElementById('menu-view-house');
       if (houseCont) {
         houseCont.innerHTML = '';
-        EMPIRE_HOUSE_MIXES.forEach((mix, idx) => {
+        EMPIRE_HOUSE_MIXES.forEach(mix => {
           let totalStrength = 0;
           let ribbonGradients = [];
           let cumPct = 0;
-          let recipeList = [];
 
           mix.flavors.forEach((fId, fIdx) => {
             const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
             const pct = mix.ratios[fIdx] || 50;
-            const grams = ((22 * pct) / 100).toFixed(1);
             totalStrength += ((item.strength || 7) * (pct / 100));
             const start = cumPct;
             cumPct += pct;
             ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
-            recipeList.push({ item, pct, grams });
           });
 
           const buzzVal = parseFloat(totalStrength.toFixed(1));
           const buzz = getBuzzInfo(buzzVal);
 
           const card = document.createElement('div');
-          card.className = 'obsidian-card rounded-2xl p-3.5 border border-zinc-800 space-y-2.5 transition-all hover:border-amber-500/40';
+          card.className = 'obsidian-card rounded-2xl p-3 border border-zinc-800 space-y-2 transition-all hover:border-amber-500/40 cursor-pointer active:scale-[0.99]';
+          card.onclick = (e) => {
+            if (e.target.closest('button')) return;
+            openMenuItemDetailModal(mix.id, 'house');
+          };
+
           card.innerHTML = `
             <div class="flex justify-between items-start">
               <div>
                 <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono">${mix.badge || '👑 House Blend'}</span>
+                  <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded font-mono">${mix.badge || '👑 House'}</span>
                   <h3 class="font-bold text-white text-xs">${mix.name}</h3>
                 </div>
-                <p class="text-[12px] text-zinc-400 mt-0.5">${mix.tagline}</p>
+                <p class="text-[11px] text-zinc-400 mt-0.5">${mix.tagline}</p>
               </div>
 
-              <span class="text-xs font-mono font-extrabold text-brand-gold bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-800">
+              <span class="text-xs font-mono font-extrabold text-brand-gold bg-zinc-950 px-2 py-0.5 rounded-lg border border-zinc-800">
                 $${(pricing.originalPrice || 35.00).toFixed(2)}
               </span>
             </div>
 
-            <!-- Miniature Gradient Track Ribbon -->
-            <div class="h-2 rounded-full overflow-hidden w-full border border-zinc-800" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
+            <!-- Sleek Miniature Gradient Track Ribbon -->
+            <div class="h-1.5 rounded-full overflow-hidden w-full border border-zinc-800" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
 
-            <div class="flex flex-wrap items-center justify-between gap-1.5">
-              <!-- Buzz Pill Indicator -->
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border ${buzz.badgeClass}">
+            <div class="flex items-center justify-between gap-1.5 pt-0.5">
+              <!-- Compact Micro Buzz Pill -->
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${buzz.badgeClass}">
                 <span>${buzz.icon}</span>
-                <span>${buzz.level}/10</span>
-                <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
-                <span class="text-[10px] font-sans font-extrabold uppercase">${buzz.category}</span>
+                <span>${buzz.level}</span>
+                <span class="w-0.5 h-0.5 rounded-full bg-current opacity-60"></span>
+                <span class="text-[9px] font-sans font-bold uppercase">${buzz.category}</span>
               </span>
 
-              <button onclick="toggleHouseMixDetails('${mix.id}')" class="text-[11px] font-bold text-zinc-400 hover:text-white flex items-center gap-1 bg-zinc-900 px-2 py-1 rounded-lg border border-zinc-800">
-                <span>Composition</span>
-                <i data-lucide="chevron-down" class="w-3 h-3"></i>
+              <button onclick="openMenuItemDetailModal('${mix.id}', 'house')" class="text-[11px] font-bold text-zinc-300 hover:text-white flex items-center gap-1 bg-zinc-900 px-2.5 py-1 rounded-xl border border-zinc-800 hover:border-amber-500/40 transition active:scale-95">
+                <span>Composition ↗</span>
               </button>
-            </div>
-
-            <!-- Expandable Bowl Composition Details -->
-            <div id="composition-${mix.id}" class="hidden pt-2 border-t border-zinc-850 space-y-2 text-xs">
-              <div class="space-y-1.5 bg-black/60 p-2.5 rounded-xl border border-zinc-850">
-                <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Bowl Composition Breakdown (22g Pack):</span>
-                ${recipeList.map(r => `
-                  <div class="flex justify-between items-center text-[12px]">
-                    <div class="flex items-center gap-1.5">
-                      <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
-                      <span class="font-bold text-white">${r.item.name}</span>
-                      <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 rounded">${r.item.brand}</span>
-                      <span class="text-[10px] text-zinc-500">${r.item.countryFlag || '🌍'}</span>
-                    </div>
-                    <span class="font-mono text-brand-gold font-bold">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
-                  </div>
-                `).join('')}
-              </div>
-
-              <p class="text-[11px] text-zinc-400 italic">${mix.desc || 'Signature handcrafted shisha bowl blend.'}</p>
-
-              ${isVipLoggedIn ? `
-                <button onclick="loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
-                  <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
-                  <span>Order Mix / Open in Mix Lab →</span>
-                </button>
-              ` : `
-                <button onclick="openVipLoginModal()" class="w-full bg-amber-950/70 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
-                  <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-                  <span>Log In on Lounge Wi-Fi to Self-Order</span>
-                </button>
-              `}
             </div>
           `;
           houseCont.appendChild(card);
@@ -1391,47 +1881,51 @@
           const isOut = item.stock === 'out_of_stock';
           const buzz = getBuzzInfo(item.strength || 7);
           const card = document.createElement('div');
-          card.className = `obsidian-card rounded-2xl p-3 border transition-all ${isOut ? 'bg-zinc-950/40 border-zinc-900 opacity-60' : 'border-zinc-800 hover:border-zinc-700'}`;
+          card.className = `obsidian-card rounded-2xl p-3 border transition-all cursor-pointer ${isOut ? 'bg-zinc-950/40 border-zinc-900 opacity-60' : 'border-zinc-800 hover:border-zinc-700 active:scale-[0.99]'}`;
+          card.onclick = (e) => {
+            if (e.target.closest('button')) return;
+            openMenuItemDetailModal(item.id, 'flavor');
+          };
+
           card.innerHTML = `
             <div class="flex justify-between items-start gap-2">
-              <div class="flex items-start gap-2.5 min-w-0 flex-1">
-                <span class="w-2.5 h-10 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
+              <div class="flex items-start gap-2 min-w-0 flex-1">
+                <span class="w-2 h-9 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-1.5 flex-wrap">
                     <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
-                    <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1.5 py-0.2 rounded font-bold">${item.brand}</span>
-                    <span class="text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.2 rounded font-mono">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
-                    ${isOut ? '<span class="text-[9px] bg-red-950 text-red-300 border border-red-800 font-extrabold px-1.5 py-0.2 rounded">OUT OF STOCK ✕</span>' : ''}
+                    <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+                    <span class="text-[9px] bg-zinc-900 text-zinc-300 px-1 py-0.2 rounded font-mono">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+                    ${isOut ? '<span class="text-[8px] bg-red-950 text-red-300 border border-red-800 font-extrabold px-1 py-0.2 rounded">OUT OF STOCK ✕</span>' : ''}
                   </div>
-                  <p class="text-[11px] text-zinc-400 mt-0.5">${item.desc}</p>
+                  <p class="text-[11px] text-zinc-400 mt-0.5 truncate">${item.desc}</p>
                   
-                  <div class="flex items-center gap-1.5 flex-wrap mt-1.5">
-                    <!-- Buzz Pill -->
-                    <span class="inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[10px] font-mono font-bold border ${buzz.badgeClass}">
+                  <div class="flex items-center gap-1.5 flex-wrap mt-1">
+                    <!-- Compact Micro Buzz Pill -->
+                    <span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full text-[9px] font-mono font-bold border ${buzz.badgeClass}">
                       <span>${buzz.icon}</span>
                       <span>Str ${item.strength || 7}/10 (${buzz.category})</span>
                     </span>
                     <!-- Tasting Profile Tags -->
-                    ${(item.profiles || []).map(p => `<span class="text-[10px] bg-zinc-950 text-zinc-400 border border-zinc-850 px-1.5 py-0.2 rounded">#${p}</span>`).join('')}
+                    ${(item.profiles || []).slice(0, 2).map(p => `<span class="text-[9px] bg-zinc-950 text-zinc-400 border border-zinc-850 px-1 py-0.2 rounded">#${p}</span>`).join('')}
                   </div>
                 </div>
               </div>
 
               <div class="flex flex-col items-end gap-1 flex-shrink-0">
                 ${isOut ? `
-                  <button class="px-2.5 py-1.5 rounded-xl font-bold text-xs bg-zinc-900 text-zinc-600 cursor-not-allowed" disabled>
+                  <button class="px-2 py-1 rounded-xl font-bold text-[11px] bg-zinc-900 text-zinc-600 cursor-not-allowed" disabled>
                     <i data-lucide="slash" class="w-3 h-3"></i>
                     <span>Out</span>
                   </button>
                 ` : isVipLoggedIn ? `
-                  <button onclick="addSingleFlavorAndGoToLab('${item.id}')" class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-brand-gold hover:bg-brand-goldHover text-black shadow-md">
+                  <button onclick="addSingleFlavorAndGoToLab('${item.id}')" class="px-2.5 py-1 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-brand-gold hover:bg-brand-goldHover text-black shadow-md">
                     <i data-lucide="plus" class="w-3 h-3"></i>
                     <span>+ Add</span>
                   </button>
                 ` : `
-                  <button onclick="openVipLoginModal()" class="px-2.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold">
-                    <i data-lucide="lock" class="w-3 h-3"></i>
-                    <span>Log In</span>
+                  <button onclick="openMenuItemDetailModal('${item.id}', 'flavor')" class="px-2 py-1 rounded-xl font-bold text-[11px] flex items-center gap-1 transition active:scale-95 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold">
+                    <span>Details ↗</span>
                   </button>
                 `}
               </div>
@@ -1487,12 +1981,235 @@
       renderIcons();
     }
 
-    function toggleHouseMixDetails(mixId) {
-      const el = document.getElementById(`composition-${mixId}`);
-      if (el) {
-        el.classList.toggle('hidden');
-        renderIcons();
+    // ==================== VIP STASH & PREVIOUS BOWLS FULL VIEW ====================
+    function renderVipStashView() {
+      const member = CustomerStash.getCurrentVipMember();
+      const tiers = CustomerStash.getRewardTiers();
+
+      const avatarEl = document.getElementById('vipStashAvatarLetter');
+      const nameEl = document.getElementById('vipStashMemberName');
+      const tierEl = document.getElementById('vipStashTierName');
+      const phoneEl = document.getElementById('vipStashPhone');
+      const ptsEl = document.getElementById('vipStashPointsDisplay');
+      const countEl = document.getElementById('vipSmokeHistoryCount');
+
+      if (avatarEl) avatarEl.textContent = member.name.charAt(0);
+      if (nameEl) nameEl.textContent = member.name;
+      if (tierEl) tierEl.textContent = (member.tier || 'GOLD VIP').toUpperCase();
+      if (phoneEl) phoneEl.textContent = `${member.phone || '480-555-0409'} • Member since 2024`;
+      if (ptsEl) ptsEl.textContent = `${member.points || 0} PTS`;
+
+      // Render Previous Bowls & Smoke History
+      const historyCont = document.getElementById('vipPreviousBowlsContainer');
+      if (historyCont) {
+        historyCont.innerHTML = '';
+        const history = member.smokeHistory || [];
+        if (countEl) countEl.textContent = `${history.length} Bowls`;
+
+        if (history.length === 0) {
+          historyCont.innerHTML = `<div class="text-center py-5 text-xs text-zinc-500 italic">No smoke history on file yet. Order your first handcrafted bowl!</div>`;
+        } else {
+          history.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bg-black/90 p-3 rounded-2xl border border-zinc-800 space-y-1.5 text-xs transition hover:border-amber-500/40';
+            card.innerHTML = `
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="font-bold text-white text-xs">${item.name}</span>
+                    <span class="text-[9px] bg-zinc-900 text-zinc-400 font-mono px-1 rounded">${item.date}</span>
+                  </div>
+                  <p class="text-[11px] text-zinc-300 font-mono mt-0.5">${item.flavors}</p>
+                </div>
+                <span class="text-[10px] text-brand-gold font-bold bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">${item.rating || '5.0 ★'}</span>
+              </div>
+
+              <div class="flex items-center justify-between pt-1 border-t border-zinc-850">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold border ${item.badgeClass || 'bg-red-950/80 text-red-300 border-red-700/80'}">
+                  <span>${item.icon || '⚡'}</span>
+                  <span>Buzz ${item.buzz || 7.6}/10</span>
+                  <span class="w-0.5 h-0.5 rounded-full bg-current opacity-60"></span>
+                  <span class="text-[9px] font-sans font-bold uppercase">${item.category || 'BOLD'}</span>
+                </span>
+
+                <button onclick="reorderPreviousBowl('${item.mixId}')" class="px-2.5 py-1 bg-brand-gold hover:bg-brand-goldHover text-black rounded-xl font-extrabold text-[11px] flex items-center gap-1 active:scale-95 transition shadow-sm">
+                  <i data-lucide="rotate-cw" class="w-3 h-3"></i>
+                  <span>Re-Smoke Bowl</span>
+                </button>
+              </div>
+            `;
+            historyCont.appendChild(card);
+          });
+        }
       }
+
+      // Render Reward Tiers
+      const tiersCont = document.getElementById('vipRewardTiersFullList');
+      if (tiersCont) {
+        tiersCont.innerHTML = tiers.map(t => {
+          const isEligible = member.points >= t.pointsReq;
+          return `
+            <div class="p-2.5 rounded-xl border flex items-center justify-between text-xs ${isEligible ? 'bg-black border-amber-500/40' : 'bg-zinc-950 border-zinc-900 opacity-60'}">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">${t.icon}</span>
+                <div>
+                  <span class="font-bold text-white block">${t.label}</span>
+                  <span class="text-[11px] text-zinc-400">${t.desc}</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="font-mono font-bold text-xs ${isEligible ? 'text-brand-gold' : 'text-zinc-500'} block">${t.pointsReq} Pts</span>
+                <span class="text-[9px] font-bold px-1.5 py-0.2 rounded ${isEligible ? 'bg-emerald-950 text-emerald-300' : 'bg-zinc-900 text-zinc-600'}">${isEligible ? 'UNLOCKED' : 'LOCKED'}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      renderIcons();
+    }
+
+    function reorderPreviousBowl(mixId) {
+      if (mixId && mixId.startsWith('mix-')) {
+        selectHouseMix(mixId);
+      } else {
+        selectHouseMix('mix-pink-cane');
+      }
+      switchCustomerTab('lab');
+      showToast('🔄 Bowl Reordered', 'Previous blend reloaded into your bowl ready to dispatch!');
+    }
+
+    // ==================== MY TAB & SQUARE CHECKOUT FULL VIEW ====================
+    function renderMyTabView() {
+      const member = CustomerStash.getCurrentVipMember();
+      const tiers = CustomerStash.getRewardTiers();
+      const taxConfig = CustomerStash.getTaxConfig();
+
+      const seatEl = document.getElementById('tabViewSeatLabel');
+      const ptsBadge = document.getElementById('tabRewardsPointsAvailable');
+      if (seatEl) seatEl.textContent = `${currentAssignedSeat} (#${member.id.replace('vip-', '')})`;
+      if (ptsBadge) ptsBadge.textContent = `${member.points} Pts Available`;
+
+      // Session Items
+      const itemsList = document.getElementById('tabSessionItemsList');
+      if (itemsList) {
+        itemsList.innerHTML = `
+          <div class="flex justify-between items-center text-zinc-200">
+            <div class="flex items-center gap-1.5">
+              <span>🏺</span>
+              <span>Original Craft Hookah (${activeMixName || 'Pink Cane Sensation'})</span>
+            </div>
+            <span class="font-mono font-bold">$35.00</span>
+          </div>
+        `;
+      }
+
+      // Rewards options
+      const rewardsCont = document.getElementById('tabRewardsRedeemOptions');
+      if (rewardsCont) {
+        rewardsCont.innerHTML = '';
+        tiers.forEach(tier => {
+          const isEligible = member.points >= tier.pointsReq;
+          const isSelected = selectedAppliedReward && selectedAppliedReward.id === tier.id;
+          const btn = document.createElement('button');
+          btn.className = `w-full p-2 rounded-xl text-left flex items-center justify-between transition border ${isSelected ? 'bg-amber-950/80 border-brand-gold text-white shadow-md' : isEligible ? 'bg-zinc-900 border-zinc-800 hover:border-brand-gold text-white' : 'bg-zinc-950 border-zinc-900 opacity-40 cursor-not-allowed text-zinc-500'}`;
+          if (isEligible) btn.onclick = () => toggleTabViewReward(tier);
+          btn.innerHTML = `
+            <div class="flex items-center gap-1.5">
+              <span>${tier.icon}</span>
+              <span class="font-bold text-xs">${tier.label}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="font-mono text-[11px] ${isSelected ? 'text-brand-gold font-bold' : isEligible ? 'text-zinc-300' : 'text-zinc-600'}">-${tier.pointsReq} Pts</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isSelected ? 'bg-brand-gold text-black' : isEligible ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-600'}">${isSelected ? 'APPLIED ✓' : isEligible ? 'REDEEM' : 'LOCKED'}</span>
+            </div>
+          `;
+          rewardsCont.appendChild(btn);
+        });
+      }
+
+      updateTabViewFinancials();
+      renderIcons();
+    }
+
+    function toggleTabViewReward(tier) {
+      if (selectedAppliedReward && selectedAppliedReward.id === tier.id) {
+        selectedAppliedReward = null;
+        showToast('ℹ️ Discount Removed', 'Regular tab price restored.');
+      } else {
+        selectedAppliedReward = tier;
+        showToast('🎁 Reward Applied', `Redeemed ${tier.label} (-$${tier.discount.toFixed(2)}).`);
+      }
+      renderMyTabView();
+    }
+
+    function selectTabViewTip(pct) {
+      currentSelectedTipPct = pct;
+      [15, 18, 20, 25].forEach(p => {
+        const btn = document.getElementById(`tabTipBtn${p}`);
+        if (!btn) return;
+        if (p === pct) {
+          btn.className = 'tab-tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-xl text-xs font-bold';
+        } else {
+          btn.className = 'tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold';
+        }
+      });
+      updateTabViewFinancials();
+    }
+
+    function updateTabViewFinancials() {
+      const taxConfig = CustomerStash.getTaxConfig();
+      const rawSubtotal = tabBalance;
+      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
+      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+
+      const subEl = document.getElementById('tabViewSubtotal');
+      const discRow = document.getElementById('tabViewRewardDiscountRow');
+      const discLbl = document.getElementById('tabViewRewardDiscountLabel');
+      const discAmt = document.getElementById('tabViewRewardDiscountAmt');
+      const taxLbl = document.getElementById('tabViewTaxLabel');
+      const taxAmtEl = document.getElementById('tabViewTaxAmt');
+      const totalEl = document.getElementById('tabViewGrandTotal');
+
+      if (subEl) subEl.textContent = `$${rawSubtotal.toFixed(2)}`;
+      if (discRow) {
+        if (discountAmt > 0) {
+          discRow.classList.remove('hidden');
+          if (discLbl) discLbl.textContent = `🎁 VIP Reward (${selectedAppliedReward.label.split(' ')[0]} ${selectedAppliedReward.label.split(' ')[1]})`;
+          if (discAmt) discAmt.textContent = `-$${discountAmt.toFixed(2)}`;
+        } else {
+          discRow.classList.add('hidden');
+        }
+      }
+      if (taxLbl) taxLbl.textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
+      if (taxAmtEl) taxAmtEl.textContent = `$${taxAmt.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)} (inc. $${tipAmt.toFixed(2)} tip)`;
+    }
+
+    function processSquarePaymentFromView() {
+      const member = CustomerStash.getCurrentVipMember();
+      const pointsEarned = Math.round(tabBalance * 10);
+      let pointsCost = 0;
+      if (selectedAppliedReward) pointsCost = selectedAppliedReward.pointsReq;
+
+      member.points = Math.max(0, member.points - pointsCost + pointsEarned);
+      member.totalSpent = (member.totalSpent || 0) + tabBalance;
+      
+      const members = CustomerStash.getVipMembers();
+      const idx = members.findIndex(m => m.id === member.id);
+      if (idx !== -1) members[idx] = member;
+      CustomerStash.saveVipMembers(members);
+
+      showToast('🏁 VIP Tab Settled', `Square paid. +${pointsEarned} Pts earned! Balance: ${member.points} Pts.`);
+      updateVipPointsHeader();
+      tabBalance = 0.00;
+      roundCount = 1;
+      selectedAppliedReward = null;
+      clearBowl();
+      renderMyTabView();
     }
 
     function filterFlavorsByProfile(prof) {
@@ -2139,7 +2856,7 @@
       tabBalance += price;
       roundCount++;
 
-      if (mode === 'square') { openEndSessionModal(); } 
+      if (mode === 'square') { switchCustomerTab('tab'); } 
       else {
         document.getElementById('summaryTicketId').textContent = `TICKET #${ticketId}`;
         document.getElementById('summaryTicketTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
