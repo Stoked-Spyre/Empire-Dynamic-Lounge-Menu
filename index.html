@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Social Ordering & Mix Lab</title>
+  <title>Empire Hookah Lounge — Mix Lab &amp; Ordering</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#090C12" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,12 +20,11 @@
         extend: {
           colors: {
             brand: {
-              gold: 'var(--color-gold)',
-              accent: 'var(--color-accent)',
-              accentPink: 'var(--color-accent-pink)',
-              darkBg: 'var(--color-dark-bg)',
-              cardBg: 'var(--color-card-bg)',
-              cardBorder: 'var(--color-card-border)',
+              gold: '#E5A93C',
+              accent: '#A855F7',
+              darkBg: '#090C12',
+              cardBg: '#121622',
+              cardBorder: '#1F283D',
               coal: '#FF4141'
             }
           }
@@ -35,678 +34,571 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
     
-    :root {
-      --color-gold: #E5A93C;
-      --color-accent: #A855F7;
-      --color-accent-pink: #EC4899;
-      --color-dark-bg: #090C12;
-      --color-card-bg: #121722;
-      --color-card-border: #1F293D;
-    }
-
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--color-dark-bg);
+      background: #090C12;
       color: #E2E8F0;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12), transparent 45%),
-        radial-gradient(circle at 100% 50%, rgba(229, 169, 60, 0.06), transparent 40%);
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.14), transparent 50%),
+        radial-gradient(circle at 100% 70%, rgba(229, 169, 60, 0.08), transparent 45%);
       background-attachment: fixed;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .font-crest {
       font-family: 'Cinzel', serif;
     }
+    .font-mono-nums {
+      font-family: 'JetBrains Mono', monospace;
+    }
     .glass-card {
-      background: var(--color-card-bg);
+      background: rgba(18, 22, 34, 0.88);
       backdrop-filter: blur(16px);
-      border: 1px solid var(--color-card-border);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .spectrum-track {
-      height: 12px;
-      border-radius: 999px;
+    
+    /* 3D MECHANICAL ROTARY CYLINDER WHEEL DRUM (Inspired by Stoked Lab) */
+    .cylinder-wheel-container {
       position: relative;
+      width: 100%;
+      height: 220px;
       overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 12px rgba(168, 85, 247, 0.25);
+      perspective: 900px;
+      touch-action: none;
+      cursor: grab;
     }
-    .vertical-color-rail {
-      width: 4px;
+    .cylinder-wheel-container:active {
+      cursor: grabbing;
+    }
+    .cylinder-drum-viewport {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+    .cylinder-target-slot {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      right: 12px;
+      height: 52px;
+      transform: translateY(-50%);
+      background: rgba(168, 85, 247, 0.12);
+      border-top: 1.5px solid rgba(168, 85, 247, 0.6);
+      border-bottom: 1.5px solid rgba(168, 85, 247, 0.6);
+      border-radius: 12px;
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 0 10px rgba(168, 85, 247, 0.15);
+      z-index: 5;
+    }
+    .cylinder-drum-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      margin-top: -26px;
+      transform-style: preserve-3d;
+    }
+    .cylinder-item-row {
+      position: absolute;
+      width: 100%;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border: none;
+      background: transparent;
+      color: #E2E8F0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      transform-origin: center center -120px;
+      transition: opacity 0.12s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+    .cylinder-item-row.active {
+      color: #FFFFFF;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+    .cylinder-color-bar {
+      width: 5px;
+      height: 24px;
       border-radius: 4px;
-      align-self: stretch;
+      margin-right: 12px;
       flex-shrink: 0;
     }
+
+    /* Gradient Ribbon */
+    .spectrum-track {
+      height: 10px;
+      border-radius: 999px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 12px rgba(168,85,247,0.2);
+    }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-24 md:pb-12 text-slate-200 selection:bg-purple-500 selection:text-white">
+<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 text-slate-200">
 
   <!-- ==================== 1. TOP APP BAR ==================== -->
-  <header class="w-full max-w-xl bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <!-- EHL Crest Badge -->
-      <div onclick="openTableSwitchModal()" class="cursor-pointer w-10 h-10 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center p-1 shadow-md ring-1 ring-purple-500/30 hover:scale-105 transition" title="Tap to switch table">
+  <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
+    <!-- Brand Crest & Table Selector -->
+    <div class="flex items-center gap-2.5">
+      <div onclick="openTableModal()" class="cursor-pointer w-9 h-9 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center p-1 shadow-md hover:scale-105 transition" title="Tap to switch Table">
         <svg viewBox="0 0 100 100" class="w-full h-full text-slate-200">
           <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 2" />
           <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5" />
           <line x1="22" y1="22" x2="78" y2="78" stroke="currentColor" stroke-width="1.5" />
           <line x1="78" y1="22" x2="22" y2="78" stroke="currentColor" stroke-width="1.5" />
-          <text x="50" y="32" font-family="'Cinzel', serif" font-size="14" font-weight="bold" text-anchor="middle" fill="var(--color-gold)">E</text>
+          <text x="50" y="32" font-family="'Cinzel', serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#E5A93C">E</text>
           <text x="31" y="54" font-family="'Cinzel', serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#FFFFFF">H</text>
           <text x="69" y="54" font-family="'Cinzel', serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#FFFFFF">L</text>
-          <path d="M50 63 L50 78 M46 65 L54 65 M48 78 L52 78 M47 72 C47 75 53 75 53 72 Z" stroke="var(--color-gold)" stroke-width="1.5" fill="none" stroke-linecap="round" />
+          <path d="M50 63 L50 78 M46 65 L54 65 M48 78 L52 78 M47 72 C47 75 53 75 53 72 Z" stroke="#E5A93C" stroke-width="1.5" fill="none" stroke-linecap="round" />
         </svg>
       </div>
 
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="font-crest font-bold text-sm tracking-wider text-white">EMPIRE HOOKAH</h1>
-          <span class="text-[9px] bg-purple-950 text-purple-300 font-bold px-1.5 py-0.2 rounded border border-purple-800/40">EST. 2010</span>
+      <div onclick="openTableModal()" class="cursor-pointer">
+        <div class="flex items-center gap-1.5">
+          <span class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</span>
+          <span class="text-[8px] bg-slate-800 text-slate-400 font-mono px-1 py-0.2 rounded">EST. 2010</span>
         </div>
-        <div onclick="openTableSwitchModal()" class="cursor-pointer flex items-center gap-1.5 text-xs text-brand-accent font-semibold hover:underline">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="currentTableDisplay">Table #6 (VIP Lounge)</span>
+        <div class="flex items-center gap-1 text-[11px] text-brand-accent font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="currentTableDisplay">Table #6 (VIP)</span>
           <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
         </div>
       </div>
     </div>
 
-    <!-- Mode Switcher Tabs -->
-    <div class="flex items-center gap-1.5">
-      <button onclick="switchAppView('lab')" id="nav-lab-btn" class="nav-btn bg-purple-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
-        <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
-        <span class="hidden sm:inline">Mix Lab</span>
+    <!-- Quick Profile & Call Coals -->
+    <div class="flex items-center gap-2">
+      <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95">
+        <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
+        <span>Coals</span>
       </button>
-      <button onclick="switchAppView('stash')" id="nav-stash-btn" class="nav-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
-        <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span class="hidden sm:inline">Stash &amp; Inv</span>
-      </button>
-      <button onclick="switchAppView('kds')" id="nav-kds-btn" class="nav-btn bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition">
-        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
-        <span class="hidden sm:inline">KDS</span>
-      </button>
-      <button onclick="openThemeModal()" class="text-slate-400 hover:text-white p-1.5 rounded-lg bg-slate-900 border border-slate-800" title="Theme Settings">
-        <i data-lucide="palette" class="w-3.5 h-3.5 text-brand-gold"></i>
-      </button>
+
+      <!-- Account Button -->
+      <div onclick="openAccountModal()" class="cursor-pointer flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 px-2 py-1 rounded-full transition">
+        <img id="headerAvatarImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Avatar" class="w-5 h-5 rounded-full object-cover ring-1 ring-purple-500" />
+        <span class="text-xs font-bold text-white" id="headerUserName">Alex</span>
+      </div>
     </div>
   </header>
 
-  <!-- ==================== VIEW 1: CUSTOMER MIX LAB & SOCIAL TABLE ==================== -->
-  <main id="view-lab" class="app-view w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
+  <!-- ==================== MAIN SIMPLIFIED VIEW ==================== -->
+  <main class="w-full max-w-lg px-3.5 pt-3 flex flex-col gap-3">
 
-    <!-- SOCIAL PARTY & MULTI-GUEST BAR -->
-    <section class="glass-card rounded-2xl p-3.5 relative overflow-hidden">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="users" class="w-3.5 h-3.5 text-brand-accent"></i>
-          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Party Session • PIN: #<span id="partyPinDisplay">6010</span></span>
-        </div>
+    <!-- 1. ACTIVE BOWL SUMMARY & SPECTRUM RIBBON -->
+    <section class="glass-card rounded-2xl p-3.5 border border-purple-500/20">
+      
+      <!-- Top Title & Strength -->
+      <div class="flex justify-between items-center mb-2">
         <div class="flex items-center gap-1.5">
-          <button onclick="openShareTableModal()" class="text-[10px] bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 transition">
-            <i data-lucide="share-2" class="w-2.5 h-2.5"></i> + Invite Guest
-          </button>
-          <span class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-medium">Active</span>
+          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">Custom Mix</span>
+          <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40" id="buzzBadge">7.8/10 DARK LEAF</span>
         </div>
+        <span class="text-xs font-bold text-brand-gold font-mono-nums" id="totalGramsSummary">22.0g • 100%</span>
       </div>
 
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xs font-bold text-white flex items-center gap-1.5">
-            <span id="partyHostName">Alex's Group</span>
-            <span class="text-[10px] text-slate-400 font-normal">(3 connected)</span>
-          </h2>
-          <p class="text-[11px] text-slate-300 mt-0.5">
-            Billing: <span class="text-brand-gold font-semibold">Table Tab ($48.00)</span>
-          </p>
-        </div>
+      <!-- Spectrum Gradient Ribbon -->
+      <div id="spectrumRibbon" class="spectrum-track w-full mb-3"></div>
 
-        <!-- Party Guests -->
-        <div class="flex -space-x-2 overflow-hidden items-center" id="partyAvatarsList">
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Alex (Host)" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" />
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Maya" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" />
-          <img class="inline-block h-7 w-7 rounded-full ring-2 ring-brand-darkBg object-cover" title="Sam" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" />
-        </div>
-      </div>
-
-      <!-- Quick Coal Call Button -->
-      <div class="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-slate-800/80">
-        <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
-          <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
-          <span>Request Fresh Coals</span>
-        </button>
-        <button onclick="openTableTabModal()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 py-1.5 px-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-95">
-          <i data-lucide="receipt" class="w-3.5 h-3.5 text-brand-gold"></i>
-          <span>View Table Bill</span>
-        </button>
+      <!-- SELECTED FLAVOR SLOTS (Max 3 Slots) -->
+      <div class="space-y-2" id="flavorSlotsContainer">
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- STOKED-STYLE MIX LAB CARD -->
-    <section class="glass-card rounded-2xl p-4 shadow-xl border border-purple-500/20">
-      
-      <!-- Lab Header -->
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-lg bg-purple-500/20 flex items-center justify-center text-brand-accent">
-            <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
-          </div>
-          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Russian &amp; Tangiers Mix Lab</span>
+    <!-- 2. MECHANICAL 3D ROTARY CYLINDER DIAL (Flavor / Detail Selector) -->
+    <section class="glass-card rounded-2xl p-3.5 border border-purple-500/30 relative">
+      <div class="flex justify-between items-center mb-1 px-1">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
+          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Russian &amp; Tangiers Shisha Dial</span>
         </div>
-        <span class="text-xs bg-slate-900 text-brand-gold font-bold px-2.5 py-0.5 rounded-full border border-slate-700" id="labPortionSummary">
-          2 Flavors • 100%
-        </span>
+        <span class="text-[10px] text-purple-300 font-medium">Scroll / Drag wheel to pick</span>
       </div>
 
-      <!-- Mix Name Input -->
-      <div class="mb-3.5">
-        <input 
-          type="text" 
-          id="mixNameInput"
-          value="Pink Cane Sensation" 
-          placeholder="Name this custom bowl mix..."
-          class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition"
-        />
-      </div>
-
-      <!-- MULTI-STOP SPECTRUM GRADIENT RIBBON -->
-      <div class="mb-3">
-        <div id="spectrumRibbon" class="spectrum-track w-full"></div>
-        <div class="flex justify-between items-center text-[11px] text-slate-400 mt-1.5">
-          <span id="spectrumGramsText">22.0g in Oblako Phunnel</span>
-          <span class="text-brand-accent font-semibold" id="spectrumStrengthText">Strength: 7.8/10 (Dark Leaf)</span>
-        </div>
-      </div>
-
-      <!-- COMPOSITE FLAVOR PROFILE TAGS -->
-      <div class="flex items-center gap-1.5 flex-wrap mb-3.5" id="profilePillsContainer">
+      <!-- Brand Filter Tabs for Rotary Wheel -->
+      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1.5 mb-1" id="wheelBrandTabs">
         <!-- Injected via JS -->
       </div>
 
-      <!-- FLAVOR ROWS LIST (Vertical Rails) -->
-      <div class="space-y-2.5" id="flavorSlotList">
-        <!-- Injected dynamically via JS -->
+      <!-- 3D Mechanical Cylinder Drum Container -->
+      <div 
+        id="rotaryWheel" 
+        class="cylinder-wheel-container"
+        onwheel="handleWheelScroll(event)"
+        ontouchstart="handleTouchStart(event)"
+        ontouchmove="handleTouchMove(event)"
+        ontouchend="handleTouchEnd(event)"
+      >
+        <div class="cylinder-drum-viewport">
+          <!-- Center Glowing Target Slot -->
+          <div class="cylinder-target-slot"></div>
+          <!-- 3D Drum Items Track -->
+          <div class="cylinder-drum-track" id="cylinderDrumTrack">
+            <!-- 3D item rows populated via JS -->
+          </div>
+        </div>
       </div>
 
-      <!-- + ADD FLAVOR BUTTON -->
+      <!-- 1-Tap Add To Bowl Confirmation Button -->
       <button 
-        onclick="openFlavorPicker()" 
-        id="addFlavorBtn"
-        class="mt-3 w-full border border-dashed border-purple-500/40 hover:border-purple-500 bg-purple-500/5 hover:bg-purple-500/15 text-purple-300 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition active:scale-98"
+        onclick="confirmWheelSelection()" 
+        class="mt-2.5 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
       >
-        <i data-lucide="plus" class="w-4 h-4"></i>
-        <span>Add Flavor from Stash (Max 3)</span>
+        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <span id="wheelConfirmBtnText">Add Selected Flavor to Mix</span>
+      </button>
+    </section>
+
+    <!-- 3. BOWL HARDWARE PILLS (1-Tap Selection) -->
+    <div class="grid grid-cols-3 gap-2">
+      <button onclick="selectBowlType('phunnel', 35, 'Oblako Phunnel (22g)', 22)" id="bowl-phunnel" class="bowl-pill p-2 rounded-xl border-2 border-purple-500 bg-purple-500/15 text-center transition">
+        <span class="block text-xs font-bold text-white">Russian Phunnel</span>
+        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$35.00</span>
+        <span class="block text-[9px] text-slate-400">22g • Oblako</span>
       </button>
 
-    </section>
+      <button onclick="selectBowlType('tangiers', 38, 'Tangiers Clay (24g)', 24)" id="bowl-tangiers" class="bowl-pill p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
+        <span class="block text-xs font-bold text-white">Tangiers Clay</span>
+        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$38.00</span>
+        <span class="block text-[9px] text-slate-400">24g • Heavy Buzz</span>
+      </button>
 
-    <!-- BOWL & HARDWARE SETUP (1-Tap Pills) -->
-    <section class="glass-card rounded-2xl p-3.5 border border-slate-800">
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-xs uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1.5">
-          <i data-lucide="layers" class="w-3.5 h-3.5 text-brand-gold"></i>
-          Bowl Portions
-        </span>
-        <span class="text-[11px] text-slate-400" id="currentBowlGrams">22g Oblako Phunnel</span>
-      </div>
+      <button onclick="selectBowlType('fruit', 48, 'Fresh Fruit Head (35g)', 35)" id="bowl-fruit" class="bowl-pill p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
+        <span class="block text-xs font-bold text-white">Fruit Head</span>
+        <span class="block text-[11px] text-purple-300 font-bold mt-0.5">$48.00</span>
+        <span class="block text-[9px] text-slate-400">35g • Pineapple</span>
+      </button>
+    </div>
 
-      <div class="grid grid-cols-3 gap-2">
-        <button onclick="setBowl('phunnel', 35, 'Oblako Phunnel (22g)', 22, 'Russian Semi-Dense')" id="btn-bowl-phunnel" class="bowl-btn p-2 rounded-xl border-2 border-purple-500 bg-purple-500/15 text-center transition">
-          <span class="block text-xs font-bold text-white">Russian Phunnel</span>
-          <span class="block text-[11px] text-purple-300 font-semibold mt-0.5">$35.00</span>
-          <span class="block text-[9px] text-slate-400">22g • Best All-Round</span>
-        </button>
-
-        <button onclick="setBowl('tangiers', 38, 'Tangiers Clay (24g)', 24, 'Dense Pack')" id="btn-bowl-tangiers" class="bowl-btn p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
-          <span class="block text-xs font-bold text-white">Tangiers Clay</span>
-          <span class="block text-[11px] text-purple-300 font-semibold mt-0.5">$38.00</span>
-          <span class="block text-[9px] text-slate-400">24g • Heavy Buzz</span>
-        </button>
-
-        <button onclick="setBowl('fruit', 48, 'Fresh Fruit Head (35g)', 35, 'Crown Pack')" id="btn-bowl-fruit" class="bowl-btn p-2 rounded-xl border border-slate-800 bg-slate-900/60 text-center transition hover:border-slate-700">
-          <span class="block text-xs font-bold text-white">Fruit Head</span>
-          <span class="block text-[11px] text-purple-300 font-semibold mt-0.5">$48.00</span>
-          <span class="block text-[9px] text-slate-400">35g • Pineapple</span>
-        </button>
-      </div>
-
-      <!-- Ice Tip & Addon Toggle -->
-      <div class="mt-2.5 pt-2.5 border-t border-slate-800/80 flex items-center justify-between">
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" id="iceTipCheckbox" checked onchange="toggleIceTip(this)" class="rounded bg-slate-800 border-slate-700 text-purple-500 focus:ring-0 w-4 h-4">
-          <span class="text-xs font-semibold text-white">Include Frozen Ice Hose Tip</span>
-        </label>
-        <span class="text-xs font-bold text-purple-300">+$5.00</span>
-      </div>
-    </section>
-
-    <!-- STICKY ORDER BAR -->
-    <div class="sticky bottom-3 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3.5 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
+    <!-- 4. SIMPLE STICKY ORDER BUTTON BAR -->
+    <div class="sticky bottom-2.5 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
       <div>
-        <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">Total Bowl Price</span>
-        <span class="text-xl font-bold text-brand-gold" id="totalPriceDisplay">$40.00</span>
+        <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-bold">Total Bowl Price</span>
+        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$35.00</span>
       </div>
+      
       <div class="flex items-center gap-2">
-        <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 px-3.5 rounded-xl border border-slate-700 transition active:scale-95">
-          + Add to Table Tab
+        <button onclick="sendOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3.5 rounded-xl transition active:scale-95">
+          + Table Tab
         </button>
-        <button onclick="dispatchOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1.5">
+        <button onclick="sendOrder('square')" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
           <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
-          <span>Pay With Square</span>
+          <span>Pack &amp; Light</span>
         </button>
       </div>
     </div>
 
   </main>
 
-  <!-- ==================== VIEW 2: BACKEND STASH & INVENTORY MANAGEMENT ==================== -->
-  <section id="view-stash" class="app-view hidden w-full max-w-xl px-4 pt-3 flex flex-col gap-4">
-    
-    <div class="glass-card rounded-2xl p-4 border border-brand-gold/30">
-      <div class="flex justify-between items-center mb-3">
-        <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-brand-gold">
-            <i data-lucide="package" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <h2 class="text-sm font-bold text-white">Lounge Stash &amp; Inventory</h2>
-            <p class="text-[10px] text-slate-400">Local-first database • Supabase Cloud ready</p>
-          </div>
-        </div>
-        <button onclick="openAddFlavorModal()" class="bg-brand-gold hover:bg-brand-goldHover text-brand-darkBg font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md transition active:scale-95">
-          <i data-lucide="plus" class="w-3.5 h-3.5"></i> + Add Tobacco
-        </button>
-      </div>
-
-      <!-- Quick Stats -->
-      <div class="grid grid-cols-3 gap-2 text-center">
-        <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">
-          <span class="text-[10px] text-slate-400 block font-semibold">Total Stock</span>
-          <span class="text-sm font-bold text-brand-gold" id="stashTotalGrams">1,840g</span>
-        </div>
-        <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">
-          <span class="text-[10px] text-slate-400 block font-semibold">Active Flavors</span>
-          <span class="text-sm font-bold text-purple-300" id="stashFlavorCount">8 Flavors</span>
-        </div>
-        <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">
-          <span class="text-[10px] text-slate-400 block font-semibold">Cloud Sync</span>
-          <span class="text-[11px] font-bold text-emerald-400 block mt-0.5">Local OK</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Inventory Filter & Search -->
-    <div class="flex items-center gap-2">
-      <input 
-        type="text" 
-        id="stashSearchInput" 
-        oninput="renderStashList()" 
-        placeholder="Search tobacco stash by name or brand..." 
-        class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-      />
-      <button onclick="openSupabaseModal()" class="bg-slate-900 border border-slate-700 hover:border-slate-500 text-xs text-slate-300 px-3 py-2 rounded-xl flex items-center gap-1">
-        <i data-lucide="database" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span>DB Setup</span>
-      </button>
-    </div>
-
-    <!-- Stash Items List -->
-    <div class="space-y-2.5" id="stashListContainer">
-      <!-- Injected via JS -->
-    </div>
-
-    <!-- Live Gram Consumption Audit Log -->
-    <div class="glass-card rounded-2xl p-4 border border-slate-800">
-      <h3 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2 flex items-center gap-1.5">
-        <i data-lucide="activity" class="w-3.5 h-3.5 text-brand-accent"></i>
-        Live Consumption Audit Log
-      </h3>
-      <div class="space-y-2" id="consumptionLogContainer">
-        <!-- Injected dynamically -->
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ==================== VIEW 3: STAFF KDS DISPATCH ==================== -->
-  <section id="view-kds" class="app-view hidden w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
-    
-    <div class="glass-card rounded-2xl p-4 border border-red-500/30">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-2">
-          <span class="w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
-          <h2 class="text-sm font-bold text-white">Empire Coal &amp; Mixology Station KDS</h2>
-        </div>
-        <span class="text-xs bg-slate-900 text-red-300 font-bold px-2 py-0.5 rounded border border-red-500/30">
-          Live Dispatch
-        </span>
-      </div>
-      <p class="text-[11px] text-slate-400 mt-1">Real-time alerts for coal rotations and exact gram portion recipes.</p>
-    </div>
-
-    <!-- Active Orders Queue -->
-    <div class="space-y-2.5" id="kdsQueue">
-      <!-- Injected via JS -->
-    </div>
-  </section>
-
-  <!-- ==================== MODAL: ADD TOBACCO TO STASH ==================== -->
-  <div id="addFlavorModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-cardBg border border-brand-gold/40 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-4 shadow-2xl">
+  <!-- ==================== ACCOUNT SETUP MODAL (Stoked Style) ==================== -->
+  <div id="accountModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-brand-cardBg border border-purple-500/40 rounded-2xl max-w-sm w-full max-h-[90vh] overflow-y-auto p-4 shadow-2xl">
+      
       <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="plus-circle" class="w-4 h-4 text-brand-gold"></i>
-          Add Tobacco to Lounge Stash
-        </h3>
-        <button onclick="closeAddFlavorModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center text-brand-accent">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Empire Lounge Profile</h3>
+            <p class="text-[10px] text-slate-400">Square Connected • 21+ Verified</p>
+          </div>
+        </div>
+        <button onclick="closeAccountModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <form onsubmit="handleSaveNewFlavor(event)" class="mt-3 space-y-3">
+      <form onsubmit="handleSaveAccount(event)" class="mt-3 space-y-3">
+        <!-- Avatar Selector -->
         <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Brand Name *</label>
-          <select id="newFlavorBrand" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
-            <option value="MustHave">MustHave (Russia 🇷🇺)</option>
-            <option value="Tangiers">Tangiers (USA 🇺🇸)</option>
-            <option value="Darkside">Darkside (Russia 🇷🇺)</option>
-            <option value="BlackBurn">BlackBurn (Russia 🇷🇺)</option>
-            <option value="Element">Element (Russia 🇷🇺)</option>
-            <option value="Bonche">Bonche (Cigar Leaf 🇷🇺)</option>
-            <option value="OverDose">OverDose (Russia 🇷🇺)</option>
-            <option value="Al Fakher">Al Fakher (UAE 🇦🇪)</option>
-            <option value="Starbuzz">Starbuzz (USA 🇺🇸)</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Flavor Name *</label>
-          <input type="text" id="newFlavorName" required placeholder="e.g. Marula, Space Flavour, Cane Mint..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500" />
-        </div>
-
-        <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Description / Flavor Notes</label>
-          <input type="text" id="newFlavorDesc" placeholder="e.g. Exotic South African Marula fruit..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500" />
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="text-[11px] text-slate-400 font-semibold block mb-1">Initial Stock (Grams)</label>
-            <input type="number" id="newFlavorGrams" value="200" min="0" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500" />
-          </div>
-          <div>
-            <label class="text-[11px] text-slate-400 font-semibold block mb-1">Strength (1-10)</label>
-            <input type="number" id="newFlavorStrength" value="7" min="1" max="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500" />
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1.5">Choose Avatar</label>
+          <div class="flex items-center gap-2" id="avatarPickerContainer">
+            <!-- Avatars injected via JS -->
           </div>
         </div>
 
         <div>
-          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Color Swatch</label>
-          <div class="flex items-center gap-2">
-            <input type="color" id="newFlavorColor" value="#A855F7" class="w-8 h-8 rounded-lg bg-transparent border-0 cursor-pointer" />
-            <span class="text-xs text-slate-400">Used for Mix Lab spectrum ribbon</span>
-          </div>
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Display Name *</label>
+          <input type="text" id="accDisplayName" required value="Alex" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
         </div>
+
+        <div>
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Handle / Username</label>
+          <input type="text" id="accHandle" value="@alex_ehl" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
+        </div>
+
+        <div>
+          <label class="text-[11px] text-slate-400 font-semibold block mb-1">Phone (for Square Tab &amp; SMS Coals Alert)</label>
+          <input type="tel" id="accPhone" value="(602) 555-0199" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500" />
+        </div>
+
+        <!-- 21+ Age Certification -->
+        <label class="flex items-center gap-2 p-2.5 bg-slate-950/70 rounded-xl border border-slate-800 cursor-pointer">
+          <input type="checkbox" id="accAgeCheck" checked required class="rounded bg-slate-800 border-slate-700 text-purple-500 focus:ring-0 w-4 h-4" />
+          <span class="text-[11px] font-semibold text-slate-300">I certify I am 21+ years old with valid government ID.</span>
+        </label>
 
         <div class="pt-2 flex gap-2">
-          <button type="button" onclick="closeAddFlavorModal()" class="flex-1 bg-slate-900 border border-slate-800 text-slate-300 text-xs font-bold py-2 rounded-xl">Cancel</button>
-          <button type="submit" class="flex-1 bg-brand-gold hover:bg-brand-goldHover text-brand-darkBg text-xs font-bold py-2 rounded-xl shadow-lg">Save to Stash</button>
+          <button type="button" onclick="closeAccountModal()" class="flex-1 bg-slate-900 border border-slate-800 text-slate-300 text-xs font-bold py-2 rounded-xl">Cancel</button>
+          <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg">Save Profile</button>
         </div>
       </form>
+
     </div>
   </div>
 
-  <!-- ==================== MODAL: FLAVOR PICKER FOR MIX LAB ==================== -->
-  <div id="flavorPickerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-cardBg border border-purple-500/30 rounded-2xl max-w-md w-full max-h-[85vh] flex flex-col p-4 shadow-2xl">
-      <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="sparkles" class="w-4 h-4 text-brand-accent"></i>
-          Select Flavor from Stash
-        </h3>
-        <button onclick="closeFlavorPicker()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
-      </div>
-
-      <div class="my-2.5">
-        <input 
-          type="text" 
-          id="flavorSearchInput"
-          oninput="searchFlavors(this.value)"
-          placeholder="Search by flavor (e.g. Cane Mint, Pinkman, Tea)..." 
-          class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
-        />
-      </div>
-
-      <!-- Brand Filter Tabs -->
-      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 mb-2" id="modalBrandTabs">
-        <!-- Injected via JS -->
-      </div>
-
-      <!-- Flavor Catalog Items -->
-      <div class="overflow-y-auto space-y-2 flex-1 pr-1" id="flavorCatalogList">
-        <!-- Injected via JS -->
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== MODAL: TABLE SWITCHER & QR ROUTER ==================== -->
-  <div id="tableSwitchModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+  <!-- ==================== TABLE / QR SWITCHER MODAL ==================== -->
+  <div id="tableModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-cardBg border border-purple-500/30 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent"></i>
-          Select Lounge Table / Section
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-accent"></i>
+          Select Lounge Table
         </h3>
-        <button onclick="closeTableSwitchModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
+        <button onclick="closeTableModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <p class="text-[11px] text-slate-400 my-2">Simulates scanning a specific table's QR tent or changing your party location.</p>
-
       <div class="grid grid-cols-2 gap-2 my-3">
-        <button onclick="changeTable(6, 'VIP Lounge Couch', '6010')" class="p-2.5 bg-purple-600/20 border-2 border-purple-500 rounded-xl text-center">
+        <button onclick="setTable(6, 'VIP Lounge Couch', '6010')" class="p-2.5 bg-purple-600/20 border-2 border-purple-500 rounded-xl text-center">
           <span class="text-xs font-bold text-white block">Table #6</span>
           <span class="text-[10px] text-purple-300">VIP Section</span>
         </button>
-        <button onclick="changeTable(4, 'Main Lounge Section', '4040')" class="p-2.5 bg-slate-900 border border-slate-800 hover:border-slate-600 rounded-xl text-center">
+        <button onclick="setTable(4, 'Main Lounge Couch', '4040')" class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-center">
           <span class="text-xs font-bold text-white block">Table #4</span>
           <span class="text-[10px] text-slate-400">Main Lounge</span>
         </button>
-        <button onclick="changeTable(8, 'Patio Lounge Table', '8810')" class="p-2.5 bg-slate-900 border border-slate-800 hover:border-slate-600 rounded-xl text-center">
+        <button onclick="setTable(8, 'Outdoor Patio', '8810')" class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-center">
           <span class="text-xs font-bold text-white block">Table #8</span>
-          <span class="text-[10px] text-slate-400">Outdoor Patio</span>
+          <span class="text-[10px] text-slate-400">Patio</span>
         </button>
-        <button onclick="changeTable(1, 'Bar Counter', '1001')" class="p-2.5 bg-slate-900 border border-slate-800 hover:border-slate-600 rounded-xl text-center">
+        <button onclick="setTable(1, 'Bar Counter', '1001')" class="p-2.5 bg-slate-900 border border-slate-800 rounded-xl text-center">
           <span class="text-xs font-bold text-white block">Table #1</span>
-          <span class="text-[10px] text-slate-400">Bar Seats</span>
+          <span class="text-[10px] text-slate-400">Bar</span>
         </button>
       </div>
 
-      <button onclick="closeTableSwitchModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-bold py-2 rounded-xl border border-slate-800">
+      <button onclick="closeTableModal()" class="w-full bg-slate-900 text-slate-300 text-xs font-bold py-2 rounded-xl border border-slate-800">
         Close
       </button>
     </div>
   </div>
 
-  <!-- ==================== MODAL: THEME CUSTOMIZER ==================== -->
-  <div id="themeModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-cardBg border border-brand-gold/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
-      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="palette" class="w-4 h-4 text-brand-gold"></i>
-          Empire Lounge Theme
-        </h3>
-        <button onclick="closeThemeModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
-      </div>
-
-      <div class="space-y-2.5 my-3">
-        <button onclick="applyTheme('purple-gold')" class="w-full p-2.5 bg-slate-900 border border-purple-500 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-purple-500 inline-block"></span>
-            <span class="text-xs font-bold text-white">Moscow Neon &amp; Gold</span>
-          </div>
-          <span class="text-[10px] text-purple-300">Default Brand</span>
-        </button>
-
-        <button onclick="applyTheme('pure-gold')" class="w-full p-2.5 bg-slate-900 border border-slate-800 hover:border-amber-500 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-amber-500 inline-block"></span>
-            <span class="text-xs font-bold text-white">Royal Empire Amber</span>
-          </div>
-          <span class="text-[10px] text-amber-300">Warm Luxury</span>
-        </button>
-
-        <button onclick="applyTheme('emerald')" class="w-full p-2.5 bg-slate-900 border border-slate-800 hover:border-emerald-500 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-emerald-500 inline-block"></span>
-            <span class="text-xs font-bold text-white">Siberian Mint Emerald</span>
-          </div>
-          <span class="text-[10px] text-emerald-300">Fresh Lounge</span>
-        </button>
-      </div>
-
-      <button onclick="closeThemeModal()" class="w-full bg-brand-gold text-brand-darkBg text-xs font-bold py-2 rounded-xl">
-        Done
-      </button>
-    </div>
-  </div>
-
-  <!-- ==================== MODAL: SUPABASE CONFIGURATION ==================== -->
-  <div id="supabaseModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-cardBg border border-slate-700 rounded-2xl max-w-md w-full p-4 shadow-2xl">
-      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
-          Supabase Database Connection
-        </h3>
-        <button onclick="closeSupabaseModal()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-2 py-1 rounded-lg">✕</button>
-      </div>
-
-      <p class="text-[11px] text-slate-400 my-2.5">
-        Currently running in <b>Persistent Local-First Mode</b> (localStorage). When your Supabase project is ready, enter your keys below to activate real-time cloud multi-device sync!
-      </p>
-
-      <div class="space-y-2.5">
-        <div>
-          <label class="text-[10px] text-slate-400 font-semibold block mb-0.5">SUPABASE_URL</label>
-          <input type="text" id="supabaseUrlInput" placeholder="https://your-project.supabase.co" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white" />
-        </div>
-        <div>
-          <label class="text-[10px] text-slate-400 font-semibold block mb-0.5">SUPABASE_ANON_KEY</label>
-          <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white" />
-        </div>
-      </div>
-
-      <div class="pt-3 flex gap-2">
-        <button onclick="closeSupabaseModal()" class="flex-1 bg-slate-900 text-slate-300 text-xs font-bold py-2 rounded-xl">Keep Local</button>
-        <button onclick="saveSupabaseConfig()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-xl">Connect Cloud</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== NOTIFICATION TOAST ==================== -->
+  <!-- ==================== TOAST ==================== -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border border-purple-500 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 text-xs font-semibold">
     <span id="toastIcon">✨</span>
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT LOCAL STORAGE & DB ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT & 3D ROTARY WHEEL ENGINE ==================== -->
   <script>
-    // Initial Stash Seed Data (Stored in LocalStorage)
-    const SEED_FLAVORS = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', color: '#EC4899', strength: 7, grams: 240, desc: 'Raspberry, Pink Grapefruit & Strawberry Syrup', profile: ['Berry', 'Citrus', 'Sweet'] },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir)', brand: 'Tangiers', color: '#10B981', strength: 9, grams: 180, desc: 'Natural Cane Peppermint Dark Leaf', profile: ['Mint', 'Heavy Buzz'] },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', color: '#F59E0B', strength: 8, grams: 220, desc: 'Passionfruit & Mango Tropical Medley', profile: ['Fruity', 'Tropical'] },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', color: '#84CC16', strength: 8, grams: 150, desc: 'Soothing Jasmine Green Tea Herbal Leaf', profile: ['Herbal', 'Tea'] },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', color: '#FB923C', strength: 9, grams: 190, desc: 'Exotic Spices + Sweet Ripe Peach', profile: ['Spiced', 'Fruity', 'Heavy Buzz'] },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', color: '#38BDF8', strength: 6, grams: 210, desc: 'Sub-Zero Siberian Chill Cooling Agent', profile: ['Ice', 'Cooling'] },
-      { id: 'el-waffle', name: 'Belgian Waffle', brand: 'Element', color: '#D97706', strength: 7, grams: 170, desc: 'Caramelized Butter & Maple Syrup Dough', profile: ['Dessert', 'Bakery'] },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', color: '#6366F1', strength: 9, grams: 160, desc: 'The Deepest Freeze in Shisha', profile: ['Extreme Ice'] }
+    // Master Russian & Tangiers Flavor Catalog
+    const CATALOG = [
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', color: '#EC4899', strength: 7, desc: 'Raspberry, Grapefruit & Strawberry', profile: ['Berry', 'Citrus'] },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir)', brand: 'Tangiers', color: '#10B981', strength: 9, desc: 'Natural Sweet Cane Peppermint', profile: ['Mint', 'Heavy'] },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', color: '#F59E0B', strength: 8, desc: 'Passionfruit & Mango Medley', profile: ['Fruity'] },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', color: '#84CC16', strength: 8, desc: 'Jasmine Green Tea Herbal Leaf', profile: ['Tea'] },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', color: '#FB923C', strength: 9, desc: 'Spiced Floral Kashmir & Peach', profile: ['Spiced', 'Heavy'] },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', color: '#38BDF8', strength: 6, desc: 'Pure Sub-Zero Siberian Chill', profile: ['Ice'] },
+      { id: 'el-waffle', name: 'Belgian Waffle', brand: 'Element', color: '#D97706', strength: 7, desc: 'Caramelized Butter & Waffle Dough', profile: ['Dessert'] },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', color: '#6366F1', strength: 9, desc: 'The Deepest Freeze in Shisha', profile: ['Extreme Ice'] }
     ];
 
-    // Local DB Layer
-    class EmpireStore {
-      static getFlavors() {
-        const local = localStorage.getItem('empire_flavors');
-        if (!local) {
-          localStorage.setItem('empire_flavors', JSON.stringify(SEED_FLAVORS));
-          return SEED_FLAVORS;
-        }
-        return JSON.parse(local);
-      }
+    const AVATARS = [
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80",
+      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80"
+    ];
 
-      static saveFlavors(flavors) {
-        localStorage.setItem('empire_flavors', JSON.stringify(flavors));
-      }
-
-      static deductGrams(flavorId, grams) {
-        const flavors = this.getFlavors();
-        const item = flavors.find(f => f.id === flavorId);
-        if (item) {
-          item.grams = Math.max(0, Number((item.grams - grams).toFixed(1)));
-          this.saveFlavors(flavors);
-          this.logConsumption(item.name, item.brand, grams);
-        }
-      }
-
-      static logConsumption(flavorName, brand, grams) {
-        const logs = JSON.parse(localStorage.getItem('empire_consumption_logs') || '[]');
-        logs.unshift({
-          id: Date.now(),
-          flavor: flavorName,
-          brand: brand,
-          grams: grams,
-          table: currentTable.num,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        });
-        localStorage.setItem('empire_consumption_logs', JSON.stringify(logs.slice(0, 20)));
-      }
-
-      static getLogs() {
-        return JSON.parse(localStorage.getItem('empire_consumption_logs') || '[]');
-      }
-    }
-
-    // App State
+    // State
+    let userAccount = {
+      name: 'Alex',
+      handle: '@alex_ehl',
+      phone: '(602) 555-0199',
+      avatar: AVATARS[0]
+    };
     let currentTable = { num: 6, name: 'VIP Lounge Couch', pin: '6010' };
     let activeFlavors = [
       { id: 'mh-pinkman', percent: 70 },
       { id: 'tan-cane-mint', percent: 30 }
     ];
-    let bowl = { id: 'phunnel', price: 35, grams: 22, name: 'Oblako Phunnel', pack: 'Russian Semi-Dense' };
-    let hasIceTip = true;
+    let bowl = { id: 'phunnel', price: 35, grams: 22, name: 'Oblako Phunnel' };
+
+    // Rotary Wheel State
+    let selectedBrandFilter = 'all';
+    let filteredWheelItems = [];
+    let wheelSelectedIndex = 0;
+    let touchStartY = null;
+    let touchAccumulator = 0;
 
     function renderIcons() {
       if (window.lucide) lucide.createIcons();
     }
 
-    // ==================== VIEW SWITCHING ====================
-    function switchAppView(viewId) {
-      document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('bg-purple-600', 'text-white');
-        btn.classList.add('bg-slate-900', 'text-slate-300');
+    // ==================== 3D ROTARY CYLINDER WHEEL CONTROLLER ====================
+    function initRotaryWheel() {
+      // Build brand filter tabs
+      const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Element'];
+      const tabsContainer = document.getElementById('wheelBrandTabs');
+      tabsContainer.innerHTML = '';
+
+      brands.forEach(b => {
+        const btn = document.createElement('button');
+        const isActive = (b === selectedBrandFilter);
+        btn.className = `text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
+        btn.textContent = b === 'all' ? 'All Brands' : b;
+        btn.onclick = () => {
+          selectedBrandFilter = b;
+          wheelSelectedIndex = 0;
+          initRotaryWheel();
+        };
+        tabsContainer.appendChild(btn);
       });
 
-      const activeView = document.getElementById(`view-${viewId}`);
-      if (activeView) activeView.classList.remove('hidden');
+      filteredWheelItems = CATALOG.filter(item => selectedBrandFilter === 'all' || item.brand === selectedBrandFilter);
+      renderDrumTrack();
+    }
 
-      const activeBtn = document.getElementById(`nav-${viewId}-btn`);
-      if (activeBtn) {
-        activeBtn.classList.add('bg-purple-600', 'text-white');
-        activeBtn.classList.remove('bg-slate-900', 'text-slate-300');
+    function renderDrumTrack() {
+      const track = document.getElementById('cylinderDrumTrack');
+      track.innerHTML = '';
+
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+
+      filteredWheelItems.forEach((item, index) => {
+        const diff = index - wheelSelectedIndex;
+        const isSelected = index === wheelSelectedIndex;
+        const isVisible = Math.abs(diff) <= 3;
+        if (!isVisible) return;
+
+        // 3D Cylinder Mathematics
+        const yOffset = diff * 48;
+        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
+        const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
+        const rotateX = diff * -14;
+
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
+        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
+        row.style.opacity = opacity;
+
+        row.onclick = () => {
+          if (isSelected) {
+            confirmWheelSelection();
+          } else {
+            wheelSelectedIndex = index;
+            renderDrumTrack();
+          }
+        };
+
+        row.innerHTML = `
+          <div class="flex items-center min-w-0">
+            <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+            <span class="truncate">${item.name}</span>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+            <span class="text-[10px] text-purple-300 font-bold">Str ${item.strength}</span>
+          </div>
+        `;
+        track.appendChild(row);
+      });
+
+      // Update button text
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (activeItem) {
+        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Mix`;
+      }
+    }
+
+    // Touch & Wheel Event Handlers for 3D Drum
+    function handleWheelScroll(e) {
+      e.preventDefault();
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) {
+        wheelSelectedIndex++;
+        renderDrumTrack();
+      } else if (e.deltaY < 0 && wheelSelectedIndex > 0) {
+        wheelSelectedIndex--;
+        renderDrumTrack();
+      }
+    }
+
+    function handleTouchStart(e) {
+      touchStartY = e.touches[0].clientY;
+      touchAccumulator = 0;
+    }
+
+    function handleTouchMove(e) {
+      if (touchStartY === null) return;
+      const currentY = e.touches[0].clientY;
+      const delta = touchStartY - currentY;
+      touchStartY = currentY;
+      touchAccumulator += delta;
+
+      const step = 32;
+      const count = filteredWheelItems.length;
+      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
+        wheelSelectedIndex++;
+        touchAccumulator = 0;
+        renderDrumTrack();
+      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
+        wheelSelectedIndex--;
+        touchAccumulator = 0;
+        renderDrumTrack();
+      }
+    }
+
+    function handleTouchEnd() {
+      touchStartY = null;
+      touchAccumulator = 0;
+    }
+
+    // Confirm Wheel Selection
+    function confirmWheelSelection() {
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (!activeItem) return;
+
+      const existing = activeFlavors.find(f => f.id === activeItem.id);
+      if (existing) {
+        showToast('ℹ️ Already in Mix', `${activeItem.name} is already in your bowl.`);
+        return;
       }
 
-      if (viewId === 'stash') renderStashList();
-      renderIcons();
+      if (activeFlavors.length >= 3) {
+        // Replace last flavor
+        activeFlavors[activeFlavors.length - 1].id = activeItem.id;
+        showToast('🔄 Swapped', `Replaced slot with ${activeItem.name}.`);
+      } else {
+        activeFlavors.push({ id: activeItem.id, percent: 30 });
+        const split = Math.floor(100 / activeFlavors.length);
+        activeFlavors.forEach((f, i) => {
+          f.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split;
+        });
+        showToast('✨ Added to Bowl', `${activeItem.name} slotted into mix.`);
+      }
+
+      renderMixSummary();
     }
 
     // ==================== MIX LAB RENDERING ====================
-    function renderLab() {
-      const catalog = EmpireStore.getFlavors();
+    function renderMixSummary() {
+      // 1. Build Gradient
       const ribbon = document.getElementById('spectrumRibbon');
       let gradParts = [];
       let cum = 0;
-
       activeFlavors.forEach(f => {
-        const item = catalog.find(c => c.id === f.id) || catalog[0];
+        const item = CATALOG.find(c => c.id === f.id) || CATALOG[0];
         const col = item ? item.color : '#8B5CF6';
         const start = cum;
         cum += f.percent;
@@ -714,73 +606,55 @@
       });
       ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
 
-      const slotContainer = document.getElementById('flavorSlotList');
-      slotContainer.innerHTML = '';
+      // 2. Render Slots
+      const container = document.getElementById('flavorSlotsContainer');
+      container.innerHTML = '';
 
-      let totalStr = 0;
-      let allProfiles = new Set();
-
+      let totalStrength = 0;
       activeFlavors.forEach((slot, index) => {
-        const item = catalog.find(c => c.id === slot.id);
+        const item = CATALOG.find(c => c.id === slot.id);
         if (!item) return;
 
-        totalStr += (item.strength * (slot.percent / 100));
-        (item.profile || []).forEach(p => allProfiles.add(p));
-
+        totalStrength += (item.strength * (slot.percent / 100));
         const grams = ((bowl.grams * slot.percent) / 100).toFixed(1);
 
         const row = document.createElement('div');
-        row.className = 'bg-slate-950/80 border border-slate-800/90 rounded-xl p-2.5 flex items-center justify-between gap-3 hover:border-slate-700 transition';
+        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5';
         row.innerHTML = `
-          <div class="flex items-center gap-2.5 flex-1 min-w-0">
-            <div class="vertical-color-rail" style="background: ${item.color}; box-shadow: 0 0 8px ${item.color}88; height: 34px;"></div>
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
             <div class="truncate">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-1">
                 <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-800 text-slate-300">${item.brand}</span>
+                <span class="text-[9px] bg-slate-800 text-slate-400 px-1 py-0.2 rounded">${item.brand}</span>
               </div>
-              <p class="text-[10px] text-slate-400 truncate mt-0.5">${item.desc}</p>
             </div>
           </div>
 
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
             <div class="text-right">
-              <span class="text-xs font-bold text-brand-gold">${slot.percent}%</span>
-              <span class="block text-[9px] text-slate-400 font-mono">${grams}g</span>
+              <span class="text-xs font-bold text-brand-gold font-mono-nums">${slot.percent}%</span>
+              <span class="text-[9px] text-slate-500 block font-mono-nums">${grams}g</span>
+            </div>
+            
+            <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-800">
+              <button onclick="adjustPercent(${index}, -5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">-</button>
+              <button onclick="adjustPercent(${index}, 5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">+</button>
             </div>
 
-            <div class="flex items-center gap-1 bg-slate-900 rounded-lg p-0.5 border border-slate-800">
-              <button onclick="adjustPercent(${index}, -5)" class="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center">-</button>
-              <button onclick="adjustPercent(${index}, 5)" class="w-5 h-5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center">+</button>
-            </div>
-
-            <button onclick="removeFlavor(${index})" class="text-slate-500 hover:text-red-400 p-1 transition">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <button onclick="removeFlavor(${index})" class="text-slate-500 hover:text-red-400 p-1">
+              <i data-lucide="trash-2" class="w-3 h-3"></i>
             </button>
           </div>
         `;
-        slotContainer.appendChild(row);
+        container.appendChild(row);
       });
 
-      // Profile tags
-      const profileContainer = document.getElementById('profilePillsContainer');
-      profileContainer.innerHTML = '';
-      allProfiles.forEach(p => {
-        const pill = document.createElement('span');
-        pill.className = 'text-[10px] font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/20 px-2 py-0.5 rounded-full';
-        pill.textContent = `#${p}`;
-        profileContainer.appendChild(pill);
-      });
-
-      const roundedStr = (totalStr).toFixed(1);
-      document.getElementById('spectrumStrengthText').textContent = `Strength: ${roundedStr}/10 (${roundedStr >= 8 ? 'Heavy Buzz' : roundedStr >= 6 ? 'Dark Leaf' : 'Smooth'})`;
-      document.getElementById('spectrumGramsText').textContent = `${bowl.grams}g in ${bowl.name}`;
-      document.getElementById('labPortionSummary').textContent = `${activeFlavors.length} Flavor${activeFlavors.length > 1 ? 's' : ''} • 100%`;
-
-      document.getElementById('addFlavorBtn').style.display = activeFlavors.length >= 3 ? 'none' : 'flex';
-
-      const total = bowl.price + (hasIceTip ? 5 : 0);
-      document.getElementById('totalPriceDisplay').textContent = `$${total.toFixed(2)}`;
+      // 3. Update Buzz Badge
+      const roundedStr = (totalStrength).toFixed(1);
+      document.getElementById('buzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      document.getElementById('totalGramsSummary').textContent = `${bowl.grams}g • 100%`;
+      document.getElementById('totalPriceText').textContent = `$${bowl.price.toFixed(2)}`;
 
       renderIcons();
     }
@@ -793,7 +667,6 @@
 
       const diff = next - cur;
       activeFlavors[index].percent = next;
-
       const otherCount = activeFlavors.length - 1;
       const otherDelta = -(diff / otherCount);
 
@@ -805,12 +678,12 @@
       if (sum !== 100) {
         activeFlavors[index === 0 ? 1 : 0].percent += (100 - sum);
       }
-      renderLab();
+      renderMixSummary();
     }
 
     function removeFlavor(index) {
       if (activeFlavors.length <= 1) {
-        showToast('⚠️ Mix Requirement', 'You must have at least 1 flavor in your bowl.');
+        showToast('⚠️ Bowl Requirement', 'Must have at least 1 flavor in your bowl.');
         return;
       }
       activeFlavors.splice(index, 1);
@@ -818,354 +691,87 @@
       activeFlavors.forEach((f, i) => {
         f.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split;
       });
-      renderLab();
+      renderMixSummary();
     }
 
-    function setBowl(id, price, name, grams, pack) {
-      bowl = { id, price, name, grams, pack };
-      document.querySelectorAll('.bowl-btn').forEach(b => {
+    function selectBowlType(id, price, name, grams) {
+      bowl = { id, price, name, grams };
+      document.querySelectorAll('.bowl-pill').forEach(b => {
         b.classList.remove('border-2', 'border-purple-500', 'bg-purple-500/15');
         b.classList.add('border', 'border-slate-800', 'bg-slate-900/60');
       });
-      const active = document.getElementById(`btn-bowl-${id}`);
+      const active = document.getElementById(`bowl-${id}`);
       if (active) {
         active.classList.add('border-2', 'border-purple-500', 'bg-purple-500/15');
         active.classList.remove('border', 'border-slate-800', 'bg-slate-900/60');
       }
-      document.getElementById('currentBowlGrams').textContent = `${grams}g ${name}`;
-      renderLab();
+      renderMixSummary();
     }
 
-    function toggleIceTip(cb) {
-      hasIceTip = cb.checked;
-      renderLab();
-    }
-
-    // ==================== STASH & INVENTORY MANAGEMENT ====================
-    function renderStashList() {
-      const flavors = EmpireStore.getFlavors();
-      const q = (document.getElementById('stashSearchInput')?.value || '').toLowerCase();
-      const container = document.getElementById('stashListContainer');
-      container.innerHTML = '';
-
-      let totalGrams = 0;
-      const filtered = flavors.filter(f => !q || f.name.toLowerCase().includes(q) || f.brand.toLowerCase().includes(q));
-
-      flavors.forEach(f => totalGrams += (f.grams || 0));
-      document.getElementById('stashTotalGrams').textContent = `${totalGrams.toLocaleString()}g`;
-      document.getElementById('stashFlavorCount').textContent = `${flavors.length} Flavors`;
-
-      filtered.forEach((f, idx) => {
-        const row = document.createElement('div');
-        const isLow = f.grams <= 50;
-        row.className = 'bg-slate-950/70 border border-slate-800 rounded-xl p-3 flex items-center justify-between gap-3';
-        row.innerHTML = `
-          <div class="flex items-center gap-2.5 flex-1 min-w-0">
-            <div class="w-3 h-8 rounded-full" style="background: ${f.color};"></div>
-            <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-white">${f.name}</span>
-                <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded font-bold">${f.brand}</span>
-                ${isLow ? '<span class="text-[9px] bg-red-950 text-red-300 font-bold px-1.5 py-0.2 rounded border border-red-800/50">LOW STOCK</span>' : ''}
-              </div>
-              <p class="text-[10px] text-slate-400 truncate mt-0.5">${f.desc || ''}</p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <div class="text-right">
-              <span class="text-xs font-bold ${isLow ? 'text-red-400' : 'text-brand-gold'}">${f.grams}g</span>
-              <span class="block text-[9px] text-slate-400">~${Math.floor(f.grams / 22)} Bowls</span>
-            </div>
-
-            <!-- Quick Restock Button -->
-            <button onclick="restockFlavor('${f.id}', 200)" class="text-[10px] bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-800 text-emerald-300 px-2 py-1 rounded-lg font-bold">
-              +200g
-            </button>
-            <button onclick="deleteFlavor('${f.id}')" class="text-slate-500 hover:text-red-400 p-1">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        `;
-        container.appendChild(row);
-      });
-
-      // Render Logs
-      const logs = EmpireStore.getLogs();
-      const logContainer = document.getElementById('consumptionLogContainer');
-      logContainer.innerHTML = '';
-      if (logs.length === 0) {
-        logContainer.innerHTML = `<div class="text-center py-3 text-xs text-slate-500">No consumption logs yet. Orders placed will automatically deduct grams here!</div>`;
-      } else {
-        logs.slice(0, 5).forEach(l => {
-          const item = document.createElement('div');
-          item.className = 'text-[11px] bg-slate-950/50 p-2 rounded-lg border border-slate-800 flex justify-between items-center';
-          item.innerHTML = `
-            <span>Table #${l.table} ordered <b>${l.grams}g ${l.flavor}</b> (${l.brand})</span>
-            <span class="text-[9px] text-slate-500 font-mono">${l.time}</span>
-          `;
-          logContainer.appendChild(item);
-        });
-      }
-
-      renderIcons();
-    }
-
-    function restockFlavor(id, amount) {
-      const flavors = EmpireStore.getFlavors();
-      const f = flavors.find(item => item.id === id);
-      if (f) {
-        f.grams += amount;
-        EmpireStore.saveFlavors(flavors);
-        renderStashList();
-        renderLab();
-        showToast('📦 Restocked', `Added ${amount}g to ${f.name}.`);
-      }
-    }
-
-    function deleteFlavor(id) {
-      let flavors = EmpireStore.getFlavors();
-      flavors = flavors.filter(f => f.id !== id);
-      EmpireStore.saveFlavors(flavors);
-      renderStashList();
-      showToast('🗑️ Deleted', 'Flavor removed from stash.');
-    }
-
-    function handleSaveNewFlavor(e) {
-      e.preventDefault();
-      const brand = document.getElementById('newFlavorBrand').value;
-      const name = document.getElementById('newFlavorName').value.trim();
-      const desc = document.getElementById('newFlavorDesc').value.trim();
-      const grams = Number(document.getElementById('newFlavorGrams').value) || 200;
-      const strength = Number(document.getElementById('newFlavorStrength').value) || 7;
-      const color = document.getElementById('newFlavorColor').value || '#A855F7';
-
-      if (!name) return;
-
-      const newId = `custom-${Date.now()}`;
-      const flavors = EmpireStore.getFlavors();
-      flavors.push({
-        id: newId,
-        name,
-        brand,
-        desc,
-        grams,
-        strength,
-        color,
-        profile: ['Custom Blend']
-      });
-
-      EmpireStore.saveFlavors(flavors);
-      closeAddFlavorModal();
-      renderStashList();
-      renderLab();
-      showToast('✨ Added to Stash', `${name} (${brand}) added with ${grams}g.`);
-    }
-
-    // ==================== DISPATCH & KDS ====================
-    function dispatchOrder(mode) {
-      const mixName = document.getElementById('mixNameInput').value || 'Custom Russian Blend';
-      const total = bowl.price + (hasIceTip ? 5 : 0);
-      const catalog = EmpireStore.getFlavors();
-
-      // Deduct grams from Stash!
-      activeFlavors.forEach(f => {
-        const grams = Number(((bowl.grams * f.percent) / 100).toFixed(1));
-        EmpireStore.deductGrams(f.id, grams);
-      });
-
+    // ==================== DISPATCH & COALS ====================
+    function sendOrder(mode) {
+      const total = bowl.price;
       if (mode === 'square') {
-        showToast('💳 Square Checkout', `Opening Square for $${total.toFixed(2)} authorization.`);
+        showToast('💳 Square Profile Checkout', `Authorizing $${total.toFixed(2)} with Square.`);
       } else {
-        showToast('👑 Added to Tab', `"${mixName}" ($${total.toFixed(2)}) dispatched to staff.`);
+        showToast('👑 Added to Table Tab', `Bowl dispatched to staff for Table #${currentTable.num}.`);
       }
-
-      // Add to KDS
-      const kds = document.getElementById('kdsQueue');
-      const item = document.createElement('div');
-      item.className = 'bg-slate-900 border border-purple-500/40 rounded-xl p-3 flex items-start justify-between';
-      
-      let recipeHtml = activeFlavors.map(f => {
-        const c = catalog.find(item => item.id === f.id);
-        const grams = ((bowl.grams * f.percent) / 100).toFixed(1);
-        return `<p>• <b>${f.percent}% ${c ? c.name : 'Shisha'}</b> (${grams}g - ${c ? c.brand : ''})</p>`;
-      }).join('');
-
-      item.innerHTML = `
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] font-bold bg-purple-600 text-white px-2 py-0.5 rounded">NEW BOWL</span>
-            <span class="text-xs font-bold text-white">Table #${currentTable.num} (${mixName})</span>
-            <span class="text-[9px] text-slate-400">Just now</span>
-          </div>
-          <div class="text-xs text-slate-300 mt-1 space-y-0.5 font-mono">
-            ${recipeHtml}
-            <p>• Bowl: <b>${bowl.name} (${bowl.grams}g)</b> ${hasIceTip ? '+ Ice Tip' : ''}</p>
-          </div>
-        </div>
-        <button onclick="this.parentElement.remove()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg">
-          Packed ✓
-        </button>
-      `;
-      kds.prepend(item);
     }
 
     function requestCoalService() {
       showToast('🔥 Coal Alert Dispatched', `Staff alerted for Table #${currentTable.num}.`);
-      const kds = document.getElementById('kdsQueue');
-      const item = document.createElement('div');
-      item.className = 'bg-red-950/40 border border-red-500/50 rounded-xl p-3 flex items-start justify-between';
-      item.innerHTML = `
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded">🔥 COAL CALL</span>
-            <span class="text-xs font-bold text-white">Table #${currentTable.num} (${currentTable.name})</span>
-            <span class="text-[9px] text-slate-400">Just now</span>
-          </div>
-          <p class="text-xs text-slate-300 mt-0.5">Rotate 3x 26mm natural coconut cubes</p>
-        </div>
-        <button onclick="this.parentElement.remove()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg">
-          Done ✓
-        </button>
-      `;
-      kds.prepend(item);
     }
 
-    // ==================== FLAVOR PICKER MODAL ====================
-    function openFlavorPicker() {
-      document.getElementById('flavorPickerModal').classList.remove('hidden');
-      renderFlavorPicker('all', '');
-      renderIcons();
-    }
-
-    function closeFlavorPicker() {
-      document.getElementById('flavorPickerModal').classList.add('hidden');
-    }
-
-    function renderFlavorPicker(brandFilter, q) {
-      const catalog = EmpireStore.getFlavors();
-      const container = document.getElementById('flavorCatalogList');
+    // ==================== ACCOUNT SYSTEM ====================
+    function openAccountModal() {
+      const container = document.getElementById('avatarPickerContainer');
       container.innerHTML = '';
-
-      const brands = ['all', ...Array.from(new Set(catalog.map(c => c.brand)))];
-      const tabsContainer = document.getElementById('modalBrandTabs');
-      tabsContainer.innerHTML = '';
-
-      brands.forEach(b => {
-        const btn = document.createElement('button');
-        const isActive = (b === brandFilter);
-        btn.className = `modal-brand-tab text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white font-bold' : 'bg-slate-800 text-slate-300'}`;
-        btn.textContent = b === 'all' ? 'All Brands' : b;
-        btn.onclick = () => renderFlavorPicker(b, document.getElementById('flavorSearchInput').value);
-        tabsContainer.appendChild(btn);
-      });
-
-      const filtered = catalog.filter(item => {
-        const matchesBrand = (brandFilter === 'all' || item.brand === brandFilter);
-        const matchesQuery = !q || item.name.toLowerCase().includes(q.toLowerCase()) || (item.desc || '').toLowerCase().includes(q.toLowerCase());
-        const notAlreadyAdded = !activeFlavors.some(f => f.id === item.id);
-        return matchesBrand && matchesQuery && notAlreadyAdded;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-500">No flavors available to add.</div>`;
-        return;
-      }
-
-      filtered.forEach(item => {
-        const div = document.createElement('div');
-        div.onclick = () => {
-          if (activeFlavors.length >= 3) {
-            showToast('⚠️ Limit', 'Max 3 flavors per bowl.');
-            closeFlavorPicker();
-            return;
-          }
-          activeFlavors.push({ id: item.id, percent: 30 });
-          const split = Math.floor(100 / activeFlavors.length);
-          activeFlavors.forEach((f, i) => {
-            f.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split;
-          });
-          closeFlavorPicker();
-          renderLab();
-          showToast('✨ Added', `${item.name} added to mix.`);
+      AVATARS.forEach(url => {
+        const isSelected = (url === userAccount.avatar);
+        const img = document.createElement('img');
+        img.src = url;
+        img.className = `w-10 h-10 rounded-full object-cover cursor-pointer transition ${isSelected ? 'ring-2 ring-purple-500 scale-105' : 'opacity-60 hover:opacity-100'}`;
+        img.onclick = () => {
+          userAccount.avatar = url;
+          openAccountModal();
         };
-        div.className = 'p-2.5 bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-purple-500/50 rounded-xl flex items-center justify-between cursor-pointer transition';
-        div.innerHTML = `
-          <div class="flex items-center gap-2.5 flex-1 min-w-0">
-            <div class="w-2.5 h-8 rounded-full" style="background: ${item.color};"></div>
-            <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-white">${item.name}</span>
-                <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded font-bold">${item.brand}</span>
-              </div>
-              <p class="text-[10px] text-slate-400 truncate mt-0.5">${item.desc || ''}</p>
-            </div>
-          </div>
-          <span class="text-xs font-bold text-brand-accent bg-purple-500/10 px-2 py-1 rounded-lg">+ Add</span>
-        `;
-        container.appendChild(div);
+        container.appendChild(img);
       });
+
+      document.getElementById('accDisplayName').value = userAccount.name;
+      document.getElementById('accHandle').value = userAccount.handle;
+      document.getElementById('accPhone').value = userAccount.phone;
+      document.getElementById('accountModal').classList.remove('hidden');
     }
 
-    function searchFlavors(q) {
-      renderFlavorPicker('all', q);
+    function closeAccountModal() {
+      document.getElementById('accountModal').classList.add('hidden');
     }
 
-    // ==================== TABLE ROUTING & SHARE ====================
-    function openTableSwitchModal() { document.getElementById('tableSwitchModal').classList.remove('hidden'); }
-    function closeTableSwitchModal() { document.getElementById('tableSwitchModal').classList.add('hidden'); }
+    function handleSaveAccount(e) {
+      e.preventDefault();
+      userAccount.name = document.getElementById('accDisplayName').value.trim();
+      userAccount.handle = document.getElementById('accHandle').value.trim();
+      userAccount.phone = document.getElementById('accPhone').value.trim();
+      
+      document.getElementById('headerUserName').textContent = userAccount.name;
+      document.getElementById('headerAvatarImg').src = userAccount.avatar;
+      
+      localStorage.setItem('empire_user_account', JSON.stringify(userAccount));
+      closeAccountModal();
+      showToast('✓ Profile Updated', `Saved profile for ${userAccount.name}.`);
+    }
 
-    function changeTable(num, name, pin) {
+    // ==================== TABLE ROUTING ====================
+    function openTableModal() { document.getElementById('tableModal').classList.remove('hidden'); }
+    function closeTableModal() { document.getElementById('tableModal').classList.add('hidden'); }
+    function setTable(num, name, pin) {
       currentTable = { num, name, pin };
-      document.getElementById('currentTableDisplay').textContent = `Table #${num} (${name})`;
-      document.getElementById('partyPinDisplay').textContent = pin;
-      closeTableSwitchModal();
-      showToast('📍 Table Switched', `Active at Table #${num}.`);
+      document.getElementById('currentTableDisplay').textContent = `Table #${num} (${name.split(' ')[0]})`;
+      closeTableModal();
+      showToast('📍 Table Selected', `Switched to Table #${num}.`);
     }
 
-    function openShareTableModal() {
-      showToast('🔗 Table PIN: #' + currentTable.pin, 'Share PIN or link with guests sitting at Table #' + currentTable.num);
-    }
-
-    function openTableTabModal() {
-      showToast('🧾 Table #' + currentTable.num + ' Tab', 'Active balance: $48.00 split across 3 guests.');
-    }
-
-    // ==================== THEME ENGINE ====================
-    function openThemeModal() { document.getElementById('themeModal').classList.remove('hidden'); }
-    function closeThemeModal() { document.getElementById('themeModal').classList.add('hidden'); }
-
-    function applyTheme(themeName) {
-      const root = document.documentElement;
-      if (themeName === 'purple-gold') {
-        root.style.setProperty('--color-gold', '#E5A93C');
-        root.style.setProperty('--color-accent', '#A855F7');
-        root.style.setProperty('--color-card-bg', '#121722');
-      } else if (themeName === 'pure-gold') {
-        root.style.setProperty('--color-gold', '#F59E0B');
-        root.style.setProperty('--color-accent', '#D97706');
-        root.style.setProperty('--color-card-bg', '#18140E');
-      } else if (themeName === 'emerald') {
-        root.style.setProperty('--color-gold', '#10B981');
-        root.style.setProperty('--color-accent', '#059669');
-        root.style.setProperty('--color-card-bg', '#0B1613');
-      }
-      closeThemeModal();
-      showToast('🎨 Theme Updated', `Switched to ${themeName} theme.`);
-    }
-
-    // ==================== SUPABASE MODAL ====================
-    function openSupabaseModal() { document.getElementById('supabaseModal').classList.remove('hidden'); }
-    function closeSupabaseModal() { document.getElementById('supabaseModal').classList.add('hidden'); }
-    function saveSupabaseConfig() {
-      showToast('⚡ Cloud Sync', 'Supabase credentials saved. Ready for live replication!');
-      closeSupabaseModal();
-    }
-
-    function openAddFlavorModal() { document.getElementById('addFlavorModal').classList.remove('hidden'); }
-    function closeAddFlavorModal() { document.getElementById('addFlavorModal').classList.add('hidden'); }
-
-    // Toast
     function showToast(title, msg) {
       const t = document.getElementById('toast');
       document.getElementById('toastIcon').textContent = title.split(' ')[0];
@@ -1175,29 +781,26 @@
       setTimeout(() => {
         t.classList.remove('opacity-100', 'translate-y-0');
         t.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-      }, 2400);
+      }, 2200);
     }
 
-    // PWA Service Worker Registration
+    // PWA SW
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
 
-    // Init on Load
+    // Init
     window.addEventListener('DOMContentLoaded', () => {
-      // Parse URL parameters for table if present e.g. ?table=8&pin=8810
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('table')) {
-        currentTable.num = params.get('table');
-        currentTable.name = params.get('section') || `Table #${currentTable.num}`;
-        currentTable.pin = params.get('pin') || `${currentTable.num}001`;
-        document.getElementById('currentTableDisplay').textContent = `Table #${currentTable.num} (${currentTable.name})`;
-        document.getElementById('partyPinDisplay').textContent = currentTable.pin;
+      const savedAcc = localStorage.getItem('empire_user_account');
+      if (savedAcc) {
+        userAccount = JSON.parse(savedAcc);
+        document.getElementById('headerUserName').textContent = userAccount.name;
+        document.getElementById('headerAvatarImg').src = userAccount.avatar;
       }
-
-      renderLab();
+      initRotaryWheel();
+      renderMixSummary();
     });
   </script>
 </body>
