@@ -490,24 +490,6 @@
       { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
     ];
 
-    const DEFAULT_FLOORPLAN = [
-      { id: 'bar-1', name: 'B1', label: 'Bar 1', type: 'bar', shape: 'circle' },
-      { id: 'bar-2', name: 'B2', label: 'Bar 2', type: 'bar', shape: 'circle' },
-      { id: 'bar-3', name: 'B3', label: 'Bar 3', type: 'bar', shape: 'circle' },
-      { id: 'bar-4', name: 'B4', label: 'Bar 4', type: 'bar', shape: 'circle' },
-      { id: 'bar-5', name: 'B5', label: 'Bar 5', type: 'bar', shape: 'circle' },
-      { id: 'bar-6', name: 'B6', label: 'Bar 6', type: 'bar', shape: 'circle' },
-      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1', type: 'booth', shape: 'rect' },
-      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2', type: 'booth', shape: 'rect' },
-      { id: 'vip-3', name: 'VIP 3', label: 'VIP Booth 3', type: 'booth', shape: 'rect' },
-      { id: 'tbl-1', name: 'T1', label: 'Table 1', type: 'table-round', shape: 'circle' },
-      { id: 'tbl-2', name: 'T2', label: 'Table 2', type: 'table-round', shape: 'circle' },
-      { id: 'tbl-3', name: 'T3', label: 'Table 3', type: 'table-round', shape: 'circle' },
-      { id: 'tbl-4', name: 'T4', label: 'Table 4', type: 'table-rect', shape: 'rect' },
-      { id: 'tbl-6', name: 'T6', label: 'Table 6 (VIP)', type: 'table-rect', shape: 'rect' },
-      { id: 'patio-1', name: 'P1', label: 'Patio 1', type: 'table-round', shape: 'circle' }
-    ];
-
     class CustomerStash {
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
@@ -521,8 +503,7 @@
       static getFloorplan() {
         const local = localStorage.getItem('empire_custom_floorplan');
         if (!local) {
-          localStorage.setItem('empire_custom_floorplan', JSON.stringify(DEFAULT_FLOORPLAN));
-          return DEFAULT_FLOORPLAN;
+          return [];
         }
         return JSON.parse(local);
       }
@@ -555,14 +536,27 @@
     function openSeatAssignModal() {
       document.getElementById('modalActiveSeatLabel').textContent = currentAssignedSeat === 'Floating VIP Tab' ? `👑 Floating VIP Tab #${currentVipTabId}` : `📍 ${currentAssignedSeat} (Tab #${currentVipTabId})`;
       
-      const plan = CustomerStash.getFloorplan();
+      const rawPlan = CustomerStash.getFloorplan();
+      const plan = rawPlan.filter(n => !n.isInfra);
       const container = document.getElementById('dynamicSeatCategoriesContainer');
       container.innerHTML = '';
 
+      if (plan.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-4 px-2 bg-black rounded-xl border border-zinc-800 text-xs text-zinc-400">
+            <span class="block font-bold text-brand-gold mb-1">👑 Open Lounge Floating Mode</span>
+            <span>Your VIP tab is active everywhere. Order freely and staff will link your seat once seated!</span>
+          </div>
+        `;
+        document.getElementById('seatAssignModal').classList.remove('hidden');
+        renderIcons();
+        return;
+      }
+
       // Group by Bar, Booth, Table
-      const bars = plan.filter(s => s.type === 'bar');
-      const booths = plan.filter(s => s.type === 'booth');
-      const tables = plan.filter(s => s.type.includes('table') || s.type === 'table-round' || s.type === 'table-rect');
+      const bars = plan.filter(s => s.type && s.type.includes('bar'));
+      const booths = plan.filter(s => s.type && s.type.includes('booth'));
+      const tables = plan.filter(s => !s.type || (!s.type.includes('bar') && !s.type.includes('booth')));
 
       if (bars.length > 0) {
         const barDiv = document.createElement('div');
@@ -575,7 +569,7 @@
             ${bars.map(s => `
               <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
                 <span class="font-bold text-white block">${s.name}</span>
-                <span class="text-[9px] text-emerald-400">Available</span>
+                <span class="text-[9px] text-emerald-400">1-Top Stool</span>
               </button>
             `).join('')}
           </div>
@@ -595,7 +589,7 @@
             ${booths.map(s => `
               <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
                 <span class="font-bold text-white block">${s.name}</span>
-                <span class="text-[9px] text-emerald-400">Available</span>
+                <span class="text-[9px] text-brand-gold font-mono">${s.capacity || 8}-Top VIP</span>
               </button>
             `).join('')}
           </div>
@@ -609,13 +603,13 @@
         tblDiv.innerHTML = `
           <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
             <i data-lucide="layers" class="w-3 h-3 text-brand-gold"></i>
-            Main Floor &amp; Patio Tables (${tables.length})
+            Center Floor &amp; Patio Tables (${tables.length})
           </span>
-          <div class="grid grid-cols-4 gap-1.5">
+          <div class="grid grid-cols-3 gap-1.5">
             ${tables.map(s => `
               <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
                 <span class="font-bold text-white block">${s.name}</span>
-                <span class="text-[9px] text-emerald-400">Open</span>
+                <span class="text-[9px] text-emerald-400 font-mono">${s.capacity || 4}-Top Open</span>
               </button>
             `).join('')}
           </div>
