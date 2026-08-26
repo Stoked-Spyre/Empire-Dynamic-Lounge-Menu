@@ -2314,14 +2314,13 @@
         
         let gradParts = [];
         let cum = 0;
+        let totalStrength = 0;
         labPortions.forEach(p => {
           const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
           const col = item.color || '#E5A93C';
           const start = cum;
           cum += p.percent;
-        let totalStrength = 0;
-        labPortions.forEach(p => {
-          const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
+          gradParts.push(`${col} ${start}% ${cum}%`);
           totalStrength += ((item.strength || 7) * (p.percent / 100));
         });
         const buzzVal = parseFloat(totalStrength.toFixed(1));
