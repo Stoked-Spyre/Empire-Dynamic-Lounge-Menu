@@ -243,6 +243,927 @@
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ============================================================
+       EMPIRE HOOKAH LOUNGE — CINEMATIC OBSIDIAN ENTRY SCREEN
+       (Ultra-Optimized 60FPS GPU Pipeline)
+       ============================================================ */
+    :root {
+      --entry-ink:        #000000;
+      --entry-surface:    #05070a;
+      --entry-card:       #0d1117;
+      --entry-glass-border: rgba(255, 255, 255, 0.09);
+      --entry-glass-bg:   rgba(255, 255, 255, 0.035);
+      --entry-lev-ease:   cubic-bezier(.37, 0, .63, 1);
+      --entry-sheen-ease: cubic-bezier(.66, 0, .16, 1);
+      --entry-zoom-ease:  cubic-bezier(.72, 0, .9, .35);
+
+      /* Dynamic Skyline Silhouettes (Default Night: Deep Obsidian & Midnight Indigo) */
+      --g-back-1:   #32133e;
+      --g-back-2:   #180a22;
+      --g-back-3:   #08030e;
+      --g-mid-1:    #1e0c28;
+      --g-mid-2:    #0e0414;
+      --g-mid-3:    #040108;
+      --g-front-1:  #100516;
+      --g-front-2:  #060209;
+      --g-front-3:  #000000;
+      --face-fill:   rgba(255, 255, 255, 0.035);
+
+      /* Dynamic Desert Multi-Tier Tones (Arizona License Plate Palette — Night Default) */
+      --desert-back-1:  #341a44;
+      --desert-back-2:  #1d0d28;
+      --desert-back-3:  #0a0310;
+      --desert-mid-1:   #281024;
+      --desert-mid-2:   #160614;
+      --desert-mid-3:   #060108;
+      --desert-floor-1: #15221b;
+      --desert-floor-2: #0b140f;
+      --desert-floor-3: #000000;
+      --saguaro-fill:   #1a3327;
+      --rim-glow:       rgba(240, 180, 80, 0.2);
+    }
+
+    .cinematic-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      overflow: hidden;
+      background: #000000;
+      transform-origin: 50% 34%;
+      will-change: transform, opacity;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cinematic-stage.hidden-stage {
+      display: none !important;
+    }
+
+    /* Ambient Dynamic Sky with Smooth Theme Transitions */
+    .cinematic-sky {
+      position: absolute;
+      inset: 0;
+      transition: background 1.4s cubic-bezier(.4, 0, .2, 1);
+      /* Default Night Atmosphere */
+      background:
+        radial-gradient(120vmax 48vmax at 50% 72%, rgba(175, 48, 118, 0.28) 0%, rgba(120, 35, 92, 0.2) 40%, rgba(45, 16, 52, 0.12) 70%, transparent 100%),
+        radial-gradient(85vmax 30vmax at 50% 86%, rgba(225, 110, 80, 0.18) 0%, transparent 70%),
+        radial-gradient(75vmax 60vmax at 50% 24%, rgba(255, 230, 200, 0.08) 0%, rgba(130, 50, 110, 0.06) 50%, transparent 75%),
+        linear-gradient(180deg, #000000 0%, #030206 18%, #080612 36%, #120a1f 56%, #220e2e 74%, #14071c 90%, #08020d 100%);
+    }
+
+    /* Day / Night Theme Variations & Dynamic Building Color Adaptations */
+    .time-sunrise {
+      --g-back-1:   #783c4e;
+      --g-back-2:   #4a1e2c;
+      --g-back-3:   #220a14;
+      --g-mid-1:    #582436;
+      --g-mid-2:    #320e1c;
+      --g-mid-3:    #14040a;
+      --g-front-1:  #3a1220;
+      --g-front-2:  #1e0610;
+      --g-front-3:  #0a0105;
+      --face-fill:   rgba(255, 200, 160, 0.06);
+
+      --desert-back-1:  #6c2850;
+      --desert-back-2:  #441432;
+      --desert-back-3:  #220618;
+      --desert-mid-1:   #8a3224;
+      --desert-mid-2:   #5c1c12;
+      --desert-mid-3:   #2e0a05;
+      --desert-floor-1: #244230;
+      --desert-floor-2: #14281c;
+      --desert-floor-3: #08120c;
+      --saguaro-fill:   #1e4d36;
+      --rim-glow:       rgba(255, 190, 80, 0.4);
+    }
+    .time-sunrise .cinematic-sky {
+      background:
+        radial-gradient(100vmax 40vmax at 50% 80%, rgba(255, 160, 80, 0.5) 0%, rgba(255, 90, 110, 0.35) 40%, rgba(140, 60, 120, 0.2) 70%, transparent 100%),
+        radial-gradient(70vmax 40vmax at 50% 20%, rgba(255, 210, 160, 0.2) 0%, transparent 80%),
+        linear-gradient(180deg, #0e162c 0%, #201a3c 28%, #4a2046 58%, #7e2e3e 82%, #381216 100%);
+    }
+
+    .time-day {
+      --g-back-1:   #5b7a99;
+      --g-back-2:   #3b5670;
+      --g-back-3:   #203445;
+      --g-mid-1:    #405a75;
+      --g-mid-2:    #24384d;
+      --g-mid-3:    #12202e;
+      --g-front-1:  #283d54;
+      --g-front-2:  #182736;
+      --g-front-3:  #0a1420;
+      --face-fill:   rgba(255, 255, 255, 0.08);
+
+      /* Arizona Plate Vibrant Daytime Contrast: Purple Mountains, Sedona Red Rocks & Cactus Green */
+      --desert-back-1:  #433068;
+      --desert-back-2:  #2c1c48;
+      --desert-back-3:  #180e2a;
+      --desert-mid-1:   #c84a24;
+      --desert-mid-2:   #943014;
+      --desert-mid-3:   #5a1808;
+      --desert-floor-1: #782c16;
+      --desert-floor-2: #48180a;
+      --desert-floor-3: #220803;
+      --saguaro-fill:   #1b5438;
+      --rim-glow:       rgba(255, 215, 60, 0.45);
+    }
+    .time-day .cinematic-sky {
+      background:
+        radial-gradient(100vmax 45vmax at 50% 88%, rgba(255, 200, 40, 0.5) 0%, rgba(255, 120, 0, 0.3) 32%, rgba(0, 180, 216, 0.15) 65%, transparent 100%),
+        radial-gradient(85vmax 40vmax at 50% 20%, rgba(255, 255, 240, 0.35) 0%, transparent 70%),
+        linear-gradient(180deg, #026ca8 0%, #0d8ecf 28%, #38b6db 58%, #efa33a 86%, #d85c18 100%);
+    }
+
+    .time-sunset {
+      --g-back-1:   #54163c;
+      --g-back-2:   #2c071e;
+      --g-back-3:   #10020a;
+      --g-mid-1:    #3c0d2a;
+      --g-mid-2:    #1c0412;
+      --g-mid-3:    #080105;
+      --g-front-1:  #28071a;
+      --g-front-2:  #10020a;
+      --g-front-3:  #040003;
+      --face-fill:   rgba(255, 160, 200, 0.05);
+
+      /* Arizona Sunset: Fiery Magenta, Violet Mountains & Terracotta */
+      --desert-back-1:  #4c1240;
+      --desert-back-2:  #2c0624;
+      --desert-back-3:  #12010e;
+      --desert-mid-1:   #78182a;
+      --desert-mid-2:   #4a0a16;
+      --desert-mid-3:   #220208;
+      --desert-floor-1: #38081a;
+      --desert-floor-2: #1e030c;
+      --desert-floor-3: #080004;
+      --saguaro-fill:   #183626;
+      --rim-glow:       rgba(255, 100, 150, 0.45);
+    }
+    .time-sunset .cinematic-sky {
+      background:
+        radial-gradient(110vmax 45vmax at 50% 86%, rgba(255, 80, 0, 0.5) 0%, rgba(240, 20, 110, 0.4) 35%, rgba(120, 20, 120, 0.25) 68%, transparent 100%),
+        radial-gradient(80vmax 40vmax at 50% 25%, rgba(255, 200, 140, 0.25) 0%, transparent 75%),
+        linear-gradient(180deg, #10061e 0%, #280838 25%, #681050 55%, #bd2048 80%, #f46020 95%, #4a0818 100%);
+    }
+
+    /* Seasonal Sky Tints */
+    .season-winter .cinematic-sky {
+      filter: saturate(0.85) hue-rotate(15deg);
+    }
+    .season-spring .cinematic-sky {
+      filter: saturate(1.1) hue-rotate(-12deg);
+    }
+    .season-summer .cinematic-sky {
+      filter: saturate(1.25) contrast(1.05);
+    }
+    .season-fall .cinematic-sky {
+      filter: saturate(1.15) hue-rotate(-20deg);
+    }
+
+    /* Disable shooting stars & fade stars during daytime and sunrise */
+    .time-day .cinematic-stars,
+    .time-day .shooting-star-container,
+    .time-day .beacon,
+    .time-sunrise .shooting-star-container {
+      display: none !important;
+      opacity: 0 !important;
+    }
+    .time-sunrise .cinematic-stars {
+      opacity: 0.2;
+      transition: opacity 1s ease;
+    }
+
+    /* 2-Tier Starfield (Drifting on GPU transform) */
+    .cinematic-stars {
+      position: absolute;
+      inset: 0 0 45% 0;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+    .cinematic-stars i {
+      position: absolute;
+      inset: -10% 0 0 0;
+      display: block;
+      background-repeat: repeat;
+      will-change: transform;
+    }
+    .cinematic-stars i:nth-child(1) {
+      background-image:
+        radial-gradient(1px 1px at 22px 34px, rgba(255,255,255,.7), transparent 100%),
+        radial-gradient(1px 1px at 128px 92px, rgba(255,255,255,.4), transparent 100%),
+        radial-gradient(1px 1px at 231px 151px, rgba(255,255,255,.55), transparent 100%);
+      background-size: 280px 190px;
+      animation: star-drift 240s linear infinite;
+    }
+    .cinematic-stars i:nth-child(2) {
+      background-image:
+        radial-gradient(1.5px 1.5px at 64px 18px, rgba(255,245,225,.65), transparent 100%),
+        radial-gradient(1px 1px at 176px 130px, rgba(255,255,255,.35), transparent 100%);
+      background-size: 340px 240px;
+      animation: star-drift 320s linear infinite reverse;
+    }
+    @keyframes star-drift { to { transform: translate3d(-280px, 0, 0); } }
+
+    /* Occasional Shooting Stars (Meteors - Forward Head Trajectory) */
+    .shooting-star-container {
+      position: absolute;
+      inset: 0 0 35% 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
+      transition: opacity 1s ease;
+    }
+    .shooting-star {
+      position: absolute;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,230,200,0.85) 18%, rgba(255,255,255,0) 100%);
+      border-radius: 999px;
+      opacity: 0;
+    }
+    .shooting-star::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -1.5px;
+      height: 4.5px;
+      width: 4.5px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 1px #fff, 0 0 12px 3px rgba(255, 220, 180, 0.8);
+    }
+    .shooting-star:nth-child(1) {
+      top: 12%;
+      left: 80%;
+      width: 110px;
+      animation: meteor-pass-1 9s ease-in-out infinite;
+      animation-delay: 2s;
+    }
+    .shooting-star:nth-child(2) {
+      top: 6%;
+      left: 55%;
+      width: 140px;
+      animation: meteor-pass-2 14s ease-in-out infinite;
+      animation-delay: 7s;
+    }
+    .shooting-star:nth-child(3) {
+      top: 20%;
+      left: 90%;
+      width: 95px;
+      animation: meteor-pass-3 11s ease-in-out infinite;
+      animation-delay: 12s;
+    }
+    @keyframes meteor-pass-1 {
+      0%   { transform: rotate(-38deg) translateX(80px); opacity: 0; }
+      3%   { opacity: 0.95; }
+      9%   { transform: rotate(-38deg) translateX(-420px); opacity: 0; }
+      100% { transform: rotate(-38deg) translateX(-420px); opacity: 0; }
+    }
+    @keyframes meteor-pass-2 {
+      0%   { transform: rotate(-42deg) translateX(80px); opacity: 0; }
+      2.5% { opacity: 0.95; }
+      7.5% { transform: rotate(-42deg) translateX(-500px); opacity: 0; }
+      100% { transform: rotate(-42deg) translateX(-500px); opacity: 0; }
+    }
+    @keyframes meteor-pass-3 {
+      0%   { transform: rotate(-35deg) translateX(80px); opacity: 0; }
+      3.5% { opacity: 0.95; }
+      9.5% { transform: rotate(-35deg) translateX(-360px); opacity: 0; }
+      100% { transform: rotate(-35deg) translateX(-360px); opacity: 0; }
+    }
+
+    /* ============================================================
+       SEASONAL ATMOSPHERIC PARTICLE LAYERS
+       ============================================================ */
+
+    /* 1. Winter Snow Flurries & Ground Snowdrifts */
+    .snow-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 3;
+      display: none;
+    }
+    .season-winter .snow-container { display: block; }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      background: #ffffff;
+      border-radius: 50%;
+      opacity: 0.8;
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+      animation: snow-fall linear infinite;
+    }
+    @keyframes snow-fall {
+      0% {
+        transform: translate3d(0, -10px, 0) scale(0.8);
+        opacity: 0;
+      }
+      8% { opacity: 0.9; }
+      92% { opacity: 0.9; }
+      100% {
+        transform: translate3d(50px, 105vh, 0) scale(1.1);
+        opacity: 0;
+      }
+    }
+    .winter-snowdrifts {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 90px;
+      pointer-events: none;
+      z-index: 4;
+    }
+    .winter-snowdrifts svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* 2. Spring Fluttering Butterflies & Cascading Lotus Petals */
+    .butterfly-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 3;
+      display: none;
+    }
+    .season-spring .butterfly-container { display: block; }
+    .butterfly {
+      position: absolute;
+      width: 16px;
+      height: 14px;
+      opacity: 0;
+      filter: drop-shadow(0 0 6px rgba(255, 220, 150, 0.85));
+      animation: butterfly-drift ease-in-out infinite;
+    }
+    .butterfly svg {
+      width: 100%;
+      height: 100%;
+      animation: butterfly-wings 0.3s ease-in-out infinite alternate;
+      transform-origin: center;
+    }
+    @keyframes butterfly-wings {
+      0%   { transform: scaleX(1); }
+      100% { transform: scaleX(0.2); }
+    }
+    @keyframes butterfly-drift {
+      0% {
+        transform: translate3d(0, 90vh, 0) rotate(10deg);
+        opacity: 0;
+      }
+      12% { opacity: 0.9; }
+      88% { opacity: 0.9; }
+      100% {
+        transform: translate3d(160px, 10vh, 0) rotate(-15deg);
+        opacity: 0;
+      }
+    }
+    .spring-petal {
+      position: absolute;
+      top: -20px;
+      width: 9px;
+      height: 12px;
+      background: radial-gradient(circle, #ffccd5 10%, #ff69b4 70%, #d81b60 100%);
+      border-radius: 60% 40% 60% 40%;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 4px rgba(255, 182, 193, 0.7));
+      animation: petal-fall linear infinite;
+    }
+    @keyframes petal-fall {
+      0% {
+        transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.9; }
+      90% { opacity: 0.9; }
+      100% {
+        transform: translate3d(120px, 105vh, 0) rotate(420deg) rotateY(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* 3. Summer Daytime Sunbeams (Active in Summer during Day & Sunrise) */
+    .summer-sunbeams {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
+      display: none;
+    }
+    .season-summer.time-day .summer-sunbeams,
+    .season-summer.time-sunrise .summer-sunbeams {
+      display: block;
+    }
+    .sunbeam {
+      position: absolute;
+      top: -25%;
+      height: 150%;
+      transform-origin: top center;
+      pointer-events: none;
+      background: linear-gradient(145deg, rgba(255, 240, 180, 0.45) 0%, rgba(255, 210, 100, 0.18) 35%, rgba(255, 180, 50, 0.05) 65%, transparent 90%);
+      filter: blur(15px);
+      animation: sunbeam-shimmer 6s ease-in-out infinite alternate;
+    }
+    .sunbeam-1 { left: 8%;  width: 140px; transform: rotate(-28deg); animation-delay: 0s; }
+    .sunbeam-2 { left: 26%; width: 220px; transform: rotate(-22deg); animation-delay: -2s; opacity: 0.8; }
+    .sunbeam-3 { left: 46%; width: 180px; transform: rotate(-18deg); animation-delay: -4s; }
+    .sunbeam-4 { left: 66%; width: 240px; transform: rotate(-12deg); animation-delay: -1s; opacity: 0.9; }
+    .sunbeam-5 { left: 84%; width: 160px; transform: rotate(-8deg);  animation-delay: -3s; }
+    .sunbeam-6 { left: -6%; width: 200px; transform: rotate(-34deg); animation-delay: -5s; opacity: 0.7; }
+
+    @keyframes sunbeam-shimmer {
+      0%   { opacity: 0.55; transform: scaleY(0.95); }
+      50%  { opacity: 0.95; transform: scaleY(1.05); }
+      100% { opacity: 0.65; transform: scaleY(1); }
+    }
+
+    .sun-mote {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff8e1;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255, 235, 59, 0.9);
+      animation: mote-float ease-in-out infinite alternate;
+    }
+    @keyframes mote-float {
+      0%   { transform: translateY(0) translateX(0); opacity: 0.2; }
+      50%  { opacity: 0.9; }
+      100% { transform: translateY(-30px) translateX(20px); opacity: 0.3; }
+    }
+
+    /* 3b. Summer Night Physics-Based Fireworks Canvas */
+    .cinematic-fireworks-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      display: none;
+    }
+    .season-summer:not(.time-day):not(.time-sunrise) .cinematic-fireworks-canvas {
+      display: block;
+    }
+    /* Hide shooting stars in summer since fireworks replace them */
+    .season-summer .shooting-star-container {
+      display: none !important;
+      opacity: 0 !important;
+    }
+
+    /* 4. Fall / Autumn Drifting Golden Leaves */
+    .autumn-leaves-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 3;
+      display: none;
+    }
+    .season-fall .autumn-leaves-container { display: block; }
+    .autumn-leaf {
+      position: absolute;
+      top: -20px;
+      width: 15px;
+      height: 15px;
+      background: radial-gradient(circle, #ffb300 0%, #e65100 70%, #bf360c 100%);
+      clip-path: polygon(50% 0%, 80% 20%, 100% 60%, 75% 100%, 50% 85%, 25% 100%, 0% 60%, 20% 20%);
+      opacity: 0.85;
+      filter: drop-shadow(0 0 4px rgba(255, 110, 30, 0.65));
+      animation: leaf-tumble linear infinite;
+    }
+    @keyframes leaf-tumble {
+      0% {
+        transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0deg);
+        opacity: 0;
+      }
+      10% { opacity: 0.9; }
+      90% { opacity: 0.9; }
+      100% {
+        transform: translate3d(90px, 105vh, 0) rotate(360deg) rotateY(540deg);
+        opacity: 0;
+      }
+    }
+
+    /* Dense Metropolis Skyline layers - Seamless high-rise wall */
+    .cinematic-skyline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: block;
+      width: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .skyline--back  { height: 52vh; opacity: .9; }
+    .skyline--mid   { height: 44vh; opacity: .96; }
+    .skyline--front { height: 38vh; }
+
+    @media (min-width: 640px) {
+      .skyline--back  { height: 46vh; }
+      .skyline--mid   { height: 38vh; }
+      .skyline--front { height: 32vh; }
+    }
+
+    /* Crisp Pinpoint Red Aviation Warning LEDs (Tiny, Sharp, Non-Blobby) */
+    .beacon {
+      fill: #ff2222;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 1.5px #ff1111);
+      animation: beacon-pinpoint 2.8s ease-in-out infinite;
+    }
+    .beacon--alt {
+      animation-delay: -1.4s;
+    }
+    @keyframes beacon-pinpoint {
+      0%, 100% {
+        opacity: 0.12;
+      }
+      50% {
+        opacity: 0.95;
+        fill: #ff4444;
+      }
+    }
+    .face { fill: rgba(255, 255, 255, 0.035); }
+
+    /* ============================================================
+       THEME PREVIEW CONTROLLER TOOLBAR (Discreet Floating HUD)
+       ============================================================ */
+    .theme-preview-toolbar {
+      position: absolute;
+      top: 14px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .theme-bar-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      background: rgba(10, 10, 16, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .theme-bar-pill:hover {
+      background: rgba(20, 20, 30, 0.85);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .theme-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e5a93c;
+      box-shadow: 0 0 6px #e5a93c;
+    }
+    .theme-pill-text {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .theme-pill-chevron {
+      color: rgba(255, 255, 255, 0.5);
+      transition: transform 0.2s ease;
+    }
+    .theme-preview-toolbar.open .theme-pill-chevron {
+      transform: rotate(180deg);
+    }
+
+    .theme-dropdown-panel {
+      padding: 8px 10px;
+      border-radius: 16px;
+      background: rgba(10, 12, 18, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      width: 320px;
+      max-width: 90vw;
+      transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
+    }
+    .theme-dropdown-panel.hidden {
+      display: none !important;
+    }
+    .theme-group-label {
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+      padding-left: 2px;
+    }
+    .theme-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 2px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .theme-btn .btn-lbl {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+    .theme-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .theme-btn.active {
+      background: rgba(229, 169, 60, 0.2);
+      border-color: #e5a93c;
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(229, 169, 60, 0.35);
+    }
+
+    /* Lightweight Soft Fog Strata */
+    .fog {
+      position: absolute;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+    }
+    .fog--far {
+      bottom: 16vh;
+      height: 14vh;
+      background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.015) 50%, rgba(5, 7, 10, 0.3) 100%);
+    }
+    .fog--near {
+      bottom: 4vh;
+      height: 14vh;
+      background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.02) 60%, rgba(0, 0, 0, 0.45) 100%);
+    }
+    .fog--ground {
+      bottom: 0;
+      height: 12vh;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+    }
+
+    /* Pure GPU-Accelerated Radial Smoke Plumes */
+    .smoke-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .plume {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      width: 36vmin;
+      height: 36vmin;
+      margin: -18vmin 0 0 -18vmin;
+      border-radius: 50%;
+      mix-blend-mode: screen;
+      opacity: 0;
+      will-change: transform, opacity;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 40%, transparent 70%);
+      animation: plume-rise var(--dur, 16s) linear var(--delay, 0s) infinite;
+      transform: translate3d(0, 8vh, 0) scale(.4);
+    }
+    .plume:nth-child(1) { --dur: 14s; --delay: -1s;  --dx:  5vw; --rot:  35deg; --s0: .4;  --s1: 1.7; }
+    .plume:nth-child(2) { --dur: 18s; --delay: -6s;  --dx: -7vw; --rot: -45deg; --s0: .45; --s1: 2.0; width: 42vmin; height: 42vmin; margin: -21vmin 0 0 -21vmin; }
+    .plume:nth-child(3) { --dur: 15s; --delay: -11s; --dx:  3vw; --rot:  20deg; --s0: .35; --s1: 1.4; left: 46%; }
+    .plume:nth-child(4) { --dur: 20s; --delay: -4s;  --dx: -4vw; --rot: -25deg; --s0: .5;  --s1: 2.2; left: 54%; width: 46vmin; height: 46vmin; margin: -23vmin 0 0 -23vmin; }
+
+    @keyframes plume-rise {
+      0%   { transform: translate3d(0, 8vh, 0) scale(var(--s0, .4)) rotate(0deg); opacity: 0; }
+      15%  { opacity: .35; }
+      50%  { transform: translate3d(calc(var(--dx, 5vw) * .5), -16vh, 0) scale(calc(var(--s1, 1.8) * .65)) rotate(calc(var(--rot, 30deg) * .5)); opacity: .25; }
+      80%  { opacity: .12; }
+      100% { transform: translate3d(var(--dx, 5vw), -48vh, 0) scale(var(--s1, 1.8)) rotate(var(--rot, 30deg)); opacity: 0; }
+    }
+
+    /* Emblem Anchor & Luminous Pop Glow */
+    .emblem-anchor {
+      position: absolute;
+      left: 50%;
+      top: 27%;
+      transform: translate(-50%, -50%);
+      width: clamp(110px, 29vw, 140px);
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (min-width: 640px) {
+      .emblem-anchor {
+        top: 30%;
+        width: clamp(125px, 20vw, 155px);
+      }
+    }
+    .emblem-halo {
+      position: absolute;
+      inset: -35%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(229, 169, 60, 0.08) 35%, transparent 65%);
+      animation: halo-breathe 6.4s var(--entry-lev-ease) infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes halo-breathe {
+      0%, 100% { transform: scale(1); opacity: .8; }
+      50%      { transform: scale(1.06); opacity: 1; }
+    }
+    .emblem-core {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      animation: levitate 6.4s var(--entry-lev-ease) infinite;
+      will-change: transform;
+    }
+    @keyframes levitate {
+      0%, 100% { transform: translate3d(0, 4px, 0); }
+      50%      { transform: translate3d(0, -5px, 0); }
+    }
+    .emblem-core img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* Pop glow: crisp diamond halo + subtle warm accent */
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.55))
+              drop-shadow(0 0 24px rgba(229, 169, 60, 0.3))
+              drop-shadow(0 8px 18px rgba(0, 0, 0, 0.9));
+    }
+    .emblem-sheen {
+      position: absolute;
+      inset: 0;
+      -webkit-mask: url("logos/empire_clean.png") center / contain no-repeat;
+      mask: url("logos/empire_clean.png") center / contain no-repeat;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .emblem-sheen::before {
+      content: "";
+      position: absolute;
+      top: -25%;
+      bottom: -25%;
+      left: 0;
+      width: 32%;
+      background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.08) 30%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.08) 70%, transparent 100%);
+      transform: translate3d(-180%, 0, 0) skewX(-12deg);
+      animation: sheen 7.5s var(--entry-sheen-ease) 1.8s infinite;
+      will-change: transform;
+    }
+    @keyframes sheen {
+      0%   { transform: translate3d(-180%, 0, 0) skewX(-12deg); }
+      24%  { transform: translate3d(480%, 0, 0) skewX(-12deg); }
+      100% { transform: translate3d(480%, 0, 0) skewX(-12deg); }
+    }
+
+    /* Brand titles below emblem - always centered and non-wrapping */
+    .brand-titles {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+      width: max-content;
+    }
+
+    /* Transparent Bottom Policy & Enter HUD */
+    .entry-hud {
+      position: absolute;
+      left: 50%;
+      bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      max-width: 390px;
+      z-index: 20;
+    }
+    .hud-glass-card {
+      background: transparent;
+      border: none;
+      border-radius: 20px;
+      padding: 0;
+      box-shadow: none;
+    }
+    .hud-policy-pill {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 14px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .enter-lounge-btn {
+      position: relative;
+      width: 100%;
+      padding: 13px 20px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 14px;
+      color: #FFFFFF;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      text-indent: 0.24em;
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+    .enter-lounge-btn:hover, .enter-lounge-btn:focus-visible {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #FFFFFF;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
+    .enter-lounge-btn:active {
+      transform: scale(0.98);
+    }
+    .enter-lounge-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 35%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.25) 50%, transparent);
+      transform: translate3d(-140%, 0, 0) skewX(-14deg);
+      animation: btn-sweep 4.8s var(--entry-sheen-ease) infinite;
+      pointer-events: none;
+    }
+    @keyframes btn-sweep {
+      0%   { transform: translate3d(-140%, 0, 0) skewX(-14deg); }
+      35%  { transform: translate3d(380%, 0, 0) skewX(-14deg); }
+      100% { transform: translate3d(380%, 0, 0) skewX(-14deg); }
+    }
+
+    /* Punch-Through Transition */
+    .cinematic-stage.entering {
+      animation: enter-zoom 0.85s var(--entry-zoom-ease) forwards;
+      pointer-events: none;
+    }
+    @keyframes enter-zoom {
+      0%   { transform: scale(1); opacity: 1; }
+      55%  { opacity: 1; }
+      100% { transform: scale(22); opacity: 0; }
+    }
+    .cinematic-stage.entering .emblem-anchor {
+      animation: emblem-fade 0.4s ease-out forwards;
+    }
+    @keyframes emblem-fade { to { opacity: 0; } }
+    .cinematic-stage.entering .entry-hud {
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Subtle Static Vignette */
+    .cinematic-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(120% 90% at 50% 34%, transparent 45%, rgba(0, 0, 0, 0.85) 100%);
+      pointer-events: none;
+      z-index: 10;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
@@ -264,7 +1185,7 @@
 
     <!-- Center: Official Empire Hookah Lounge Emblem (Tap to Open Welcome/Rules) -->
     <div class="flex items-center justify-center">
-      <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-10 h-10 rounded-full border border-amber-500/40 object-cover cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.25)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
+      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-10 h-10 object-contain cursor-pointer filter drop-shadow-[0_0_10px_rgba(255,255,255,0.35)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
     </div>
 
     <!-- Right: VIP Log In Button (Public Guest View) OR VIP Actions (Logged In View) (Balanced 80px) -->
@@ -783,62 +1704,281 @@
     </div>
   </div>
 
-  <!-- ==================== INITIAL LANDING & WELCOME LOUNGE MODAL ==================== -->
-  <div id="welcomeLoungeModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex flex-col justify-end sm:justify-center items-center p-3 transition-opacity duration-300">
-    <div id="welcomeLoungeSheet" class="w-full max-w-sm bg-zinc-950/85 backdrop-blur-2xl border border-amber-500/40 rounded-3xl p-5 shadow-2xl space-y-4 text-center transition-transform duration-300 relative">
-      
-      <!-- Top Drag Bar / Dismiss Handle -->
-      <div onclick="closeWelcomeLoungeModal()" class="w-12 h-1 bg-zinc-700 hover:bg-zinc-500 rounded-full mx-auto mb-1 cursor-pointer"></div>
-      
-      <!-- Official Empire Hookah Lounge Logo (Larger, Centered) -->
-      <div class="flex flex-col items-center justify-center pt-1">
-        <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-32 h-32 rounded-full border-2 border-amber-500/50 object-cover shadow-[0_0_35px_rgba(229,169,60,0.3)] mx-auto mb-2" />
-        <div class="text-xs font-bold text-amber-400 tracking-widest uppercase">EMPIRE HOOKAH LOUNGE</div>
-        <div class="text-[10px] text-zinc-500 font-semibold tracking-wider uppercase">EST. 2010 • PHOENIX, AZ</div>
-      </div>
+  <!-- ==================== CINEMATIC OBSIDIAN ENTRY SCREEN ==================== -->
+  <div id="cinematicEntryStage" class="cinematic-stage" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
 
-      <!-- About Empire Story (Dynamic & Editable from Owner Suite) -->
-      <div class="text-left bg-black/40 p-3.5 rounded-2xl border border-zinc-800/80 space-y-1">
-        <div class="flex items-center justify-between">
-          <h4 id="welcomeAboutTitle" class="text-xs font-bold uppercase tracking-wider text-amber-400">About Empire</h4>
-          <span class="text-[9px] text-zinc-500 uppercase font-semibold">Bespoke Lounge</span>
+    <!-- Top Atmospheric Season & Day/Night Controller Bar -->
+    <div id="themePreviewBar" class="theme-preview-toolbar">
+      <div class="theme-bar-pill" onclick="toggleThemeController()">
+        <span class="theme-pill-dot"></span>
+        <span id="themeBarLabel" class="theme-pill-text">Atmosphere: Auto</span>
+        <svg class="theme-pill-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      
+      <div id="themeDropdownPanel" class="theme-dropdown-panel hidden space-y-2">
+        <!-- Season Row -->
+        <div class="space-y-1">
+          <div class="theme-group-label">SEASONS OF THE YEAR</div>
+          <div class="grid grid-cols-5 gap-1">
+            <button type="button" onclick="setSeason('auto')" class="theme-btn active" data-season="auto"><span>🗓️</span><span class="btn-lbl">Auto</span></button>
+            <button type="button" onclick="setSeason('winter')" class="theme-btn" data-season="winter"><span>❄️</span><span class="btn-lbl">Winter</span></button>
+            <button type="button" onclick="setSeason('spring')" class="theme-btn" data-season="spring"><span>🦋</span><span class="btn-lbl">Spring</span></button>
+            <button type="button" onclick="setSeason('summer')" class="theme-btn" data-season="summer"><span>🎆</span><span class="btn-lbl">Summer</span></button>
+            <button type="button" onclick="setSeason('fall')" class="theme-btn" data-season="fall"><span>🍂</span><span class="btn-lbl">Fall</span></button>
+          </div>
         </div>
-        <p id="welcomeAboutBody" class="text-xs text-zinc-300 leading-relaxed">
-          Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.
-        </p>
-      </div>
 
-      <!-- House Lounge Policies (Clean Bullet Points with Federal Law Link) -->
-      <div class="text-left bg-black/40 p-3.5 rounded-2xl border border-zinc-800/80 space-y-2 text-xs">
-        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Lounge House Policies</div>
-        <ul class="space-y-2 text-zinc-300">
-          <li class="flex items-start gap-2">
-            <span class="text-amber-400 font-bold text-sm leading-none">•</span>
-            <div>
-              <span>Minimum 21+ of age with valid physical government ID required.</span>
-              <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-0.5 text-amber-400/90 hover:text-amber-300 underline font-medium text-[11px] ml-1">
-                <span>Federal Tobacco 21 Law</span>
-                <i data-lucide="external-link" class="w-3 h-3 inline"></i>
-              </a>
-            </div>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-amber-400 font-bold text-sm leading-none">•</span>
-            <span>Maximum of 2 guests per hookah pipe.</span>
-          </li>
-        </ul>
+        <!-- Time of Day Row -->
+        <div class="space-y-1 pt-1.5 border-t border-white/10">
+          <div class="theme-group-label">TIME OF DAY & DIURNAL CYCLE</div>
+          <div class="grid grid-cols-5 gap-1">
+            <button type="button" onclick="setTimeOfDay('night')" class="theme-btn active" data-time="night"><span>🌙</span><span class="btn-lbl">Night</span></button>
+            <button type="button" onclick="setTimeOfDay('sunrise')" class="theme-btn" data-time="sunrise"><span>🌅</span><span class="btn-lbl">Sunrise</span></button>
+            <button type="button" onclick="setTimeOfDay('day')" class="theme-btn" data-time="day"><span>☀️</span><span class="btn-lbl">Day</span></button>
+            <button type="button" onclick="setTimeOfDay('sunset')" class="theme-btn" data-time="sunset"><span>🌇</span><span class="btn-lbl">Sunset</span></button>
+            <button type="button" onclick="setTimeOfDay('cycle30m')" class="theme-btn" data-time="cycle30m"><span>⏱️</span><span class="btn-lbl">30m Cycle</span></button>
+          </div>
+        </div>
       </div>
-
-      <!-- Swipe Down or Tap Action Button -->
-      <div class="space-y-1.5 pt-1">
-        <button onclick="closeWelcomeLoungeModal()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition">
-          <span>Enter Lounge Menu</span>
-          <i data-lucide="arrow-down" class="w-4 h-4"></i>
-        </button>
-        <p class="text-[10px] text-zinc-500">↓ Swipe down anywhere to explore</p>
-      </div>
-
     </div>
+
+    <!-- 1 · Ambient Dynamic Sky -->
+    <div class="cinematic-sky" aria-hidden="true"></div>
+
+    <!-- 2 · Starfield (3 drifting layers) & Occasional Shooting Stars -->
+    <div class="cinematic-stars" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="shooting-star-container" aria-hidden="true">
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+      <div class="shooting-star"></div>
+    </div>
+
+    <!-- 2b · Seasonal Particle FX Layers -->
+    <!-- Winter Snow Flurries & Bottom Snowdrifts -->
+    <div class="snow-container" aria-hidden="true">
+      <div class="snowflake" style="left:4%; width:3px; height:3px; animation-duration:5.5s; animation-delay:0s;"></div>
+      <div class="snowflake" style="left:12%; width:4px; height:4px; animation-duration:7s; animation-delay:1.5s;"></div>
+      <div class="snowflake" style="left:20%; width:2.5px; height:2.5px; animation-duration:4.8s; animation-delay:0.7s;"></div>
+      <div class="snowflake" style="left:32%; width:5px; height:5px; animation-duration:6.2s; animation-delay:2.2s;"></div>
+      <div class="snowflake" style="left:44%; width:3px; height:3px; animation-duration:5s; animation-delay:0.3s;"></div>
+      <div class="snowflake" style="left:56%; width:4px; height:4px; animation-duration:6.8s; animation-delay:1.8s;"></div>
+      <div class="snowflake" style="left:66%; width:2.5px; height:2.5px; animation-duration:4.5s; animation-delay:3s;"></div>
+      <div class="snowflake" style="left:76%; width:4.5px; height:4.5px; animation-duration:5.8s; animation-delay:0.9s;"></div>
+      <div class="snowflake" style="left:86%; width:3px; height:3px; animation-duration:6.5s; animation-delay:2.5s;"></div>
+      <div class="snowflake" style="left:94%; width:4px; height:4px; animation-duration:5.2s; animation-delay:1.2s;"></div>
+      
+      <!-- Layered Frosted Snowdrifts along bottom of page -->
+      <div class="winter-snowdrifts">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="gSnowDune" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+              <stop offset="35%" stop-color="#cbeaf8" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#081826" stop-opacity="0.95"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#gSnowDune)" d="M-50,120 V70 Q220,35 460,60 T980,45 T1490,65 V120 Z" opacity="0.65"/>
+          <path fill="url(#gSnowDune)" d="M-50,120 V82 Q340,50 700,75 T1490,60 V120 Z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Spring Glowing Butterflies & Cascading Lotus/Cherry Blossom Petals -->
+    <div class="butterfly-container" aria-hidden="true">
+      <div class="butterfly" style="left:15%; animation-duration:11s; animation-delay:0s;">
+        <svg viewBox="0 0 24 24" fill="#ffd700"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
+      </div>
+      <div class="butterfly" style="left:72%; animation-duration:13s; animation-delay:3.5s;">
+        <svg viewBox="0 0 24 24" fill="#7fffd4"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
+      </div>
+      <div class="butterfly" style="left:42%; animation-duration:15s; animation-delay:7s;">
+        <svg viewBox="0 0 24 24" fill="#ffb6c1"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
+      </div>
+
+      <!-- Cascading falling petals -->
+      <div class="spring-petal" style="left:8%; animation-duration:7s; animation-delay:0s;"></div>
+      <div class="spring-petal" style="left:24%; animation-duration:9s; animation-delay:1.5s; transform:scale(0.85);"></div>
+      <div class="spring-petal" style="left:38%; animation-duration:8s; animation-delay:4s;"></div>
+      <div class="spring-petal" style="left:52%; animation-duration:10s; animation-delay:2.5s; transform:scale(1.15);"></div>
+      <div class="spring-petal" style="left:68%; animation-duration:7.5s; animation-delay:5s;"></div>
+      <div class="spring-petal" style="left:82%; animation-duration:8.5s; animation-delay:1s; transform:scale(0.9);"></div>
+      <div class="spring-petal" style="left:92%; animation-duration:9.5s; animation-delay:3s;"></div>
+    </div>
+
+    <!-- Autumn Tumbling Amber Leaves -->
+    <div class="autumn-leaves-container" aria-hidden="true">
+      <div class="autumn-leaf" style="left:12%; animation-duration:6.5s; animation-delay:0s;"></div>
+      <div class="autumn-leaf" style="left:32%; animation-duration:8s; animation-delay:2s; transform:scale(0.8);"></div>
+      <div class="autumn-leaf" style="left:54%; animation-duration:7s; animation-delay:1s; transform:scale(1.1);"></div>
+      <div class="autumn-leaf" style="left:76%; animation-duration:7.5s; animation-delay:3.5s;"></div>
+      <div class="autumn-leaf" style="left:90%; animation-duration:8.5s; animation-delay:1.8s; transform:scale(0.9);"></div>
+    </div>
+
+    <!-- 3 · Summer Seasonal FX (Volumetric Day Sunbeams & Night Celebratory Fireworks) -->
+    <!-- 3a · Summer Daytime Volumetric Sunbeams -->
+    <div class="summer-sunbeams" aria-hidden="true">
+      <div class="sunbeam sunbeam-1"></div>
+      <div class="sunbeam sunbeam-2"></div>
+      <div class="sunbeam sunbeam-3"></div>
+      <div class="sunbeam sunbeam-4"></div>
+      <div class="sunbeam sunbeam-5"></div>
+      <div class="sunbeam sunbeam-6"></div>
+      <!-- Shimmering golden sun motes -->
+      <div class="sun-mote" style="left:20%; top:28%; animation-duration:4.5s;"></div>
+      <div class="sun-mote" style="left:38%; top:18%; animation-duration:5.8s; animation-delay:1s;"></div>
+      <div class="sun-mote" style="left:58%; top:32%; animation-duration:4.8s; animation-delay:0.5s;"></div>
+      <div class="sun-mote" style="left:76%; top:22%; animation-duration:6.2s; animation-delay:2s;"></div>
+      <div class="sun-mote" style="left:88%; top:35%; animation-duration:5.2s; animation-delay:1.5s;"></div>
+    </div>
+
+    <!-- 3b · Summer Night Celebratory Fireworks Canvas Engine -->
+    <canvas id="cinematicFireworksCanvas" class="cinematic-fireworks-canvas" aria-hidden="true"></canvas>
+
+    <!-- 3c · Distant Dense Metropolis Silhouette (Continuous, Zero-Gap) -->
+    <svg class="cinematic-skyline skyline--back" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <!-- Dynamic Gradient stops driven by CSS variables -->
+        <linearGradient id="gBack" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="var(--g-back-1)"/>
+          <stop offset="45%" stop-color="var(--g-back-2)"/>
+          <stop offset="100%" stop-color="var(--g-back-3)"/>
+        </linearGradient>
+      </defs>
+      
+      <!-- Continuous High-Rise Wall with Integrated Spires -->
+      <path fill="url(#gBack)" d="
+        M-100,380 V220 h30 v-30 h24 v30 h28 V150 h22 v-20 h10 v20 h22 v230 h26 V180 h28 v-35 h14 v35 h24 v200 h30 V120 h22 v-18 h8 v18 h22 v260 h28 V160 h30 v-25 h12 v25 h26 v220 h32 V190 h26 v-30 h16 v30 h24 v220 h28 V130 h18 v-15 h8 v-20 h4 l2,-45 2,45 h4 v20 h8 v15 h18 v270 h30 V175 h26 v-28 h12 v28 h24 v230 h34 V140 h28 v-35 h16 v35 h26 v240 h30 V110 h16 v-25 h8 v-30 h4 l2,-25 2,25 h4 v30 h8 v25 h16 v290 h32 V165 h28 v-30 h14 v30 h26 v245 h34 V125 h20 v-22 h8 v-25 h4 l2,-35 2,35 h4 v25 h8 v22 h20 v275 h30 V180 h26 v-25 h14 v25 h24 v225 h32 V135 h22 v-20 h10 v-30 h4 l2,-40 2,40 h4 v30 h10 v20 h22 v265 h30 V190 h28 v-32 h12 v32 h26 v220 h34 V150 h24 v-25 h12 v25 h26 v235 h32 V120 h20 v-18 h8 v18 h20 v260 h30 V170 h26 v-28 h14 v28 h24 v235 h32 V140 h26 v-30 h12 v30 h24 v240 h30 V185 h28 v-25 h12 v25 h26 v220 h34 V130 h22 v-20 h8 v20 h22 v250 h32 V175 h28 v-30 h14 v30 h24 v235 h160 V380 Z"/>
+    </svg>
+
+    <!-- 3b · Mid Dense Skyscraper Skyline (Seamless High-Rise Silhouette) -->
+    <svg class="cinematic-skyline skyline--mid" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <!-- Dynamic Gradient stops driven by CSS variables -->
+        <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="var(--g-mid-1)"/>
+          <stop offset="55%" stop-color="var(--g-mid-2)"/>
+          <stop offset="100%" stop-color="var(--g-mid-3)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Mid Skyline Continuous Solid Path with Setbacks and Spires -->
+      <path fill="url(#gMid)" d="
+        M-100,380 V240 h40 v-35 h32 v35 h36 V180 h28 v-30 h16 v30 h26 v200 h34 V150 h12 l5,-45 5,45 h12 v230 h38 V210 h34 v-30 h22 v30 h30 v170 h44 V160 h28 v-28 h12 v28 h26 v220 h40 V190 h34 v-35 h20 v35 h32 v190 h42 V130 h18 v-25 h10 v-20 h6 l3,-35 3,35 h6 v20 h10 v25 h18 v250 h40 V170 h36 v-35 h18 v35 h32 v210 h44 V145 h22 v-25 h8 v-30 h4 l2,-40 2,40 h4 v30 h8 v25 h22 v235 h42 V185 h32 v-30 h16 v30 h28 v195 h40 V135 h20 v-22 h8 v-25 h4 l2,-35 2,35 h4 v25 h8 v22 h20 v245 h42 V195 h34 v-32 h18 v32 h30 v185 h44 V155 h26 v-28 h12 v28 h28 v225 h42 V205 h36 v-35 h20 v35 h34 v175 h40 V170 h28 v-25 h14 v25 h26 v210 h160 V380 Z"/>
+    </svg>
+
+    <!-- 3c · Foreground Cityscape — Dense Street-Wall, Moonlit 3D Facets & 3 Crisp Pinpoint LEDs -->
+    <svg class="cinematic-skyline skyline--front" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <!-- Dynamic Gradient stops driven by CSS variables -->
+        <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="var(--g-front-1)"/>
+          <stop offset="45%" stop-color="var(--g-front-2)"/>
+          <stop offset="100%" stop-color="var(--g-front-3)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Fully Integrated Foreground Buildings with Continuous Rooflines, Setbacks and Spires -->
+      <path fill="url(#gFront)" d="
+        M-40,400 V230 H80 V400 Z
+        M-30,230 v-10 h20 v10 Z M52,230 v-14 h16 v14 Z
+        M110,400 V170 h18 v-20 h22 v-14 h21 v-42 h4 v42 h23 v14 h22 v20 h18 V400 Z
+        M280,400 V240 L370,224 V400 Z
+        M400,400 V150 h24 v-26 h20 v-16 h19 v-40 h4 v40 h21 v16 h20 v26 h24 V400 Z
+        M580,400 V210 h20 v-20 h54 v20 h20 V400 Z
+        M680,400 V180 h22 v-22 h18 v-14 h16 v-44 h4 v44 h18 v14 h18 v22 h22 V400 Z
+        M850,400 V215 h18 v-18 h48 v18 h18 V400 Z
+        M980,400 V155 h22 v-26 h31 v-48 h4 v48 h33 v26 h22 V400 Z
+        M1130,400 V235 L1230,220 V400 Z
+        M1260,400 V175 h18 v-22 h94 v22 h18 V400 Z
+        M1420,400 V230 H1540 V400 Z"/>
+
+      <!-- Continuous street wall -->
+      <rect fill="url(#gFront)" x="-80" y="370" width="1720" height="30"/>
+
+      <!-- Dynamic Moonlit / Sunlit 3D side faces -->
+      <path fill="var(--face-fill)" d="
+        M64,230 H80 V400 H64 Z
+        M220,170 h18 V400 h-18 Z
+        M498,150 h18 V400 h-18 Z
+        M654,210 h18 V400 h-18 Z
+        M764,180 h18 V400 h-18 Z
+        M916,215 h18 V400 h-18 Z
+        M1070,155 h22 V400 h-22 Z
+        M1372,175 h18 V400 h-18 Z"/>
+
+      <!-- Just 3 Crisp, Tiny Pinpoint Red Aviation LEDs on Main Spires (Zero Blobs) -->
+      <circle class="beacon" cx="463" cy="68" r="2"/>
+      <circle class="beacon beacon--alt" cx="736" cy="100" r="2.2"/>
+      <circle class="beacon" cx="1031" cy="81" r="2"/>
+    </svg>
+
+    <!-- 4 · Horizon Fog Strata -->
+    <div class="fog fog--far" aria-hidden="true"></div>
+    <div class="fog fog--near" aria-hidden="true"></div>
+
+    <!-- 5 · Smoke Atmosphere -->
+    <div class="smoke-field" aria-hidden="true">
+      <div class="plume"></div>
+      <div class="plume"></div>
+      <div class="plume"></div>
+      <div class="plume"></div>
+    </div>
+
+    <!-- 6 · Emblem Crest (Scaled Mobile-First with Pop Glow) -->
+    <div class="emblem-anchor">
+      <div class="emblem-halo" aria-hidden="true"></div>
+      <div class="emblem-core">
+        <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" />
+        <div class="emblem-sheen" aria-hidden="true"></div>
+      </div>
+      <div class="brand-titles">
+        <div class="text-[12px] font-extrabold tracking-[0.28em] text-white uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] whitespace-nowrap">EMPIRE HOOKAH LOUNGE</div>
+        <div class="text-[9px] font-semibold tracking-[0.22em] text-white/55 uppercase mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] whitespace-nowrap">EST. 2010 • PHOENIX, AZ</div>
+      </div>
+    </div>
+
+    <!-- Ground fog -->
+    <div class="fog fog--ground" aria-hidden="true"></div>
+
+    <!-- 7 · Integrated Obsidian Glass Policies & Action Button -->
+    <div class="entry-hud">
+      <div class="hud-glass-card space-y-2">
+        <!-- Policies Grid -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-[9px] font-bold tracking-widest text-white/50 uppercase px-1 pb-0.5">
+            <span>Lounge House Policies</span>
+            <span class="text-white/40">Bespoke Lounge</span>
+          </div>
+
+          <div class="grid grid-cols-1 gap-1.5 text-xs text-zinc-300">
+            <div class="hud-policy-pill justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-black text-white shrink-0">21+</span>
+                <span id="entryAgeReqDisplay" class="text-[11px] font-medium text-zinc-100">Minimum 21+ of age with valid ID</span>
+              </div>
+              <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-[10px] text-amber-400 hover:text-amber-300 underline ml-2 shrink-0 font-medium" title="Federal Tobacco 21 Law">Law ↗</a>
+            </div>
+
+            <div class="hud-policy-pill">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-black text-white shrink-0">2P</span>
+                <span id="entryPipeLimitDisplay" class="text-[11px] font-medium text-zinc-100">Maximum 2 guests per hookah pipe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enter Lounge Menu Action Button -->
+        <button onclick="enterLounge()" class="enter-lounge-btn" type="button">
+          <span>Enter Lounge Menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 8 · Vignette Overlay -->
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+
   </div>
 
   <!-- ==================== VIP LOGIN & WI-FI VERIFICATION MODAL ==================== -->
@@ -3158,69 +4298,379 @@
       }, 2600);
     }
 
+    // ============================================================
+    // DYNAMIC SEASONAL & DIURNAL ATMOSPHERE ENGINE
+    // ============================================================
+    let activeSeason = 'auto'; // 'auto', 'winter', 'spring', 'summer', 'fall'
+    let activeTimeOfDay = 'night'; // 'night', 'sunrise', 'day', 'sunset', 'cycle30m'
+    let diurnalCycleTimer = null;
+    let diurnalStep = 0; // 0: night, 1: sunrise, 2: day, 3: sunset
+
+    function getAutoSeason() {
+      const month = new Date().getMonth(); // 0-11
+      if (month === 11 || month === 0 || month === 1) return 'winter'; // Dec, Jan, Feb
+      if (month >= 2 && month <= 4) return 'spring'; // Mar, Apr, May
+      if (month >= 5 && month <= 7) return 'summer'; // Jun, Jul, Aug (Phoenix Cacti)
+      return 'fall'; // Sep, Oct, Nov
+    }
+
+    function getSeasonLabel(season) {
+      switch (season) {
+        case 'winter': return '❄️ Winter';
+        case 'spring': return '🦋 Spring';
+        case 'summer': return '🎆 Summer';
+        case 'fall':   return '🍂 Fall';
+        default:       return '🗓️ Auto';
+      }
+    }
+
+    function getTimeLabel(time) {
+      switch (time) {
+        case 'night':    return '🌙 Night';
+        case 'sunrise':  return '🌅 Sunrise';
+        case 'day':      return '☀️ Day';
+        case 'sunset':   return '🌇 Sunset';
+        case 'cycle30m': return '⏱️ 30m Cycle';
+        default:         return '🌙 Night';
+      }
+    }
+
+    function toggleThemeController() {
+      const bar = document.getElementById('themePreviewBar');
+      const panel = document.getElementById('themeDropdownPanel');
+      if (!bar || !panel) return;
+      const isOpen = !panel.classList.contains('hidden');
+      if (isOpen) {
+        panel.classList.add('hidden');
+        bar.classList.remove('open');
+      } else {
+        panel.classList.remove('hidden');
+        bar.classList.add('open');
+      }
+    }
+
+    function setSeason(season) {
+      activeSeason = season;
+      const effectiveSeason = season === 'auto' ? getAutoSeason() : season;
+      
+      const stage = document.getElementById('cinematicEntryStage');
+      if (stage) {
+        stage.classList.remove('season-winter', 'season-spring', 'season-summer', 'season-fall');
+        stage.classList.add(`season-${effectiveSeason}`);
+      }
+
+      // Update button highlights
+      document.querySelectorAll('[data-season]').forEach(btn => {
+        if (btn.getAttribute('data-season') === season) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      updateThemeBarLabel();
+    }
+
+    function setTimeOfDay(time) {
+      activeTimeOfDay = time;
+      if (diurnalCycleTimer) {
+        clearInterval(diurnalCycleTimer);
+        diurnalCycleTimer = null;
+      }
+
+      const stage = document.getElementById('cinematicEntryStage');
+      if (!stage) return;
+
+      if (time === 'cycle30m') {
+        runDiurnalCycleStep();
+        // Cycle changes state every 7.5 minutes (30 minutes total cycle)
+        diurnalCycleTimer = setInterval(runDiurnalCycleStep, 7.5 * 60 * 1000);
+      } else {
+        applyTimeClass(time);
+      }
+
+      // Update button highlights
+      document.querySelectorAll('[data-time]').forEach(btn => {
+        if (btn.getAttribute('data-time') === time) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      updateThemeBarLabel();
+    }
+
+    function applyTimeClass(time) {
+      const stage = document.getElementById('cinematicEntryStage');
+      if (!stage) return;
+      stage.classList.remove('time-night', 'time-sunrise', 'time-day', 'time-sunset');
+      stage.classList.add(`time-${time}`);
+    }
+
+    function runDiurnalCycleStep() {
+      const times = ['night', 'sunrise', 'day', 'sunset'];
+      const currentTime = times[diurnalStep % times.length];
+      applyTimeClass(currentTime);
+      diurnalStep++;
+      updateThemeBarLabel();
+    }
+
+    function updateThemeBarLabel() {
+      const label = document.getElementById('themeBarLabel');
+      if (!label) return;
+      const seasonText = activeSeason === 'auto' ? `Auto (${getSeasonLabel(getAutoSeason())})` : getSeasonLabel(activeSeason);
+      const timeText = getTimeLabel(activeTimeOfDay);
+      label.textContent = `${seasonText} • ${timeText}`;
+    }
+
+    function initAtmosphereEngine() {
+      setSeason('auto');
+      setTimeOfDay('night');
+    }
+
+    // ============================================================
+    // CINEMATIC FIREWORKS ENGINE (Summer Night Mode)
+    // Real physics: Ascending rockets, Chrysanthemum starbursts,
+    // trailing spark ribbons, velocity drag, gravity arcs & twinkling embers
+    // ============================================================
+    function initCinematicFireworksEngine() {
+      const canvas = document.getElementById('cinematicFireworksCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let rockets = [];
+      let lastLaunch = 0;
+      let width = 0, height = 0;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const PALETTES = [
+        { name: '24K Gold Willow', colors: ['#ffe082', '#ffd54f', '#ffb300', '#fff8e1', '#ffffff'] },
+        { name: 'Ruby Crimson', colors: ['#ff1744', '#ff4081', '#f50057', '#ff80ab', '#ffffff'] },
+        { name: 'Electric Cyan', colors: ['#00e5ff', '#00b0ff', '#80d8ff', '#00f5d4', '#ffffff'] },
+        { name: 'Royal Violet', colors: ['#d500f9', '#7c4dff', '#651fff', '#ea80fc', '#ffffff'] },
+        { name: 'Emerald Jade', colors: ['#00e676', '#76ff03', '#69f0ae', '#b9f6ca', '#ffffff'] },
+        { name: 'Rose Gold', colors: ['#ff8a80', '#ff5252', '#ffd180', '#ffe57f', '#ffffff'] }
+      ];
+
+      class Rocket {
+        constructor() {
+          this.x = width * (0.18 + Math.random() * 0.64);
+          this.y = height + 10;
+          this.targetY = height * (0.12 + Math.random() * 0.26);
+          this.speed = 8.5 + Math.random() * 3.5;
+          this.angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.22;
+          this.vx = Math.cos(this.angle) * this.speed;
+          this.vy = Math.sin(this.angle) * this.speed;
+          this.palette = PALETTES[Math.floor(Math.random() * PALETTES.length)];
+          this.trail = [];
+          this.dead = false;
+        }
+        update() {
+          this.trail.push({ x: this.x, y: this.y });
+          if (this.trail.length > 7) this.trail.shift();
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vy += 0.08;
+          if (this.y <= this.targetY || this.vy >= -0.8) {
+            this.explode();
+            this.dead = true;
+          }
+        }
+        explode() {
+          const count = 55 + Math.floor(Math.random() * 25);
+          const burstSpeed = 3.6 + Math.random() * 3.4;
+          const isWillow = Math.random() > 0.45;
+          for (let i = 0; i < count; i++) {
+            const theta = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.18;
+            const speed = burstSpeed * (0.35 + Math.random() * 0.65);
+            const color = this.palette.colors[Math.floor(Math.random() * this.palette.colors.length)];
+            particles.push(new Particle(this.x, this.y, theta, speed, color, isWillow));
+          }
+        }
+        draw() {
+          for (let i = 0; i < this.trail.length; i++) {
+            const p = this.trail[i];
+            const a = (i / this.trail.length) * 0.85;
+            ctx.fillStyle = `rgba(255, 230, 160, ${a})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      class Particle {
+        constructor(x, y, angle, speed, color, isWillow) {
+          this.x = x;
+          this.y = y;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
+          this.color = color;
+          this.isWillow = isWillow;
+          this.friction = isWillow ? 0.96 : 0.94;
+          this.gravity = isWillow ? 0.055 : 0.075;
+          this.alpha = 1;
+          this.decay = 0.012 + Math.random() * 0.014;
+          this.history = [];
+          this.dead = false;
+          this.twinkle = Math.random() > 0.35;
+        }
+        update() {
+          this.history.push({ x: this.x, y: this.y });
+          if (this.history.length > 5) this.history.shift();
+          this.vx *= this.friction;
+          this.vy *= this.friction;
+          this.vy += this.gravity;
+          this.x += this.vx;
+          this.y += this.vy;
+          this.alpha -= this.decay;
+          if (this.alpha <= 0) this.dead = true;
+        }
+        draw() {
+          if (this.dead) return;
+          let a = this.alpha;
+          if (this.twinkle && Math.random() > 0.6) a *= 0.35;
+          
+          if (this.history.length > 1) {
+            ctx.strokeStyle = this.color;
+            ctx.globalAlpha = a * 0.85;
+            ctx.lineWidth = this.isWillow ? 1.6 : 2;
+            ctx.beginPath();
+            ctx.moveTo(this.history[0].x, this.history[0].y);
+            for (let i = 1; i < this.history.length; i++) {
+              ctx.lineTo(this.history[i].x, this.history[i].y);
+            }
+            ctx.stroke();
+          }
+          
+          ctx.fillStyle = '#ffffff';
+          ctx.globalAlpha = a;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.isWillow ? 1.2 : 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function loop(timestamp) {
+        const stage = document.getElementById('cinematicEntryStage');
+        const isSummer = stage && stage.classList.contains('season-summer');
+        const isDayOrSunrise = stage && (stage.classList.contains('time-day') || stage.classList.contains('time-sunrise'));
+        const isVisible = isSummer && !isDayOrSunrise && !stage.classList.contains('hidden-stage');
+
+        if (!isVisible) {
+          ctx.clearRect(0, 0, width, height);
+          rockets = [];
+          particles = [];
+          requestAnimationFrame(loop);
+          return;
+        }
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (timestamp - lastLaunch > 1400 + Math.random() * 1100) {
+          rockets.push(new Rocket());
+          if (Math.random() > 0.6) {
+            setTimeout(() => { 
+              const s = document.getElementById('cinematicEntryStage');
+              if (s && s.classList.contains('season-summer')) rockets.push(new Rocket()); 
+            }, 300);
+          }
+          lastLaunch = timestamp;
+        }
+
+        for (let i = rockets.length - 1; i >= 0; i--) {
+          rockets[i].update();
+          rockets[i].draw();
+          if (rockets[i].dead) rockets.splice(i, 1);
+        }
+
+        ctx.shadowBlur = 7;
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          ctx.shadowColor = p.color;
+          p.update();
+          p.draw();
+          if (p.dead) particles.splice(i, 1);
+        }
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+
+        requestAnimationFrame(loop);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    function enterLounge() {
+      const stage = document.getElementById('cinematicEntryStage');
+      if (!stage || stage.classList.contains('entering')) return;
+
+      stage.classList.add('entering');
+    }
+
     function openWelcomeLoungeModal() {
       const rules = CustomerStash.getLoungeRules();
-      const titleEl = document.getElementById('welcomeAboutTitle');
-      const bodyEl = document.getElementById('welcomeAboutBody');
+      const ageEl = document.getElementById('entryAgeReqDisplay');
+      const pipeEl = document.getElementById('entryPipeLimitDisplay');
 
-      if (titleEl) titleEl.textContent = rules.aboutTitle || 'About Empire';
-      if (bodyEl) bodyEl.textContent = rules.aboutBody || 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.';
+      if (ageEl && rules.ageReq) ageEl.textContent = `Minimum ${rules.ageReq}`;
+      if (pipeEl && rules.pipeLimit) pipeEl.textContent = rules.pipeLimit;
 
-      const modal = document.getElementById('welcomeLoungeModal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        renderIcons();
+      const stage = document.getElementById('cinematicEntryStage');
+      if (stage) {
+        stage.classList.remove('hidden-stage', 'entering');
+        stage.style.display = '';
       }
     }
 
     function closeWelcomeLoungeModal() {
-      const modal = document.getElementById('welcomeLoungeModal');
-      if (modal) {
-        modal.classList.add('hidden');
-        try {
-          if (typeof sessionStorage !== 'undefined') {
-            sessionStorage.setItem('empire_welcome_seen', 'true');
-          }
-        } catch(e) {}
-      }
+      enterLounge();
     }
 
-    // Touch swipe-down listener for welcome sheet
-    let welcomeTouchStartY = 0;
-    function setupWelcomeModalSwipeListener() {
-      const sheet = document.getElementById('welcomeLoungeSheet');
-      if (sheet) {
-        sheet.addEventListener('touchstart', e => {
-          welcomeTouchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        sheet.addEventListener('touchend', e => {
-          const endY = e.changedTouches[0].clientY;
-          if (endY - welcomeTouchStartY > 50) {
-            closeWelcomeLoungeModal();
-          }
-        }, { passive: true });
+    function setupCinematicStageListeners() {
+      const stage = document.getElementById('cinematicEntryStage');
+      if (stage) {
+        stage.addEventListener('animationend', (e) => {
+          if (e.target !== stage || e.animationName !== 'enter-zoom') return;
+          stage.classList.add('hidden-stage');
+          stage.classList.remove('entering');
+          document.dispatchEvent(new CustomEvent('empire:entered'));
+        });
       }
+
+      window.addEventListener('keydown', (e) => {
+        const stage = document.getElementById('cinematicEntryStage');
+        if (e.key === 'Enter' && stage && !stage.classList.contains('hidden-stage')) {
+          enterLounge();
+        }
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initAtmosphereEngine();
+      initCinematicFireworksEngine();
       initBrandStationDial();
       renderMixLab();
       setupCustomerSpectrumDragListeners();
-      setupWelcomeModalSwipeListener();
+      setupCinematicStageListeners();
       updateVipPointsHeader();
       renderCustomerMenu();
       switchCustomerTab('menu');
       renderIcons();
 
-      // Show welcome landing sheet if first visit this session
-      try {
-        if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem('empire_welcome_seen')) {
-          openWelcomeLoungeModal();
-        }
-      } catch(e) {
-        openWelcomeLoungeModal();
-      }
+      // Always show landing screen on page load — requires clicking Enter to proceed
+      openWelcomeLoungeModal();
     });
   </script>
 </body>
