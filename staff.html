@@ -177,7 +177,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Coal Master &amp; Floor POS Terminal</span>
+          <span>Coal Master, Floor POS &amp; Owner Settings</span>
         </div>
       </div>
     </div>
@@ -189,30 +189,34 @@
     </button>
   </header>
 
-  <!-- ==================== 2. STAFF APP MODULES (4 DEDICATED VIEWS) ==================== -->
+  <!-- ==================== 2. STAFF APP MODULES (5 DEDICATED VIEWS) ==================== -->
   <main id="staffMainApp" class="w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
     
-    <!-- 4 Navigation Tabs -->
-    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
-      <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold">
-        <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+    <!-- 5 Navigation Tabs -->
+    <div class="grid grid-cols-5 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
+      <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[11px]">
+        <i data-lucide="flask-conical" class="w-3 h-3"></i>
         <span>Mix Lab</span>
       </button>
-      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1">
-        <i data-lucide="tablet" class="w-3.5 h-3.5"></i>
-        <span>Floor POS</span>
+      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="tablet" class="w-3 h-3"></i>
+        <span>POS</span>
       </button>
-      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1">
-        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
-        <span>Coal KDS</span>
+      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
+        <span>KDS</span>
       </button>
-      <button onclick="switchStaffTab('stash')" id="staff-tab-stash" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1">
-        <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
+      <button onclick="switchStaffTab('stash')" id="staff-tab-stash" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="package" class="w-3 h-3 text-brand-gold"></i>
         <span>Stash</span>
+      </button>
+      <button onclick="switchStaffTab('settings')" id="staff-tab-settings" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="sliders" class="w-3 h-3 text-brand-gold"></i>
+        <span>Tax ⚙️</span>
       </button>
     </div>
 
-    <!-- MODULE 1: COMPLETE STOKED MIX LAB (FULL ENGINE) -->
+    <!-- MODULE 1: COMPLETE STOKED MIX LAB -->
     <div id="staff-view-lab" class="staff-panel flex flex-col gap-3">
       
       <!-- Top Lab Header with Buzz & Hardware Config -->
@@ -448,6 +452,93 @@
       <div class="space-y-2" id="stashItemsList"></div>
     </div>
 
+    <!-- MODULE 5: OWNER TAX & SETTINGS BACKEND MANAGER -->
+    <div id="staff-view-settings" class="staff-panel hidden flex flex-col gap-3">
+      <div class="pos-card rounded-2xl p-3.5">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
+              Owner Tax Rates &amp; Surcharge Config
+            </h3>
+            <p class="text-[10px] text-zinc-400">Controls automatic POS &amp; Square calculation across all devices</p>
+          </div>
+          <span class="text-[9px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-900">
+            🟢 Active &amp; Synced
+          </span>
+        </div>
+
+        <!-- Primary Tax Rate Form -->
+        <div class="space-y-3 mt-3 bg-zinc-950 p-3 rounded-xl border border-zinc-850 text-xs">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Lounge Jurisdiction / Location</label>
+            <input type="text" id="ownerLocationInput" value="Phoenix, Arizona" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Tax Display Label</label>
+              <input type="text" id="ownerTaxLabelInput" value="Phoenix Sales Tax" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
+            </div>
+
+            <div>
+              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Total Sales Tax Rate (%)</label>
+              <div class="flex items-center gap-1">
+                <input type="number" step="0.01" min="0" max="30" id="ownerTaxRateInput" value="8.60" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold font-mono focus:outline-none focus:border-brand-gold" />
+                <span class="text-xs font-bold text-zinc-400 font-mono">%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Breakdown Explanation -->
+          <div class="bg-black/60 p-2.5 rounded-lg border border-zinc-800/80 text-[11px] space-y-1">
+            <div class="flex justify-between text-zinc-400">
+              <span>Arizona State Base Rate:</span>
+              <span class="font-mono text-zinc-300">5.60%</span>
+            </div>
+            <div class="flex justify-between text-zinc-400">
+              <span>Maricopa County Rate:</span>
+              <span class="font-mono text-zinc-300">0.70%</span>
+            </div>
+            <div class="flex justify-between text-zinc-400">
+              <span>City of Phoenix Privilege Tax:</span>
+              <span class="font-mono text-zinc-300">2.30%</span>
+            </div>
+            <div class="pt-1 border-t border-zinc-800 flex justify-between font-bold text-white">
+              <span>Composite Active Rate:</span>
+              <span class="font-mono text-brand-gold" id="settingsEffectiveRate">8.60%</span>
+            </div>
+          </div>
+
+          <button onclick="saveOwnerTaxConfig()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Save &amp; Broadcast Tax Rate to All Tablets</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Preset Quick Adjustments -->
+      <div class="pos-card rounded-2xl p-3.5">
+        <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">Preset Quick Adjustments</h4>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="applyTaxPreset('Phoenix Standard', 8.60)" class="p-2 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 rounded-xl text-center text-xs">
+            <span class="font-bold text-white block">Phoenix (8.60%)</span>
+            <span class="text-[9px] text-zinc-500">Current Standard</span>
+          </button>
+
+          <button onclick="applyTaxPreset('Scottsdale AZ', 8.05)" class="p-2 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 rounded-xl text-center text-xs">
+            <span class="font-bold text-white block">Scottsdale (8.05%)</span>
+            <span class="text-[9px] text-zinc-500">Neighboring City</span>
+          </button>
+
+          <button onclick="applyTaxPreset('Tempe AZ', 8.10)" class="p-2 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 rounded-xl text-center text-xs">
+            <span class="font-bold text-white block">Tempe (8.10%)</span>
+            <span class="text-[9px] text-zinc-500">College District</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ==================== STAFF PIN LOGIN MODAL ==================== -->
@@ -514,6 +605,17 @@
       { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
     ];
 
+    const DEFAULT_TAX_CONFIG = {
+      location: 'Phoenix, Arizona',
+      primaryName: 'Phoenix Sales Tax',
+      primaryRate: 8.60,
+      breakdown: [
+        { name: 'Arizona State Tax', rate: 5.60 },
+        { name: 'Maricopa County Tax', rate: 0.70 },
+        { name: 'City of Phoenix Tax', rate: 2.30 }
+      ]
+    };
+
     class StaffStash {
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
@@ -526,6 +628,19 @@
 
       static saveInventory(items) {
         localStorage.setItem('empire_stoked_stash', JSON.stringify(items));
+      }
+
+      static getTaxConfig() {
+        const local = localStorage.getItem('empire_tax_config');
+        if (!local) {
+          localStorage.setItem('empire_tax_config', JSON.stringify(DEFAULT_TAX_CONFIG));
+          return DEFAULT_TAX_CONFIG;
+        }
+        return JSON.parse(local);
+      }
+
+      static saveTaxConfig(config) {
+        localStorage.setItem('empire_tax_config', JSON.stringify(config));
       }
 
       static deductPortion(flavorId, grams) {
@@ -579,6 +694,7 @@
         document.getElementById('staffPinModal').classList.add('hidden');
         initRotaryWheel();
         renderMixLab();
+        loadTaxSettingsUI();
         showToast('🔓 Staff Master Unlocked', 'Welcome Coal Master / Floor Server.');
       } else {
         showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
@@ -608,6 +724,7 @@
       if (tabId === 'lab') { initRotaryWheel(); renderMixLab(); }
       if (tabId === 'kds') renderKdsQueue();
       if (tabId === 'stash') renderStashInventory();
+      if (tabId === 'settings') loadTaxSettingsUI();
       renderIcons();
     }
 
@@ -883,8 +1000,11 @@
     }
 
     function triggerSquareAndroidReader() {
-      const amountCents = Math.round(activePosTable.balance * 100);
-      showToast('💳 Square Reader Dispatched', `Connecting to Square Android Reader for Table #${activePosTable.num} ($${activePosTable.balance.toFixed(2)}).`);
+      const taxConfig = StaffStash.getTaxConfig();
+      const taxAmt = activePosTable.balance * (taxConfig.primaryRate / 100);
+      const totalWithTax = activePosTable.balance + taxAmt;
+
+      showToast('💳 Square Reader Dispatched', `Connecting to Square Android Reader for Table #${activePosTable.num} ($${totalWithTax.toFixed(2)} inc ${taxConfig.primaryRate}% tax).`);
       
       setTimeout(() => {
         showToast('✓ Card Authorized', `Square Reader approved Table #${activePosTable.num}. Tab cleared!`);
@@ -892,6 +1012,40 @@
         const balEl = document.getElementById(`posTable${activePosTable.num}Bal`);
         if (balEl) balEl.textContent = '$0.00';
       }, 1800);
+    }
+
+    // ==================== OWNER TAX & SETTINGS BACKEND ====================
+    function loadTaxSettingsUI() {
+      const config = StaffStash.getTaxConfig();
+      document.getElementById('ownerLocationInput').value = config.location || 'Phoenix, Arizona';
+      document.getElementById('ownerTaxLabelInput').value = config.primaryName || 'Phoenix Sales Tax';
+      document.getElementById('ownerTaxRateInput').value = (config.primaryRate || 8.60).toFixed(2);
+      document.getElementById('settingsEffectiveRate').textContent = `${(config.primaryRate || 8.60).toFixed(2)}%`;
+    }
+
+    function saveOwnerTaxConfig() {
+      const location = document.getElementById('ownerLocationInput').value || 'Phoenix, Arizona';
+      const label = document.getElementById('ownerTaxLabelInput').value || 'Sales Tax';
+      const rate = parseFloat(document.getElementById('ownerTaxRateInput').value) || 8.60;
+
+      const newConfig = {
+        location,
+        primaryName: label,
+        primaryRate: rate,
+        breakdown: [
+          { name: 'Base Jurisdictional Rate', rate }
+        ]
+      };
+
+      StaffStash.saveTaxConfig(newConfig);
+      document.getElementById('settingsEffectiveRate').textContent = `${rate.toFixed(2)}%`;
+      showToast('✅ Tax Config Saved', `${label} set to ${rate.toFixed(2)}% & broadcasted to all customer devices.`);
+    }
+
+    function applyTaxPreset(label, rate) {
+      document.getElementById('ownerTaxLabelInput').value = label;
+      document.getElementById('ownerTaxRateInput').value = rate.toFixed(2);
+      saveOwnerTaxConfig();
     }
 
     // ==================== STASH INVENTORY ====================

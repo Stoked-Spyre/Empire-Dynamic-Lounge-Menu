@@ -214,7 +214,7 @@
       <div>
         <div class="flex items-center gap-1.5">
           <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
-          <span class="text-[8px] bg-zinc-900 text-zinc-400 font-mono px-1 py-0.2 rounded border border-zinc-800">EST. 2010</span>
+          <span class="text-[8px] bg-zinc-900 text-zinc-400 font-mono px-1 py-0.2 rounded border border-zinc-800">PHOENIX, AZ</span>
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -336,14 +336,17 @@
       </div>
     </section>
 
-    <!-- 4. STICKY ORDER SUBMISSION & TAB DISPATCH BAR -->
+    <!-- 4. STICKY ORDER SUBMISSION & TAB DISPATCH BAR WITH CALCULATED PHOENIX TAX -->
     <div class="sticky bottom-2 z-30 bg-black/95 border border-zinc-800 p-3 rounded-2xl shadow-2xl flex items-center justify-between">
       <div>
         <div class="flex items-center gap-1.5">
           <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
           <span class="text-[9px] text-zinc-500 font-mono">Table #6</span>
         </div>
-        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$0.00</span>
+        <div class="flex items-baseline gap-1.5">
+          <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$0.00</span>
+          <span class="text-[10px] text-zinc-400 font-mono" id="taxEstimateText">+ $0.00 tax</span>
+        </div>
       </div>
       
       <div class="flex items-center gap-2">
@@ -359,7 +362,7 @@
 
   </main>
 
-  <!-- ==================== END SESSION SQUARE CHECKOUT MODAL ==================== -->
+  <!-- ==================== END SESSION SQUARE CHECKOUT MODAL (WITH PHOENIX TAX) ==================== -->
   <div id="endSessionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
@@ -369,27 +372,37 @@
           </div>
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Square Web Payments</h3>
-            <p class="text-[10px] text-zinc-400">Table #6 • 21+ Verified</p>
+            <p class="text-[10px] text-zinc-400">Table #6 • Phoenix, AZ • 21+ Verified</p>
           </div>
         </div>
         <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <div class="my-3 space-y-2 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
+      <!-- Itemized Receipt Breakdown -->
+      <div class="my-3 space-y-1.5 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
         <div class="flex justify-between text-zinc-300">
-          <span>Active Table #6 Balance</span>
+          <span>Table #6 Subtotal</span>
           <span class="font-bold font-mono-nums" id="checkoutSubtotal">$35.00</span>
         </div>
+        
+        <!-- Calculated Dynamic Phoenix Sales Tax -->
+        <div class="flex justify-between text-zinc-400 text-[11px]">
+          <span id="checkoutTaxLabel">Phoenix Sales Tax (8.60%)</span>
+          <span class="font-bold font-mono-nums text-zinc-300" id="checkoutTaxAmt">$3.01</span>
+        </div>
+
         <div class="flex justify-between text-zinc-400 text-[11px]">
           <span>Coal Service &amp; Rotations</span>
           <span class="text-emerald-400 font-bold">Included ✓</span>
         </div>
+
         <div class="pt-2 border-t border-zinc-800 flex justify-between text-sm font-bold text-white">
-          <span>Final Total</span>
-          <span class="text-brand-gold font-mono-nums" id="checkoutGrandTotal">$35.00</span>
+          <span>Final Total with Tax</span>
+          <span class="text-brand-gold font-mono-nums" id="checkoutGrandTotal">$38.01</span>
         </div>
       </div>
 
+      <!-- Gratuity Selection -->
       <div class="mb-3">
         <label class="text-[10px] text-zinc-400 font-semibold block mb-1">Add Gratuity for Staff</label>
         <div class="grid grid-cols-4 gap-1.5 text-center">
@@ -434,52 +447,24 @@
 
     // Master Curated House Mixes
     const EMPIRE_HOUSE_MIXES = [
-      {
-        id: 'mix-pink-cane',
-        name: 'Pink Cane Sensation',
-        tagline: 'Lounge Signature Blend',
-        flavors: ['mh-pinkman', 'tan-cane-mint'],
-        ratios: [70, 30],
-        badge: 'Craft #1',
-        color: '#EC4899'
-      },
-      {
-        id: 'mix-siberian-midnight',
-        name: 'Siberian Midnight Tea',
-        tagline: 'Arctic Freeze & Green Tea',
-        flavors: ['ds-supernova', 'bb-green-tea'],
-        ratios: [30, 70],
-        badge: 'Staff Fav',
-        color: '#6366F1'
-      },
-      {
-        id: 'mix-kashmir-velvet',
-        name: 'Kashmir Velvet Cream',
-        tagline: 'Spiced Floral Kashmir & Sweet Rice',
-        flavors: ['tan-kashmir-peach', 'mh-milky-rice'],
-        ratios: [60, 40],
-        badge: 'Rich',
-        color: '#FB923C'
-      },
-      {
-        id: 'mix-empire-royalty',
-        name: 'Empire Royalty',
-        tagline: 'Cane Mint, Mango & Siberian Freeze',
-        flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'],
-        ratios: [35, 35, 30],
-        badge: 'VIP',
-        color: '#E5A93C'
-      },
-      {
-        id: 'mix-citrus-bliss',
-        name: 'Fizzy Citrus Rush',
-        tagline: 'Valencia Orange & Grapefruit Zest',
-        flavors: ['tan-orange-soda', 'mh-pinkman'],
-        ratios: [50, 50],
-        badge: 'Fresh',
-        color: '#F97316'
-      }
+      { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'Lounge Signature Blend', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899' },
+      { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Arctic Freeze & Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1' },
+      { id: 'mix-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Spiced Floral Kashmir & Sweet Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], badge: 'Rich', color: '#FB923C' },
+      { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C' },
+      { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
     ];
+
+    // Master Dynamic Tax Configuration (Defaults to Phoenix, Arizona 8.6%)
+    const DEFAULT_TAX_CONFIG = {
+      location: 'Phoenix, Arizona',
+      primaryName: 'Phoenix Sales Tax',
+      primaryRate: 8.60, // 8.6%
+      breakdown: [
+        { name: 'Arizona State Tax', rate: 5.60 },
+        { name: 'Maricopa County Tax', rate: 0.70 },
+        { name: 'City of Phoenix Tax', rate: 2.30 }
+      ]
+    };
 
     class CustomerStash {
       static getInventory() {
@@ -490,15 +475,25 @@
         }
         return JSON.parse(local);
       }
+
+      static getTaxConfig() {
+        const local = localStorage.getItem('empire_tax_config');
+        if (!local) {
+          localStorage.setItem('empire_tax_config', JSON.stringify(DEFAULT_TAX_CONFIG));
+          return DEFAULT_TAX_CONFIG;
+        }
+        return JSON.parse(local);
+      }
     }
 
     // ACTIVE SELECTION STARTS BLANK!
-    let activeFlavors = []; // Blank on startup
+    let activeFlavors = [];
     let activeMixName = null;
     let roundCount = 1;
-    let tabBalance = 35.00;
+    let tabBalance = 35.00; // Subtotal
+    let currentSelectedTipPct = 18;
 
-    let selectedStationType = 'house_mixes'; // 'house_mixes' | 'all' | brandName
+    let selectedStationType = 'house_mixes';
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
     let touchStartY = null;
@@ -506,7 +501,7 @@
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
-    // ==================== STOKED STATION DIAL (HOUSE MIXES & BRANDS) ====================
+    // ==================== STOKED STATION DIAL ====================
     function initBrandStationDial() {
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
@@ -514,7 +509,7 @@
       const stationsTrack = document.getElementById('brandStationsTrack');
       stationsTrack.innerHTML = '';
 
-      // 1. 👑 HOUSE MIXES STATION (FIRST ITEM)
+      // 1. 👑 HOUSE MIXES STATION
       const houseStation = document.createElement('div');
       const isHouseActive = selectedStationType === 'house_mixes';
       houseStation.className = `v-ruler-mark-station ${isHouseActive ? 'active' : ''}`;
@@ -675,7 +670,6 @@
       const isHouseMode = (selectedStationType === 'house_mixes');
 
       if (isHouseMode) {
-        // Load all constituent flavors of the house mix
         activeFlavors = [...activeItem.flavors];
         activeMixName = activeItem.name;
         showToast('👑 House Mix Loaded', `"${activeItem.name}" popped up into your bowl!`);
@@ -708,17 +702,18 @@
     // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
+      const taxConfig = CustomerStash.getTaxConfig();
       const ribbon = document.getElementById('spectrumRibbon');
       const container = document.getElementById('flavorSlotsContainer');
       const profileContainer = document.getElementById('bowlProfileBadges');
       const clearBtn = document.getElementById('clearBowlBtn');
 
       if (activeFlavors.length === 0) {
-        // Blank Bowl State
         ribbon.style.background = '#1E2533';
         document.getElementById('activeBowlTitle').textContent = 'In Your Bowl (Blank)';
         document.getElementById('labBuzzBadge').textContent = 'BLANK BOWL';
         document.getElementById('totalPriceText').textContent = '$0.00';
+        document.getElementById('taxEstimateText').textContent = `+ $0.00 (${taxConfig.primaryRate}% tax)`;
         clearBtn.classList.add('hidden');
 
         container.innerHTML = `
@@ -733,7 +728,6 @@
         return;
       }
 
-      // Active Flavors Present
       clearBtn.classList.remove('hidden');
       document.getElementById('activeBowlTitle').textContent = activeMixName ? `👑 ${activeMixName}` : 'In Your Bowl Mix';
 
@@ -798,7 +792,7 @@
         profileContainer.appendChild(span);
       });
 
-      // Update Buzz Badge, Pricing & Action Bar
+      // Update Buzz Badge, Pricing & Action Bar with Calculated Phoenix Tax
       const avgStr = (totalStrength / activeFlavors.length).toFixed(1);
       document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
 
@@ -809,8 +803,10 @@
 
       const basePrice = isTangiers ? 38.00 : 35.00;
       const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
+      const estTax = (finalPrice * (taxConfig.primaryRate / 100));
 
       document.getElementById('totalPriceText').textContent = `$${finalPrice.toFixed(2)}`;
+      document.getElementById('taxEstimateText').textContent = `+ $${estTax.toFixed(2)} (${taxConfig.primaryRate}% tax)`;
       document.getElementById('orderTypeLabel').textContent = roundCount === 1 ? '[FIRST BOWL]' : '[REFILL / REPACK -$10]';
 
       renderIcons();
@@ -845,14 +841,31 @@
     }
 
     function openEndSessionModal() {
+      const taxConfig = CustomerStash.getTaxConfig();
+      const taxAmt = tabBalance * (taxConfig.primaryRate / 100);
+      const subtotalWithTax = tabBalance + taxAmt;
+
       document.getElementById('checkoutSubtotal').textContent = `$${tabBalance.toFixed(2)}`;
-      document.getElementById('checkoutGrandTotal').textContent = `$${tabBalance.toFixed(2)}`;
+      document.getElementById('checkoutTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
+      document.getElementById('checkoutTaxAmt').textContent = `$${taxAmt.toFixed(2)}`;
+      
+      calculateCheckoutTotal(currentSelectedTipPct);
       document.getElementById('endSessionModal').classList.remove('hidden');
     }
 
     function closeEndSessionModal() { document.getElementById('endSessionModal').classList.add('hidden'); }
 
+    function calculateCheckoutTotal(tipPct) {
+      const taxConfig = CustomerStash.getTaxConfig();
+      const taxAmt = tabBalance * (taxConfig.primaryRate / 100);
+      const tipAmt = tabBalance * (tipPct / 100);
+      const grandTotal = tabBalance + taxAmt + tipAmt;
+
+      document.getElementById('checkoutGrandTotal').textContent = `$${grandTotal.toFixed(2)} (inc. $${tipAmt.toFixed(2)} tip)`;
+    }
+
     function selectCheckoutTip(pct) {
+      currentSelectedTipPct = pct;
       document.querySelectorAll('.tip-btn').forEach(b => {
         b.classList.remove('bg-brand-gold', 'border-brand-gold', 'text-black');
         b.classList.add('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
@@ -860,14 +873,12 @@
       event.target.classList.add('bg-brand-gold', 'border-brand-gold', 'text-black');
       event.target.classList.remove('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
 
-      const tipAmt = (tabBalance * pct) / 100;
-      const grandTotal = tabBalance + tipAmt;
-      document.getElementById('checkoutGrandTotal').textContent = `$${grandTotal.toFixed(2)} ($${tipAmt.toFixed(2)} tip)`;
+      calculateCheckoutTotal(pct);
     }
 
     function processSquarePayment() {
       closeEndSessionModal();
-      showToast('🏁 Session Closed', 'Table #6 tab paid via Square Web Payments. Table reset!');
+      showToast('🏁 Session Closed', 'Table #6 tab paid via Square Web Payments with Phoenix tax. Table reset!');
       tabBalance = 0.00;
       roundCount = 1;
       clearBowl();
