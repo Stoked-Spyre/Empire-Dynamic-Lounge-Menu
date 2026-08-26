@@ -281,13 +281,9 @@
       </div>
     </div>
 
-    <!-- Center: Empire Lounge Signature Logo (No Text Headers) -->
+    <!-- Center: Official Empire Hookah Lounge Emblem (Tap to Open Welcome/Rules) -->
     <div class="flex items-center justify-center">
-      <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]" title="Empire Lounge">
-        <svg class="w-5 h-5 fill-current text-amber-400" viewBox="0 0 100 100">
-          <path d="M50 14 L62 32 L84 22 L76 48 L24 48 L16 22 L38 32 Z M28 54 L72 54 L68 76 L50 86 L32 76 Z M46 60 L54 60 L52 74 L48 74 Z" fill-rule="evenodd"/>
-        </svg>
-      </div>
+      <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-8 h-8 rounded-full border border-amber-500/40 object-cover cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.2)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
     </div>
 
     <!-- Right: Guest Balance / VIP Actions -->
@@ -296,7 +292,7 @@
     </div>
 
     <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
-      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95" title="View VIP Stash & Smoke History">
+      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95" title="View VIP Stash &amp; Smoke History">
         <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
         <span id="headerVipPointsBadge">⭐ 750</span>
       </button>
@@ -359,18 +355,7 @@
         </div>
       </div>
 
-      <!-- Small About Section (Hospitality Character) -->
-      <section class="p-3 rounded-2xl bg-transparent space-y-1">
-        <div class="flex items-center justify-between">
-          <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400">About Empire</span>
-          <span class="text-[10px] text-zinc-500 uppercase font-semibold">Artisanal Shisha Experience</span>
-        </div>
-        <p class="text-xs text-zinc-300 leading-relaxed">
-          Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.
-        </p>
-      </section>
-
-      <!-- 2. Menu Sub-Tabs Switcher -->
+      <!-- 2. Menu Sub-Tabs Switcher (House Blends is Default Subtab) -->
       <div class="grid grid-cols-3 gap-1 p-1 bg-transparent rounded-xl text-xs">
         <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
           <span>👑 House Blends</span>
@@ -388,32 +373,33 @@
         <!-- Injected via JS -->
       </div>
 
-      <!-- 4. Sub-Tab 2: Master Flavors with Filter System -->
+      <!-- 4. Sub-Tab 2: Master Flavors with Dual-Pivot Explorer (By Profile vs By Brand) -->
       <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
         
-        <!-- Luxury Minimalist Filter Navigation Strip -->
-        <div class="bg-transparent p-2.5 rounded-2xl space-y-2">
-          <!-- Filter Dimension Switcher -->
-          <div class="flex items-center justify-between border-b border-zinc-800/60 pb-2 px-1">
-            <div class="flex items-center gap-4 text-xs">
-              <button onclick="setFilterCategory('profile')" id="filterCatBtn-profile" class="font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition">
-                Tasting Notes
-              </button>
-              <button onclick="setFilterCategory('region')" id="filterCatBtn-region" class="font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition">
-                Origin Region
-              </button>
-            </div>
-            <span id="flavorFilterActiveCount" class="text-xs text-zinc-400 tabular-nums">13 Flavors</span>
+        <!-- Flavor Explorer Pivot Header -->
+        <div class="flex items-center justify-between px-1 pt-0.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-zinc-400" id="flavorCatalogHeading">Flavor Catalog</span>
+          
+          <!-- Top Right Pivot Switcher: By Profile vs By Brand -->
+          <div class="flex items-center p-0.5 bg-zinc-900/90 rounded-xl border border-zinc-800 text-xs">
+            <button onclick="setFlavorPivotMode('profile')" id="flavorPivotBtn-profile" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition">
+              By Profile
+            </button>
+            <button onclick="setFlavorPivotMode('brand')" id="flavorPivotBtn-brand" class="px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition">
+              By Brand
+            </button>
           </div>
+        </div>
 
-          <!-- Dynamic Text Tabs Strip -->
-          <div class="flex gap-4 overflow-x-auto no-scrollbar py-0.5 px-1 text-xs whitespace-nowrap" id="flavorFilterStrip">
-            <!-- Populated via JS based on filter category: Profile or Region -->
+        <!-- Filter Navigation Strip -->
+        <div class="bg-transparent">
+          <div class="flex gap-4 overflow-x-auto no-scrollbar py-1 px-1 text-xs whitespace-nowrap border-b border-zinc-800/60" id="flavorFilterStrip">
+            <!-- Populated via JS based on pivot mode: Profile or Brand -->
           </div>
         </div>
 
         <!-- Flavors List Container -->
-        <div class="space-y-2" id="menuFlavorsContainer">
+        <div class="space-y-2.5" id="menuFlavorsContainer">
           <!-- Injected via JS -->
         </div>
       </div>
@@ -809,6 +795,57 @@
       <!-- Action Button -->
       <div class="pt-1" id="detailModalActionContainer">
         <!-- Injected via JS based on VIP logged in vs Guest mode -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== INITIAL LANDING & WELCOME LOUNGE MODAL ==================== -->
+  <div id="welcomeLoungeModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex flex-col justify-end sm:justify-center items-center p-3 transition-opacity duration-300">
+    <div id="welcomeLoungeSheet" class="w-full max-w-sm bg-zinc-950 border border-amber-500/30 rounded-3xl p-5 shadow-2xl space-y-4 text-center transition-transform duration-300 relative">
+      
+      <!-- Top Drag Bar / Dismiss Handle -->
+      <div onclick="closeWelcomeLoungeModal()" class="w-12 h-1 bg-zinc-700 hover:bg-zinc-500 rounded-full mx-auto mb-1 cursor-pointer"></div>
+      
+      <!-- Official Empire Hookah Lounge Logo -->
+      <div class="flex flex-col items-center justify-center pt-1">
+        <img src="empire-logo.png" alt="Empire Hookah Lounge" class="w-24 h-24 rounded-full border-2 border-amber-500/40 object-cover shadow-[0_0_25px_rgba(229,169,60,0.25)] mx-auto mb-2" />
+        <div class="text-[11px] font-bold text-amber-400 tracking-widest uppercase">EMPIRE HOOKAH LOUNGE</div>
+        <div class="text-[10px] text-zinc-500 font-semibold tracking-wider uppercase">EST. 2010 • PHOENIX, AZ</div>
+      </div>
+
+      <!-- About Empire Story (Dynamic & Editable from Owner Suite) -->
+      <div class="text-left bg-black/70 p-3 rounded-2xl border border-zinc-850 space-y-1">
+        <div class="flex items-center justify-between">
+          <h4 id="welcomeAboutTitle" class="text-xs font-bold uppercase tracking-wider text-amber-400">About Empire</h4>
+          <span class="text-[9px] text-zinc-500 uppercase font-semibold">Bespoke Lounge</span>
+        </div>
+        <p id="welcomeAboutBody" class="text-xs text-zinc-300 leading-relaxed">
+          Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.
+        </p>
+      </div>
+
+      <!-- Strict House Policies (21+ and 2 per pipe) -->
+      <div class="grid grid-cols-2 gap-2 text-center">
+        <div class="p-2.5 rounded-2xl bg-black/70 border border-zinc-850">
+          <div class="text-base mb-0.5">🔞</div>
+          <div class="text-xs font-bold text-zinc-200" id="welcomeAgeText">21+ Physical ID</div>
+          <div class="text-[10px] text-zinc-400">Required for Entry</div>
+        </div>
+        <div class="p-2.5 rounded-2xl bg-black/70 border border-zinc-850">
+          <div class="text-base mb-0.5">👥</div>
+          <div class="text-xs font-bold text-zinc-200" id="welcomePipeText">2 Guests Max</div>
+          <div class="text-[10px] text-zinc-400">Per Hookah Pipe</div>
+        </div>
+      </div>
+
+      <!-- Swipe Down or Tap Action Button -->
+      <div class="space-y-1.5 pt-1">
+        <button onclick="closeWelcomeLoungeModal()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold rounded-2xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition">
+          <span>Enter Lounge Menu</span>
+          <i data-lucide="arrow-down" class="w-4 h-4"></i>
+        </button>
+        <p class="text-[10px] text-zinc-500">↓ Swipe down anywhere to explore</p>
       </div>
 
     </div>
@@ -1315,8 +1352,10 @@
           const defaultRules = {
             ageReq: '21+ ID Required',
             pipeLimit: '2 Guests Max per Pipe',
-            policyNotice: 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
-            hours: 'Daily: 5:00 PM – 2:00 AM'
+            policyNotice: 'Minimum 1 pipe per 2 guests.',
+            hours: 'Daily: 5:00 PM – 2:00 AM',
+            aboutTitle: 'About Empire',
+            aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
           };
           localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
           return defaultRules;
@@ -1415,8 +1454,6 @@
     let touchStartY = null;
     let activeCustomerTab = 'menu';
     let activeMenuSubTab = 'house';
-    let selectedFlavorProfileFilter = 'all';
-    let selectedFlavorRegionFilter = 'all';
 
     let isVipLoggedIn = false; // Default: Public QR Guest mode (Menu only, no extra tabs)
     let isConnectedToLoungeWifi = true; // Wi-Fi check simulation (verified on-premise)
@@ -1787,39 +1824,72 @@
       if (modal) modal.classList.add('hidden');
     }
 
-    let activeFilterCategory = 'profile'; // 'profile' or 'region'
+    let activeFlavorPivotMode = 'profile'; // 'profile' or 'brand'
+    let selectedFlavorProfileFilter = 'all';
+    let selectedFlavorBrandFilter = 'all';
+
     const FLAVOR_PROFILES_LIST = [
       { id: 'all', label: 'All Notes' },
       { id: 'Mints', label: '🍃 Mint & Ice' },
-      { id: 'Berries', label: '🍓 Berries & Fruit' },
-      { id: 'Citrus', label: '🍋 Citrus' },
+      { id: 'Berries', label: '🍓 Fruit & Berry' },
+      { id: 'Citrus', label: '🍋 Citrus & Zest' },
       { id: 'Dessert', label: '🍰 Dessert & Cream' },
       { id: 'Warm Spices', label: '🪵 Spices & Floral' },
       { id: 'Tea', label: '🫖 Tea & Herbal' }
     ];
 
-    const FLAVOR_REGIONS_LIST = [
-      { id: 'all', label: 'All Regions' },
-      { id: 'Russia', label: '🇷🇺 Russia' },
-      { id: 'USA', label: '🇺🇸 USA' },
-      { id: 'UAE', label: '🇦🇪 UAE' },
-      { id: 'Turkey', label: '🇹🇷 Turkey' }
+    const FLAVOR_BRANDS_LIST = [
+      { id: 'all', label: 'All Brands' },
+      { id: 'MustHave', label: 'MustHave 🇷🇺' },
+      { id: 'Tangiers', label: 'Tangiers 🇺🇸' },
+      { id: 'Darkside', label: 'Darkside 🇷🇺' },
+      { id: 'BlackBurn', label: 'BlackBurn 🇷🇺' },
+      { id: 'Al Fakher', label: 'Al Fakher 🇦🇪' },
+      { id: 'Starbuzz', label: 'Starbuzz 🇺🇸' },
+      { id: 'Adalya', label: 'Adalya 🇹🇷' }
     ];
 
-    function setFilterCategory(cat) {
-      activeFilterCategory = cat;
-      const profBtn = document.getElementById('filterCatBtn-profile');
-      const regBtn = document.getElementById('filterCatBtn-region');
-      if (profBtn && regBtn) {
-        if (cat === 'profile') {
-          profBtn.className = 'font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition';
-          regBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
+    const BRAND_METADATA = {
+      'MustHave': { subtitle: 'Russian Dark Leaf Craft', origin: 'Moscow, Russia 🇷🇺', leafType: 'Burley Toasted Dark Leaf' },
+      'Tangiers': { subtitle: 'Noir Dark Leaf Original', origin: 'San Diego, USA 🇺🇸', leafType: 'Unwashed Dark Leaf' },
+      'Darkside': { subtitle: 'Burley & Virginia Blend', origin: 'Russia 🇷🇺', leafType: 'Dark Leaf Blend' },
+      'BlackBurn': { subtitle: 'Toasted Burley Craft', origin: 'Russia 🇷🇺', leafType: 'Toasted Burley' },
+      'Al Fakher': { subtitle: 'Classic Golden Blonde', origin: 'Ajman, UAE 🇦🇪', leafType: 'French Virginia Blonde' },
+      'Starbuzz': { subtitle: 'Blonde Cut Classic', origin: 'California, USA 🇺🇸', leafType: 'Golden Virginia' },
+      'Adalya': { subtitle: 'Turkish Blonde Craft', origin: 'Izmir, Turkey 🇹🇷', leafType: 'Virginia Blonde' }
+    };
+
+    function setFlavorPivotMode(mode) {
+      activeFlavorPivotMode = mode;
+      const profBtn = document.getElementById('flavorPivotBtn-profile');
+      const brandBtn = document.getElementById('flavorPivotBtn-brand');
+      const heading = document.getElementById('flavorCatalogHeading');
+
+      if (profBtn && brandBtn) {
+        if (mode === 'profile') {
+          profBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition';
+          brandBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition';
+          if (heading) heading.textContent = 'Flavor Notes & Profiles';
         } else {
-          regBtn.className = 'font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition';
-          profBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
+          brandBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition';
+          profBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition';
+          if (heading) heading.textContent = 'Tobacco Houses & Brands';
         }
       }
       renderFlavorFilterStrip();
+      renderCustomerMenu();
+    }
+
+    function filterFlavorsByProfile(profileId) {
+      selectedFlavorProfileFilter = profileId;
+      renderFlavorFilterStrip();
+      renderCustomerMenu();
+    }
+
+    function filterFlavorsByBrand(brandId) {
+      selectedFlavorBrandFilter = brandId;
+      renderFlavorFilterStrip();
+      renderCustomerMenu();
     }
 
     function renderFlavorFilterStrip() {
@@ -1827,30 +1897,30 @@
       if (!strip) return;
       strip.innerHTML = '';
 
-      if (activeFilterCategory === 'profile') {
+      if (activeFlavorPivotMode === 'profile') {
         FLAVOR_PROFILES_LIST.forEach(item => {
           const isSelected = selectedFlavorProfileFilter === item.id;
           const btn = document.createElement('button');
           btn.onclick = () => filterFlavorsByProfile(item.id);
           if (isSelected) {
-            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-0.5 flex-shrink-0';
+            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-1 flex-shrink-0';
             btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
           } else {
-            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
+            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-1';
             btn.innerHTML = `<span>${item.label}</span>`;
           }
           strip.appendChild(btn);
         });
       } else {
-        FLAVOR_REGIONS_LIST.forEach(item => {
-          const isSelected = selectedFlavorRegionFilter === item.id;
+        FLAVOR_BRANDS_LIST.forEach(item => {
+          const isSelected = selectedFlavorBrandFilter === item.id;
           const btn = document.createElement('button');
-          btn.onclick = () => filterFlavorsByRegion(item.id);
+          btn.onclick = () => filterFlavorsByBrand(item.id);
           if (isSelected) {
-            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-0.5 flex-shrink-0';
+            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-1 flex-shrink-0';
             btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
           } else {
-            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
+            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-1';
             btn.innerHTML = `<span>${item.label}</span>`;
           }
           strip.appendChild(btn);
@@ -1872,7 +1942,7 @@
       if (ageBadge) ageBadge.textContent = `🔞 ${rules.ageReq || '21+ Required'}`;
       if (pipeBadge) pipeBadge.textContent = `👥 ${rules.pipeLimit || '2 Guests / Pipe'}`;
       if (hoursEl) hoursEl.textContent = rules.hours || 'Daily: 5:00 PM – 2:00 AM';
-      if (noticeEl) noticeEl.textContent = rules.policyNotice || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.';
+      if (noticeEl) noticeEl.textContent = rules.policyNotice || 'Minimum 1 pipe per 2 guests.';
 
       const origEl = document.getElementById('menuPriceOriginal');
       const refillEl = document.getElementById('menuPriceRefill');
@@ -1947,28 +2017,13 @@
         });
       }
 
-      // 3. Render Sub-Tab 2: Master Flavors (Black cards with glowing gold border & white brand watermarks)
+      // 3. Render Sub-Tab 2: Master Flavors (Dual-Pivot Explorer: By Profile vs By Brand)
       renderFlavorFilterStrip();
       const flavorsCont = document.getElementById('menuFlavorsContainer');
       if (flavorsCont) {
         flavorsCont.innerHTML = '';
         
-        let filtered = inventory;
-        if (selectedFlavorProfileFilter !== 'all') {
-          filtered = filtered.filter(item => item.profiles && item.profiles.some(p => p.toLowerCase().includes(selectedFlavorProfileFilter.toLowerCase())));
-        }
-        if (selectedFlavorRegionFilter !== 'all') {
-          filtered = filtered.filter(item => item.region && item.region.toLowerCase().includes(selectedFlavorRegionFilter.toLowerCase()));
-        }
-
-        const countEl = document.getElementById('flavorFilterActiveCount');
-        if (countEl) countEl.textContent = `${filtered.length} Flavors`;
-
-        if (filtered.length === 0) {
-          flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found matching the selected filters.</div>`;
-        }
-
-        filtered.forEach(item => {
+        const createFlavorCard = (item) => {
           const isOut = item.stock === 'out_of_stock';
           const buzz = getBuzzInfo(item.strength || 7);
           const brandWatermark = getBrandWatermark(item.brand);
@@ -2010,14 +2065,63 @@
                   <span class="text-xs font-semibold text-red-400/90 uppercase tracking-wider">Out</span>
                 ` : `
                   <span class="text-sm font-semibold text-zinc-100 tabular-nums">
-                    $${(pricing.originalPrice || 35.00).toFixed(2)}
+                    $${(item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00)).toFixed(2)}
                   </span>
                 `}
               </div>
             </div>
           `;
-          flavorsCont.appendChild(card);
-        });
+          return card;
+        };
+
+        if (activeFlavorPivotMode === 'profile') {
+          let filtered = inventory;
+          if (selectedFlavorProfileFilter !== 'all') {
+            filtered = filtered.filter(item => item.profiles && item.profiles.some(p => p.toLowerCase().includes(selectedFlavorProfileFilter.toLowerCase())));
+          }
+
+          if (filtered.length === 0) {
+            flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found matching this tasting note.</div>`;
+          } else {
+            filtered.forEach(item => flavorsCont.appendChild(createFlavorCard(item)));
+          }
+        } else {
+          // Brand Mode: Group flavors by Brand Catalog
+          let brandsToRender = Object.keys(BRAND_METADATA);
+          if (selectedFlavorBrandFilter !== 'all') {
+            brandsToRender = brandsToRender.filter(b => b.toLowerCase() === selectedFlavorBrandFilter.toLowerCase());
+          }
+
+          let totalRendered = 0;
+          brandsToRender.forEach(brandName => {
+            const brandFlavors = inventory.filter(i => i.brand.toLowerCase() === brandName.toLowerCase());
+            if (brandFlavors.length > 0) {
+              totalRendered += brandFlavors.length;
+              const meta = BRAND_METADATA[brandName] || { subtitle: 'Premium Tobacco', origin: 'Craft', leafType: 'Dark Leaf' };
+              
+              // Brand Group Header
+              const brandSection = document.createElement('div');
+              brandSection.className = 'pt-1.5 space-y-2';
+              brandSection.innerHTML = `
+                <div class="flex items-center justify-between px-1 border-b border-zinc-800/80 pb-1.5">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">${brandName}</span>
+                    <span class="text-[11px] text-zinc-400 font-medium">· ${meta.subtitle}</span>
+                  </div>
+                  <span class="text-[10px] text-zinc-500 font-mono">${meta.origin}</span>
+                </div>
+                <div class="space-y-2 brand-items-list"></div>
+              `;
+              const itemsList = brandSection.querySelector('.brand-items-list');
+              brandFlavors.forEach(item => itemsList.appendChild(createFlavorCard(item)));
+              flavorsCont.appendChild(brandSection);
+            }
+          });
+
+          if (totalRendered === 0) {
+            flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found for this brand.</div>`;
+          }
+        }
       }
 
       // 4. Render Sub-Tab 3: Drinks & Samovar Bar
@@ -3050,14 +3154,73 @@
       }, 2600);
     }
 
+    function openWelcomeLoungeModal() {
+      const rules = CustomerStash.getLoungeRules();
+      const titleEl = document.getElementById('welcomeAboutTitle');
+      const bodyEl = document.getElementById('welcomeAboutBody');
+      const ageEl = document.getElementById('welcomeAgeText');
+      const pipeEl = document.getElementById('welcomePipeText');
+
+      if (titleEl) titleEl.textContent = rules.aboutTitle || 'About Empire';
+      if (bodyEl) bodyEl.textContent = rules.aboutBody || 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.';
+      if (ageEl) ageEl.textContent = rules.ageReq || '21+ Physical ID';
+      if (pipeEl) pipeEl.textContent = rules.pipeLimit || '2 Guests Max';
+
+      const modal = document.getElementById('welcomeLoungeModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        renderIcons();
+      }
+    }
+
+    function closeWelcomeLoungeModal() {
+      const modal = document.getElementById('welcomeLoungeModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        try {
+          if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('empire_welcome_seen', 'true');
+          }
+        } catch(e) {}
+      }
+    }
+
+    // Touch swipe-down listener for welcome sheet
+    let welcomeTouchStartY = 0;
+    function setupWelcomeModalSwipeListener() {
+      const sheet = document.getElementById('welcomeLoungeSheet');
+      if (sheet) {
+        sheet.addEventListener('touchstart', e => {
+          welcomeTouchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        sheet.addEventListener('touchend', e => {
+          const endY = e.changedTouches[0].clientY;
+          if (endY - welcomeTouchStartY > 50) {
+            closeWelcomeLoungeModal();
+          }
+        }, { passive: true });
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       initBrandStationDial();
       renderMixLab();
       setupCustomerSpectrumDragListeners();
+      setupWelcomeModalSwipeListener();
       updateVipPointsHeader();
       renderCustomerMenu();
       switchCustomerTab('menu');
       renderIcons();
+
+      // Show welcome landing sheet if first visit this session
+      try {
+        if (typeof sessionStorage !== 'undefined' && !sessionStorage.getItem('empire_welcome_seen')) {
+          openWelcomeLoungeModal();
+        }
+      } catch(e) {
+        openWelcomeLoungeModal();
+      }
     });
   </script>
 </body>

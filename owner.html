@@ -375,12 +375,27 @@
 
           <div>
             <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">General Policy / Session Notice</label>
-            <input type="text" id="ownerRulePolicyNotice" value="Minimum 1 pipe per 2 guests. 90-minute lounge session per round." class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-gold" />
+            <input type="text" id="ownerRulePolicyNotice" value="Minimum 1 pipe per 2 guests." class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-gold" />
           </div>
 
           <div>
             <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Operating Hours</label>
             <input type="text" id="ownerRuleHours" value="Daily: 5:00 PM – 2:00 AM" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-brand-gold" />
+          </div>
+
+          <div class="pt-2 border-t border-zinc-900 space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-[12px] text-amber-400 font-bold uppercase block">About Empire Story (Welcome Sheet &amp; Menu)</label>
+              <span class="text-[10px] text-zinc-500 font-medium">Live on QR Menu</span>
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-400 font-medium block mb-1">Section Title</label>
+              <input type="text" id="ownerRuleAboutTitle" value="About Empire" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+            </div>
+            <div>
+              <label class="text-[11px] text-zinc-400 font-medium block mb-1">Lounge Craft Narrative</label>
+              <textarea id="ownerRuleAboutBody" rows="3" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-brand-gold resize-none leading-relaxed">Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.</textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -828,8 +843,10 @@
           const defaultRules = {
             ageReq: '21+ ID Required',
             pipeLimit: '2 Guests Max per Pipe',
-            policyNotice: 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
-            hours: 'Daily: 5:00 PM – 2:00 AM'
+            policyNotice: 'Minimum 1 pipe per 2 guests.',
+            hours: 'Daily: 5:00 PM – 2:00 AM',
+            aboutTitle: 'About Empire',
+            aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
           };
           localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
           return defaultRules;
@@ -1526,11 +1543,15 @@
       const pipeLimitInput = document.getElementById('ownerRulePipeLimit');
       const policyInput = document.getElementById('ownerRulePolicyNotice');
       const hoursInput = document.getElementById('ownerRuleHours');
+      const aboutTitleInput = document.getElementById('ownerRuleAboutTitle');
+      const aboutBodyInput = document.getElementById('ownerRuleAboutBody');
 
       if (ageInput) ageInput.value = rules.ageReq || '21+ ID Required';
       if (pipeLimitInput) pipeLimitInput.value = rules.pipeLimit || '2 Guests Max per Pipe';
-      if (policyInput) policyInput.value = rules.policyNotice || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.';
+      if (policyInput) policyInput.value = rules.policyNotice || 'Minimum 1 pipe per 2 guests.';
       if (hoursInput) hoursInput.value = rules.hours || 'Daily: 5:00 PM – 2:00 AM';
+      if (aboutTitleInput) aboutTitleInput.value = rules.aboutTitle || 'About Empire';
+      if (aboutBodyInput) aboutBodyInput.value = rules.aboutBody || 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.';
 
       const origInput = document.getElementById('ownerPriceOriginal');
       const refillInput = document.getElementById('ownerPriceRefill');
@@ -1597,8 +1618,10 @@
       const rules = {
         ageReq: document.getElementById('ownerRuleAgeReq')?.value || '21+ ID Required',
         pipeLimit: document.getElementById('ownerRulePipeLimit')?.value || '2 Guests Max per Pipe',
-        policyNotice: document.getElementById('ownerRulePolicyNotice')?.value || 'Minimum 1 pipe per 2 guests. 90-minute lounge session per round.',
-        hours: document.getElementById('ownerRuleHours')?.value || 'Daily: 5:00 PM – 2:00 AM'
+        policyNotice: document.getElementById('ownerRulePolicyNotice')?.value || 'Minimum 1 pipe per 2 guests.',
+        hours: document.getElementById('ownerRuleHours')?.value || 'Daily: 5:00 PM – 2:00 AM',
+        aboutTitle: document.getElementById('ownerRuleAboutTitle')?.value || 'About Empire',
+        aboutBody: document.getElementById('ownerRuleAboutBody')?.value || 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
       };
       const pricing = {
         originalPrice: parseFloat(document.getElementById('ownerPriceOriginal')?.value) || 35.00,
