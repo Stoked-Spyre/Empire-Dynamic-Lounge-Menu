@@ -64,14 +64,14 @@
     .floorplan-canvas {
       position: relative;
       width: 100%;
-      height: 410px;
+      height: 420px;
       background-color: #06090E;
       background-image: 
         linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
       background-size: 20px 20px;
       border: 1.5px solid rgba(255, 255, 255, 0.09);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
       user-select: none;
       touch-action: none;
@@ -97,12 +97,78 @@
       cursor: grabbing !important;
     }
 
+    /* Direct Side & Corner Drag-to-Resize Handles */
+    .resize-handle-right {
+      position: absolute;
+      right: -4px;
+      top: 15%;
+      bottom: 15%;
+      width: 8px;
+      cursor: ew-resize;
+      background: rgba(229, 169, 60, 0.85);
+      border-radius: 4px;
+      z-index: 25;
+      touch-action: none;
+    }
+    .resize-handle-bottom {
+      position: absolute;
+      bottom: -4px;
+      left: 15%;
+      right: 15%;
+      height: 8px;
+      cursor: ns-resize;
+      background: rgba(229, 169, 60, 0.85);
+      border-radius: 4px;
+      z-index: 25;
+      touch-action: none;
+    }
+    .resize-handle-corner {
+      position: absolute;
+      right: -4px;
+      bottom: -4px;
+      width: 11px;
+      height: 11px;
+      cursor: nwse-resize;
+      background: #E5A93C;
+      border-radius: 50%;
+      border: 1.5px solid #000;
+      box-shadow: 0 0 6px rgba(0,0,0,0.8);
+      z-index: 30;
+      touch-action: none;
+    }
+
     /* Structural Infrastructure Landmark styling */
     .infra-landmark {
       background: rgba(30, 41, 59, 0.6) !important;
       border: 1.5px dashed rgba(148, 163, 184, 0.4) !important;
       color: #94A3B8 !important;
       z-index: 5;
+    }
+
+    /* Left Sidebar Palette Item */
+    .palette-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: 6px 8px;
+      background: #090D13;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      text-align: left;
+      transition: all 0.12s ease;
+      cursor: grab;
+    }
+    .palette-btn:hover {
+      background: #131822;
+      border-color: rgba(229, 169, 60, 0.4);
+      color: #FFFFFF;
+    }
+    .palette-btn:active {
+      cursor: grabbing;
     }
 
     /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
@@ -223,7 +289,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Micros Floor Builder, POS &amp; KDS</span>
+          <span>Micros Floor Builder, Zones, POS &amp; KDS</span>
         </div>
       </div>
     </div>
@@ -236,7 +302,7 @@
   </header>
 
   <!-- ==================== 2. STAFF APP MODULES ==================== -->
-  <main id="staffMainApp" class="w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
+  <main id="staffMainApp" class="w-full max-w-xl px-3.5 pt-3 flex flex-col gap-3.5">
     
     <!-- 6 Navigation Tabs -->
     <div class="grid grid-cols-6 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
@@ -424,12 +490,12 @@
       </div>
     </div>
 
-    <!-- MODULE 3: MICROS / ALOHA CUSTOMIZABLE FLOORPLAN & INFRASTRUCTURE BUILDER -->
+    <!-- MODULE 3: MICROS / ALOHA TWO-COLUMN FLOOR BUILDER WITH DYNAMIC ZONES & DIRECT DRAG RESIZE -->
     <div id="staff-view-seating" class="staff-panel hidden flex flex-col gap-3">
       
       <!-- A. Floating VIP Orders Dock -->
-      <div class="pos-card rounded-2xl p-3 border border-amber-500/30">
-        <div class="flex justify-between items-center mb-1.5">
+      <div class="pos-card rounded-2xl p-2.5 border border-amber-500/30">
+        <div class="flex justify-between items-center mb-1">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 bg-brand-gold rounded-full animate-ping"></span>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Floating VIP Tabs Queue</h3>
@@ -438,117 +504,118 @@
             0 Waiting for Seat
           </span>
         </div>
-        <div class="space-y-1.5" id="floatingVipTabsContainer">
+        <div class="space-y-1" id="floatingVipTabsContainer">
           <!-- Populated via JS -->
         </div>
       </div>
 
-      <!-- B. Floorplan Canvas & Multi-Category Builder Palette -->
-      <div class="pos-card rounded-2xl p-3">
-        <div class="flex justify-between items-center mb-2">
-          <div>
-            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-gold"></i>
-              Interactive Lounge Floorplan
-            </h3>
-            <p class="text-[10px] text-zinc-400" id="floorModeStatusText">Live Monitor: Tap any table to view tab or assign coals</p>
+      <!-- B. Dynamic Zone Selector Tabs Header -->
+      <div class="pos-card rounded-2xl p-2.5">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1" id="dynamicZoneTabsContainer">
+            <!-- Populated via JS: All Zones, Indoor, Patio, VIP, etc -->
           </div>
 
-          <!-- Mode Toggle & Template Presets -->
-          <div class="flex items-center gap-1.5">
-            <button onclick="toggleFloorBuilderMode()" id="builderModeBtn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition active:scale-95">
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <button onclick="openCreateZoneModal()" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-lg text-[10px] font-bold flex items-center gap-1" title="Create a new zone like Outdoor Patio, Rooftop">
+              <i data-lucide="plus" class="w-3 h-3"></i> Zone
+            </button>
+            <button onclick="toggleFloorBuilderMode()" id="builderModeBtn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 transition active:scale-95">
               <i data-lucide="pencil" class="w-3 h-3 text-brand-gold"></i>
-              <span id="builderModeBtnText">Edit Floor Plan 🛠️</span>
+              <span id="builderModeBtnText">Edit 🛠️</span>
             </button>
           </div>
         </div>
 
-        <!-- Builder Palette (Visible in Edit Mode) -->
-        <div id="floorBuilderPalette" class="hidden mb-2.5 space-y-2 bg-black/90 p-2.5 rounded-xl border border-zinc-800 text-xs">
+        <!-- C. TWO-COLUMN LAYOUT: LEFT PALETTE (ICONS) + RIGHT 2D CANVAS -->
+        <div class="flex gap-2.5 items-stretch">
           
-          <!-- Category 1: Seating (1-Tops, 2-Tops, 4-Tops, 6-Tops, 8-Tops) -->
-          <div>
-            <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1">
-              🛋️ Add Seating (1-Top to 8-Top):
-            </span>
-            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar pb-1">
-              <button onclick="addFloorElement('bar-1p')" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-white whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="wine" class="w-3 h-3 text-brand-gold"></i> 1-Top Bar
+          <!-- LEFT COLUMN: SIDEBAR TABLE & INFRASTRUCTURE PALETTE (DRAGGABLE) -->
+          <aside class="w-36 flex-shrink-0 flex flex-col gap-2 p-2 bg-black rounded-xl border border-zinc-800/80 overflow-y-auto max-h-[420px] no-scrollbar text-xs">
+            
+            <div>
+              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🛋️ Seats (1-8P)</span>
+              <div class="space-y-1">
+                <button onclick="addFloorElement('bar-1p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'bar-1p')" class="palette-btn">
+                  <i data-lucide="wine" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">1-Top Bar</span>
+                </button>
+                <button onclick="addFloorElement('table-2p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-2p')" class="palette-btn">
+                  <i data-lucide="coffee" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
+                  <span class="truncate">2-Top Cozy</span>
+                </button>
+                <button onclick="addFloorElement('table-4p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-4p')" class="palette-btn">
+                  <i data-lucide="layers" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">4-Top Table</span>
+                </button>
+                <button onclick="addFloorElement('table-6p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-6p')" class="palette-btn">
+                  <i data-lucide="users" class="w-3 h-3 text-blue-400 flex-shrink-0"></i>
+                  <span class="truncate">6-Top Rect</span>
+                </button>
+                <button onclick="addFloorElement('booth-8p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'booth-8p')" class="palette-btn">
+                  <i data-lucide="crown" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">8-Top VIP</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1.5 border-t border-zinc-850">
+              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🏛️ Infrastructure</span>
+              <div class="space-y-1">
+                <button onclick="addFloorElement('infra-bar')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-bar')" class="palette-btn text-slate-300">
+                  <i data-lucide="wine" class="w-3 h-3 text-slate-400 flex-shrink-0"></i>
+                  <span class="truncate">Bar Counter</span>
+                </button>
+                <button onclick="addFloorElement('infra-dj')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-dj')" class="palette-btn text-slate-300">
+                  <i data-lucide="music" class="w-3 h-3 text-purple-400 flex-shrink-0"></i>
+                  <span class="truncate">DJ Stage</span>
+                </button>
+                <button onclick="addFloorElement('infra-host')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-host')" class="palette-btn text-slate-300">
+                  <i data-lucide="log-in" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
+                  <span class="truncate">Host Entrance</span>
+                </button>
+                <button onclick="addFloorElement('infra-tea')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-tea')" class="palette-btn text-slate-300">
+                  <i data-lucide="flame" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">Samovar Bar</span>
+                </button>
+                <button onclick="addFloorElement('infra-wall')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-wall')" class="palette-btn text-slate-300">
+                  <i data-lucide="columns-2" class="w-3 h-3 text-slate-400 flex-shrink-0"></i>
+                  <span class="truncate">Divider Wall</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1.5 border-t border-zinc-850 space-y-1">
+              <button onclick="loadEmpirePresetFloorplan()" class="w-full text-center py-1 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg text-[9px] font-bold">
+                Empire Preset
               </button>
-              <button onclick="addFloorElement('table-2p')" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-white whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="coffee" class="w-3 h-3 text-emerald-400"></i> 2-Top Round
+              <button onclick="clearToBlankCanvas()" class="w-full text-center py-1 bg-zinc-900 hover:bg-red-950 text-zinc-500 hover:text-red-300 border border-zinc-800 rounded-lg text-[9px] font-bold">
+                Clear Blank
               </button>
-              <button onclick="addFloorElement('table-4p')" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-white whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="layers" class="w-3 h-3 text-brand-gold"></i> 4-Top Table
-              </button>
-              <button onclick="addFloorElement('table-6p')" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-white whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="users" class="w-3 h-3 text-blue-400"></i> 6-Top Rect
-              </button>
-              <button onclick="addFloorElement('booth-8p')" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-brand-gold whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="crown" class="w-3 h-3 text-brand-gold"></i> 8-Top VIP Booth
-              </button>
+            </div>
+
+          </aside>
+
+          <!-- RIGHT COLUMN: FULL 2D PERSISTENT CANVAS -->
+          <div class="flex-1 min-w-0 flex flex-col">
+            <div 
+              id="floorCanvas" 
+              class="floorplan-canvas"
+              ondragover="handleCanvasDragOver(event)"
+              ondrop="handleCanvasDrop(event)"
+              onpointerdown="handleCanvasPointerDown(event)"
+              onpointermove="handleCanvasPointerMove(event)"
+              onpointerup="handleCanvasPointerUp(event)"
+            >
+              <!-- Populated dynamically via JS -->
+            </div>
+
+            <div class="flex items-center justify-between mt-1.5 text-[9px] text-zinc-500 font-mono">
+              <span id="activeZoneWatermark">Zone: All Space</span>
+              <span id="floorSeatCountLabel">0 Active Elements</span>
             </div>
           </div>
 
-          <!-- Category 2: Infrastructure & Reference Landmarks -->
-          <div class="pt-1.5 border-t border-zinc-850">
-            <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1">
-              🏛️ Add Infrastructure &amp; Reference Points:
-            </span>
-            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar pb-1">
-              <button onclick="addFloorElement('infra-bar')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg font-bold text-slate-300 whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="wine" class="w-3 h-3 text-slate-400"></i> Bar Counter Structure
-              </button>
-              <button onclick="addFloorElement('infra-dj')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg font-bold text-slate-300 whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="music" class="w-3 h-3 text-purple-400"></i> DJ Stage
-              </button>
-              <button onclick="addFloorElement('infra-host')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg font-bold text-slate-300 whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="log-in" class="w-3 h-3 text-emerald-400"></i> Entrance / Host
-              </button>
-              <button onclick="addFloorElement('infra-tea')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg font-bold text-slate-300 whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="flame" class="w-3 h-3 text-brand-gold"></i> Samovar Station
-              </button>
-              <button onclick="addFloorElement('infra-wall')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-lg font-bold text-slate-300 whitespace-nowrap flex items-center gap-1">
-                <i data-lucide="columns-2" class="w-3 h-3 text-slate-400"></i> Divider Wall
-              </button>
-            </div>
-          </div>
-
-          <!-- Canvas Reset & Template Actions -->
-          <div class="pt-1.5 border-t border-zinc-850 flex items-center justify-between">
-            <span class="text-[9px] text-zinc-500 font-mono">Snap-to-Grid Enabled (4%)</span>
-            <div class="flex items-center gap-1.5">
-              <button onclick="clearToBlankCanvas()" class="px-2.5 py-0.8 bg-zinc-900 hover:bg-red-950 text-zinc-400 hover:text-red-300 border border-zinc-800 rounded-lg text-[10px] font-bold">
-                Clear Blank Canvas
-              </button>
-              <button onclick="loadEmpirePresetFloorplan()" class="px-2.5 py-0.8 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg text-[10px] font-bold">
-                Load Empire Preset
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- 2D Interactive Floorplan Canvas -->
-        <div 
-          id="floorCanvas" 
-          class="floorplan-canvas"
-          onpointerdown="handleCanvasPointerDown(event)"
-          onpointermove="handleCanvasPointerMove(event)"
-          onpointerup="handleCanvasPointerUp(event)"
-        >
-          <!-- Floor nodes dynamically injected via JS -->
-        </div>
-
-        <!-- Legend / Floor Stats -->
-        <div class="flex items-center justify-between mt-2 pt-2 border-t border-zinc-850 text-[10px] text-zinc-400">
-          <div class="flex items-center gap-3">
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available</span>
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-gold"></span> Occupied Tab</span>
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Shisha / Coal Due</span>
-            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-500"></span> Infrastructure</span>
-          </div>
-          <span id="floorSeatCountLabel" class="font-mono">0 Elements</span>
         </div>
 
       </div>
@@ -674,6 +741,42 @@
 
   </main>
 
+  <!-- ==================== CREATE CUSTOM ZONE MODAL ==================== -->
+  <div id="createZoneModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-xs w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="map" class="w-4 h-4 text-brand-gold"></i>
+          Add Custom Floor Zone
+        </h3>
+        <button onclick="closeCreateZoneModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="my-3 space-y-2 text-xs">
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Name</label>
+          <input type="text" id="newZoneNameInput" placeholder="e.g. Outdoor Patio, Rooftop Terrace" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Icon</label>
+          <select id="newZoneIconSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
+            <option value="sun">🌿 Outdoor / Patio (Sun)</option>
+            <option value="layers">🛋️ Indoor Main Floor (Layers)</option>
+            <option value="crown">👑 VIP Velvet Mezzanine (Crown)</option>
+            <option value="wine">🍸 High Bar Counter (Wine)</option>
+            <option value="sparkles">✨ Private Cigar Room (Sparkles)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2 border-t border-zinc-800">
+        <button onclick="saveNewCustomZone()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs">
+          Create Zone ✓
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== MICROS NODE PROPERTIES & TAB CONTROL MODAL ==================== -->
   <div id="seatActionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
@@ -690,7 +793,6 @@
         <button onclick="closeSeatActionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <!-- Content dynamically switched: Edit Node vs Live Tab Action -->
       <div id="seatModalContent" class="my-3 space-y-2.5 text-xs">
         <!-- Injected via JS -->
       </div>
@@ -767,29 +869,39 @@
       primaryRate: 8.60
     };
 
-    // EMPIRE PRESET FULL LOUNGE FLOORPLAN
+    const DEFAULT_ZONES = [
+      { id: 'all', name: 'All Zones', icon: 'layout-grid' },
+      { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
+      { id: 'bar', name: 'Main Bar', icon: 'wine' },
+      { id: 'vip', name: 'VIP Lounge', icon: 'crown' },
+      { id: 'patio', name: 'Outdoor Patio', icon: 'sun' }
+    ];
+
     const EMPIRE_FULL_PRESET = [
       // Infrastructure Landmarks
-      { id: 'infra-main-bar', name: 'MAIN BAR', label: 'Main Bar Counter', type: 'infra-bar', isInfra: true, icon: 'wine', x: 4, y: 4, w: 180, h: 28, shape: 'rect', status: 'infra' },
-      { id: 'infra-dj-stage', name: 'DJ STAGE', label: 'DJ Stage & Sound', type: 'infra-dj', isInfra: true, icon: 'music', x: 74, y: 4, w: 90, h: 36, shape: 'rect', status: 'infra' },
-      { id: 'infra-entrance', name: 'ENTRANCE', label: 'Host & Entrance', type: 'infra-host', isInfra: true, icon: 'log-in', x: 4, y: 78, w: 90, h: 32, shape: 'rect', status: 'infra' },
-      { id: 'infra-tea-bar', name: 'SAMOVAR TEA', label: 'Samovar Station', type: 'infra-tea', isInfra: true, icon: 'flame', x: 72, y: 78, w: 92, h: 32, shape: 'rect', status: 'infra' },
+      { id: 'infra-main-bar', name: 'MAIN BAR', label: 'Main Bar Counter', zone: 'bar', type: 'infra-bar', isInfra: true, icon: 'wine', x: 4, y: 4, w: 180, h: 28, shape: 'rect', status: 'infra' },
+      { id: 'infra-dj-stage', name: 'DJ STAGE', label: 'DJ Stage & Sound', zone: 'indoor', type: 'infra-dj', isInfra: true, icon: 'music', x: 74, y: 4, w: 90, h: 36, shape: 'rect', status: 'infra' },
+      { id: 'infra-entrance', name: 'ENTRANCE', label: 'Host & Entrance', zone: 'indoor', type: 'infra-host', isInfra: true, icon: 'log-in', x: 4, y: 78, w: 90, h: 32, shape: 'rect', status: 'infra' },
+      { id: 'infra-tea-bar', name: 'SAMOVAR TEA', label: 'Samovar Station', zone: 'indoor', type: 'infra-tea', isInfra: true, icon: 'flame', x: 72, y: 78, w: 92, h: 32, shape: 'rect', status: 'infra' },
 
-      // 1-Top Bar Stools (Along Main Bar)
-      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', type: 'bar-1p', capacity: 1, icon: 'wine', x: 6, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
-      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', type: 'bar-1p', capacity: 1, icon: 'wine', x: 18, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
-      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', type: 'bar-1p', capacity: 1, icon: 'wine', x: 30, y: 16, w: 38, h: 38, shape: 'circle', status: 'occupied', tabBal: 38.00, guest: 'VIP-102' },
-      { id: 'bar-4', name: 'B4', label: 'Bar Stool 4', type: 'bar-1p', capacity: 1, icon: 'wine', x: 42, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+      // 1-Top Bar Stools
+      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 6, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 18, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 30, y: 16, w: 38, h: 38, shape: 'circle', status: 'occupied', tabBal: 38.00, guest: 'VIP-102' },
+      { id: 'bar-4', name: 'B4', label: 'Bar Stool 4', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 42, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
 
-      // 8-Top VIP Velvet Booths (Right Wall)
-      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P)', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 22, w: 86, h: 54, shape: 'rect', status: 'occupied', tabBal: 60.00, guest: 'VIP-310', coalTimer: 21 },
-      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P)', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 48, w: 86, h: 54, shape: 'rect', status: 'available', tabBal: 0 },
+      // 8-Top VIP Velvet Booths
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 22, w: 86, h: 54, shape: 'rect', status: 'occupied', tabBal: 60.00, guest: 'VIP-310', coalTimer: 21 },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 48, w: 86, h: 54, shape: 'rect', status: 'available', tabBal: 0 },
 
       // 2-Top & 4-Top Center Tables
-      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top)', type: 'table-2p', capacity: 2, icon: 'coffee', x: 8, y: 38, w: 48, h: 48, shape: 'circle', status: 'available', tabBal: 0 },
-      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top)', type: 'table-4p', capacity: 4, icon: 'layers', x: 26, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
-      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top)', type: 'table-4p', capacity: 4, icon: 'layers', x: 46, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
-      { id: 'tbl-6', name: 'T6', label: 'Table 6 (6-Top)', type: 'table-6p', capacity: 6, icon: 'users', x: 28, y: 64, w: 72, h: 48, shape: 'rect', status: 'occupied', tabBal: 35.00, guest: 'VIP-409', coalTimer: 19 }
+      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top)', zone: 'indoor', type: 'table-2p', capacity: 2, icon: 'coffee', x: 8, y: 38, w: 48, h: 48, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 26, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 46, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'tbl-6', name: 'T6', label: 'Table 6 (6-Top)', zone: 'indoor', type: 'table-6p', capacity: 6, icon: 'users', x: 28, y: 64, w: 72, h: 48, shape: 'rect', status: 'occupied', tabBal: 35.00, guest: 'VIP-409', coalTimer: 19 },
+      
+      // Outdoor Patio
+      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', type: 'table-4p', capacity: 4, icon: 'sun', x: 56, y: 64, w: 52, h: 52, shape: 'circle', status: 'available', tabBal: 0 }
     ];
 
     class StaffStash {
@@ -806,18 +918,30 @@
         localStorage.setItem('empire_stoked_stash', JSON.stringify(items));
       }
 
+      static getZones() {
+        const local = localStorage.getItem('empire_custom_zones');
+        if (!local) {
+          localStorage.setItem('empire_custom_zones', JSON.stringify(DEFAULT_ZONES));
+          return DEFAULT_ZONES;
+        }
+        return JSON.parse(local);
+      }
+
+      static saveZones(zones) {
+        localStorage.setItem('empire_custom_zones', JSON.stringify(zones));
+      }
+
       static getFloorplan() {
-        const local = localStorage.getItem('empire_custom_floorplan');
+        const local = localStorage.getItem('empire_custom_floorplan_v2');
         if (local === null) {
-          // Starts completely blank or initialized as clean array
-          localStorage.setItem('empire_custom_floorplan', JSON.stringify([]));
+          localStorage.setItem('empire_custom_floorplan_v2', JSON.stringify([]));
           return [];
         }
         return JSON.parse(local);
       }
 
       static saveFloorplan(plan) {
-        localStorage.setItem('empire_custom_floorplan', JSON.stringify(plan));
+        localStorage.setItem('empire_custom_floorplan_v2', JSON.stringify(plan));
       }
 
       static getTaxConfig() {
@@ -857,8 +981,12 @@
       }
     }
 
+    let activeZoneFilter = 'all';
     let isBuilderMode = false;
     let draggingNodeId = null;
+    let resizingNodeId = null;
+    let resizeType = null;
+    let resizeStart = { x: 0, y: 0, w: 0, h: 0 };
     let activeModalSeatId = null;
 
     let labBowlCapacity = 22;
@@ -888,6 +1016,7 @@
         document.getElementById('staffPinModal').classList.add('hidden');
         initRotaryWheel();
         renderMixLab();
+        renderZoneTabs();
         renderFloorCanvas();
         populatePosQuickSeats();
         showToast('🔓 Staff Master Unlocked', 'Welcome Coal Master / Floor Server.');
@@ -918,7 +1047,7 @@
 
       if (tabId === 'lab') { initRotaryWheel(); renderMixLab(); }
       if (tabId === 'pos') populatePosQuickSeats();
-      if (tabId === 'seating') renderFloorCanvas();
+      if (tabId === 'seating') { renderZoneTabs(); renderFloorCanvas(); }
       if (tabId === 'kds') renderKdsQueue();
       if (tabId === 'stash') renderStashInventory();
       if (tabId === 'settings') loadTaxSettingsUI();
@@ -930,28 +1059,110 @@
       renderMixLab();
     }
 
+    // ==================== DYNAMIC ZONES ENGINE ====================
+    function renderZoneTabs() {
+      const container = document.getElementById('dynamicZoneTabsContainer');
+      container.innerHTML = '';
+      const zones = StaffStash.getZones();
+      const plan = StaffStash.getFloorplan();
+
+      zones.forEach(z => {
+        const isAll = (z.id === 'all');
+        const count = isAll ? plan.filter(n => !n.isInfra).length : plan.filter(n => n.zone === z.id && !n.isInfra).length;
+        const isActive = (activeZoneFilter === z.id);
+
+        const btn = document.createElement('button');
+        btn.className = `px-2 py-1 rounded-lg text-[10px] font-bold whitespace-nowrap transition flex items-center gap-1 ${isActive ? 'bg-zinc-800 text-brand-gold border border-zinc-700' : 'bg-black text-zinc-400 hover:text-white'}`;
+        btn.onclick = () => {
+          activeZoneFilter = z.id;
+          renderZoneTabs();
+          renderFloorCanvas();
+        };
+        btn.innerHTML = `
+          <i data-lucide="${z.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
+          <span>${z.name}</span>
+          <span class="text-[8px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-mono">${count}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      renderIcons();
+    }
+
+    function openCreateZoneModal() {
+      document.getElementById('newZoneNameInput').value = '';
+      document.getElementById('createZoneModal').classList.remove('hidden');
+    }
+
+    function closeCreateZoneModal() {
+      document.getElementById('createZoneModal').classList.add('hidden');
+    }
+
+    function saveNewCustomZone() {
+      const name = document.getElementById('newZoneNameInput').value.trim();
+      if (!name) return;
+      const icon = document.getElementById('newZoneIconSelect').value;
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+      const zones = StaffStash.getZones();
+      if (zones.some(z => z.id === id)) {
+        showToast('⚠️ Zone Exists', 'A zone with this name already exists.');
+        return;
+      }
+
+      zones.push({ id, name, icon });
+      StaffStash.saveZones(zones);
+      activeZoneFilter = id;
+      closeCreateZoneModal();
+      renderZoneTabs();
+      renderFloorCanvas();
+      showToast('🏛️ Zone Created', `"${name}" zone added to floor manager.`);
+    }
+
+    // ==================== PALETTE DRAG & DROP TO CANVAS ====================
+    function handlePaletteDragStart(e, presetType) {
+      e.dataTransfer.setData('text/plain', presetType);
+      e.dataTransfer.effectAllowed = 'copy';
+    }
+
+    function handleCanvasDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleCanvasDrop(e) {
+      e.preventDefault();
+      const presetType = e.dataTransfer.getData('text/plain');
+      if (!presetType) return;
+
+      const canvas = document.getElementById('floorCanvas');
+      const rect = canvas.getBoundingClientRect();
+      let dropX = ((e.clientX - rect.left) / rect.width) * 100;
+      let dropY = ((e.clientY - rect.top) / rect.height) * 100;
+
+      // Snap to 4% grid
+      dropX = Math.max(2, Math.min(84, Math.round(dropX / 4) * 4));
+      dropY = Math.max(4, Math.min(82, Math.round(dropY / 4) * 4));
+
+      addFloorElement(presetType, dropX, dropY);
+    }
+
     // ==================== MICROS / ALOHA VISUAL FLOORPLAN ENGINE ====================
     function toggleFloorBuilderMode() {
       isBuilderMode = !isBuilderMode;
       const btnText = document.getElementById('builderModeBtnText');
-      const statusText = document.getElementById('floorModeStatusText');
-      const palette = document.getElementById('floorBuilderPalette');
       const btn = document.getElementById('builderModeBtn');
 
       if (isBuilderMode) {
-        btnText.textContent = 'Save Floor Plan ✓';
+        btnText.textContent = 'Save ✓';
         btn.classList.add('bg-brand-gold', 'text-black', 'border-brand-gold');
         btn.classList.remove('bg-zinc-900', 'text-zinc-300');
-        statusText.textContent = '🛠️ Builder Mode: Drag to position • Tap any item to customize';
-        palette.classList.remove('hidden');
-        showToast('🛠️ Builder Active', 'Add 1-8 tops or infrastructure & drag into position.');
+        showToast('🛠️ Builder Active', 'Drag to move • Drag sides/corners to resize • Auto-saving.');
       } else {
-        btnText.textContent = 'Edit Floor Plan 🛠️';
+        btnText.textContent = 'Edit 🛠️';
         btn.classList.remove('bg-brand-gold', 'text-black', 'border-brand-gold');
         btn.classList.add('bg-zinc-900', 'text-zinc-300');
-        statusText.textContent = 'Live Monitor: Tap any table to view tab or assign coals';
-        palette.classList.add('hidden');
-        showToast('✅ Layout Saved', 'Floorplan updated across all staff terminals.');
+        showToast('✅ Layout Saved', 'Floor layout locked & active across all terminals.');
       }
       renderFloorCanvas();
     }
@@ -959,23 +1170,25 @@
     function renderFloorCanvas() {
       const canvas = document.getElementById('floorCanvas');
       canvas.innerHTML = '';
-      const plan = StaffStash.getFloorplan();
+      const allPlan = StaffStash.getFloorplan();
+      const zones = StaffStash.getZones();
 
       renderFloatingVIPQueue();
 
-      if (plan.length === 0) {
+      const visibleNodes = (activeZoneFilter === 'all') ? allPlan : allPlan.filter(n => n.zone === activeZoneFilter);
+      const curZoneObj = zones.find(z => z.id === activeZoneFilter);
+      document.getElementById('activeZoneWatermark').textContent = `Zone: ${curZoneObj ? curZoneObj.name : 'All Space'}`;
+
+      if (visibleNodes.length === 0) {
         canvas.innerHTML = `
-          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 pointer-events-none">
-            <div class="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mb-2">
-              <i data-lucide="layout-grid" class="w-6 h-6"></i>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4 pointer-events-none">
+            <div class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mb-2">
+              <i data-lucide="layout-grid" class="w-5 h-5"></i>
             </div>
-            <p class="text-xs font-bold text-zinc-300">Floor Canvas is Blank</p>
-            <p class="text-[10px] text-zinc-500 mt-1 max-w-xs">
-              Tap <strong>"Edit Floor Plan 🛠️"</strong> to place your Bar Stools, 2/4/6/8-Tops, DJ Stage, and Samovar Station.
+            <p class="text-xs font-bold text-zinc-300">No items in this zone</p>
+            <p class="text-[10px] text-zinc-500 mt-0.5 max-w-xs">
+              Drag elements from the <strong>left palette</strong> onto this grid canvas.
             </p>
-            <button onclick="loadEmpirePresetFloorplan()" class="mt-3 pointer-events-auto px-3 py-1.5 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-xl text-xs font-bold transition">
-              Load Empire Lounge Preset
-            </button>
           </div>
         `;
         document.getElementById('floorSeatCountLabel').textContent = '0 Elements';
@@ -983,7 +1196,7 @@
         return;
       }
 
-      plan.forEach(node => {
+      visibleNodes.forEach(node => {
         const div = document.createElement('div');
         div.id = `node-${node.id}`;
         div.className = `floor-node ${node.shape === 'circle' ? 'rounded-full' : 'rounded-xl'} border-2`;
@@ -1009,11 +1222,20 @@
           div.classList.add('border-zinc-800', 'bg-zinc-950', 'hover:border-zinc-700');
         }
 
-        // Icon Rendering
         const iconName = node.icon || (node.type === 'bar-1p' ? 'wine' : (node.type === 'booth-8p' ? 'crown' : 'layers'));
         const iconColor = isInfra ? 'text-slate-400' : (isOcc ? 'text-brand-gold' : 'text-zinc-400');
         
+        let handlesHtml = '';
+        if (isBuilderMode) {
+          handlesHtml = `
+            <div class="resize-handle-right" onpointerdown="handleResizeStart(event, '${node.id}', 'right')"></div>
+            <div class="resize-handle-bottom" onpointerdown="handleResizeStart(event, '${node.id}', 'bottom')"></div>
+            <div class="resize-handle-corner" onpointerdown="handleResizeStart(event, '${node.id}', 'corner')"></div>
+          `;
+        }
+
         div.innerHTML = `
+          ${handlesHtml}
           <div class="flex items-center gap-0.5 pointer-events-none">
             <i data-lucide="${iconName}" class="w-3 h-3 ${iconColor}"></i>
             ${node.capacity ? `<span class="text-[8px] font-mono text-zinc-400 font-bold">${node.capacity}P</span>` : ''}
@@ -1028,15 +1250,18 @@
           if (!isBuilderMode) {
             if (!isInfra) openLiveSeatActionModal(node.id);
           } else {
-            openEditSeatModal(node.id);
+            // Open modal only if not actively resizing or dragging
+            if (!resizingNodeId && !draggingNodeId) {
+              openEditSeatModal(node.id);
+            }
           }
         };
 
         canvas.appendChild(div);
       });
 
-      const seatingCount = plan.filter(n => !n.isInfra).length;
-      const infraCount = plan.filter(n => n.isInfra).length;
+      const seatingCount = visibleNodes.filter(n => !n.isInfra).length;
+      const infraCount = visibleNodes.filter(n => n.isInfra).length;
       document.getElementById('floorSeatCountLabel').textContent = `${seatingCount} Seats • ${infraCount} Landmarks`;
       populateLabDispatchSelect();
       renderIcons();
@@ -1052,7 +1277,7 @@
       document.getElementById('floatingQueueCount').textContent = `${unassignedList.length} Waiting for Seat`;
 
       if (unassignedList.length === 0) {
-        container.innerHTML = `<div class="text-center py-1.5 text-[11px] text-zinc-500 italic">No floating VIP orders waiting. All guests seated.</div>`;
+        container.innerHTML = `<div class="text-center py-1 text-[10px] text-zinc-500 italic">No floating VIP orders waiting.</div>`;
         return;
       }
 
@@ -1060,17 +1285,17 @@
 
       unassignedList.forEach(order => {
         const div = document.createElement('div');
-        div.className = 'bg-black p-2 rounded-xl border border-zinc-800 flex items-center justify-between gap-2 text-xs';
+        div.className = 'bg-black p-1.5 rounded-xl border border-zinc-800 flex items-center justify-between gap-1.5 text-xs';
         div.innerHTML = `
           <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded">👑 VIP #${order.tabId}</span>
-              <span class="font-bold text-white">${order.mix}</span>
+            <div class="flex items-center gap-1">
+              <span class="text-[8px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded">👑 VIP #${order.tabId}</span>
+              <span class="font-bold text-white text-[11px]">${order.mix}</span>
             </div>
-            <span class="text-[10px] text-zinc-400 font-mono">Ordered at ${order.time} • $${order.price.toFixed(2)}</span>
+            <span class="text-[9px] text-zinc-400 font-mono">${order.time} • $${order.price.toFixed(2)}</span>
           </div>
 
-          <select onchange="assignFloatingTabToSeat('${order.id}', this.value)" class="bg-zinc-900 border border-zinc-700 text-[11px] text-brand-gold font-bold rounded-lg px-2 py-1 focus:outline-none">
+          <select onchange="assignFloatingTabToSeat('${order.id}', this.value)" class="bg-zinc-900 border border-zinc-700 text-[10px] text-brand-gold font-bold rounded px-1.5 py-0.5 focus:outline-none">
             <option value="">+ Assign Seat</option>
             ${plan.map(s => `<option value="${s.label}">${s.label} (${s.name})</option>`).join('')}
           </select>
@@ -1101,42 +1326,118 @@
       }
     }
 
-    // Drag-and-Drop Floor Positioning
+    // Direct Drag Positioning & Side Resizing with Immediate Persistence
     function handleNodePointerDown(e, nodeId) {
       if (!isBuilderMode) return;
+      if (e.target.classList.contains('resize-handle-right') || 
+          e.target.classList.contains('resize-handle-bottom') || 
+          e.target.classList.contains('resize-handle-corner')) {
+        return; // Resize handles handle their own pointer events
+      }
       e.stopPropagation();
       draggingNodeId = nodeId;
       const nodeEl = document.getElementById(`node-${nodeId}`);
       if (nodeEl) nodeEl.classList.add('is-dragging');
     }
 
-    function handleCanvasPointerMove(e) {
-      if (!isBuilderMode || !draggingNodeId) return;
-      const canvas = document.getElementById('floorCanvas');
-      const rect = canvas.getBoundingClientRect();
-
-      let xPercent = ((e.clientX - rect.left) / rect.width) * 100;
-      let yPercent = ((e.clientY - rect.top) / rect.height) * 100;
-
-      // Snap to 4% grid
-      xPercent = Math.max(2, Math.min(88, Math.round(xPercent / 4) * 4));
-      yPercent = Math.max(4, Math.min(84, Math.round(yPercent / 4) * 4));
-
-      const nodeEl = document.getElementById(`node-${draggingNodeId}`);
-      if (nodeEl) {
-        nodeEl.style.left = `${xPercent}%`;
-        nodeEl.style.top = `${yPercent}%`;
-      }
+    function handleResizeStart(e, nodeId, type) {
+      if (!isBuilderMode) return;
+      e.stopPropagation();
+      e.preventDefault();
+      resizingNodeId = nodeId;
+      resizeType = type;
 
       const plan = StaffStash.getFloorplan();
-      const nodeObj = plan.find(n => n.id === draggingNodeId);
-      if (nodeObj) {
-        nodeObj.x = xPercent;
-        nodeObj.y = yPercent;
+      const node = plan.find(n => n.id === nodeId);
+      if (node) {
+        resizeStart = {
+          x: e.clientX,
+          y: e.clientY,
+          w: node.w || 50,
+          h: node.h || 50,
+          shape: node.shape
+        };
+      }
+    }
+
+    function handleCanvasPointerMove(e) {
+      if (!isBuilderMode) return;
+
+      // 1. Direct Side / Corner Drag-to-Resize Mode
+      if (resizingNodeId && resizeType) {
+        const deltaX = e.clientX - resizeStart.x;
+        const deltaY = e.clientY - resizeStart.y;
+        
+        let newW = resizeStart.w;
+        let newH = resizeStart.h;
+
+        if (resizeType === 'right' || resizeType === 'corner') {
+          newW = Math.max(32, Math.min(260, Math.round((resizeStart.w + deltaX) / 4) * 4));
+        }
+        if (resizeType === 'bottom' || resizeType === 'corner') {
+          newH = Math.max(20, Math.min(220, Math.round((resizeStart.h + deltaY) / 4) * 4));
+        }
+
+        if (resizeStart.shape === 'circle') {
+          const maxDim = Math.max(newW, newH);
+          newW = maxDim;
+          newH = maxDim;
+        }
+
+        const nodeEl = document.getElementById(`node-${resizingNodeId}`);
+        if (nodeEl) {
+          nodeEl.style.width = `${newW}px`;
+          nodeEl.style.height = `${newH}px`;
+        }
+
+        const plan = StaffStash.getFloorplan();
+        const nodeObj = plan.find(n => n.id === resizingNodeId);
+        if (nodeObj) {
+          nodeObj.w = newW;
+          nodeObj.h = newH;
+        }
+        return;
+      }
+
+      // 2. Element Drag Position Mode
+      if (draggingNodeId) {
+        const canvas = document.getElementById('floorCanvas');
+        const rect = canvas.getBoundingClientRect();
+
+        let xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+        let yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // Snap to 4% grid
+        xPercent = Math.max(2, Math.min(88, Math.round(xPercent / 4) * 4));
+        yPercent = Math.max(4, Math.min(84, Math.round(yPercent / 4) * 4));
+
+        const nodeEl = document.getElementById(`node-${draggingNodeId}`);
+        if (nodeEl) {
+          nodeEl.style.left = `${xPercent}%`;
+          nodeEl.style.top = `${yPercent}%`;
+        }
+
+        const plan = StaffStash.getFloorplan();
+        const nodeObj = plan.find(n => n.id === draggingNodeId);
+        if (nodeObj) {
+          nodeObj.x = xPercent;
+          nodeObj.y = yPercent;
+        }
       }
     }
 
     function handleCanvasPointerUp(e) {
+      if (resizingNodeId) {
+        const plan = StaffStash.getFloorplan();
+        StaffStash.saveFloorplan(plan);
+        const node = plan.find(n => n.id === resizingNodeId);
+        if (node) showToast('↔️ Resized', `${node.label} size updated (${node.w}x${node.h}px).`);
+        resizingNodeId = null;
+        resizeType = null;
+        renderFloorCanvas();
+        return;
+      }
+
       if (draggingNodeId) {
         const nodeEl = document.getElementById(`node-${draggingNodeId}`);
         if (nodeEl) nodeEl.classList.remove('is-dragging');
@@ -1146,19 +1447,21 @@
       }
     }
 
-    function addFloorElement(presetType) {
+    function addFloorElement(presetType, customX = 36, customY = 36) {
       const plan = StaffStash.getFloorplan();
       const count = plan.filter(n => !n.isInfra).length + 1;
+      const targetZone = (activeZoneFilter === 'all') ? 'indoor' : activeZoneFilter;
       
       let newNode = {
         id: `node-${Date.now()}`,
         name: `T${count}`,
         label: `Table ${count}`,
+        zone: targetZone,
         type: presetType,
         capacity: 4,
         icon: 'layers',
-        x: 40,
-        y: 40,
+        x: customX,
+        y: customY,
         w: 54,
         h: 54,
         shape: 'rect',
@@ -1172,6 +1475,7 @@
         newNode.label = `Bar Stool ${count}`;
         newNode.capacity = 1;
         newNode.icon = 'wine';
+        newNode.zone = 'bar';
         newNode.w = 38;
         newNode.h = 38;
         newNode.shape = 'circle';
@@ -1204,6 +1508,7 @@
         newNode.label = `8-Top VIP Booth ${count}`;
         newNode.capacity = 8;
         newNode.icon = 'crown';
+        newNode.zone = 'vip';
         newNode.w = 86;
         newNode.h = 54;
         newNode.shape = 'rect';
@@ -1214,6 +1519,7 @@
           newNode.name = 'BAR';
           newNode.label = 'Bar Counter Structure';
           newNode.icon = 'wine';
+          newNode.zone = 'bar';
           newNode.w = 160;
           newNode.h = 28;
           newNode.shape = 'rect';
@@ -1250,13 +1556,15 @@
 
       plan.push(newNode);
       StaffStash.saveFloorplan(plan);
+      renderZoneTabs();
       renderFloorCanvas();
-      showToast('✨ Added', `${newNode.label} placed on canvas. Drag to position.`);
+      showToast('✨ Added', `${newNode.label} placed in zone "${newNode.zone}". Drag to move or stretch edges.`);
     }
 
     function clearToBlankCanvas() {
-      if (confirm('Start with a completely blank canvas?')) {
+      if (confirm('Clear floorplan to start blank?')) {
         StaffStash.saveFloorplan([]);
+        renderZoneTabs();
         renderFloorCanvas();
         showToast('🧹 Canvas Cleared', 'Starting with a clean floor plan.');
       }
@@ -1264,6 +1572,7 @@
 
     function loadEmpirePresetFloorplan() {
       StaffStash.saveFloorplan(EMPIRE_FULL_PRESET);
+      renderZoneTabs();
       renderFloorCanvas();
       showToast('🏛️ Loaded Preset', 'Empire full lounge layout populated.');
     }
@@ -1274,6 +1583,8 @@
       const plan = StaffStash.getFloorplan();
       const node = plan.find(n => n.id === nodeId);
       if (!node) return;
+
+      const zones = StaffStash.getZones().filter(z => z.id !== 'all');
 
       document.getElementById('modalSeatTitle').textContent = `Edit: ${node.name}`;
       document.getElementById('modalSeatSubtitle').textContent = node.isInfra ? 'Infrastructure Landmark' : 'Table / Seat Properties';
@@ -1286,8 +1597,31 @@
             <input type="text" id="editNodeNameInput" value="${node.name}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
           </div>
           <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Assigned Zone</label>
+            <select id="editNodeZoneSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-brand-gold font-bold">
+              ${zones.map(z => `<option value="${z.id}" ${node.zone === z.id ? 'selected' : ''}>${z.name}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
             <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Capacity (Guests)</label>
             <input type="number" id="editNodeCapacityInput" value="${node.capacity || 0}" ${node.isInfra ? 'disabled' : ''} class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
+          </div>
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Icon</label>
+            <select id="editNodeIconSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
+              <option value="wine" ${node.icon === 'wine' ? 'selected' : ''}>🍸 Bar Stool (Wine)</option>
+              <option value="coffee" ${node.icon === 'coffee' ? 'selected' : ''}>☕ Cozy 2-Top (Coffee)</option>
+              <option value="layers" ${node.icon === 'layers' ? 'selected' : ''}>🛋️ 4-Top Table (Layers)</option>
+              <option value="users" ${node.icon === 'users' ? 'selected' : ''}>🍽️ 6-Top Dining (Users)</option>
+              <option value="crown" ${node.icon === 'crown' ? 'selected' : ''}>👑 8-Top VIP (Crown)</option>
+              <option value="sun" ${node.icon === 'sun' ? 'selected' : ''}>🌿 Patio Table (Sun)</option>
+              <option value="music" ${node.icon === 'music' ? 'selected' : ''}>🎧 DJ Stage (Music)</option>
+              <option value="flame" ${node.icon === 'flame' ? 'selected' : ''}>🫖 Samovar (Flame)</option>
+              <option value="log-in" ${node.icon === 'log-in' ? 'selected' : ''}>🚪 Entrance (Host)</option>
+            </select>
           </div>
         </div>
 
@@ -1306,11 +1640,11 @@
           </div>
           <div>
             <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Width (px)</label>
-            <input type="number" id="editNodeWInput" value="${node.w}" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-mono" />
+            <input type="number" id="editNodeWInput" value="${node.w}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
           </div>
           <div>
             <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Height (px)</label>
-            <input type="number" id="editNodeHInput" value="${node.h}" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-mono" />
+            <input type="number" id="editNodeHInput" value="${node.h}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
           </div>
         </div>
 
@@ -1329,6 +1663,8 @@
       if (node) {
         node.name = document.getElementById('editNodeNameInput').value || node.name;
         node.label = document.getElementById('editNodeLabelInput').value || node.label;
+        node.zone = document.getElementById('editNodeZoneSelect').value || node.zone;
+        node.icon = document.getElementById('editNodeIconSelect').value || node.icon;
         if (!node.isInfra) {
           node.capacity = parseInt(document.getElementById('editNodeCapacityInput').value) || 0;
         }
@@ -1337,6 +1673,7 @@
         node.h = parseInt(document.getElementById('editNodeHInput').value) || node.h;
         
         StaffStash.saveFloorplan(plan);
+        renderZoneTabs();
         renderFloorCanvas();
         closeSeatActionModal();
         showToast('✓ Saved', `${node.label} updated.`);
@@ -1347,6 +1684,7 @@
       let plan = StaffStash.getFloorplan();
       plan = plan.filter(n => n.id !== nodeId);
       StaffStash.saveFloorplan(plan);
+      renderZoneTabs();
       renderFloorCanvas();
       closeSeatActionModal();
       showToast('🗑️ Removed', 'Element removed from floor.');
@@ -1359,7 +1697,7 @@
       if (!node || node.isInfra) return;
 
       document.getElementById('modalSeatTitle').textContent = node.label;
-      document.getElementById('modalSeatSubtitle').textContent = `Capacity: ${node.capacity || 4} Guests • Status: ${node.status.toUpperCase()}`;
+      document.getElementById('modalSeatSubtitle').textContent = `Zone: ${node.zone.toUpperCase()} • Capacity: ${node.capacity || 4}P • Status: ${node.status.toUpperCase()}`;
 
       const content = document.getElementById('seatModalContent');
       content.innerHTML = `
