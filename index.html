@@ -180,12 +180,56 @@
       flex-shrink: 0;
     }
 
-    /* CONTINUOUS SPECTRUM GRADIENT TRACK */
+    /* CONTINUOUS DRAGGABLE SPECTRUM GRADIENT TRACK */
+    .spectrum-drag-area {
+      position: relative;
+      width: 100%;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      touch-action: none;
+      user-select: none;
+      margin: 4px 0;
+    }
     .spectrum-track {
-      height: 7px;
+      width: 100%;
+      height: 14px;
       border-radius: 999px;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-      transition: background 0.3s ease;
+      transition: background 0.05s ease;
+      cursor: pointer;
+    }
+    .spectrum-drag-thumb {
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 28px;
+      transform: translate(-50%, -50%);
+      background: #0D1117;
+      border: 2px solid #E5A93C;
+      border-radius: 7px;
+      cursor: ew-resize;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 10px rgba(229, 169, 60, 0.6);
+      transition: transform 0.1s ease, border-color 0.1s ease;
+      z-index: 25;
+      touch-action: none;
+    }
+    .spectrum-drag-thumb:hover, .spectrum-drag-thumb:active {
+      transform: translate(-50%, -50%) scale(1.18);
+      border-color: #FFFFFF;
+      background: #000000;
+      box-shadow: 0 0 16px rgba(229, 169, 60, 0.9);
+    }
+    .spectrum-drag-thumb::after {
+      content: '';
+      width: 4px;
+      height: 12px;
+      border-left: 1.5px solid #E5A93C;
+      border-right: 1.5px solid #E5A93C;
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -260,8 +304,15 @@
         </div>
       </div>
 
-      <!-- Continuous Multi-Stop Spectrum Gradient Track -->
-      <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5 bg-zinc-900"></div>
+      <!-- Continuous Multi-Stop Spectrum Gradient Track with Draggable Splitter Thumbs -->
+      <div class="spectrum-drag-area" id="spectrumDraggableArea">
+        <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
+        <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+      </div>
+      <div class="flex justify-between text-[9px] text-zinc-400 font-mono px-1 mb-2">
+        <span>Drag gold thumb to adjust flavor ratios</span>
+        <span class="text-brand-gold font-bold">Standard 22g Pack</span>
+      </div>
 
       <!-- Dynamically Populated Flavor Chips Tray -->
       <div class="space-y-1.5" id="flavorSlotsContainer">
@@ -885,14 +936,93 @@
       showToast('🗑️ Bowl Cleared', 'Bowl is now blank.');
     }
 
+    // ==================== DRAGGABLE TOP SPECTRUM INTERACTIVE CONTROLLER ====================
+    let activeCustomerDragHandleIndex = null;
+
+    function setupCustomerSpectrumDragListeners() {
+      const container = document.getElementById('spectrumDraggableArea');
+      if (!container) return;
+
+      function getClientX(e) {
+        return e.touches ? e.touches[0].clientX : e.clientX;
+      }
+
+      function handleDragMove(e) {
+        if (activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
+        if (e.cancelable) e.preventDefault();
+
+        const ribbon = document.getElementById('spectrumRibbon');
+        if (!ribbon) return;
+        const rect = ribbon.getBoundingClientRect();
+        const clientX = getClientX(e);
+        const rawPct = Math.round(((clientX - rect.left) / rect.width) * 100);
+
+        let cum = 0;
+        const cumPcts = activeFlavors.map(p => { cum += p.percent; return cum; });
+        
+        const minBound = (activeCustomerDragHandleIndex === 0) ? 10 : (cumPcts[activeCustomerDragHandleIndex - 1] + 10);
+        const maxBound = (activeCustomerDragHandleIndex === activeFlavors.length - 2) ? 90 : (cumPcts[activeCustomerDragHandleIndex + 1] - 10);
+
+        const clampedPct = Math.max(minBound, Math.min(maxBound, rawPct));
+        const oldCum = cumPcts[activeCustomerDragHandleIndex];
+        const delta = clampedPct - oldCum;
+
+        if (delta !== 0) {
+          activeFlavors[activeCustomerDragHandleIndex].percent += delta;
+          activeFlavors[activeCustomerDragHandleIndex + 1].percent -= delta;
+          renderMixLab();
+        }
+      }
+
+      function handleDragEnd() {
+        activeCustomerDragHandleIndex = null;
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('touchmove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+        window.removeEventListener('touchend', handleDragEnd);
+      }
+
+      window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
+        e.preventDefault();
+        e.stopPropagation();
+        activeCustomerDragHandleIndex = handleIdx;
+        window.addEventListener('mousemove', handleDragMove);
+        window.addEventListener('touchmove', handleDragMove, { passive: false });
+        window.addEventListener('mouseup', handleDragEnd);
+        window.addEventListener('touchend', handleDragEnd);
+      };
+
+      container.onmousedown = (e) => {
+        if (e.target.classList.contains('spectrum-drag-thumb')) return;
+        if (activeFlavors.length <= 1) return;
+
+        const ribbon = document.getElementById('spectrumRibbon');
+        const rect = ribbon.getBoundingClientRect();
+        const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+
+        let cum = 0;
+        let closestIdx = 0;
+        let minDiff = 999;
+        for (let i = 0; i < activeFlavors.length - 1; i++) {
+          cum += activeFlavors[i].percent;
+          const diff = Math.abs(clickPct - cum);
+          if (diff < minDiff) { minDiff = diff; closestIdx = i; }
+        }
+        window.handleCustomerStartSpectrumDrag(e, closestIdx);
+      };
+    }
+
     // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
       const taxConfig = CustomerStash.getTaxConfig();
       const ribbon = document.getElementById('spectrumRibbon');
       const container = document.getElementById('flavorSlotsContainer');
+      const handlesCont = document.getElementById('spectrumHandlesContainer');
       const profileContainer = document.getElementById('bowlProfileBadges');
       const clearBtn = document.getElementById('clearBowlBtn');
+
+      if (handlesCont) handlesCont.innerHTML = '';
 
       if (activeFlavors.length === 0) {
         ribbon.style.background = '#1E2533';
@@ -914,92 +1044,7 @@
         return;
       }
 
-      clearBtn.classList.remove('hidden');
-      document.getElementById('activeBowlTitle').textContent = activeMixName ? `👑 ${activeMixName}` : 'In Your Bowl Mix';
 
-      let gradParts = [];
-      let cum = 0;
-      let totalStrength = 0;
-      let activeProfilesSet = new Set();
-      const slicePercent = 100 / activeFlavors.length;
-
-      activeFlavors.forEach(id => {
-        const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
-        const col = item.color || '#E5A93C';
-        const start = cum;
-        cum += slicePercent;
-        gradParts.push(`${col} ${start}% ${cum}%`);
-        totalStrength += (item.strength || 7);
-
-        if (item.profiles) {
-          item.profiles.forEach(p => activeProfilesSet.add(p));
-        }
-      });
-      ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
-
-      container.innerHTML = '';
-      activeFlavors.forEach((id, idx) => {
-        const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
-        const row = document.createElement('div');
-        row.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
-        row.innerHTML = `
-          <div class="flex items-center gap-2 min-w-0 flex-1">
-            <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
-            <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
-              </div>
-            </div>
-          </div>
-
-          <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0" title="Remove from mix">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-          </button>
-        `;
-        container.appendChild(row);
-      });
-
-      profileContainer.innerHTML = '';
-      const profileEmojis = {
-        'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓',
-        'Citrus': '🍋', 'Sweet': '🍯', 'Tropical': '🥭', 'Dessert': '🍰', 'Creamy': '🥛',
-        'Warm Spices': '🪵', 'Floral': '🌸', 'Orchard Fruit': '🍑', 'Beverage': '🥤',
-        'Tea': '🫖', 'Herbal': '🌿', 'Anise': '⭐', 'Heavy Nicotine': '⚡'
-      };
-
-      activeProfilesSet.forEach(prof => {
-        const emoji = profileEmojis[prof] || '✦';
-        const span = document.createElement('span');
-        span.className = 'text-[9px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
-        span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
-        profileContainer.appendChild(span);
-      });
-
-      const avgStr = (totalStrength / activeFlavors.length).toFixed(1);
-      document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
-
-      const isTangiers = activeFlavors.some(id => {
-        const itm = inventory.find(i => i.id === id);
-        return itm && itm.brand === 'Tangiers';
-      });
-
-      const basePrice = isTangiers ? 38.00 : 35.00;
-      const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
-      const estTax = (finalPrice * (taxConfig.primaryRate / 100));
-
-      document.getElementById('totalPriceText').textContent = `$${finalPrice.toFixed(2)}`;
-      document.getElementById('taxEstimateText').textContent = `+ $${estTax.toFixed(2)} (${taxConfig.primaryRate}% tax)`;
-      document.getElementById('orderTypeLabel').textContent = roundCount === 1 ? '[FIRST BOWL]' : '[REFILL / REPACK -$10]';
-
-      renderIcons();
-    }
-
-    function removeFlavor(idx) {
-      activeFlavors.splice(idx, 1);
-      activeMixName = null;
-      renderMixLab();
-    }
 
     function dispatchOrder(mode) {
       if (activeFlavors.length === 0) {
@@ -1131,6 +1176,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       initBrandStationDial();
       renderMixLab();
+      setupCustomerSpectrumDragListeners();
     });
   </script>
 </body>

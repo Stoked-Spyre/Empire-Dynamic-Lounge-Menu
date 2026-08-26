@@ -284,13 +284,56 @@
       flex-shrink: 0;
     }
 
-    /* SPECTRUM TRACK */
-    .spectrum-track {
-      height: 9px;
-      border-radius: 999px;
+    /* DRAGGABLE TOP SPECTRUM CONTROLLER */
+    .spectrum-drag-area {
       position: relative;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
-      transition: background 0.3s ease;
+      width: 100%;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      touch-action: none;
+      user-select: none;
+      margin: 4px 0;
+    }
+    .spectrum-track {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      transition: background 0.05s ease;
+      cursor: pointer;
+    }
+    .spectrum-drag-thumb {
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 28px;
+      transform: translate(-50%, -50%);
+      background: #0D1117;
+      border: 2px solid #E5A93C;
+      border-radius: 7px;
+      cursor: ew-resize;
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 10px rgba(229, 169, 60, 0.6);
+      transition: transform 0.1s ease, border-color 0.1s ease;
+      z-index: 25;
+      touch-action: none;
+    }
+    .spectrum-drag-thumb:hover, .spectrum-drag-thumb:active {
+      transform: translate(-50%, -50%) scale(1.18);
+      border-color: #FFFFFF;
+      background: #000000;
+      box-shadow: 0 0 16px rgba(229, 169, 60, 0.9);
+    }
+    .spectrum-drag-thumb::after {
+      content: '';
+      width: 4px;
+      height: 12px;
+      border-left: 1.5px solid #E5A93C;
+      border-right: 1.5px solid #E5A93C;
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -323,7 +366,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Live Floor Map, Identical Lab &amp; Ticket Engine</span>
+          <span>Live Floor Map, Draggable Spectrum &amp; POS</span>
         </div>
       </div>
     </div>
@@ -459,9 +502,9 @@
           </div>
         </div>
 
-        <!-- 1. DYNAMIC IN YOUR BOWL MIX TRAY (IDENTICAL SPECTRUM & CHIPS) -->
+        <!-- 1. DYNAMIC IN YOUR BOWL MIX TRAY (DRAGGABLE TOP SPECTRUM & CHIPS) -->
         <section class="pos-card rounded-2xl p-3.5">
-          <div class="flex justify-between items-center mb-1.5">
+          <div class="flex justify-between items-center mb-1">
             <div class="flex items-center gap-1.5">
               <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
               <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">In Your Bowl Mix</span>
@@ -476,8 +519,15 @@
             </div>
           </div>
 
-          <!-- Spectrum Gradient Track -->
-          <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5 bg-zinc-900"></div>
+          <!-- DRAGGABLE TOP SPECTRUM CONTROLLER -->
+          <div class="spectrum-drag-area" id="spectrumDraggableArea">
+            <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
+            <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+          </div>
+          <div class="flex justify-between text-[9px] text-zinc-400 font-mono px-1 mb-2">
+            <span>Drag thumb on spectrum bar to adjust flavor ratios</span>
+            <span id="labTotalGramsBadge" class="text-brand-gold font-bold">22.0g Total Pack</span>
+          </div>
 
           <!-- Dynamically Populated Flavor Chips Tray -->
           <div class="space-y-1.5" id="flavorSlotsContainer">
@@ -1017,6 +1067,7 @@
         populatePosQuickSeats();
         initBrandStationDial();
         populatePipeFleetDropdown();
+        setupSpectrumDragListeners();
         showToast('🔓 Staff Operations Live', 'Floor map and multi-tab sommelier ready.');
       } else {
         showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
@@ -1058,6 +1109,7 @@
         populatePipeFleetDropdown(); 
         renderMixLab(); 
         updateDispatchSummary(); 
+        setupSpectrumDragListeners();
       }
       if (tabId === 'pos') populatePosQuickSeats();
       if (tabId === 'kds') renderKdsQueue();
@@ -1725,17 +1777,96 @@
       showToast('🧹 Bowl Cleared', 'Bowl is blank. Select house mixes or custom flavors.');
     }
 
+    // ==================== DRAGGABLE TOP SPECTRUM INTERACTIVE CONTROLLER ====================
+    let activeDragHandleIndex = null;
+
+    function setupSpectrumDragListeners() {
+      const container = document.getElementById('spectrumDraggableArea');
+      if (!container) return;
+
+      function getClientX(e) {
+        return e.touches ? e.touches[0].clientX : e.clientX;
+      }
+
+      function handleDragMove(e) {
+        if (activeDragHandleIndex === null || labPortions.length <= 1) return;
+        if (e.cancelable) e.preventDefault();
+
+        const ribbon = document.getElementById('spectrumRibbon');
+        if (!ribbon) return;
+        const rect = ribbon.getBoundingClientRect();
+        const clientX = getClientX(e);
+        const rawPct = Math.round(((clientX - rect.left) / rect.width) * 100);
+
+        let cum = 0;
+        const cumPcts = labPortions.map(p => { cum += p.percent; return cum; });
+        
+        const minBound = (activeDragHandleIndex === 0) ? 10 : (cumPcts[activeDragHandleIndex - 1] + 10);
+        const maxBound = (activeDragHandleIndex === labPortions.length - 2) ? 90 : (cumPcts[activeDragHandleIndex + 1] - 10);
+
+        const clampedPct = Math.max(minBound, Math.min(maxBound, rawPct));
+        const oldCum = cumPcts[activeDragHandleIndex];
+        const delta = clampedPct - oldCum;
+
+        if (delta !== 0) {
+          labPortions[activeDragHandleIndex].percent += delta;
+          labPortions[activeDragHandleIndex + 1].percent -= delta;
+          renderMixLab();
+        }
+      }
+
+      function handleDragEnd() {
+        activeDragHandleIndex = null;
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('touchmove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+        window.removeEventListener('touchend', handleDragEnd);
+      }
+
+      window.handleStartSpectrumThumbDrag = function(e, handleIdx) {
+        e.preventDefault();
+        e.stopPropagation();
+        activeDragHandleIndex = handleIdx;
+        window.addEventListener('mousemove', handleDragMove);
+        window.addEventListener('touchmove', handleDragMove, { passive: false });
+        window.addEventListener('mouseup', handleDragEnd);
+        window.addEventListener('touchend', handleDragEnd);
+      };
+
+      container.onmousedown = (e) => {
+        if (e.target.classList.contains('spectrum-drag-thumb')) return;
+        if (labPortions.length <= 1) return;
+
+        const ribbon = document.getElementById('spectrumRibbon');
+        const rect = ribbon.getBoundingClientRect();
+        const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+
+        let cum = 0;
+        let closestIdx = 0;
+        let minDiff = 999;
+        for (let i = 0; i < labPortions.length - 1; i++) {
+          cum += labPortions[i].percent;
+          const diff = Math.abs(clickPct - cum);
+          if (diff < minDiff) { minDiff = diff; closestIdx = i; }
+        }
+        window.handleStartSpectrumThumbDrag(e, closestIdx);
+      };
+    }
+
     function renderMixLab() {
       const inventory = StaffStash.getInventory();
       const spectrum = document.getElementById('spectrumRibbon');
       const container = document.getElementById('flavorSlotsContainer');
+      const handlesCont = document.getElementById('spectrumHandlesContainer');
       if (!spectrum || !container) return;
 
       container.innerHTML = '';
+      if (handlesCont) handlesCont.innerHTML = '';
 
       if (labPortions.length === 0) {
         spectrum.style.background = '#1E2533';
         document.getElementById('labBuzzBadge').textContent = 'BLANK BOWL';
+        document.getElementById('labTotalGramsBadge').textContent = '0.0g Pack';
         container.innerHTML = `<span class="text-[11px] text-zinc-500 italic block text-center py-2">No shisha in bowl. Select a House Mix or single flavor below.</span>`;
         return;
       }
@@ -1753,6 +1884,21 @@
         totalStrength += ((item.strength || 7) * (p.percent / 100));
       });
       spectrum.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+      // Render Draggable Thumbs on Top Spectrum
+      if (handlesCont && labPortions.length > 1) {
+        let handleCum = 0;
+        for (let i = 0; i < labPortions.length - 1; i++) {
+          handleCum += labPortions[i].percent;
+          const thumb = document.createElement('div');
+          thumb.className = 'spectrum-drag-thumb';
+          thumb.style.left = `${handleCum}%`;
+          thumb.title = `Drag to adjust ratio between ${labPortions[i].percent}% and ${labPortions[i+1].percent}%`;
+          thumb.onmousedown = (e) => window.handleStartSpectrumThumbDrag(e, i);
+          thumb.ontouchstart = (e) => window.handleStartSpectrumThumbDrag(e, i);
+          handlesCont.appendChild(thumb);
+        }
+      }
 
       labPortions.forEach((slot, index) => {
         const item = inventory.find(i => i.id === slot.id) || STOKED_MASTER_INVENTORY[0];
@@ -1793,6 +1939,7 @@
 
       const roundedStr = totalStrength.toFixed(1);
       document.getElementById('labBuzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      document.getElementById('labTotalGramsBadge').textContent = `${labBowlCapacity}.0g Total Pack`;
       renderIcons();
     }
 
