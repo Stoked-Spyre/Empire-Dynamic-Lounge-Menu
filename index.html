@@ -42,6 +42,9 @@
   </script>
 
   <style>
+    html {
+      font-size: 18px; /* +2px global base scale */
+    }
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
     
     body {
@@ -258,11 +261,11 @@
       <div>
         <div class="flex items-center gap-1.5">
           <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
-          <span class="text-[8px] bg-amber-950/80 text-brand-gold font-mono px-1 py-0.2 rounded border border-amber-800/50 font-bold">👑 VIP PASS</span>
+          <span class="text-[10px] bg-amber-950/80 text-brand-gold font-mono px-1 py-0.2 rounded border border-amber-800/50 font-bold">👑 VIP PASS</span>
         </div>
         
         <!-- Interactive Seat Selector Dropdown / Modal Trigger -->
-        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[11px] text-zinc-300 font-semibold hover:text-brand-gold transition mt-0.5">
+        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[13px] text-zinc-300 font-semibold hover:text-brand-gold transition mt-0.5">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <span id="headerSeatDisplay" class="font-bold text-white">👑 Floating VIP Tab #409</span>
           <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
@@ -299,7 +302,7 @@
           <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
           <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">In Your Bowl Mix</span>
         </div>
-        <button onclick="clearBowl()" id="clearBowlBtn" class="text-[10px] text-zinc-500 hover:text-red-400 font-semibold hidden">
+        <button onclick="clearBowl()" id="clearBowlBtn" class="text-[12px] text-zinc-500 hover:text-red-400 font-semibold hidden">
           Clear ✕
         </button>
       </div>
@@ -307,19 +310,19 @@
       <!-- SOMMELIER BUZZ PILL INDICATOR -->
       <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-zinc-950/80 rounded-xl border border-zinc-800">
         <div class="flex items-center gap-2">
-          <span class="text-[10px] uppercase font-bold text-zinc-400">Buzz Level:</span>
+          <span class="text-[12px] uppercase font-bold text-zinc-400">Buzz Level:</span>
           <!-- Dynamic Clean Pill Indicator -->
           <div id="labBuzzBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-extrabold border shadow-sm transition-all duration-300 bg-red-950/80 text-red-300 border-red-700/80">
             <span id="labBuzzIcon">⚡</span>
             <span id="labBuzzScoreText" class="font-mono text-xs font-black">7.6</span>
-            <span class="text-[10px] text-zinc-400 font-normal">/10</span>
+            <span class="text-[12px] text-zinc-400 font-normal">/10</span>
             <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
-            <span id="labBuzzCategoryText" class="text-[10px] font-sans font-extrabold tracking-wider uppercase">BOLD</span>
+            <span id="labBuzzCategoryText" class="text-[12px] font-sans font-extrabold tracking-wider uppercase">BOLD</span>
           </div>
         </div>
 
         <!-- Customer Account Buzz History Match Pill -->
-        <div id="labGuestBuzzMatchBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-zinc-900 border-zinc-800 text-zinc-300">
+        <div id="labGuestBuzzMatchBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-zinc-900 border-zinc-800 text-zinc-300">
           <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
         </div>
       </div>
@@ -329,7 +332,7 @@
         <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
         <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
       </div>
-      <div class="flex justify-between text-[9px] text-zinc-400 font-mono px-1">
+      <div class="flex justify-between text-[11px] text-zinc-400 font-mono px-1">
         <span>Drag gold thumb to adjust flavor ratios</span>
         <span class="text-brand-gold font-bold">Standard 22g Pack</span>
       </div>
@@ -348,7 +351,7 @@
           <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
           <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
         </div>
-        <span class="text-[10px] text-zinc-400 font-medium">Select Category • Spin Drum</span>
+        <span class="text-[12px] text-zinc-400 font-medium">Select Category • Spin Drum</span>
       </div>
 
       <!-- Dual Split Layout: Brands & House Mixes on Left, Drum on Right -->
@@ -395,18 +398,18 @@
     <!-- 3. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
     <section class="obsidian-card rounded-2xl p-3">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
+        <span class="text-[12px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
           <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
           Bowl Profiles &amp; Tasting Notes
         </span>
-        <span class="text-[9px] text-emerald-400 font-bold bg-zinc-950 border border-emerald-900/40 px-2 py-0.5 rounded">
+        <span class="text-[11px] text-emerald-400 font-bold bg-zinc-950 border border-emerald-900/40 px-2 py-0.5 rounded">
           Standard 22g Pack
         </span>
       </div>
 
       <!-- Dynamic Flavor Note Pills -->
       <div class="flex items-center gap-1.5 flex-wrap" id="bowlProfileBadges">
-        <span class="text-[10px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>
+        <span class="text-[12px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>
       </div>
     </section>
 
@@ -414,12 +417,12 @@
     <div class="sticky bottom-2 z-30 bg-black/95 border border-zinc-800 p-3 rounded-2xl shadow-2xl flex items-center justify-between">
       <div>
         <div class="flex items-center gap-1.5">
-          <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
-          <span class="text-[9px] text-brand-gold font-mono font-semibold" id="orderSeatTag">👑 VIP Tab (Floating)</span>
+          <span class="text-[11px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
+          <span class="text-[11px] text-brand-gold font-mono font-semibold" id="orderSeatTag">👑 VIP Tab (Floating)</span>
         </div>
         <div class="flex items-baseline gap-1.5">
           <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$0.00</span>
-          <span class="text-[10px] text-zinc-400 font-mono" id="taxEstimateText">+ $0.00 tax</span>
+          <span class="text-[12px] text-zinc-400 font-mono" id="taxEstimateText">+ $0.00 tax</span>
         </div>
       </div>
       
@@ -446,7 +449,7 @@
           </div>
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Lounge Seat Assignment</h3>
-            <p class="text-[10px] text-zinc-400">Assign your VIP Floating Tab to a seat or bar</p>
+            <p class="text-[12px] text-zinc-400">Assign your VIP Floating Tab to a seat or bar</p>
           </div>
         </div>
         <button onclick="closeSeatAssignModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
@@ -455,10 +458,10 @@
       <!-- Current Assignment Status -->
       <div class="my-3 p-2.5 rounded-xl bg-black border border-zinc-850 flex items-center justify-between text-xs">
         <div>
-          <span class="text-[10px] text-zinc-400 block font-semibold">Active Assignment</span>
+          <span class="text-[12px] text-zinc-400 block font-semibold">Active Assignment</span>
           <span class="font-bold text-brand-gold" id="modalActiveSeatLabel">👑 Floating VIP Bar Tab #409</span>
         </div>
-        <button onclick="selectSeatLocation('Floating VIP Tab', 'floating')" class="text-[10px] bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-2 py-1 rounded-lg font-bold">
+        <button onclick="selectSeatLocation('Floating VIP Tab', 'floating')" class="text-[12px] bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-2 py-1 rounded-lg font-bold">
           Keep Floating
         </button>
       </div>
@@ -468,7 +471,7 @@
         <!-- Injected dynamically from active floorplan & custom zones -->
       </div>
 
-      <p class="text-[10px] text-zinc-500 text-center mt-3">
+      <p class="text-[12px] text-zinc-500 text-center mt-3">
         You can change your seat assignment anytime or staff will update it once seated.
       </p>
     </div>
@@ -484,7 +487,7 @@
           </div>
           <div>
             <h3 class="text-xs font-crest font-bold text-white tracking-wider">VIP LOYALTY REWARDS</h3>
-            <p class="text-[10px] text-brand-gold font-mono" id="modalVipTierLabel">Gold VIP • Alex M.</p>
+            <p class="text-[12px] text-brand-gold font-mono" id="modalVipTierLabel">Gold VIP • Alex M.</p>
           </div>
         </div>
         <button onclick="closeRewardsLoyaltyModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
@@ -492,9 +495,9 @@
 
       <!-- Current Points Balance Card -->
       <div class="bg-black p-3 rounded-xl border border-zinc-800 text-center">
-        <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block">Available Stash Points</span>
+        <span class="text-[11px] uppercase tracking-wider text-zinc-400 font-bold block">Available Stash Points</span>
         <span class="text-2xl font-extrabold text-brand-gold font-mono-nums block mt-0.5" id="modalCurrentPointsDisplay">750 PTS</span>
-        <span class="text-[10px] text-emerald-400 font-semibold block mt-0.5">⚡ Earn 10 Pts per $1.00 spent</span>
+        <span class="text-[12px] text-emerald-400 font-semibold block mt-0.5">⚡ Earn 10 Pts per $1.00 spent</span>
       </div>
 
       <!-- Reward Tiers List -->
@@ -520,7 +523,7 @@
           </div>
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Square Web Payments</h3>
-            <p class="text-[10px] text-zinc-400" id="checkoutSeatSubtitle">👑 VIP Tab #409 • Phoenix, AZ</p>
+            <p class="text-[12px] text-zinc-400" id="checkoutSeatSubtitle">👑 VIP Tab #409 • Phoenix, AZ</p>
           </div>
         </div>
         <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
@@ -531,9 +534,9 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center gap-1.5">
             <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
-            <span class="font-bold text-white text-[11px]">Redeem VIP Points</span>
+            <span class="font-bold text-white text-[13px]">Redeem VIP Points</span>
           </div>
-          <span class="text-[10px] text-brand-gold font-mono font-bold" id="checkoutMemberPointsBadge">750 Pts Available</span>
+          <span class="text-[12px] text-brand-gold font-mono font-bold" id="checkoutMemberPointsBadge">750 Pts Available</span>
         </div>
 
         <!-- Reward Tiers Selector Options -->
@@ -553,12 +556,12 @@
           <span class="font-mono-nums" id="checkoutRewardDiscountAmt">-$0.00</span>
         </div>
         
-        <div class="flex justify-between text-zinc-400 text-[11px]">
+        <div class="flex justify-between text-zinc-400 text-[13px]">
           <span id="checkoutTaxLabel">Phoenix Sales Tax (8.60%)</span>
           <span class="font-bold font-mono-nums text-zinc-300" id="checkoutTaxAmt">$3.01</span>
         </div>
 
-        <div class="flex justify-between text-zinc-400 text-[11px]">
+        <div class="flex justify-between text-zinc-400 text-[13px]">
           <span>Coal Service &amp; Rotations</span>
           <span class="text-emerald-400 font-bold">Included ✓</span>
         </div>
@@ -570,7 +573,7 @@
       </div>
 
       <div class="mb-3">
-        <label class="text-[10px] text-zinc-400 font-semibold block mb-1">Add Gratuity for Staff</label>
+        <label class="text-[12px] text-zinc-400 font-semibold block mb-1">Add Gratuity for Staff</label>
         <div class="grid grid-cols-4 gap-1.5 text-center">
           <button onclick="selectCheckoutTip(15)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">15%</button>
           <button onclick="selectCheckoutTip(18)" class="tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-lg text-xs font-bold">18%</button>
@@ -597,10 +600,10 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <h3 class="text-xs font-crest font-bold text-white tracking-wider">SOMMELIER VIP TICKET</h3>
           </div>
-          <p class="text-[10px] font-mono text-brand-gold mt-0.5" id="summaryTicketId">TICKET #EMP-8492</p>
+          <p class="text-[12px] font-mono text-brand-gold mt-0.5" id="summaryTicketId">TICKET #EMP-8492</p>
         </div>
 
-        <span class="text-[9px] bg-zinc-900 text-zinc-400 font-mono px-2 py-0.5 rounded border border-zinc-800" id="summaryTicketTime">
+        <span class="text-[11px] bg-zinc-900 text-zinc-400 font-mono px-2 py-0.5 rounded border border-zinc-800" id="summaryTicketTime">
           10:24 PM
         </span>
       </div>
@@ -619,7 +622,7 @@
           <span class="text-zinc-400">Lounge Pipe:</span>
           <span class="font-bold text-brand-gold font-mono" id="summaryPipeTag">🏺 Russian Dark Leaf Craft Setup</span>
         </div>
-        <div class="flex justify-between items-center text-[10px] text-zinc-500">
+        <div class="flex justify-between items-center text-[12px] text-zinc-500">
           <span>Standard 22g Pack</span>
           <span class="text-emerald-400">🔥 25m Heat Clock Started</span>
         </div>
@@ -627,19 +630,19 @@
 
       <!-- Shisha Blend Breakdown -->
       <div class="bg-black p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
-        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Shisha Bowl Breakdown:</span>
-        <div class="space-y-1 font-mono text-[11px]" id="summaryBowlBreakdown">
+        <span class="text-[12px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Shisha Bowl Breakdown:</span>
+        <div class="space-y-1 font-mono text-[13px]" id="summaryBowlBreakdown">
           <!-- Injected via JS -->
         </div>
       </div>
 
       <!-- Financials & Phoenix Tax Breakdown -->
       <div class="bg-zinc-900/60 p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
-        <div class="flex justify-between text-zinc-400 text-[11px]">
+        <div class="flex justify-between text-zinc-400 text-[13px]">
           <span>Subtotal</span>
           <span class="font-mono-nums text-white" id="summarySubtotal">$0.00</span>
         </div>
-        <div class="flex justify-between text-zinc-400 text-[11px]">
+        <div class="flex justify-between text-zinc-400 text-[13px]">
           <span id="summaryTaxLabel">Phoenix Sales Tax (8.60%)</span>
           <span class="font-mono-nums text-zinc-300" id="summaryTax">$0.00</span>
         </div>
@@ -825,15 +828,15 @@
             <div>
               <div class="flex items-center gap-1.5">
                 <span class="font-bold truncate ${isUnlocked ? 'text-white' : 'text-zinc-400'}">${tier.label}</span>
-                ${isUnlocked ? '<span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-1 rounded">UNLOCKED</span>' : ''}
+                ${isUnlocked ? '<span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-1 rounded">UNLOCKED</span>' : ''}
               </div>
-              <span class="text-[10px] text-zinc-400 block">${tier.desc}</span>
+              <span class="text-[12px] text-zinc-400 block">${tier.desc}</span>
             </div>
           </div>
 
           <div class="text-right flex-shrink-0">
             <span class="text-xs font-bold font-mono ${isUnlocked ? 'text-brand-gold' : 'text-zinc-500'}">${tier.pointsReq} Pts</span>
-            <span class="text-[9px] block ${isUnlocked ? 'text-emerald-400' : 'text-zinc-600'}">${isUnlocked ? 'Ready at Checkout' : `Need ${tier.pointsReq - member.points} more`}</span>
+            <span class="text-[11px] block ${isUnlocked ? 'text-emerald-400' : 'text-zinc-600'}">${isUnlocked ? 'Ready at Checkout' : `Need ${tier.pointsReq - member.points} more`}</span>
           </div>
         `;
         container.appendChild(div);
@@ -875,7 +878,7 @@
         const zoneDiv = document.createElement('div');
         zoneDiv.className = 'mb-2';
         zoneDiv.innerHTML = `
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1.5 flex items-center gap-1">
+          <span class="text-[12px] uppercase font-bold text-zinc-400 tracking-wider block mb-1.5 flex items-center gap-1">
             <i data-lucide="${zone.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
             ${zone.name} (${zoneSeats.length})
           </span>
@@ -886,7 +889,7 @@
                   <i data-lucide="${s.icon || 'layers'}" class="w-3 h-3 text-zinc-400"></i>
                   <span class="font-bold text-white text-xs">${s.name}</span>
                 </div>
-                <span class="text-[9px] text-emerald-400 font-mono">${s.capacity ? s.capacity + 'P' : 'Open'}</span>
+                <span class="text-[11px] text-emerald-400 font-mono">${s.capacity ? s.capacity + 'P' : 'Open'}</span>
               </button>
             `).join('')}
           </div>
@@ -1024,7 +1027,7 @@
               <span class="truncate font-bold">${item.name}</span>
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <span class="text-[9px] bg-amber-950/80 text-brand-gold border border-amber-800/40 px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
+              <span class="text-[11px] bg-amber-950/80 text-brand-gold border border-amber-800/40 px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
             </div>
           `;
         } else {
@@ -1034,8 +1037,8 @@
               <span class="truncate">${item.name}</span>
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-              <span class="text-[9px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
+              <span class="text-[11px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+              <span class="text-[11px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
             </div>
           `;
         }
@@ -1196,7 +1199,7 @@
 
       const currentMember = CustomerStash.getCurrentVipMember();
       if (!currentMember || currentMember.preferredBuzz === undefined) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-zinc-900 border border-zinc-800 text-zinc-400';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-semibold bg-zinc-900 border border-zinc-800 text-zinc-400';
         matchText.innerHTML = `<span>Guest Profile</span>`;
         return;
       }
@@ -1206,13 +1209,13 @@
       const diff = bowlBuzz - pref;
 
       if (Math.abs(diff) <= 0.6) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-emerald-950/90 border-emerald-800 text-emerald-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-emerald-950/90 border-emerald-800 text-emerald-300';
         matchText.innerHTML = `<span>🟢 Matches Your Usual (${pref.toFixed(1)} ${prefInfo.category})</span>`;
       } else if (diff < -0.6) {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-sky-950/90 border-sky-800 text-sky-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-sky-950/90 border-sky-800 text-sky-300';
         matchText.innerHTML = `<span>🔵 Lighter than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
       } else {
-        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-red-950/90 border-red-800 text-red-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold border transition-all duration-300 bg-red-950/90 border-red-800 text-red-300';
         matchText.innerHTML = `<span>🔴 Stronger than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
       }
     }
@@ -1247,7 +1250,7 @@
             <span>Select a <strong>👑 House Mix</strong> or spin the dial to add flavors.</span>
           </div>
         `;
-        profileContainer.innerHTML = `<span class="text-[10px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>`;
+        profileContainer.innerHTML = `<span class="text-[12px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>`;
         updateCustomerBuzzMatch(0);
         renderIcons(); return;
       }
@@ -1292,15 +1295,15 @@
             <div class="truncate">
               <div class="flex items-center gap-1.5">
                 <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+                <span class="text-[11px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
               </div>
-              <span class="text-[9px] text-zinc-500 font-mono">Str ${item.strength || 7}/10</span>
+              <span class="text-[11px] text-zinc-500 font-mono">Str ${item.strength || 7}/10</span>
             </div>
           </div>
           <div class="flex items-center gap-2">
             <div class="text-right">
               <span class="text-xs font-bold text-brand-gold font-mono-nums">${f.percent}%</span>
-              <span class="text-[9px] text-zinc-500 block font-mono-nums">${grams}g</span>
+              <span class="text-[11px] text-zinc-500 block font-mono-nums">${grams}g</span>
             </div>
             <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
           </div>
@@ -1312,7 +1315,7 @@
       activeProfilesSet.forEach(prof => {
         const emoji = profileEmojis[prof] || '✦';
         const span = document.createElement('span');
-        span.className = 'text-[9px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
+        span.className = 'text-[11px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
         span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
         profileContainer.appendChild(span);
       });
@@ -1436,8 +1439,8 @@
         btn.innerHTML = `
           <div class="flex items-center gap-1.5"><span>${tier.icon}</span><span class="font-bold text-xs">${tier.label}</span></div>
           <div class="flex items-center gap-1">
-            <span class="font-mono text-[10px] ${isEligible ? 'text-brand-gold font-bold' : 'text-zinc-500'}">-${tier.pointsReq} Pts</span>
-            <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isEligible ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-600'}">${isEligible ? 'REDEEM' : 'LOCKED'}</span>
+            <span class="font-mono text-[12px] ${isEligible ? 'text-brand-gold font-bold' : 'text-zinc-500'}">-${tier.pointsReq} Pts</span>
+            <span class="text-[11px] px-1.5 py-0.2 rounded font-bold ${isEligible ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-600'}">${isEligible ? 'REDEEM' : 'LOCKED'}</span>
           </div>
         `;
         rewardsContainer.appendChild(btn);

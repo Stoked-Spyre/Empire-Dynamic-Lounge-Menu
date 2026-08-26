@@ -40,6 +40,9 @@
   </script>
 
   <style>
+    html {
+      font-size: 18px; /* +2px global base scale */
+    }
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
     
     body {
@@ -179,9 +182,9 @@
       <div>
         <div class="flex items-center gap-1.5">
           <h1 class="font-crest font-bold text-xs tracking-wider text-white">OWNER MASTER CONTROL</h1>
-          <span class="text-[9px] bg-amber-950 text-brand-gold font-mono px-1.5 py-0.2 rounded border border-amber-800/50 font-bold">LOCKED SUITE</span>
+          <span class="text-[11px] bg-amber-950 text-brand-gold font-mono px-1.5 py-0.2 rounded border border-amber-800/50 font-bold">LOCKED SUITE</span>
         </div>
-        <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
+        <div class="flex items-center gap-1 text-[13px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
           <span>Floor Architect, Tax Rates, Pipe Fleet &amp; Stock</span>
         </div>
@@ -202,23 +205,23 @@
     
     <!-- Navigation Tabs for Owner Controls -->
     <div class="grid grid-cols-5 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
-      <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[10px]">
+      <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[12px]">
         <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
         <span>Floor</span>
       </button>
-      <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
+      <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
         <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span>Taxes ⚙️</span>
       </button>
-      <button onclick="switchOwnerTab('pipes')" id="owner-tab-pipes" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
+      <button onclick="switchOwnerTab('pipes')" id="owner-tab-pipes" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span>Pipes</span>
       </button>
-      <button onclick="switchOwnerTab('stash')" id="owner-tab-stash" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
+      <button onclick="switchOwnerTab('stash')" id="owner-tab-stash" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
         <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span>Stock</span>
       </button>
-      <button onclick="switchOwnerTab('rewards')" id="owner-tab-rewards" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
+      <button onclick="switchOwnerTab('rewards')" id="owner-tab-rewards" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[12px]">
         <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span>Rewards</span>
       </button>
@@ -233,10 +236,10 @@
               <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-gold"></i>
               Lounge Layout Architect &amp; Dynamic Zones
             </h2>
-            <p class="text-[10px] text-zinc-400">Drag to move • Grab edges to resize width/height • Auto-persisted</p>
+            <p class="text-[12px] text-zinc-400">Drag to move • Grab edges to resize width/height • Auto-persisted</p>
           </div>
 
-          <button onclick="openCreateZoneModal()" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-lg text-[10px] font-bold flex items-center gap-1">
+          <button onclick="openCreateZoneModal()" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-lg text-[12px] font-bold flex items-center gap-1">
             <i data-lucide="plus" class="w-3 h-3"></i> Zone
           </button>
         </div>
@@ -252,7 +255,7 @@
           <!-- LEFT PALETTE -->
           <aside class="w-36 flex-shrink-0 flex flex-col gap-2 p-2 bg-black rounded-xl border border-zinc-800/80 overflow-y-auto max-h-[440px] no-scrollbar text-xs">
             <div>
-              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🛋️ Seats / Sofas</span>
+              <span class="text-[11px] uppercase font-bold text-zinc-400 block mb-1">🛋️ Seats / Sofas</span>
               <div class="space-y-1">
                 <button onclick="addFloorElement('bar-1p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'bar-1p')" class="palette-btn">
                   <i data-lucide="wine" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
@@ -278,7 +281,7 @@
             </div>
 
             <div class="pt-1.5 border-t border-zinc-850">
-              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🏛️ Landmarks</span>
+              <span class="text-[11px] uppercase font-bold text-zinc-400 block mb-1">🏛️ Landmarks</span>
               <div class="space-y-1">
                 <button onclick="addFloorElement('infra-bar')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-bar')" class="palette-btn text-slate-300">
                   <i data-lucide="wine" class="w-3 h-3 text-slate-400 flex-shrink-0"></i>
@@ -304,10 +307,10 @@
             </div>
 
             <div class="pt-1.5 border-t border-zinc-850 space-y-1">
-              <button onclick="loadEmpirePresetFloorplan()" class="w-full text-center py-1 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg text-[9px] font-bold">
+              <button onclick="loadEmpirePresetFloorplan()" class="w-full text-center py-1 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg text-[11px] font-bold">
                 Empire Preset
               </button>
-              <button onclick="clearToBlankCanvas()" class="w-full text-center py-1 bg-zinc-900 hover:bg-red-950 text-zinc-500 hover:text-red-300 border border-zinc-800 rounded-lg text-[9px] font-bold">
+              <button onclick="clearToBlankCanvas()" class="w-full text-center py-1 bg-zinc-900 hover:bg-red-950 text-zinc-500 hover:text-red-300 border border-zinc-800 rounded-lg text-[11px] font-bold">
                 Clear Blank
               </button>
             </div>
@@ -326,7 +329,7 @@
               <!-- Injected via JS -->
             </div>
 
-            <div class="flex items-center justify-between mt-1.5 text-[9px] text-zinc-500 font-mono">
+            <div class="flex items-center justify-between mt-1.5 text-[11px] text-zinc-500 font-mono">
               <span id="activeZoneWatermark">Zone: All Space</span>
               <span id="ownerFloorCountLabel">0 Active Elements</span>
             </div>
@@ -345,27 +348,27 @@
               <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
               Owner Tax Rates &amp; Legal Surcharge Config
             </h3>
-            <p class="text-[10px] text-zinc-400">Controls automatic POS &amp; Square calculation across all staff and customer devices</p>
+            <p class="text-[12px] text-zinc-400">Controls automatic POS &amp; Square calculation across all staff and customer devices</p>
           </div>
-          <span class="text-[9px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-900">
+          <span class="text-[11px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-900">
             🟢 Active &amp; Synced
           </span>
         </div>
 
         <div class="space-y-3 mt-3 bg-zinc-950 p-3 rounded-xl border border-zinc-850 text-xs">
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Lounge Jurisdiction / Location</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Lounge Jurisdiction / Location</label>
             <input type="text" id="ownerLocationInput" value="Phoenix, Arizona" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Tax Display Label</label>
+              <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Tax Display Label</label>
               <input type="text" id="ownerTaxLabelInput" value="Phoenix Sales Tax" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
             </div>
 
             <div>
-              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Total Sales Tax Rate (%)</label>
+              <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Total Sales Tax Rate (%)</label>
               <div class="flex items-center gap-1">
                 <input type="number" step="0.01" min="0" max="30" id="ownerTaxRateInput" value="8.60" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold font-mono focus:outline-none focus:border-brand-gold" />
                 <span class="text-xs font-bold text-zinc-400 font-mono">%</span>
@@ -373,7 +376,7 @@
             </div>
           </div>
 
-          <div class="bg-black/60 p-2.5 rounded-lg border border-zinc-800/80 text-[11px] space-y-1">
+          <div class="bg-black/60 p-2.5 rounded-lg border border-zinc-800/80 text-[13px] space-y-1">
             <div class="flex justify-between text-zinc-400">
               <span>Arizona State Base Rate:</span>
               <span class="font-mono text-zinc-300">5.60%</span>
@@ -406,7 +409,7 @@
         <div class="flex justify-between items-center mb-2.5">
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Hookah Pipe Hardware Fleet</h3>
-            <p class="text-[10px] text-zinc-400">Manage lounge stems, Russian Phunnels, HMDs &amp; serial tags</p>
+            <p class="text-[12px] text-zinc-400">Manage lounge stems, Russian Phunnels, HMDs &amp; serial tags</p>
           </div>
           <button onclick="openAddPipeModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">
             <i data-lucide="plus" class="w-3.5 h-3.5"></i>
@@ -426,7 +429,7 @@
         <div class="flex justify-between items-center mb-2.5">
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Master Lounge Stash</h3>
-            <p class="text-[10px] text-zinc-400">Grams, Tins &amp; Excel Distributor Sync</p>
+            <p class="text-[12px] text-zinc-400">Grams, Tins &amp; Excel Distributor Sync</p>
           </div>
           <button onclick="openSpreadsheetModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">
             <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
@@ -451,27 +454,27 @@
               <i data-lucide="award" class="w-4 h-4 text-brand-gold"></i>
               Points Earn Rate &amp; VIP Accrual Rules
             </h3>
-            <p class="text-[10px] text-zinc-400">Configure points multiplier per dollar spent across all tabs</p>
+            <p class="text-[12px] text-zinc-400">Configure points multiplier per dollar spent across all tabs</p>
           </div>
-          <span class="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-2 py-0.5 rounded">
+          <span class="text-[11px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-2 py-0.5 rounded">
             ACTIVE SYSTEM ✓
           </span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 text-xs">
           <div class="bg-black p-2.5 rounded-xl border border-zinc-800">
-            <label class="text-[10px] text-zinc-400 font-bold block mb-1">Points Earned per $1.00</label>
+            <label class="text-[12px] text-zinc-400 font-bold block mb-1">Points Earned per $1.00</label>
             <div class="flex items-center gap-1.5">
               <input type="number" id="ownerRewardEarnRateInput" value="10" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1 text-brand-gold font-bold font-mono text-sm focus:outline-none" />
-              <span class="text-[11px] text-zinc-400">Pts</span>
+              <span class="text-[13px] text-zinc-400">Pts</span>
             </div>
           </div>
 
           <div class="bg-black p-2.5 rounded-xl border border-zinc-800">
-            <label class="text-[10px] text-zinc-400 font-bold block mb-1">New VIP Welcome Bonus</label>
+            <label class="text-[12px] text-zinc-400 font-bold block mb-1">New VIP Welcome Bonus</label>
             <div class="flex items-center gap-1.5">
               <input type="number" id="ownerRewardBonusInput" value="100" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1 text-white font-bold font-mono text-sm focus:outline-none" />
-              <span class="text-[11px] text-zinc-400">Pts</span>
+              <span class="text-[13px] text-zinc-400">Pts</span>
             </div>
           </div>
         </div>
@@ -487,7 +490,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Redeemable Discount Thresholds</h3>
-            <p class="text-[10px] text-zinc-400">Points requirements and discount amounts applied at checkout</p>
+            <p class="text-[12px] text-zinc-400">Points requirements and discount amounts applied at checkout</p>
           </div>
         </div>
 
@@ -501,7 +504,7 @@
         <div class="flex justify-between items-center">
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">VIP Member Stash Balances</h3>
-            <p class="text-[10px] text-zinc-400">Live points balances, lifetime spend &amp; 1-tap credits</p>
+            <p class="text-[12px] text-zinc-400">Live points balances, lifetime spend &amp; 1-tap credits</p>
           </div>
           <button onclick="openAddVipMemberModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2 py-1 rounded-xl flex items-center gap-1">
             <i data-lucide="user-plus" class="w-3 h-3"></i>
@@ -531,11 +534,11 @@
 
       <div class="my-3 space-y-2 text-xs">
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Name</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Zone Name</label>
           <input type="text" id="newZoneNameInput" placeholder="e.g. Outdoor Patio, Mezzanine" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Icon</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Zone Icon</label>
           <select id="newZoneIconSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
             <option value="sun">🌿 Outdoor / Patio (Sun)</option>
             <option value="layers">🛋️ Indoor Main Floor (Layers)</option>
@@ -578,15 +581,15 @@
 
       <div class="space-y-2 text-xs">
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Full Name</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Full Name</label>
           <input type="text" id="newVipNameInput" placeholder="e.g. Jordan Hayes" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Phone Number</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Phone Number</label>
           <input type="text" id="newVipPhoneInput" placeholder="e.g. 480-555-0550" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-brand-gold" />
         </div>
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">VIP Tier</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">VIP Tier</label>
           <select id="newVipTierSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold">
             <option value="Silver VIP">Silver VIP</option>
             <option value="Gold VIP" selected>Gold VIP</option>
@@ -595,7 +598,7 @@
           </select>
         </div>
         <div>
-          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Starting Bonus Points</label>
+          <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Starting Bonus Points</label>
           <input type="number" id="newVipPointsInput" value="100" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold font-mono focus:outline-none" />
         </div>
       </div>
@@ -815,7 +818,7 @@
         const isActive = (activeZoneFilter === z.id);
 
         const btn = document.createElement('button');
-        btn.className = `px-2 py-1 rounded-lg text-[10px] font-bold whitespace-nowrap transition flex items-center gap-1 ${isActive ? 'bg-zinc-800 text-brand-gold border border-zinc-700' : 'bg-black text-zinc-400 hover:text-white'}`;
+        btn.className = `px-2 py-1 rounded-lg text-[12px] font-bold whitespace-nowrap transition flex items-center gap-1 ${isActive ? 'bg-zinc-800 text-brand-gold border border-zinc-700' : 'bg-black text-zinc-400 hover:text-white'}`;
         btn.onclick = () => {
           activeZoneFilter = z.id;
           renderOwnerZoneTabs();
@@ -824,7 +827,7 @@
         btn.innerHTML = `
           <i data-lucide="${z.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
           <span>${z.name}</span>
-          <span class="text-[8px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-mono">${count}</span>
+          <span class="text-[10px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-mono">${count}</span>
         `;
         container.appendChild(btn);
       });
@@ -859,10 +862,10 @@
           <div class="resize-handle-corner" onpointerdown="handleResizeStart(event, '${node.id}', 'corner')"></div>
           <div class="flex items-center gap-0.5 pointer-events-none">
             <i data-lucide="${node.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
-            ${node.capacity ? `<span class="text-[8px] font-mono text-zinc-400 font-bold">${node.capacity}P</span>` : ''}
+            ${node.capacity ? `<span class="text-[10px] font-mono text-zinc-400 font-bold">${node.capacity}P</span>` : ''}
           </div>
-          <span class="text-[10px] font-bold text-white tracking-tight pointer-events-none truncate max-w-[90%]">${node.name}</span>
-          <span class="text-[7px] text-zinc-500 pointer-events-none font-mono">${node.w}x${node.h}</span>
+          <span class="text-[12px] font-bold text-white tracking-tight pointer-events-none truncate max-w-[90%]">${node.name}</span>
+          <span class="text-[9px] text-zinc-500 pointer-events-none font-mono">${node.w}x${node.h}</span>
         `;
 
         div.onpointerdown = (e) => handleNodePointerDown(e, node.id);
@@ -1160,11 +1163,11 @@
       content.innerHTML = `
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Display Label</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Display Label</label>
             <input type="text" id="ownerNodeName" value="${node.name}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
           </div>
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Zone</label>
             <select id="ownerNodeZone" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-brand-gold font-bold">
               ${zones.map(z => `<option value="${z.id}" ${node.zone === z.id ? 'selected' : ''}>${z.name}</option>`).join('')}
             </select>
@@ -1173,11 +1176,11 @@
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Capacity</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Capacity</label>
             <input type="number" id="ownerNodeCap" value="${node.capacity || 0}" ${node.isInfra ? 'disabled' : ''} class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
           </div>
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Shape</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Shape</label>
             <select id="ownerNodeShape" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
               <option value="rect" ${node.shape === 'rect' ? 'selected' : ''}>Rectangular</option>
               <option value="circle" ${node.shape === 'circle' ? 'selected' : ''}>Round</option>
@@ -1187,11 +1190,11 @@
 
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Width (px)</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Width (px)</label>
             <input type="number" id="ownerNodeW" value="${node.w}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
           </div>
           <div>
-            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Height (px)</label>
+            <label class="text-[12px] text-zinc-400 font-bold uppercase block mb-1">Height (px)</label>
             <input type="number" id="ownerNodeH" value="${node.h}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
           </div>
         </div>
@@ -1303,11 +1306,11 @@
             <span class="text-xs bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono">${p.tag}</span>
             <div>
               <span class="text-xs font-bold text-white block">${p.brand} — ${p.model}</span>
-              <span class="text-[10px] text-zinc-400">${p.bowl} • ${p.hmd} • ${p.hose}</span>
+              <span class="text-[12px] text-zinc-400">${p.bowl} • ${p.hmd} • ${p.hose}</span>
             </div>
           </div>
 
-          <span class="text-[10px] ${p.status === 'occupied' ? 'bg-red-950 text-red-300 border border-red-900' : 'bg-emerald-950 text-emerald-300 border border-emerald-900'} px-2 py-0.5 rounded font-bold">
+          <span class="text-[12px] ${p.status === 'occupied' ? 'bg-red-950 text-red-300 border border-red-900' : 'bg-emerald-950 text-emerald-300 border border-emerald-900'} px-2 py-0.5 rounded font-bold">
             ${p.status === 'occupied' ? `Assigned (${p.assignedTable || 'Table'})` : 'Available'}
           </span>
         `;
@@ -1328,10 +1331,10 @@
             <span class="w-2 h-6 rounded-full" style="background: ${item.color};"></span>
             <div>
               <span class="font-bold text-white block">${item.name} (${item.brand})</span>
-              <span class="text-[10px] text-zinc-400 font-mono">${item.grams}g remaining</span>
+              <span class="text-[12px] text-zinc-400 font-mono">${item.grams}g remaining</span>
             </div>
           </div>
-          <span class="text-[10px] font-bold text-brand-gold bg-zinc-900 px-2 py-0.5 rounded">${item.stock.replace('_', ' ')}</span>
+          <span class="text-[12px] font-bold text-brand-gold bg-zinc-900 px-2 py-0.5 rounded">${item.stock.replace('_', ' ')}</span>
         `;
         container.appendChild(div);
       });
@@ -1396,12 +1399,12 @@
               <span class="text-lg">${tier.icon}</span>
               <div>
                 <span class="font-bold text-white block">${tier.label}</span>
-                <span class="text-[10px] text-zinc-400">${tier.desc}</span>
+                <span class="text-[12px] text-zinc-400">${tier.desc}</span>
               </div>
             </div>
             <div class="flex items-center gap-2">
               <span class="font-mono text-brand-gold font-bold text-xs">${tier.pointsReq} Pts</span>
-              <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded border border-amber-800/40">
+              <span class="text-[12px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded border border-amber-800/40">
                 -$${tier.discount.toFixed(2)} Off
               </span>
             </div>
@@ -1426,20 +1429,20 @@
               <div>
                 <div class="flex items-center gap-1.5">
                   <span class="font-bold text-white">${m.name}</span>
-                  <span class="text-[9px] bg-zinc-900 text-zinc-400 font-bold px-1.5 py-0.2 rounded font-mono">${m.tier}</span>
-                  <span class="text-[9px] font-bold px-1.5 py-0.2 rounded border ${bInfo.badgeClass} font-mono flex items-center gap-0.5">
+                  <span class="text-[11px] bg-zinc-900 text-zinc-400 font-bold px-1.5 py-0.2 rounded font-mono">${m.tier}</span>
+                  <span class="text-[11px] font-bold px-1.5 py-0.2 rounded border ${bInfo.badgeClass} font-mono flex items-center gap-0.5">
                     <span>${bInfo.icon}</span> ${bInfo.level} ${bInfo.category}
                   </span>
                 </div>
-                <span class="text-[10px] text-zinc-400 font-mono">${m.phone} • Fav: ${m.favoriteMix || 'Custom'} • Lifetime: $${(m.totalSpent || 0).toFixed(0)}</span>
+                <span class="text-[12px] text-zinc-400 font-mono">${m.phone} • Fav: ${m.favoriteMix || 'Custom'} • Lifetime: $${(m.totalSpent || 0).toFixed(0)}</span>
               </div>
             </div>
 
             <div class="flex items-center gap-1.5">
               <span class="text-xs font-extrabold text-brand-gold font-mono-nums">${m.points} PTS</span>
               <div class="flex items-center gap-0.5">
-                <button onclick="adjustMemberPoints('${m.id}', -50)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded flex items-center justify-center font-bold text-[10px]" title="Deduct 50 Pts">-</button>
-                <button onclick="adjustMemberPoints('${m.id}', 100)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-brand-gold rounded flex items-center justify-center font-bold text-[10px]" title="Credit 100 Pts">+</button>
+                <button onclick="adjustMemberPoints('${m.id}', -50)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded flex items-center justify-center font-bold text-[12px]" title="Deduct 50 Pts">-</button>
+                <button onclick="adjustMemberPoints('${m.id}', 100)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-brand-gold rounded flex items-center justify-center font-bold text-[12px]" title="Credit 100 Pts">+</button>
               </div>
             </div>
           `;
