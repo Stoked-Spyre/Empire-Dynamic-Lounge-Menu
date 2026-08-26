@@ -56,16 +56,16 @@
     .font-mono-nums { font-variant-numeric: tabular-nums; }
     
     .lounge-menu-card {
-      background: #0e0e11;
+      background: transparent;
       border-radius: 1rem;
       transition: all 0.15s ease;
     }
     .lounge-menu-card:hover {
-      background: #151518;
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .obsidian-card {
-      background: #0e0e11;
+      background: transparent;
       border-radius: 1rem;
     }
 
@@ -360,7 +360,7 @@
       </div>
 
       <!-- Small About Section (Hospitality Character) -->
-      <section class="p-3.5 rounded-2xl bg-zinc-950/80 space-y-1">
+      <section class="p-3 rounded-2xl bg-transparent space-y-1">
         <div class="flex items-center justify-between">
           <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400">About Empire</span>
           <span class="text-[10px] text-zinc-500 uppercase font-semibold">Artisanal Shisha Experience</span>
@@ -371,8 +371,8 @@
       </section>
 
       <!-- 2. Menu Sub-Tabs Switcher -->
-      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950/80 rounded-xl text-xs">
-        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-zinc-850 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
+      <div class="grid grid-cols-3 gap-1 p-1 bg-transparent rounded-xl text-xs">
+        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
           <span>👑 House Blends</span>
         </button>
         <button onclick="switchMenuSubTab('flavors')" id="menu-subtab-flavors" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium text-xs flex items-center justify-center gap-1 transition">
@@ -392,9 +392,9 @@
       <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
         
         <!-- Luxury Minimalist Filter Navigation Strip -->
-        <div class="bg-zinc-950/80 p-2.5 rounded-2xl space-y-2">
+        <div class="bg-transparent p-2.5 rounded-2xl space-y-2">
           <!-- Filter Dimension Switcher -->
-          <div class="flex items-center justify-between border-b border-zinc-900 pb-2 px-1">
+          <div class="flex items-center justify-between border-b border-zinc-800/60 pb-2 px-1">
             <div class="flex items-center gap-4 text-xs">
               <button onclick="setFilterCategory('profile')" id="filterCatBtn-profile" class="font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition">
                 Tasting Notes
@@ -1595,7 +1595,7 @@
       activeMenuSubTab = subTabId;
       document.querySelectorAll('.menu-sub-panel').forEach(p => p.classList.add('hidden'));
       document.querySelectorAll('.menu-sub-btn').forEach(b => {
-        b.classList.remove('bg-zinc-800', 'text-white', 'shadow-sm', 'font-semibold');
+        b.classList.remove('bg-white/10', 'text-white', 'shadow-sm', 'font-semibold');
         b.classList.add('text-zinc-400', 'font-medium');
       });
 
@@ -1604,7 +1604,7 @@
 
       const activeBtn = document.getElementById(`menu-subtab-${subTabId}`);
       if (activeBtn) {
-        activeBtn.classList.add('bg-zinc-800', 'text-white', 'shadow-sm', 'font-semibold');
+        activeBtn.classList.add('bg-white/10', 'text-white', 'shadow-sm', 'font-semibold');
         activeBtn.classList.remove('text-zinc-400', 'font-medium');
       }
 
