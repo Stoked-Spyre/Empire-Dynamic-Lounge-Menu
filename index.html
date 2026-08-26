@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Menu &amp; Mix Lab</title>
+  <title>Empire Hookah Lounge — Stoked Mix Lab</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0B0E14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -23,10 +23,10 @@
               gold: '#E5A93C',
               goldHover: '#C88F2A',
               purple: '#A855F7',
-              darkBg: '#0B0E14',
-              surface: '#131824',
+              darkBg: '#090C12',
+              surface: '#121622',
               surfaceHover: '#1B2234',
-              border: '#232C42',
+              border: '#1F283D',
               coal: '#FF4141',
               emerald: '#10B981'
             }
@@ -41,40 +41,110 @@
     
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #0B0E14;
+      background: #090C12;
       color: #E2E8F0;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12), transparent 45%),
-        radial-gradient(circle at 100% 100%, rgba(229, 169, 60, 0.05), transparent 40%);
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.15), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(229, 169, 60, 0.06), transparent 40%);
       background-attachment: fixed;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
     .font-crest { font-family: 'Cinzel', serif; }
     .font-mono-nums { font-family: 'JetBrains Mono', monospace; }
-    .shopify-card {
-      background: #131824;
-      border: 1px solid #232C42;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    .stoked-lab-card {
+      background: rgba(18, 22, 34, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .shopify-card:hover {
-      border-color: rgba(168, 85, 247, 0.4);
+
+    /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
+    .cylinder-wheel-container {
+      position: relative;
+      width: 100%;
+      height: 195px;
+      overflow: hidden;
+      perspective: 900px;
+      touch-action: none;
+      cursor: grab;
     }
-    .tab-drawer {
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    .cylinder-wheel-container:active { cursor: grabbing; }
+    .cylinder-drum-viewport {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
     }
+    .cylinder-target-slot {
+      position: absolute;
+      top: 50%;
+      left: 6px;
+      right: 6px;
+      height: 46px;
+      transform: translateY(-50%);
+      background: rgba(168, 85, 247, 0.12);
+      border-top: 1.5px solid rgba(168, 85, 247, 0.65);
+      border-bottom: 1.5px solid rgba(168, 85, 247, 0.65);
+      border-radius: 12px;
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.28), inset 0 0 10px rgba(168, 85, 247, 0.18);
+      z-index: 5;
+    }
+    .cylinder-drum-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      margin-top: -23px;
+      transform-style: preserve-3d;
+    }
+    .cylinder-item-row {
+      position: absolute;
+      width: 100%;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border: none;
+      background: transparent;
+      color: #E2E8F0;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transform-origin: center center -110px;
+      transition: opacity 0.12s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+    .cylinder-item-row.active {
+      color: #FFFFFF;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+    .cylinder-color-bar {
+      width: 5px;
+      height: 22px;
+      border-radius: 4px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    /* CONTINUOUS SPECTRUM GRADIENT TRACK */
     .spectrum-track {
-      height: 8px;
+      height: 10px;
       border-radius: 999px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(168,85,247,0.25);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 14px rgba(168,85,247,0.3);
     }
+
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-28 md:pb-12 text-slate-200">
+<body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200">
 
-  <!-- ==================== 1. CUSTOMER TOP BAR ==================== -->
-  <header class="w-full max-w-xl bg-brand-darkBg/95 backdrop-blur-xl border-b border-brand-border sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
+  <!-- ==================== 1. TOP APP BAR ==================== -->
+  <header class="w-full max-w-lg bg-brand-darkBg/95 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
     <!-- Brand Crest -->
     <div class="flex items-center gap-2.5">
       <div class="w-9 h-9 rounded-full bg-slate-950 border border-slate-700 flex items-center justify-center p-1 shadow-md">
@@ -91,162 +161,152 @@
       </div>
 
       <div>
-        <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
+        <div class="flex items-center gap-1.5">
+          <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
+          <span class="text-[8px] bg-purple-950 text-purple-300 font-mono px-1 py-0.2 rounded border border-purple-800/40">EST. 2010</span>
+        </div>
         <div class="flex items-center gap-1 text-[11px] text-brand-purple font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="headerTableTitle">Table #6 (VIP Lounge)</span>
+          <span id="headerTableDisplay">Table #6 (VIP Lounge)</span>
         </div>
       </div>
     </div>
 
-    <!-- Right Controls: 21+ & Tab Drawer Pill -->
+    <!-- Right Controls: Call Coals & 21+ -->
     <div class="flex items-center gap-2">
+      <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition active:scale-95">
+        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
+        <span>Coals</span>
+      </button>
+
       <div class="flex items-center gap-1 bg-slate-900 border border-slate-800 px-2 py-1 rounded-full text-[10px] text-brand-gold font-bold">
         <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
         <span>21+</span>
       </div>
-
-      <button onclick="toggleTabDrawer()" class="relative bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
-        <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
-        <span class="font-mono-nums" id="navTabBalance">$35.00</span>
-      </button>
     </div>
   </header>
 
-  <!-- ==================== 2. MAIN STOREFRONT & MENU ==================== -->
-  <main class="w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
-    
-    <!-- Hero Lounge Banner -->
-    <div class="shopify-card rounded-2xl p-3.5 relative overflow-hidden flex items-center justify-between">
-      <div class="z-10">
-        <span class="text-[9px] font-extrabold uppercase tracking-widest text-brand-gold bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">
-          EST. 2010 • PHOENIX
-        </span>
-        <h2 class="text-sm font-bold text-white mt-1">Russian &amp; Tangiers Shisha Bar</h2>
-        <p class="text-[11px] text-slate-400">Tap any brand to craft your bowl with in-stock flavors.</p>
-      </div>
-      <button onclick="requestCoalService()" class="z-10 bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95 flex-shrink-0">
-        <i data-lucide="flame" class="w-4 h-4 text-brand-coal"></i>
-        <span>Call Coals</span>
-      </button>
-      <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-purple-600/10 rounded-full blur-xl pointer-events-none"></div>
-    </div>
+  <!-- ==================== 2. MAIN STOKED MIX LAB ENTRY VIEW ==================== -->
+  <main class="w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3">
 
-    <!-- Category Filter Pills -->
-    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-      <button onclick="filterCustomerCategory('all')" class="cust-cat-pill bg-purple-600 text-white text-xs font-bold px-3.5 py-1.5 rounded-full whitespace-nowrap">All Collections</button>
-      <button onclick="filterCustomerCategory('russian')" class="cust-cat-pill bg-slate-900 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap">🇷🇺 Russian Dark Leaf</button>
-      <button onclick="filterCustomerCategory('tangiers')" class="cust-cat-pill bg-slate-900 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap">🇺🇸 Tangiers Noir</button>
-      <button onclick="filterCustomerCategory('blonde')" class="cust-cat-pill bg-slate-900 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap">✨ House Blondes</button>
-      <button onclick="filterCustomerCategory('drinks')" class="cust-cat-pill bg-slate-900 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap">🫖 Teas &amp; Drinks</button>
-    </div>
-
-    <!-- Live In-Stock Product Grid -->
-    <div class="grid grid-cols-2 gap-2.5" id="customerProductGrid">
-      <!-- Populated via JS from Stash in-stock inventory -->
-    </div>
-
-  </main>
-
-  <!-- ==================== 3. SIMPLIFIED CUSTOMER MIX LAB MODAL ==================== -->
-  <div id="flavorMixerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-surface border border-purple-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl flex flex-col gap-3">
+    <!-- A. ACTIVE MIX DECK & SPECTRUM GRADIENT -->
+    <section class="stoked-lab-card rounded-2xl p-3.5 border border-purple-500/25">
       
-      <!-- Top Title & Strength Badge -->
-      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <div>
-          <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="mixerModalTitle">Customize Bowl Mix</h3>
-          <p class="text-[10px] text-slate-400">Select 1 to 3 in-stock flavors (Equal Blend)</p>
+      <!-- Top Title & Strength Rating Badge -->
+      <div class="flex justify-between items-center mb-2">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-accent"></i>
+          <span class="text-xs font-bold text-white uppercase tracking-wider">Russian &amp; Tangiers Mix</span>
         </div>
-        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40 font-mono" id="mixerBuzzBadge">
+        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/50" id="labBuzzBadge">
           7.6/10 DARK LEAF
         </span>
       </div>
 
-      <!-- Continuous Spectrum Gradient Ribbon Preview -->
+      <!-- Mix Recipe Name Input -->
+      <input 
+        type="text" 
+        id="mixNameInput"
+        value="Pink Cane Sensation" 
+        placeholder="Name your custom bowl..."
+        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 mb-2"
+      />
+
+      <!-- Continuous Multi-Stop Spectrum Gradient Track -->
+      <div id="spectrumRibbon" class="spectrum-track w-full mb-3"></div>
+
+      <!-- Active Selected Flavor Slots (1 to 3 Flavors) -->
+      <div class="space-y-2" id="flavorSlotsContainer">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- B. STOKED 3D MECHANICAL ROTARY CYLINDER DRUM DIAL -->
+    <section class="stoked-lab-card rounded-2xl p-3 border border-purple-500/30 relative">
+      <div class="flex justify-between items-center mb-1 px-1">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
+          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Lounge Shisha Dial</span>
+        </div>
+        <span class="text-[10px] text-purple-300 font-medium">Scroll / Drag drum</span>
+      </div>
+
+      <!-- Category & Brand Filter Tabs -->
+      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 mb-1" id="wheelBrandTabs">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- 3D Mechanical Cylinder Drum Container -->
+      <div 
+        id="rotaryWheel" 
+        class="cylinder-wheel-container"
+        onwheel="handleWheelScroll(event)"
+        ontouchstart="handleTouchStart(event)"
+        ontouchmove="handleTouchMove(event)"
+        ontouchend="handleTouchEnd(event)"
+      >
+        <div class="cylinder-drum-viewport">
+          <!-- Center Illuminated Target Slot -->
+          <div class="cylinder-target-slot"></div>
+          <!-- 3D Drum Items Track -->
+          <div class="cylinder-drum-track" id="cylinderDrumTrack">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 1-Tap Add To Bowl Confirmation Button -->
+      <button 
+        onclick="confirmWheelSelection()" 
+        class="mt-2 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
+      >
+        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+        <span id="wheelConfirmBtnText">+ Add to Bowl</span>
+      </button>
+    </section>
+
+    <!-- C. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
+    <section class="stoked-lab-card rounded-2xl p-3 border border-slate-800">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
+          Bowl Profiles &amp; Tasting Notes
+        </span>
+        <span class="text-[9px] text-emerald-400 font-bold bg-emerald-950/70 border border-emerald-800/50 px-2 py-0.5 rounded">
+          Standard 22g Pack
+        </span>
+      </div>
+
+      <!-- Dynamic Flavor Note Pills -->
+      <div class="flex items-center gap-1.5 flex-wrap" id="bowlProfileBadges">
+        <!-- Injected dynamically based on active selection -->
+      </div>
+    </section>
+
+    <!-- D. STICKY ORDER SUBMISSION & TAB DISPATCH BAR -->
+    <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
       <div>
-        <div id="customerSpectrumRibbon" class="spectrum-track w-full mb-1.5"></div>
-        <span class="text-[9px] text-slate-400 block text-right font-mono" id="customerFlavorsCount">2 Flavors Active</span>
-      </div>
-
-      <!-- Active Selection Tag Chips -->
-      <div class="space-y-1.5" id="mixerActiveChips"></div>
-
-      <!-- In-Stock Flavors for Selected Brand -->
-      <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1" id="mixerFlavorsList"></div>
-
-      <!-- BOWL PROFILES & TASTING NOTES INDICATOR (Small indicator at bottom of bowl) -->
-      <div class="p-2.5 bg-slate-950/80 border border-slate-800 rounded-xl">
-        <div class="flex items-center justify-between mb-1.5">
-          <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-            <i data-lucide="sparkles" class="w-3 h-3 text-brand-gold"></i>
-            Bowl Profile &amp; Tasting Notes
-          </span>
-          <span class="text-[9px] text-emerald-400 font-bold">Standard 22g Pack</span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[9px] uppercase tracking-wider text-purple-300 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
+          <span class="text-[9px] text-slate-400 font-mono">Table #6</span>
         </div>
-        <!-- Dynamic Profile Badges -->
-        <div class="flex items-center gap-1 flex-wrap" id="mixerProfileBadges">
-          <!-- Populated e.g. #Mints 🍃, #Berries 🍓, #Citrus 🍋 -->
-        </div>
+        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$35.00</span>
       </div>
-
-      <!-- Add to Tab Confirmation Button -->
-      <div class="pt-1">
-        <button onclick="confirmMixAndAddToTab()" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span id="mixerAddBtnText">Add Bowl to Tab ($35.00)</span>
+      
+      <div class="flex items-center gap-2">
+        <button onclick="dispatchOrder('tab')" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
+          + Add to Tab
+        </button>
+        <button onclick="openEndSessionModal()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
+          <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+          <span>Pay with Square</span>
         </button>
       </div>
-
-    </div>
-  </div>
-
-  <!-- ==================== 4. SHOPIFY-STYLE SLIDING TAB DRAWER ==================== -->
-  <div id="tabDrawerOverlay" onclick="toggleTabDrawer()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
-  
-  <div id="tabDrawer" class="tab-drawer fixed bottom-0 right-0 left-0 max-w-lg mx-auto bg-brand-surface border-t border-brand-border rounded-t-3xl p-4 z-50 translate-y-full shadow-2xl">
-    <div class="w-12 h-1 bg-slate-700 rounded-full mx-auto mb-3 cursor-pointer" onclick="toggleTabDrawer()"></div>
-    
-    <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
-      <div>
-        <h3 class="text-sm font-bold text-white">Table #6 Running Tab</h3>
-        <p class="text-[10px] text-slate-400">Alex's Party Session</p>
-      </div>
-      <button onclick="toggleTabDrawer()" class="text-slate-400 hover:text-white text-xs bg-slate-900 px-2.5 py-1 rounded-lg">✕</button>
     </div>
 
-    <!-- Itemized Tab List -->
-    <div class="my-3 space-y-2 max-h-56 overflow-y-auto" id="tabItemsList">
-      <div class="flex justify-between items-center text-xs text-slate-300 p-2 bg-slate-950/60 rounded-xl">
-        <div>
-          <p class="font-bold text-white">1x Russian Dark Leaf Mix</p>
-          <p class="text-[10px] text-purple-300">MustHave Pinkman + Tangiers Cane Mint</p>
-        </div>
-        <span class="font-bold font-mono-nums text-brand-gold">$35.00</span>
-      </div>
-    </div>
+  </main>
 
-    <!-- Total Balance & End Session Checkout -->
-    <div class="pt-2.5 border-t border-slate-800 flex justify-between items-center mb-3">
-      <span class="text-xs text-slate-400">Total Open Balance</span>
-      <span class="text-lg font-bold text-brand-gold font-mono-nums" id="drawerTotalText">$35.00</span>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2">
-      <button onclick="requestCoalService(); toggleTabDrawer();" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition">
-        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
-        <span>Call Coals</span>
-      </button>
-
-      <!-- PROMINENT END SESSION BUTTON (Redirects to Square Payment) -->
-      <button onclick="openEndSessionModal()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
-        <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
-        <span>End Session &amp; Pay</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ==================== 5. END SESSION SQUARE CHECKOUT MODAL ==================== -->
+  <!-- ==================== END SESSION SQUARE CHECKOUT MODAL ==================== -->
   <div id="endSessionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-surface border border-emerald-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
@@ -300,22 +360,23 @@
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT & CUSTOMER LAB ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT & STOKED DIAL ENGINE ==================== -->
   <script>
+    // Master Stoked Shisha Catalog (with tasting profile metadata)
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'] },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'] },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'] },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'] },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'] },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'] },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'] },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'] },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'] },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'] },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'] },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'] },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'] },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'] },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'] },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'] },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'] },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'] },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'] },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'] },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
     ];
 
     class CustomerStash {
@@ -329,126 +390,153 @@
       }
     }
 
-    let currentCustomerCat = 'all';
-    let tabBalance = 35.00;
+    // Active Selection
+    let activeFlavors = ['mh-pinkman', 'tan-cane-mint'];
     let roundCount = 1;
-    let selectedBrandObj = null;
-    let selectedMixFlavors = [];
+    let tabBalance = 35.00;
+
+    // Rotary Dial State
+    let selectedBrandFilter = 'all';
+    let filteredWheelItems = [];
+    let wheelSelectedIndex = 0;
+    let touchStartY = null;
+    let touchAccumulator = 0;
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
-    function filterCustomerCategory(cat) {
-      currentCustomerCat = cat;
-      document.querySelectorAll('.cust-cat-pill').forEach(b => {
-        b.classList.remove('bg-purple-600', 'text-white');
-        b.classList.add('bg-slate-900', 'text-slate-300');
-      });
-      event.target.classList.add('bg-purple-600', 'text-white');
-      event.target.classList.remove('bg-slate-900', 'text-slate-300');
-      renderCustomerProducts();
-    }
+    // ==================== STOKED 3D MECHANICAL ROTARY DIAL ====================
+    function initRotaryWheel() {
+      const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'];
+      const tabsContainer = document.getElementById('wheelBrandTabs');
+      tabsContainer.innerHTML = '';
 
-    function renderCustomerProducts() {
-      const grid = document.getElementById('customerProductGrid');
-      grid.innerHTML = '';
+      brands.forEach(b => {
+        const btn = document.createElement('button');
+        const isActive = (b === selectedBrandFilter);
+        btn.className = `text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
+        btn.textContent = b === 'all' ? 'All Brands' : b;
+        btn.onclick = () => {
+          selectedBrandFilter = b;
+          wheelSelectedIndex = 0;
+          initRotaryWheel();
+        };
+        tabsContainer.appendChild(btn);
+      });
 
       const inventory = CustomerStash.getInventory();
-      const brands = Array.from(new Set(inventory.map(i => i.brand)));
+      filteredWheelItems = inventory.filter(item => (selectedBrandFilter === 'all' || item.brand === selectedBrandFilter) && item.stock !== 'out_of_stock');
+      renderDrumTrack();
+    }
 
-      brands.forEach(brandName => {
-        const brandItems = inventory.filter(i => i.brand === brandName);
-        const inStockFlavors = brandItems.filter(i => i.stock !== 'out_of_stock');
-        const firstItem = brandItems[0];
+    function renderDrumTrack() {
+      const track = document.getElementById('cylinderDrumTrack');
+      track.innerHTML = '';
 
-        if (currentCustomerCat !== 'all' && firstItem.category !== currentCustomerCat) return;
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
 
-        const isBrandOutOfStock = inStockFlavors.length === 0;
-        const card = document.createElement('div');
-        card.className = `shopify-card rounded-2xl p-3.5 flex flex-col justify-between cursor-pointer ${isBrandOutOfStock ? 'opacity-40 pointer-events-none' : ''}`;
-        
-        card.onclick = () => {
-          selectedBrandObj = { brand: brandName, items: inStockFlavors, price: firstItem.category === 'tangiers' ? 38.00 : 35.00 };
-          selectedMixFlavors = [inStockFlavors[0].name];
-          openFlavorMixerModal();
+      filteredWheelItems.forEach((item, index) => {
+        const diff = index - wheelSelectedIndex;
+        const isSelected = index === wheelSelectedIndex;
+        const isVisible = Math.abs(diff) <= 3;
+        if (!isVisible) return;
+
+        const yOffset = diff * 44;
+        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
+        const opacity = isSelected ? 1 : Math.max(0.24, 1 - Math.abs(diff) * 0.28);
+        const rotateX = diff * -14;
+
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
+        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
+        row.style.opacity = opacity;
+
+        row.onclick = () => {
+          if (isSelected) confirmWheelSelection();
+          else { wheelSelectedIndex = index; renderDrumTrack(); }
         };
 
-        const price = firstItem.category === 'tangiers' ? '$38.00' : '$35.00';
-
-        card.innerHTML = `
-          <div>
-            <div class="flex justify-between items-start mb-2">
-              <span class="w-2.5 h-2.5 rounded-full" style="background: ${firstItem.color};"></span>
-              <span class="text-[9px] ${isBrandOutOfStock ? 'bg-red-950 text-red-300' : 'bg-emerald-950 text-emerald-300'} font-bold px-1.5 py-0.2 rounded border border-slate-800">
-                ${isBrandOutOfStock ? 'Sold Out' : `${inStockFlavors.length} in stock`}
-              </span>
-            </div>
-            <h3 class="text-xs font-bold text-white">${brandName}</h3>
-            <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">${inStockFlavors.map(f => f.name).slice(0, 3).join(', ')}</p>
+        row.innerHTML = `
+          <div class="flex items-center min-w-0">
+            <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+            <span class="truncate">${item.name}</span>
           </div>
-
-          <div class="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/80">
-            <span class="text-xs font-bold text-brand-gold font-mono-nums">${price}</span>
-            <span class="text-[10px] text-purple-300 font-bold bg-purple-500/10 px-2 py-0.5 rounded-lg">
-              Mix Lab ✦
-            </span>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+            <span class="text-[9px] text-purple-300 font-bold">Str ${item.strength}</span>
           </div>
         `;
-        grid.appendChild(card);
+        track.appendChild(row);
       });
 
-      // Drinks
-      if (currentCustomerCat === 'all' || currentCustomerCat === 'drinks') {
-        const teaCard = document.createElement('div');
-        teaCard.className = 'shopify-card rounded-2xl p-3.5 flex flex-col justify-between cursor-pointer';
-        teaCard.onclick = () => {
-          tabBalance += 14.00;
-          document.getElementById('navTabBalance').textContent = `$${tabBalance.toFixed(2)}`;
-          showToast('🫖 Added to Tab', 'Empire Samovar Teapot ($14.00) added.');
-        };
-        teaCard.innerHTML = `
-          <div>
-            <div class="flex justify-between items-start mb-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-              <span class="text-[9px] text-slate-400">Empire Bar</span>
-            </div>
-            <h3 class="text-xs font-bold text-white">Empire Samovar Teapot</h3>
-            <p class="text-[10px] text-slate-400 mt-0.5">Black tea, fresh mint & thyme (Serves 2-4)</p>
-          </div>
-          <div class="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/80">
-            <span class="text-xs font-bold text-brand-gold font-mono-nums">$14.00</span>
-            <span class="text-[10px] text-purple-300 font-bold bg-purple-500/10 px-2 py-0.5 rounded-lg">+ Add</span>
-          </div>
-        `;
-        grid.appendChild(teaCard);
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (activeItem) {
+        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Mix`;
       }
     }
 
-    // ==================== SIMPLIFIED CUSTOMER MIX LAB ====================
-    function openFlavorMixerModal() {
-      document.getElementById('mixerModalTitle').textContent = `${selectedBrandObj.brand} Lab`;
-      renderMixerFlavors();
-      document.getElementById('flavorMixerModal').classList.remove('hidden');
-      renderIcons();
+    function handleWheelScroll(e) {
+      e.preventDefault();
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) { wheelSelectedIndex++; renderDrumTrack(); }
+      else if (e.deltaY < 0 && wheelSelectedIndex > 0) { wheelSelectedIndex--; renderDrumTrack(); }
     }
 
-    function closeFlavorMixerModal() {
-      document.getElementById('flavorMixerModal').classList.add('hidden');
+    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; touchAccumulator = 0; }
+    function handleTouchMove(e) {
+      if (touchStartY === null) return;
+      const currentY = e.touches[0].clientY;
+      const delta = touchStartY - currentY;
+      touchStartY = currentY;
+      touchAccumulator += delta;
+
+      const step = 28;
+      const count = filteredWheelItems.length;
+      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
+        wheelSelectedIndex++; touchAccumulator = 0; renderDrumTrack();
+      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
+        wheelSelectedIndex--; touchAccumulator = 0; renderDrumTrack();
+      }
+    }
+    function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
+
+    function confirmWheelSelection() {
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (!activeItem) return;
+
+      if (activeFlavors.includes(activeItem.id)) {
+        showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
+        return;
+      }
+
+      if (activeFlavors.length >= 3) {
+        activeFlavors[activeFlavors.length - 1] = activeItem.id;
+        showToast('🔄 Replaced', `Replaced slot with ${activeItem.name}.`);
+      } else {
+        activeFlavors.push(activeItem.id);
+        showToast('✨ Added to Bowl', `${activeItem.name} added.`);
+      }
+
+      renderMixLab();
     }
 
-    function renderMixerFlavors() {
+    // ==================== MIX LAB & PROFILE INDICATORS ====================
+    function renderMixLab() {
       const inventory = CustomerStash.getInventory();
       
-      // 1. Build Spectrum Gradient & Collect Profiles
-      const ribbon = document.getElementById('customerSpectrumRibbon');
+      // 1. Build Multi-Stop Spectrum Gradient
+      const ribbon = document.getElementById('spectrumRibbon');
       let gradParts = [];
       let cum = 0;
       let totalStrength = 0;
       let activeProfilesSet = new Set();
 
-      const slicePercent = 100 / Math.max(1, selectedMixFlavors.length);
+      const slicePercent = 100 / Math.max(1, activeFlavors.length);
 
-      selectedMixFlavors.forEach(fName => {
-        const item = inventory.find(i => i.name === fName) || STOKED_MASTER_INVENTORY[0];
+      activeFlavors.forEach(id => {
+        const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
         const col = item.color || '#A855F7';
         const start = cum;
         cum += slicePercent;
@@ -460,48 +548,37 @@
         }
       });
       ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
-      document.getElementById('customerFlavorsCount').textContent = `${selectedMixFlavors.length} / 3 Flavors Active`;
 
       // 2. Render Active Selected Chips
-      const chips = document.getElementById('mixerActiveChips');
-      chips.innerHTML = '';
-      selectedMixFlavors.forEach((fName, idx) => {
-        const item = inventory.find(i => i.name === fName) || { color: '#A855F7' };
-        const chip = document.createElement('div');
-        chip.className = 'flex justify-between items-center bg-slate-950/70 border border-purple-500/30 px-2.5 py-1.5 rounded-xl text-xs text-white';
-        chip.innerHTML = `
-          <div class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full" style="background: ${item.color};"></span>
-            <span class="font-bold">${fName}</span>
+      const container = document.getElementById('flavorSlotsContainer');
+      container.innerHTML = '';
+
+      activeFlavors.forEach((id, idx) => {
+        const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
+        const row = document.createElement('div');
+        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5';
+        row.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
+            <div class="truncate">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-white truncate">${item.name}</span>
+                <span class="text-[9px] bg-slate-800 text-slate-300 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+              </div>
+            </div>
           </div>
-          ${selectedMixFlavors.length > 1 ? `<button onclick="removeMixerFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-0.5">✕</button>` : ''}
+
+          <button onclick="removeFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-1 flex-shrink-0">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
         `;
-        chips.appendChild(chip);
+        container.appendChild(row);
       });
 
-      // 3. Render In-Stock Choices
-      const list = document.getElementById('mixerFlavorsList');
-      list.innerHTML = '';
-      selectedBrandObj.items.forEach(item => {
-        const isSelected = selectedMixFlavors.includes(item.name);
-        const div = document.createElement('div');
-        div.onclick = () => toggleMixerFlavor(item.name);
-        div.className = `p-2 rounded-xl text-xs font-semibold flex justify-between items-center cursor-pointer transition ${isSelected ? 'bg-purple-600/20 border border-purple-500 text-white' : 'bg-slate-900/60 border border-slate-800 text-slate-300 hover:border-slate-700'}`;
-        div.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full" style="background: ${item.color};"></span>
-            <span>${item.name}</span>
-            ${item.stock === 'low_stock' ? '<span class="text-[8px] bg-amber-950 text-amber-300 font-bold px-1 rounded">Low Stock</span>' : ''}
-          </div>
-          <span class="text-xs font-bold text-purple-300">${isSelected ? '✓' : '+'}</span>
-        `;
-        list.appendChild(div);
-      });
-
-      // 4. Render Bowl Profile & Tasting Notes Indicators at the Bottom
-      const profileContainer = document.getElementById('mixerProfileBadges');
+      // 3. Render Bowl Profiles & Tasting Notes Badges at the Bottom
+      const profileContainer = document.getElementById('bowlProfileBadges');
       profileContainer.innerHTML = '';
-      
+
       const profileEmojis = {
         'Mints': '🍃',
         'Ice': '❄️',
@@ -531,58 +608,52 @@
         profileContainer.appendChild(span);
       });
 
-      // 5. Update Strength Rating & Price
-      const avgStr = (totalStrength / Math.max(1, selectedMixFlavors.length)).toFixed(1);
-      document.getElementById('mixerBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      // 4. Update Buzz Badge, Pricing & Action Bar
+      const avgStr = (totalStrength / Math.max(1, activeFlavors.length)).toFixed(1);
+      document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
 
-      const price = roundCount === 1 ? selectedBrandObj.price : (selectedBrandObj.price - 10);
-      document.getElementById('mixerAddBtnText').textContent = `Add Bowl to Tab ($${price.toFixed(2)})`;
+      const isTangiers = activeFlavors.some(id => {
+        const itm = inventory.find(i => i.id === id);
+        return itm && itm.brand === 'Tangiers';
+      });
+
+      const basePrice = isTangiers ? 38.00 : 35.00;
+      const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
+
+      document.getElementById('totalPriceText').textContent = `$${finalPrice.toFixed(2)}`;
+      document.getElementById('orderTypeLabel').textContent = roundCount === 1 ? '[FIRST BOWL]' : '[REFILL / REPACK -$10]';
+
+      renderIcons();
     }
 
-    function toggleMixerFlavor(name) {
-      if (selectedMixFlavors.includes(name)) {
-        if (selectedMixFlavors.length > 1) {
-          selectedMixFlavors = selectedMixFlavors.filter(f => f !== name);
-        }
-      } else {
-        if (selectedMixFlavors.length >= 3) selectedMixFlavors[2] = name;
-        else selectedMixFlavors.push(name);
+    function removeFlavor(idx) {
+      if (activeFlavors.length <= 1) {
+        showToast('⚠️ Minimum Requirement', 'Please keep at least 1 flavor in your bowl.');
+        return;
       }
-      renderMixerFlavors();
+      activeFlavors.splice(idx, 1);
+      renderMixLab();
     }
 
-    function removeMixerFlavor(idx) {
-      selectedMixFlavors.splice(idx, 1);
-      renderMixerFlavors();
-    }
-
-    function confirmMixAndAddToTab() {
-      const price = roundCount === 1 ? selectedBrandObj.price : (selectedBrandObj.price - 10);
+    function dispatchOrder(mode) {
+      const price = parseFloat(document.getElementById('totalPriceText').textContent.replace('$', ''));
+      const mixName = document.getElementById('mixNameInput').value || 'Custom Shisha Blend';
       tabBalance += price;
       roundCount++;
 
-      closeFlavorMixerModal();
-      document.getElementById('navTabBalance').textContent = `$${tabBalance.toFixed(2)}`;
-      showToast('🏺 Bowl Dispatched', `Added to Table tab. Prep alerted!`);
-    }
-
-    function toggleTabDrawer() {
-      const drawer = document.getElementById('tabDrawer');
-      const overlay = document.getElementById('tabDrawerOverlay');
-      const isOpen = !drawer.classList.contains('translate-y-full');
-
-      if (isOpen) {
-        drawer.classList.add('translate-y-full');
-        overlay.classList.add('hidden');
+      if (mode === 'square') {
+        openEndSessionModal();
       } else {
-        document.getElementById('drawerTotalText').textContent = `$${tabBalance.toFixed(2)}`;
-        drawer.classList.remove('translate-y-full');
-        overlay.classList.remove('hidden');
+        showToast('👑 Added to Table Tab', `"${mixName}" ($${price.toFixed(2)}) dispatched to staff.`);
+        renderMixLab();
       }
     }
 
+    function requestCoalService() {
+      showToast('🔥 Coal Alert Dispatched', 'Staff alerted for fresh coals.');
+    }
+
     function openEndSessionModal() {
-      toggleTabDrawer();
       document.getElementById('checkoutSubtotal').textContent = `$${tabBalance.toFixed(2)}`;
       document.getElementById('checkoutGrandTotal').textContent = `$${tabBalance.toFixed(2)}`;
       document.getElementById('endSessionModal').classList.remove('hidden');
@@ -608,11 +679,7 @@
       showToast('🏁 Session Closed', 'Table #6 tab paid via Square Web Payments. Table reset!');
       tabBalance = 0.00;
       roundCount = 1;
-      document.getElementById('navTabBalance').textContent = '$0.00';
-    }
-
-    function requestCoalService() {
-      showToast('🔥 Coal Alert Dispatched', 'Staff alerted for fresh coals.');
+      renderMixLab();
     }
 
     function showToast(title, msg) {
@@ -628,11 +695,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const tableNum = params.get('table') || '6';
-      document.getElementById('headerTableTitle').textContent = `Table #${tableNum} (VIP Lounge)`;
-      renderCustomerProducts();
-      renderIcons();
+      initRotaryWheel();
+      renderMixLab();
     });
   </script>
 </body>
