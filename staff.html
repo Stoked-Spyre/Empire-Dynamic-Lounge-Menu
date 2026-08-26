@@ -60,7 +60,77 @@
       border-color: rgba(255, 255, 255, 0.15);
     }
 
-    /* HIGH VISIBILITY SEAT POD CARDS */
+    /* 2D VISUAL LOUNGE DIAGRAM */
+    .lounge-diagram-canvas {
+      position: relative;
+      width: 100%;
+      height: 390px;
+      background-color: #05080E;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(229, 169, 60, 0.03) 0%, transparent 70%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 24px 24px, 24px 24px;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      user-select: none;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+    }
+
+    .diagram-seat-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+    .diagram-seat-node:hover {
+      transform: scale(1.05);
+      z-index: 25;
+      box-shadow: 0 0 16px rgba(229, 169, 60, 0.4);
+    }
+    .diagram-seat-node:active {
+      transform: scale(0.96);
+    }
+    .diagram-seat-node.occupied {
+      background: #141A24 !important;
+      border-color: #E5A93C !important;
+      box-shadow: 0 0 14px rgba(229, 169, 60, 0.25);
+    }
+    .diagram-seat-node.heat-due {
+      border-color: #EF4444 !important;
+      background: rgba(239, 68, 68, 0.15) !important;
+      animation: pulse-ember 1.6s infinite;
+    }
+
+    @keyframes pulse-ember {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    }
+
+    .diagram-infra-node {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      border-radius: 8px;
+      color: #64748B;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* QUICK GRID POD CARDS */
     .seat-pod-card {
       position: relative;
       background: #0A0E15;
@@ -98,7 +168,7 @@
       50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
     }
 
-    /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
+    /* STOKED 3D ROTARY CYLINDER DRUM */
     .cylinder-wheel-container {
       position: relative;
       width: 100%;
@@ -167,7 +237,6 @@
       flex-shrink: 0;
     }
 
-    /* STOKED DRAGGABLE GRADIENT CONTROLLER */
     .draggable-gradient-controller {
       position: relative;
       width: 100%;
@@ -216,7 +285,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Live Floor, Pipe Sommelier, Lab &amp; POS</span>
+          <span>Live Floor Map &amp; Multi-Tab Pipe Sommelier</span>
         </div>
       </div>
     </div>
@@ -241,7 +310,7 @@
     <!-- 4 Clean Staff Operation Tabs -->
     <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
       <button onclick="switchStaffTab('seating')" id="staff-tab-seating" class="staff-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[11px]">
-        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+        <i data-lucide="map" class="w-3.5 h-3.5"></i>
         <span>Floor 🛋️</span>
       </button>
       <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
@@ -258,7 +327,7 @@
       </button>
     </div>
 
-    <!-- MODULE 1: CLEAN, HIGH-VISIBILITY FLOOR & PIPE SOMMELIER (DEFAULT) -->
+    <!-- MODULE 1: INTERACTIVE 2D LOUNGE DIAGRAM & MULTI-TAB CONTROLLER -->
     <div id="staff-view-seating" class="staff-panel flex flex-col gap-3">
       
       <!-- A. Floating VIP Orders Dock -->
@@ -277,18 +346,41 @@
         </div>
       </div>
 
-      <!-- B. Zone Filter Pills Bar -->
+      <!-- B. Zone Filter Pills Bar & View Mode Toggle -->
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1" id="staffZoneFilterBar">
           <!-- Injected via JS -->
         </div>
-        <span class="text-[10px] text-zinc-400 font-mono flex-shrink-0" id="staffFloorSummaryLabel">
-          0 Seats
-        </span>
+        
+        <div class="flex items-center gap-1 bg-zinc-950 p-0.5 border border-zinc-800 rounded-xl flex-shrink-0">
+          <button onclick="setFloorViewMode('diagram')" id="viewModeDiagramBtn" class="px-2 py-1 rounded-lg text-[10px] font-bold bg-brand-gold text-black shadow-sm flex items-center gap-1">
+            <i data-lucide="map" class="w-3 h-3"></i>
+            <span>Diagram</span>
+          </button>
+          <button onclick="setFloorViewMode('grid')" id="viewModeGridBtn" class="px-2 py-1 rounded-lg text-[10px] font-bold text-zinc-400 hover:text-white flex items-center gap-1">
+            <i data-lucide="layout-grid" class="w-3 h-3"></i>
+            <span>Pods</span>
+          </button>
+        </div>
       </div>
 
-      <!-- C. CLEAN, HIGH-VISIBILITY RESPONSIVE FLOOR GRID OF TABLES & SOFAS -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="staffSeatsGrid">
+      <!-- C1. INTERACTIVE 2D ARCHITECTURAL FLOOR DIAGRAM -->
+      <div id="floorDiagramContainer" class="pos-card rounded-2xl p-2.5">
+        <div class="flex justify-between items-center mb-1.5 px-1 text-[10px] text-zinc-400">
+          <span class="font-bold text-white flex items-center gap-1">
+            <i data-lucide="crosshair" class="w-3 h-3 text-brand-gold"></i>
+            Tap any Table or Couch on diagram to open/view tabs
+          </span>
+          <span class="font-mono text-zinc-500" id="diagramZoneWatermark">Zone: All Space</span>
+        </div>
+
+        <div id="staffDiagramCanvas" class="lounge-diagram-canvas">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- C2. ALTERNATIVE RESPONSIVE PODS GRID -->
+      <div id="floorGridContainer" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-2.5">
         <!-- Injected via JS -->
       </div>
 
@@ -472,7 +564,7 @@
 
   </main>
 
-  <!-- ==================== TABLE, SOFA & PIPE SOMMELIER ACTION MODAL ==================== -->
+  <!-- ==================== TABLE, COUCH & MULTI-TAB CONTROLLER MODAL ==================== -->
   <div id="seatActionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
@@ -481,14 +573,14 @@
             <i data-lucide="armchair" class="w-4 h-4"></i>
           </div>
           <div>
-            <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="modalSeatTitle">Table &amp; Pipe Status</h3>
-            <p class="text-[10px] text-zinc-400" id="modalSeatSubtitle">Hookah Hardware Identification</p>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="modalSeatTitle">Table &amp; Couch Tabs</h3>
+            <p class="text-[10px] text-zinc-400" id="modalSeatSubtitle">Select tab or open new tab on couch</p>
           </div>
         </div>
         <button onclick="closeSeatActionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <div id="seatModalContent" class="my-3 space-y-2.5 text-xs">
+      <div id="seatModalContent" class="my-3 space-y-2.5 text-xs max-h-[75vh] overflow-y-auto no-scrollbar">
         <!-- Injected dynamically via JS -->
       </div>
     </div>
@@ -542,39 +634,53 @@
     };
 
     const DEFAULT_ZONES = [
-      { id: 'all', name: 'All Tables & Sofas', icon: 'layout-grid' },
-      { id: 'indoor', name: 'Indoor Main Floor', icon: 'layers' },
+      { id: 'all', name: 'All Space', icon: 'layout-grid' },
+      { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
       { id: 'vip', name: 'VIP Velvet Couches', icon: 'crown' },
-      { id: 'bar', name: 'High Bar Stools', icon: 'wine' },
+      { id: 'bar', name: 'Main Bar', icon: 'wine' },
       { id: 'patio', name: 'Outdoor Patio', icon: 'sun' }
     ];
 
     const DEFAULT_PIPES_FLEET = [
-      { id: 'pipe-01', tag: 'P#01', brand: 'Alpha Hookah', model: 'Model X (Obsidian Gold)', bowl: 'Russian Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available', assignedTable: null },
-      { id: 'pipe-02', tag: 'P#02', brand: 'Maklaud', model: 'Dzen (Brass Dragon)', bowl: 'Alpaca Mini Rook (18g)', hmd: 'Provost HMD', hose: 'Black Soft-Touch', status: 'available', assignedTable: null },
-      { id: 'pipe-03', tag: 'P#03', brand: 'MattPear', model: 'Simple M (Black Edition)', bowl: 'Oblako Mono (20g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available', assignedTable: null },
-      { id: 'pipe-04', tag: 'P#04', brand: 'Wookah', model: 'Oak Edition (Crystal Base)', bowl: 'Solaris Classic (22g)', hmd: 'Lotus III Heat', hose: 'Brown Leather', status: 'occupied', assignedTable: 'Table 6 (6-Top)', guest: 'VIP-409', mix: 'MustHave: Pinkman (70%) + Tangiers: Cane Mint (30%)', burnStartTime: Date.now() - (19 * 60 * 1000) },
-      { id: 'pipe-05', tag: 'P#05', brand: 'Hoob', model: 'Apex Gold', bowl: 'Russian Killer Bowl (25g)', hmd: 'Provost HMD', hose: 'Gold Tip Silicone', status: 'occupied', assignedTable: 'VIP Booth 1 (8P)', guest: 'VIP-310', mix: 'Tangiers: Kashmir Peach (60%) + MustHave: Milky Rice (40%)', burnStartTime: Date.now() - (21 * 60 * 1000) },
-      { id: 'pipe-06', tag: 'P#06', brand: 'DSH', model: 'Heavy Stainless Steel', bowl: 'Alpaca Rook (20g)', hmd: 'Kaloud Lotus III', hose: 'Black Silicone', status: 'available', assignedTable: null },
-      { id: 'pipe-07', tag: 'P#07', brand: 'Alpha Hookah', model: 'Artist Bronze Edition', bowl: 'Oblako Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'occupied', assignedTable: 'Bar Stool 3', guest: 'VIP-102', mix: 'Darkside: Falling Star (50%) + MustHave: Space Flavour (50%)', burnStartTime: Date.now() - (10 * 60 * 1000) },
-      { id: 'pipe-08', tag: 'P#08', brand: 'Khalil Mamoon', model: 'Beast Traditional Brass', bowl: 'Egyptian Clay (25g)', hmd: 'Foil & Windcover', hose: 'Classic Rainbow', status: 'available', assignedTable: null }
+      { id: 'pipe-01', tag: 'P#01', brand: 'Alpha Hookah', model: 'Model X (Obsidian Gold)', bowl: 'Russian Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available' },
+      { id: 'pipe-02', tag: 'P#02', brand: 'Maklaud', model: 'Dzen (Brass Dragon)', bowl: 'Alpaca Mini Rook (18g)', hmd: 'Provost HMD', hose: 'Black Soft-Touch', status: 'available' },
+      { id: 'pipe-03', tag: 'P#03', brand: 'MattPear', model: 'Simple M (Black Edition)', bowl: 'Oblako Mono (20g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available' },
+      { id: 'pipe-04', tag: 'P#04', brand: 'Wookah', model: 'Oak Edition (Crystal Base)', bowl: 'Solaris Classic (22g)', hmd: 'Lotus III Heat', hose: 'Brown Leather', status: 'occupied', assignedTable: 'Table 6 (6-Top)', guest: 'VIP-409' },
+      { id: 'pipe-05', tag: 'P#05', brand: 'Hoob', model: 'Apex Gold', bowl: 'Russian Killer Bowl (25g)', hmd: 'Provost HMD', hose: 'Gold Tip Silicone', status: 'occupied', assignedTable: 'VIP Booth 1 (8P)', guest: 'VIP-310' },
+      { id: 'pipe-06', tag: 'P#06', brand: 'DSH', model: 'Heavy Stainless Steel', bowl: 'Alpaca Rook (20g)', hmd: 'Kaloud Lotus III', hose: 'Black Silicone', status: 'available' },
+      { id: 'pipe-07', tag: 'P#07', brand: 'Alpha Hookah', model: 'Artist Bronze Edition', bowl: 'Oblako Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'occupied', assignedTable: 'Bar Stool 3', guest: 'VIP-102' }
     ];
 
     const EMPIRE_FULL_PRESET = [
-      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', status: 'available', tabBal: 0, pipeId: null },
-      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', status: 'available', tabBal: 0, pipeId: null },
-      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', status: 'occupied', tabBal: 38.00, guest: 'VIP-102', pipeId: 'pipe-07' },
-      { id: 'bar-4', name: 'B4', label: 'Bar Stool 4', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', status: 'available', tabBal: 0, pipeId: null },
+      // Landmarks
+      { id: 'infra-main-bar', name: 'MAIN BAR', label: 'Main Bar Counter', zone: 'bar', type: 'infra-bar', isInfra: true, icon: 'wine', x: 4, y: 4, w: 180, h: 28, shape: 'rect', status: 'infra' },
+      { id: 'infra-dj-stage', name: 'DJ STAGE', label: 'DJ Stage & Sound', zone: 'indoor', type: 'infra-dj', isInfra: true, icon: 'music', x: 74, y: 4, w: 90, h: 36, shape: 'rect', status: 'infra' },
+      { id: 'infra-entrance', name: 'ENTRANCE', label: 'Host & Entrance', zone: 'indoor', type: 'infra-host', isInfra: true, icon: 'log-in', x: 4, y: 78, w: 90, h: 32, shape: 'rect', status: 'infra' },
+      { id: 'infra-tea-bar', name: 'SAMOVAR TEA', label: 'Samovar Station', zone: 'indoor', type: 'infra-tea', isInfra: true, icon: 'flame', x: 72, y: 78, w: 92, h: 32, shape: 'rect', status: 'infra' },
 
-      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', status: 'occupied', tabBal: 60.00, guest: 'VIP-310', coalTimer: 21, pipeId: 'pipe-05' },
-      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', status: 'available', tabBal: 0, pipeId: null },
+      // Bar Stools
+      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 6, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabs: [] },
+      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 18, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabs: [] },
+      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 30, y: 16, w: 38, h: 38, shape: 'circle', status: 'occupied', tabs: [{ id: 'tab-b3-1', name: 'VIP-102 (Elena)', balance: 38.00, pipeId: 'pipe-07', mix: 'Darkside Falling Star (50%) + Space Flavour (50%)', burnStartTime: Date.now() - (10 * 60 * 1000) }] },
+      { id: 'bar-4', name: 'B4', label: 'Bar Stool 4', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 42, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabs: [] },
 
-      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top)', zone: 'indoor', type: 'table-2p', capacity: 2, icon: 'coffee', status: 'available', tabBal: 0, pipeId: null },
-      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', status: 'available', tabBal: 0, pipeId: null },
-      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', status: 'available', tabBal: 0, pipeId: null },
-      { id: 'tbl-6', name: 'T6', label: 'Table 6 (6-Top)', zone: 'indoor', type: 'table-6p', capacity: 6, icon: 'users', status: 'occupied', tabBal: 35.00, guest: 'VIP-409', coalTimer: 19, pipeId: 'pipe-04' },
+      // VIP Velvet Couches / Booths (Multi-Tab Enabled)
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 22, w: 86, h: 54, shape: 'rect', status: 'occupied', tabs: [
+        { id: 'tab-vip1-1', name: '👑 VIP-310 (Marcus)', balance: 60.00, pipeId: 'pipe-05', mix: 'Tangiers Kashmir Peach (60%) + MustHave Milky Rice (40%)', burnStartTime: Date.now() - (21 * 60 * 1000) },
+        { id: 'tab-vip1-2', name: 'Sarah & Guest (Couch Right)', balance: 28.00, pipeId: null, mix: 'Teapot + Turkish Coffee' }
+      ] },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P Velvet Couch)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 48, w: 86, h: 54, shape: 'rect', status: 'available', tabs: [] },
+
+      // Tables & Center Sofas
+      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top Cozy)', zone: 'indoor', type: 'table-2p', capacity: 2, icon: 'coffee', x: 8, y: 38, w: 48, h: 48, shape: 'circle', status: 'available', tabs: [] },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top Table)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 26, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabs: [] },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top Table)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 46, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabs: [] },
+      { id: 'tbl-6', name: 'T6', label: 'Table 6 (6-Top Sofa Section)', zone: 'indoor', type: 'table-6p', capacity: 6, icon: 'users', x: 28, y: 64, w: 72, h: 48, shape: 'rect', status: 'occupied', tabs: [
+        { id: 'tab-t6-1', name: '👑 VIP-409 (Alex M.)', balance: 35.00, pipeId: 'pipe-04', mix: 'MustHave Pinkman (70%) + Tangiers Cane Mint (30%)', burnStartTime: Date.now() - (19 * 60 * 1000) }
+      ] },
       
-      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', type: 'table-4p', capacity: 4, icon: 'sun', status: 'available', tabBal: 0, pipeId: null }
+      // Patio
+      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', type: 'table-4p', capacity: 4, icon: 'sun', x: 56, y: 64, w: 52, h: 52, shape: 'circle', status: 'available', tabs: [] }
     ];
 
     class StaffStash {
@@ -602,12 +708,10 @@
       static getFloorplan() {
         const local = localStorage.getItem('empire_custom_floorplan_v2');
         if (local === null) return EMPIRE_FULL_PRESET;
-        return JSON.parse(local).filter(n => !n.isInfra);
+        return JSON.parse(local);
       }
       static saveFloorplan(plan) {
-        const fullLocal = JSON.parse(localStorage.getItem('empire_custom_floorplan_v2') || '[]');
-        const infras = fullLocal.filter(n => n.isInfra);
-        localStorage.setItem('empire_custom_floorplan_v2', JSON.stringify([...plan, ...infras]));
+        localStorage.setItem('empire_custom_floorplan_v2', JSON.stringify(plan));
       }
       static getTaxConfig() {
         const local = localStorage.getItem('empire_tax_config');
@@ -625,6 +729,7 @@
     }
 
     let activeZoneFilter = 'all';
+    let currentFloorViewMode = 'diagram'; // 'diagram' or 'grid'
     let activeModalSeatId = null;
 
     let labBowlCapacity = 22;
@@ -643,7 +748,7 @@
     let currentStaffTab = 'seating';
 
     let activeKdsTimers = [
-      { id: 'kds-1', table: 'Table 6 (6-Top)', mix: 'MustHave: Pinkman (70%) + Tangiers: Cane Mint (30%)', startTime: Date.now() - (19 * 60 * 1000) }
+      { id: 'kds-1', table: 'Table 6 (6-Top)', mix: 'MustHave Pinkman (70%) + Tangiers Cane Mint (30%)', startTime: Date.now() - (19 * 60 * 1000) }
     ];
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
@@ -653,10 +758,10 @@
       if (pin === '1234' || pin === '6010' || pin === '0000') {
         document.getElementById('staffPinModal').classList.add('hidden');
         renderZoneFilterBar();
-        renderStaffSeatsGrid();
+        renderStaffFloor();
         renderFloatingVIPQueue();
         populatePosQuickSeats();
-        showToast('🔓 Staff Operations Live', 'Floor map and pipe sommelier ready.');
+        showToast('🔓 Staff Operations Live', 'Floor map and multi-tab sommelier ready.');
       } else {
         showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
       }
@@ -691,19 +796,39 @@
         activeBtn.classList.remove('text-zinc-400');
       }
 
-      if (tabId === 'seating') { renderZoneFilterBar(); renderStaffSeatsGrid(); renderFloatingVIPQueue(); }
+      if (tabId === 'seating') { renderZoneFilterBar(); renderStaffFloor(); renderFloatingVIPQueue(); }
       if (tabId === 'lab') { initRotaryWheel(); renderMixLab(); }
       if (tabId === 'pos') populatePosQuickSeats();
       if (tabId === 'kds') renderKdsQueue();
       renderIcons();
     }
 
-    // ==================== CLEAN HIGH-VISIBILITY FLOOR & PIPE MAP ====================
+    function setFloorViewMode(mode) {
+      currentFloorViewMode = mode;
+      const diagramBtn = document.getElementById('viewModeDiagramBtn');
+      const gridBtn = document.getElementById('viewModeGridBtn');
+      const diagramCont = document.getElementById('floorDiagramContainer');
+      const gridCont = document.getElementById('floorGridContainer');
+
+      if (mode === 'diagram') {
+        diagramBtn.className = 'px-2 py-1 rounded-lg text-[10px] font-bold bg-brand-gold text-black shadow-sm flex items-center gap-1';
+        gridBtn.className = 'px-2 py-1 rounded-lg text-[10px] font-bold text-zinc-400 hover:text-white flex items-center gap-1';
+        diagramCont.classList.remove('hidden');
+        gridCont.classList.add('hidden');
+      } else {
+        gridBtn.className = 'px-2 py-1 rounded-lg text-[10px] font-bold bg-brand-gold text-black shadow-sm flex items-center gap-1';
+        diagramBtn.className = 'px-2 py-1 rounded-lg text-[10px] font-bold text-zinc-400 hover:text-white flex items-center gap-1';
+        gridCont.classList.remove('hidden');
+        diagramCont.classList.add('hidden');
+      }
+      renderStaffFloor();
+    }
+
     function renderZoneFilterBar() {
       const container = document.getElementById('staffZoneFilterBar');
       container.innerHTML = '';
       const zones = StaffStash.getZones();
-      const plan = StaffStash.getFloorplan();
+      const plan = StaffStash.getFloorplan().filter(n => !n.isInfra);
 
       zones.forEach(z => {
         const isAll = (z.id === 'all');
@@ -715,7 +840,7 @@
         btn.onclick = () => {
           activeZoneFilter = z.id;
           renderZoneFilterBar();
-          renderStaffSeatsGrid();
+          renderStaffFloor();
         };
         btn.innerHTML = `
           <i data-lucide="${z.icon || 'layers'}" class="w-3.5 h-3.5 text-brand-gold"></i>
@@ -728,57 +853,87 @@
       renderIcons();
     }
 
-    function renderStaffSeatsGrid() {
-      const grid = document.getElementById('staffSeatsGrid');
-      grid.innerHTML = '';
-      const allPlan = StaffStash.getFloorplan();
+    function renderStaffFloor() {
+      const fullPlan = StaffStash.getFloorplan();
       const pipes = StaffStash.getPipes();
+      const zones = StaffStash.getZones();
 
-      const visibleSeats = (activeZoneFilter === 'all') ? allPlan : allPlan.filter(s => s.zone === activeZoneFilter);
-      document.getElementById('staffFloorSummaryLabel').textContent = `${visibleSeats.length} Active Tables / Sofas`;
+      const curZoneObj = zones.find(z => z.id === activeZoneFilter);
+      document.getElementById('diagramZoneWatermark').textContent = `Zone: ${curZoneObj ? curZoneObj.name : 'All Space'}`;
 
-      if (visibleSeats.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full text-center py-8 text-xs text-zinc-500 bg-zinc-950/60 rounded-2xl border border-zinc-850">
-            No tables or sofas found in this zone.
+      // 1. RENDER 2D ARCHITECTURAL DIAGRAM
+      const canvas = document.getElementById('staffDiagramCanvas');
+      canvas.innerHTML = '';
+
+      const visibleAll = (activeZoneFilter === 'all') ? fullPlan : fullPlan.filter(n => n.zone === activeZoneFilter || n.isInfra);
+
+      visibleAll.forEach(node => {
+        if (node.isInfra) {
+          const infraDiv = document.createElement('div');
+          infraDiv.className = 'diagram-infra-node';
+          infraDiv.style.left = `${node.x}%`;
+          infraDiv.style.top = `${node.y}%`;
+          infraDiv.style.width = `${node.w}px`;
+          infraDiv.style.height = `${node.h}px`;
+          infraDiv.innerHTML = `<span>${node.name}</span>`;
+          canvas.appendChild(infraDiv);
+          return;
+        }
+
+        const tabs = node.tabs || [];
+        const isOccupied = (tabs.length > 0) || (node.status === 'occupied');
+        const activePipeTag = tabs.find(t => t.pipeId)?.pipeId;
+        const assignedPipe = pipes.find(p => p.id === (node.pipeId || activePipeTag));
+        
+        let hasHeatDue = false;
+        tabs.forEach(t => {
+          if (t.burnStartTime && (Date.now() - t.burnStartTime) >= (20 * 60 * 1000)) hasHeatDue = true;
+        });
+        if (node.coalTimer >= 20) hasHeatDue = true;
+
+        const seatDiv = document.createElement('div');
+        seatDiv.className = `diagram-seat-node ${node.shape === 'circle' ? 'rounded-full' : 'rounded-xl'} border-2 ${isOccupied ? 'occupied' : 'border-zinc-800 bg-zinc-950'} ${hasHeatDue ? 'heat-due' : ''}`;
+        seatDiv.style.left = `${node.x}%`;
+        seatDiv.style.top = `${node.y}%`;
+        seatDiv.style.width = `${node.w}px`;
+        seatDiv.style.height = `${node.h}px`;
+
+        let pipeBadge = '';
+        if (assignedPipe) {
+          pipeBadge = `<span class="text-[7.5px] bg-amber-950 text-brand-gold font-bold px-1 py-0.2 rounded font-mono">🏺 ${assignedPipe.tag}</span>`;
+        }
+
+        seatDiv.innerHTML = `
+          <div class="flex items-center gap-0.5 pointer-events-none">
+            <i data-lucide="${node.icon || 'layers'}" class="w-3 h-3 ${isOccupied ? 'text-brand-gold' : 'text-zinc-400'}"></i>
+            ${node.capacity ? `<span class="text-[8px] font-mono text-zinc-400 font-bold">${node.capacity}P</span>` : ''}
           </div>
+          <span class="text-[10.5px] font-extrabold text-white tracking-tight pointer-events-none truncate max-w-[90%]">${node.name}</span>
+          ${pipeBadge ? pipeBadge : (tabs.length > 0 ? `<span class="text-[8px] text-zinc-300 font-mono font-bold">${tabs.length} Tabs</span>` : '')}
         `;
-        return;
-      }
+
+        seatDiv.onclick = () => openLiveSeatActionModal(node.id);
+        canvas.appendChild(seatDiv);
+      });
+
+      // 2. RENDER GRID PODS
+      const grid = document.getElementById('floorGridContainer');
+      grid.innerHTML = '';
+      const visibleSeats = fullPlan.filter(n => !n.isInfra && (activeZoneFilter === 'all' || n.zone === activeZoneFilter));
 
       visibleSeats.forEach(seat => {
-        const assignedPipe = pipes.find(p => p.id === seat.pipeId || (p.assignedTable && p.assignedTable.toLowerCase() === seat.label.toLowerCase()));
-        const isOccupied = (seat.status === 'occupied') || Boolean(assignedPipe);
+        const tabs = seat.tabs || [];
+        const isOccupied = (tabs.length > 0) || (seat.status === 'occupied');
+        const assignedPipe = pipes.find(p => p.id === seat.pipeId || tabs.some(t => t.pipeId === p.id));
         
-        let burnElapsedMins = 0;
-        let isRotationDue = false;
-        if (assignedPipe && assignedPipe.burnStartTime) {
-          burnElapsedMins = Math.floor((Date.now() - assignedPipe.burnStartTime) / (1000 * 60));
-          isRotationDue = burnElapsedMins >= 20;
-        } else if (seat.coalTimer) {
-          burnElapsedMins = seat.coalTimer;
-          isRotationDue = burnElapsedMins >= 20;
-        }
+        let hasHeatDue = false;
+        tabs.forEach(t => {
+          if (t.burnStartTime && (Date.now() - t.burnStartTime) >= (20 * 60 * 1000)) hasHeatDue = true;
+        });
 
         const card = document.createElement('div');
-        card.className = `seat-pod-card ${isOccupied ? 'occupied' : ''} ${isRotationDue ? 'heat-due' : ''}`;
+        card.className = `seat-pod-card ${isOccupied ? 'occupied' : ''} ${hasHeatDue ? 'heat-due' : ''}`;
         card.onclick = () => openLiveSeatActionModal(seat.id);
-
-        let pipeBadgeHtml = '';
-        if (assignedPipe) {
-          pipeBadgeHtml = `
-            <div class="mt-1.5 pt-1.5 border-t border-zinc-800/80 flex items-center justify-between">
-              <span class="text-[10px] font-extrabold text-brand-gold flex items-center gap-1 font-mono">
-                <span>🏺</span>
-                <span>${assignedPipe.tag}</span>
-                <span class="text-[9px] text-zinc-300 font-sans font-normal truncate max-w-[85px]">${assignedPipe.brand}</span>
-              </span>
-              <span class="text-[9px] font-mono font-bold ${isRotationDue ? 'text-red-400 bg-red-950/80 px-1 py-0.2 rounded border border-red-800 animate-pulse' : 'text-zinc-400'}">
-                🔥 ${burnElapsedMins}m
-              </span>
-            </div>
-          `;
-        }
 
         card.innerHTML = `
           <div>
@@ -793,21 +948,16 @@
                 </div>
               </div>
 
-              <div class="text-right flex-shrink-0">
-                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${isOccupied ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-400'}">
-                  ${isOccupied ? (seat.guest ? seat.guest : 'Occupied') : `${seat.capacity || 4}P Open`}
-                </span>
-                ${isOccupied && seat.tabBal > 0 ? `<span class="block text-[10px] font-bold text-brand-gold font-mono-nums mt-0.5">$${seat.tabBal.toFixed(0)}</span>` : ''}
-              </div>
+              <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${isOccupied ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-400'}">
+                ${isOccupied ? `${tabs.length || 1} Tabs Active` : `${seat.capacity || 4}P Open`}
+              </span>
             </div>
           </div>
 
-          ${pipeBadgeHtml ? pipeBadgeHtml : `
-            <div class="mt-2 pt-1.5 border-t border-zinc-850/60 flex items-center justify-between text-[9px] text-zinc-500">
-              <span>No Pipe</span>
-              <span class="text-brand-gold hover:underline font-bold">+ Assign Pipe</span>
-            </div>
-          `}
+          <div class="mt-2 pt-1.5 border-t border-zinc-850/80 flex items-center justify-between text-[10px]">
+            ${assignedPipe ? `<span class="font-mono text-brand-gold font-bold">🏺 ${assignedPipe.tag} (${assignedPipe.brand})</span>` : `<span class="text-zinc-500">No Pipe</span>`}
+            <span class="text-brand-gold font-bold">+ Manage Tabs</span>
+          </div>
         `;
 
         grid.appendChild(card);
@@ -831,7 +981,7 @@
         return;
       }
 
-      const plan = StaffStash.getFloorplan();
+      const plan = StaffStash.getFloorplan().filter(n => !n.isInfra);
 
       unassignedList.forEach(order => {
         const div = document.createElement('div');
@@ -846,7 +996,7 @@
           </div>
 
           <select onchange="assignFloatingTabToSeat('${order.id}', this.value)" class="bg-zinc-900 border border-zinc-700 text-[10px] text-brand-gold font-bold rounded px-1.5 py-0.5 focus:outline-none">
-            <option value="">+ Assign Seat</option>
+            <option value="">+ Assign to Table/Couch</option>
             ${plan.map(s => `<option value="${s.label}">${s.label} (${s.name})</option>`).join('')}
           </select>
         `;
@@ -866,206 +1016,234 @@
         const seatObj = plan.find(s => s.label.toLowerCase() === targetSeat.toLowerCase() || s.name.toLowerCase() === targetSeat.toLowerCase());
         if (seatObj) {
           seatObj.status = 'occupied';
-          seatObj.tabBal = (seatObj.tabBal || 0) + order.price;
-          seatObj.guest = `VIP-${order.tabId}`;
+          if (!seatObj.tabs) seatObj.tabs = [];
+          seatObj.tabs.push({
+            id: `tab-${Date.now()}`,
+            name: `👑 VIP #${order.tabId}`,
+            balance: order.price,
+            mix: order.mix,
+            pipeId: 'pipe-04',
+            burnStartTime: Date.now()
+          });
           StaffStash.saveFloorplan(plan);
         }
 
-        renderStaffSeatsGrid();
+        renderStaffFloor();
         renderFloatingVIPQueue();
         showToast('📍 Seat Linked', `Floating VIP #${order.tabId} tab assigned to ${targetSeat}.`);
       }
     }
 
-    // ==================== TABLE, SOFA & PIPE SOMMELIER ACTION MODAL ====================
+    // ==================== TABLE, COUCH & MULTI-TAB CONTROLLER MODAL ====================
     function openLiveSeatActionModal(nodeId) {
       activeModalSeatId = nodeId;
       const plan = StaffStash.getFloorplan();
       const node = plan.find(n => n.id === nodeId);
-      if (!node) return;
+      if (!node || node.isInfra) return;
 
       const pipes = StaffStash.getPipes();
-      let assignedPipe = pipes.find(p => p.id === node.pipeId || (p.assignedTable && p.assignedTable.toLowerCase() === node.label.toLowerCase()));
+      if (!node.tabs) node.tabs = [];
 
       document.getElementById('modalSeatTitle').textContent = `${node.label} (${node.name})`;
-      document.getElementById('modalSeatSubtitle').textContent = `Zone: ${node.zone.toUpperCase()} • Capacity: ${node.capacity || 4} Guests`;
+      document.getElementById('modalSeatSubtitle').textContent = `Zone: ${node.zone.toUpperCase()} • Capacity: ${node.capacity || 4} Guests • ${node.tabs.length} Tabs Active`;
 
       const content = document.getElementById('seatModalContent');
+      content.innerHTML = '';
 
-      let pipeIdentificationHtml = '';
-      if (assignedPipe) {
-        const burnElapsedMins = assignedPipe.burnStartTime ? Math.floor((Date.now() - assignedPipe.burnStartTime) / (1000 * 60)) : (node.coalTimer || 15);
-        const progressPct = Math.min(100, Math.round((burnElapsedMins / 25) * 100));
-        const isRotationDue = burnElapsedMins >= 20;
+      // 1. Render all active tabs on this table/couch
+      if (node.tabs.length > 0) {
+        const tabsContainer = document.createElement('div');
+        tabsContainer.className = 'space-y-2';
 
-        pipeIdentificationHtml = `
-          <div class="bg-black p-3 rounded-xl border ${isRotationDue ? 'border-red-500/80 bg-red-950/20' : 'border-amber-500/30'} space-y-2">
+        node.tabs.forEach((tab, index) => {
+          const tabPipe = pipes.find(p => p.id === tab.pipeId);
+          let burnElapsedMins = 0;
+          let isRotationDue = false;
+          if (tab.burnStartTime) {
+            burnElapsedMins = Math.floor((Date.now() - tab.burnStartTime) / (1000 * 60));
+            isRotationDue = burnElapsedMins >= 20;
+          }
+
+          const tabCard = document.createElement('div');
+          tabCard.className = `p-3 rounded-xl bg-black border ${isRotationDue ? 'border-red-500 bg-red-950/20' : 'border-zinc-800'} space-y-2`;
+          tabCard.innerHTML = `
             <div class="flex justify-between items-start">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-brand-gold">
-                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded font-mono">Tab #${index + 1}</span>
+                  <span class="font-bold text-white text-xs">${tab.name}</span>
                 </div>
-                <div>
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-xs font-extrabold text-white">${assignedPipe.brand}</span>
-                    <span class="text-[9px] bg-brand-gold text-black font-mono font-extrabold px-1.5 py-0.2 rounded">${assignedPipe.tag}</span>
-                  </div>
-                  <span class="text-[10px] text-zinc-400 font-semibold">${assignedPipe.model}</span>
-                </div>
+                <span class="text-[10px] text-brand-gold font-mono-nums font-bold mt-0.5 block">$${(tab.balance || 0).toFixed(2)} Active Balance</span>
               </div>
 
-              <button onclick="unassignPipeFromTable('${assignedPipe.id}')" class="text-[9px] bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-red-300 border border-zinc-700 px-2 py-0.5 rounded font-bold">
-                Swap / Unlink
+              <button onclick="closeSingleTab('${node.id}', ${index})" class="text-[9px] text-zinc-500 hover:text-red-300 bg-zinc-900 px-2 py-0.5 rounded">
+                Close Tab ✕
               </button>
             </div>
 
+            <!-- Identified Pipe on this Tab -->
             <div class="bg-zinc-950 p-2 rounded-lg border border-zinc-850 space-y-1 text-[11px]">
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Assigned Guest / Tab:</span>
-                <span class="font-bold text-brand-gold font-mono">${assignedPipe.guest || node.guest || 'VIP Guest'}</span>
+              <div class="flex justify-between items-center">
+                <span class="text-zinc-400">Identified Pipe:</span>
+                <span class="font-bold text-brand-gold font-mono">${tabPipe ? `🏺 ${tabPipe.tag} (${tabPipe.brand} ${tabPipe.model})` : 'None Assigned'}</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Active Bowl Shisha:</span>
-                <span class="font-bold text-zinc-200 text-right truncate max-w-[190px]">${assignedPipe.mix || 'Russian Craft Mix (22g)'}</span>
+              <div class="flex justify-between items-center text-[10px]">
+                <span class="text-zinc-400">Shisha Head:</span>
+                <span class="text-zinc-200 truncate max-w-[180px]">${tab.mix || 'Russian Craft Mix'}</span>
               </div>
-              <div class="flex justify-between text-[10px] text-zinc-500 pt-0.5 border-t border-zinc-850/80">
-                <span>${assignedPipe.bowl || 'Oblako 22g'} • ${assignedPipe.hmd || 'Lotus III'}</span>
-                <span class="text-emerald-400">${assignedPipe.hose || 'Ice Tip Hose'}</span>
-              </div>
+              ${tab.burnStartTime ? `
+                <div class="pt-1 border-t border-zinc-850 flex justify-between items-center text-[10px]">
+                  <span class="font-bold ${isRotationDue ? 'text-red-400 animate-pulse' : 'text-zinc-400'}">🔥 Heat Burn: ${burnElapsedMins}m / 25m</span>
+                  <button onclick="rotateCoalsOnTab('${node.id}', ${index})" class="text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2 py-0.5 rounded font-bold">
+                    Rotate Coals ✓
+                  </button>
+                </div>
+              ` : ''}
             </div>
 
-            <div>
-              <div class="flex justify-between text-[10px] font-bold mb-1">
-                <span class="flex items-center gap-1 ${isRotationDue ? 'text-red-400 animate-pulse' : 'text-zinc-300'}">
-                  <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
-                  ${isRotationDue ? '🔥 COAL ROTATION DUE' : 'Active Heat Burn Cycle'}
-                </span>
-                <span class="font-mono ${isRotationDue ? 'text-red-400' : 'text-brand-gold'}">${burnElapsedMins}m / 25m</span>
-              </div>
-              <div class="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
-                <div class="h-full ${isRotationDue ? 'bg-red-500 animate-pulse' : 'bg-brand-gold'} transition-all duration-300" style="width: ${progressPct}%;"></div>
-              </div>
+            <!-- 1-Tap Tab Actions -->
+            <div class="grid grid-cols-2 gap-1.5 pt-1">
+              <button onclick="openSeatInPos('${node.label} - ${tab.name}', ${tab.balance || 0})" class="p-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-white text-[11px] flex items-center justify-center gap-1">
+                <i data-lucide="tablet" class="w-3 h-3 text-brand-gold"></i> Open in POS
+              </button>
+              <button onclick="orderRepackForSeat('${node.label}')" class="p-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg font-bold text-brand-gold text-[11px] flex items-center justify-center gap-1">
+                <i data-lucide="flask-conical" class="w-3 h-3"></i> Repack (-$10)
+              </button>
             </div>
-          </div>
-        `;
+          `;
+          tabsContainer.appendChild(tabCard);
+        });
+
+        content.appendChild(tabsContainer);
       } else {
-        const availablePipes = pipes.filter(p => p.status === 'available');
-        pipeIdentificationHtml = `
-          <div class="bg-black p-3 rounded-xl border border-dashed border-zinc-800 space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1">
-                <i data-lucide="info" class="w-3.5 h-3.5 text-zinc-500"></i>
-                No Pipe Identified on Table
-              </span>
-              <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-mono">${availablePipes.length} Available</span>
-            </div>
-
-            <div class="space-y-1.5">
-              <label class="text-[9px] text-zinc-400 font-bold block">Assign Lounge Pipe to Table:</label>
-              <select id="quickAssignPipeSelect" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold focus:outline-none">
-                ${availablePipes.map(p => `<option value="${p.id}">${p.tag} • ${p.brand} (${p.model})</option>`).join('')}
-              </select>
-
-              <div class="grid grid-cols-2 gap-1.5">
-                <input type="text" id="quickGuestTabInput" placeholder="Guest / VIP Tab #" value="${node.guest || 'VIP-409'}" class="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white" />
-                <button onclick="quickAssignPipeToTable('${node.id}', '${node.label}')" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-1 px-2 rounded-lg text-xs flex items-center justify-center gap-1">
-                  <i data-lucide="check" class="w-3 h-3"></i> Link Pipe
-                </button>
-              </div>
-            </div>
+        content.innerHTML = `
+          <div class="p-4 text-center bg-black rounded-xl border border-dashed border-zinc-800 text-zinc-400">
+            <span class="block text-xs font-bold text-white mb-1">🛋️ Couch / Table is Open</span>
+            <span class="text-[11px]">No active tabs or pipes on this table yet.</span>
           </div>
         `;
       }
 
-      content.innerHTML = `
-        ${pipeIdentificationHtml}
+      // 2. Open New Tab on this Couch / Table Form
+      const availablePipes = pipes.filter(p => p.status === 'available');
+      const addTabSection = document.createElement('div');
+      addTabSection.className = 'mt-3 p-3 bg-zinc-950 rounded-xl border border-brand-gold/30 space-y-2';
+      addTabSection.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-extrabold text-brand-gold uppercase tracking-wider flex items-center gap-1">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+            Open New Tab on this Table/Couch
+          </span>
+          <span class="text-[9px] text-zinc-400 font-mono">${availablePipes.length} Pipes Available</span>
+        </div>
 
-        <div class="bg-black p-2.5 rounded-xl border border-zinc-800 flex justify-between items-center">
+        <div>
+          <label class="text-[9px] text-zinc-400 font-bold block mb-0.5">Guest Name / Couch Seat Position</label>
+          <input type="text" id="newTabGuestInput" placeholder="e.g. VIP-409 (Alex) or Couch Left Seat" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-1.5">
           <div>
-            <span class="text-[10px] text-zinc-400 block font-semibold">Active Tab Balance</span>
-            <span class="text-base font-bold text-brand-gold font-mono-nums">$${(node.tabBal || 0).toFixed(2)}</span>
+            <label class="text-[9px] text-zinc-400 font-bold block mb-0.5">Assign Pipe</label>
+            <select id="newTabPipeSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-brand-gold font-bold focus:outline-none">
+              <option value="">No Pipe (Drinks/Food only)</option>
+              ${availablePipes.map(p => `<option value="${p.id}">${p.tag} • ${p.brand} (${p.model})</option>`).join('')}
+            </select>
           </div>
-          <button onclick="openSeatInPos('${node.label}', ${node.tabBal || 0})" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
-            <i data-lucide="tablet" class="w-3.5 h-3.5 text-brand-gold"></i>
-            <span>Open in POS</span>
-          </button>
+          <div>
+            <label class="text-[9px] text-zinc-400 font-bold block mb-0.5">Starting Shisha Mix</label>
+            <input type="text" id="newTabMixInput" value="Russian Dark Leaf Craft Mix (22g)" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white" />
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <button onclick="startCoalTimerForSeat('${node.label}')" class="p-2.5 bg-red-950/40 hover:bg-red-950/70 border border-red-800/50 rounded-xl text-left text-xs">
-            <span class="font-bold text-red-300 block flex items-center gap-1"><i data-lucide="flame" class="w-3.5 h-3.5"></i> Rotate Coals</span>
-            <span class="text-[9px] text-zinc-400">Reset 25m Heat Clock</span>
-          </button>
-
-          <button onclick="orderRepackForSeat('${node.label}')" class="p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-left text-xs">
-            <span class="font-bold text-brand-gold block flex items-center gap-1"><i data-lucide="flask-conical" class="w-3.5 h-3.5"></i> Refill / Repack</span>
-            <span class="text-[9px] text-zinc-400">-$10 Off in Mix Lab</span>
-          </button>
-        </div>
-
-        <div class="flex gap-2 pt-1 border-t border-zinc-850">
-          <button onclick="clearSeatTab('${node.id}')" class="w-full py-1.5 bg-zinc-900 hover:bg-red-950 text-zinc-400 hover:text-red-300 border border-zinc-800 rounded-lg text-[10px] font-bold">
-            Close Table &amp; Return Pipe
-          </button>
-        </div>
+        <button onclick="createNewTabOnSeat('${node.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          <span>Open Tab &amp; Start Heat Clock ($35.00)</span>
+        </button>
       `;
 
+      content.appendChild(addTabSection);
       document.getElementById('seatActionModal').classList.remove('hidden');
       renderIcons();
     }
 
-    function quickAssignPipeToTable(nodeId, seatLabel) {
-      const pipeId = document.getElementById('quickAssignPipeSelect').value;
-      const guest = document.getElementById('quickGuestTabInput').value || 'VIP Guest';
-      if (!pipeId) return;
-
-      const pipes = StaffStash.getPipes();
-      const pipe = pipes.find(p => p.id === pipeId);
-      if (pipe) {
-        pipe.status = 'occupied';
-        pipe.assignedTable = seatLabel;
-        pipe.guest = guest;
-        pipe.burnStartTime = Date.now();
-        pipe.mix = 'Russian Dark Leaf Craft Mix (22g)';
-        StaffStash.savePipes(pipes);
-      }
+    function createNewTabOnSeat(nodeId) {
+      const guest = document.getElementById('newTabGuestInput').value || 'Guest Tab';
+      const pipeId = document.getElementById('newTabPipeSelect').value;
+      const mix = document.getElementById('newTabMixInput').value || 'Custom Shisha Blend';
 
       const plan = StaffStash.getFloorplan();
       const node = plan.find(n => n.id === nodeId);
-      if (node) {
-        node.status = 'occupied';
-        node.pipeId = pipeId;
-        node.guest = guest;
-        node.tabBal = (node.tabBal || 0) + 35.00;
-        StaffStash.saveFloorplan(plan);
+      if (!node) return;
+
+      if (!node.tabs) node.tabs = [];
+      node.status = 'occupied';
+
+      const newTabObj = {
+        id: `tab-${Date.now()}`,
+        name: guest,
+        balance: pipeId ? 35.00 : 0.00,
+        pipeId: pipeId || null,
+        mix: mix,
+        burnStartTime: pipeId ? Date.now() : null
+      };
+
+      node.tabs.push(newTabObj);
+
+      if (pipeId) {
+        const pipes = StaffStash.getPipes();
+        const pipe = pipes.find(p => p.id === pipeId);
+        if (pipe) {
+          pipe.status = 'occupied';
+          pipe.assignedTable = node.label;
+          pipe.guest = guest;
+          pipe.burnStartTime = Date.now();
+          StaffStash.savePipes(pipes);
+        }
       }
 
+      StaffStash.saveFloorplan(plan);
       openLiveSeatActionModal(nodeId);
-      renderStaffSeatsGrid();
-      showToast('🏺 Pipe Identified & Linked', `${pipe ? pipe.tag : 'Pipe'} assigned to ${seatLabel}. Coals burning!`);
+      renderStaffFloor();
+      showToast('✓ Tab Created', `New tab "${guest}" opened on ${node.label}.`);
     }
 
-    function unassignPipeFromTable(pipeId) {
-      const pipes = StaffStash.getPipes();
-      const pipe = pipes.find(p => p.id === pipeId);
-      if (pipe) {
-        pipe.status = 'available';
-        pipe.assignedTable = null;
-        pipe.guest = null;
-        pipe.burnStartTime = null;
-        StaffStash.savePipes(pipes);
-      }
-
+    function rotateCoalsOnTab(nodeId, tabIndex) {
       const plan = StaffStash.getFloorplan();
-      const node = plan.find(n => n.pipeId === pipeId || (pipe && n.label.toLowerCase() === pipe.assignedTable?.toLowerCase()));
-      if (node) {
-        node.pipeId = null;
+      const node = plan.find(n => n.id === nodeId);
+      if (node && node.tabs && node.tabs[tabIndex]) {
+        node.tabs[tabIndex].burnStartTime = Date.now();
         StaffStash.saveFloorplan(plan);
+        openLiveSeatActionModal(nodeId);
+        renderStaffFloor();
+        showToast('🔥 Coals Rotated', `25m heat clock reset for ${node.tabs[tabIndex].name}.`);
       }
+    }
 
-      if (activeModalSeatId) openLiveSeatActionModal(activeModalSeatId);
-      renderStaffSeatsGrid();
-      showToast('🔄 Pipe Unlinked', 'Pipe returned to available lounge stock.');
+    function closeSingleTab(nodeId, tabIndex) {
+      const plan = StaffStash.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (node && node.tabs) {
+        const closedTab = node.tabs.splice(tabIndex, 1)[0];
+        if (closedTab && closedTab.pipeId) {
+          const pipes = StaffStash.getPipes();
+          const p = pipes.find(pipe => pipe.id === closedTab.pipeId);
+          if (p) {
+            p.status = 'available';
+            p.assignedTable = null;
+            p.guest = null;
+            p.burnStartTime = null;
+            StaffStash.savePipes(pipes);
+          }
+        }
+        if (node.tabs.length === 0) {
+          node.status = 'available';
+        }
+        StaffStash.saveFloorplan(plan);
+        openLiveSeatActionModal(nodeId);
+        renderStaffFloor();
+        showToast('✓ Tab Closed', `Tab "${closedTab.name}" settled and closed.`);
+      }
     }
 
     function orderRepackForSeat(seatLabel) {
@@ -1082,71 +1260,35 @@
       switchStaffTab('pos');
     }
 
-    function startCoalTimerForSeat(seatLabel) {
-      activeKdsTimers.unshift({
-        id: `kds-${Date.now()}`,
-        table: seatLabel,
-        mix: 'Russian Dark Leaf Craft Bowl',
-        startTime: Date.now()
-      });
-      
-      const pipes = StaffStash.getPipes();
-      const pipe = pipes.find(p => p.assignedTable && p.assignedTable.toLowerCase() === seatLabel.toLowerCase());
-      if (pipe) {
-        pipe.burnStartTime = Date.now();
-        StaffStash.savePipes(pipes);
-      }
-
-      closeSeatActionModal();
-      renderStaffSeatsGrid();
-      showToast('🔥 Coal Timer Started', `25m burn cycle active for ${seatLabel}.`);
-    }
-
-    function clearSeatTab(nodeId) {
-      const plan = StaffStash.getFloorplan();
-      const node = plan.find(n => n.id === nodeId);
-      if (node) {
-        if (node.pipeId) {
-          unassignPipeFromTable(node.pipeId);
-        }
-        node.status = 'available';
-        node.tabBal = 0;
-        node.guest = null;
-        node.coalTimer = null;
-        node.pipeId = null;
-        StaffStash.saveFloorplan(plan);
-        renderStaffSeatsGrid();
-        closeSeatActionModal();
-        showToast('✓ Session Closed', `${node.label} reset & pipe returned to stock.`);
-      }
-    }
-
     function closeSeatActionModal() {
       document.getElementById('seatActionModal').classList.add('hidden');
     }
 
     function populatePosQuickSeats() {
-      const plan = StaffStash.getFloorplan();
+      const plan = StaffStash.getFloorplan().filter(n => !n.isInfra);
       const container = document.getElementById('posQuickSeatsBar');
       if (!container) return;
       container.innerHTML = '';
 
       plan.slice(0, 8).forEach(seat => {
+        const tabs = seat.tabs || [];
+        const totalBal = tabs.reduce((sum, t) => sum + (t.balance || 0), 0);
+
         const btn = document.createElement('button');
-        const isActive = activePosTable.num === seat.label;
+        const isActive = activePosTable.num.includes(seat.label);
         btn.id = `table-btn-${seat.label}`;
         btn.className = `table-pos-btn p-2 rounded-xl text-center transition ${isActive ? 'border-2 border-brand-gold bg-amber-500/10' : 'border border-zinc-800 bg-zinc-950'}`;
-        btn.onclick = () => setPosTable(seat.label, seat.type, seat.tabBal);
+        btn.onclick = () => setPosTable(seat.label, seat.type, totalBal);
         btn.innerHTML = `
           <span class="block text-xs font-bold text-white truncate">${seat.name}</span>
-          <span class="block text-[9px] font-mono-nums ${seat.tabBal > 0 ? 'text-brand-gold font-bold' : 'text-zinc-500'}">$${(seat.tabBal || 0).toFixed(0)}</span>
+          <span class="block text-[9px] font-mono-nums ${totalBal > 0 ? 'text-brand-gold font-bold' : 'text-zinc-500'}">$${totalBal.toFixed(0)}</span>
         `;
         container.appendChild(btn);
       });
     }
 
     function populateLabDispatchSelect() {
-      const plan = StaffStash.getFloorplan();
+      const plan = StaffStash.getFloorplan().filter(n => !n.isInfra);
       const sel = document.getElementById('dispatchTableSelect');
       if (!sel) return;
       sel.innerHTML = plan.map(s => `<option value="${s.label}">${s.label} (${s.name})</option>`).join('');
@@ -1489,7 +1631,7 @@
 
     setInterval(() => {
       if (currentStaffTab === 'kds') renderKdsQueue();
-      if (currentStaffTab === 'seating') renderStaffSeatsGrid();
+      if (currentStaffTab === 'seating') renderStaffFloor();
     }, 10000);
 
     window.addEventListener('DOMContentLoaded', () => {
