@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Empire Lounge — Owner Master Control Suite</title>
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              black: '#000000',
+              bg: '#05070A',
+              card: '#0D1117',
+              cardHover: '#131822',
+              surface: '#161B26',
+              border: '#1E2533',
+              borderLight: 'rgba(255, 255, 255, 0.08)'
+            },
+            brand: {
+              gold: '#E5A93C',
+              goldHover: '#D4973B',
+              slate: '#94A3B8',
+              coal: '#EF4444',
+              emerald: '#10B981',
+              infra: '#475569'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #000000;
+      color: #E2E8F0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-crest { font-family: 'Cinzel', serif; }
+    .font-mono-nums { font-family: 'JetBrains Mono', monospace; }
+    
+    .pos-card {
+      background: #0D1117;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pos-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* 2D PERSISTENT BUILDER CANVAS */
+    .floorplan-canvas {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      background-color: #06090E;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 20px 20px;
+      border: 1.5px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .floor-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      transition: box-shadow 0.15s ease, transform 0.1s ease;
+      z-index: 10;
+    }
+    .floor-node.is-dragging {
+      opacity: 0.88;
+      z-index: 60;
+      box-shadow: 0 0 24px rgba(229, 169, 60, 0.6) !important;
+      cursor: grabbing !important;
+    }
+
+    /* Direct Side & Corner Drag-to-Resize Handles */
+    .resize-handle-right {
+      position: absolute;
+      right: -4px;
+      top: 15%;
+      bottom: 15%;
+      width: 8px;
+      cursor: ew-resize;
+      background: rgba(229, 169, 60, 0.85);
+      border-radius: 4px;
+      z-index: 25;
+      touch-action: none;
+    }
+    .resize-handle-bottom {
+      position: absolute;
+      bottom: -4px;
+      left: 15%;
+      right: 15%;
+      height: 8px;
+      cursor: ns-resize;
+      background: rgba(229, 169, 60, 0.85);
+      border-radius: 4px;
+      z-index: 25;
+      touch-action: none;
+    }
+    .resize-handle-corner {
+      position: absolute;
+      right: -4px;
+      bottom: -4px;
+      width: 11px;
+      height: 11px;
+      cursor: nwse-resize;
+      background: #E5A93C;
+      border-radius: 50%;
+      border: 1.5px solid #000;
+      box-shadow: 0 0 6px rgba(0,0,0,0.8);
+      z-index: 30;
+      touch-action: none;
+    }
+
+    .infra-landmark {
+      background: rgba(30, 41, 59, 0.6) !important;
+      border: 1.5px dashed rgba(148, 163, 184, 0.4) !important;
+      color: #94A3B8 !important;
+      z-index: 5;
+    }
+
+    .palette-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: 6px 8px;
+      background: #090D13;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      text-align: left;
+      transition: all 0.12s ease;
+      cursor: grab;
+    }
+    .palette-btn:hover {
+      background: #131822;
+      border-color: rgba(229, 169, 60, 0.4);
+      color: #FFFFFF;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start pb-20 text-slate-200 bg-black">
+
+  <!-- ==================== 1. OWNER TOP BAR ==================== -->
+  <header class="w-full max-w-2xl bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-4 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-full bg-zinc-950 border border-brand-gold/40 flex items-center justify-center p-1 shadow-md">
+        <i data-lucide="crown" class="w-5 h-5 text-brand-gold"></i>
+      </div>
+
+      <div>
+        <div class="flex items-center gap-1.5">
+          <h1 class="font-crest font-bold text-xs tracking-wider text-white">OWNER MASTER CONTROL</h1>
+          <span class="text-[9px] bg-amber-950 text-brand-gold font-mono px-1.5 py-0.2 rounded border border-amber-800/50 font-bold">LOCKED SUITE</span>
+        </div>
+        <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Floor Architect, Tax Rates, Pipe Fleet &amp; Stock</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Switch to Staff Portal Button -->
+    <div class="flex items-center gap-1.5">
+      <a href="staff.html" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition">
+        <i data-lucide="users" class="w-3 h-3 text-brand-gold"></i>
+        <span>Staff View</span>
+      </a>
+      <button onclick="lockOwnerPortal()" class="bg-red-950 hover:bg-red-900 border border-red-800/60 text-red-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition">
+        <i data-lucide="lock" class="w-3 h-3"></i>
+        <span>Lock</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== 2. OWNER MODULES ==================== -->
+  <main id="ownerMainApp" class="w-full max-w-2xl px-3.5 pt-3 flex flex-col gap-3.5">
+    
+    <!-- Navigation Tabs for Owner Controls -->
+    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
+      <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[11px]">
+        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+        <span>Floor Architect</span>
+      </button>
+      <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Tax Rates ⚙️</span>
+      </button>
+      <button onclick="switchOwnerTab('pipes')" id="owner-tab-pipes" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Pipe Fleet</span>
+      </button>
+      <button onclick="switchOwnerTab('stash')" id="owner-tab-stash" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+        <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Inventory</span>
+      </button>
+    </div>
+
+    <!-- MODULE 1: FLOORPLAN BUILDER & ARCHITECT (OWNER ONLY) -->
+    <div id="owner-view-builder" class="owner-panel flex flex-col gap-3">
+      <div class="pos-card rounded-2xl p-3">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <div>
+            <h2 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-gold"></i>
+              Lounge Layout Architect &amp; Dynamic Zones
+            </h2>
+            <p class="text-[10px] text-zinc-400">Drag to move • Grab edges to resize width/height • Auto-persisted</p>
+          </div>
+
+          <button onclick="openCreateZoneModal()" class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-lg text-[10px] font-bold flex items-center gap-1">
+            <i data-lucide="plus" class="w-3 h-3"></i> Zone
+          </button>
+        </div>
+
+        <!-- Zone Tabs Selector -->
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 mb-2" id="ownerZoneTabsContainer">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Two Column Architect Layout: Left Palette + Right 2D Canvas -->
+        <div class="flex gap-2.5 items-stretch">
+          
+          <!-- LEFT PALETTE -->
+          <aside class="w-36 flex-shrink-0 flex flex-col gap-2 p-2 bg-black rounded-xl border border-zinc-800/80 overflow-y-auto max-h-[440px] no-scrollbar text-xs">
+            <div>
+              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🛋️ Seats / Sofas</span>
+              <div class="space-y-1">
+                <button onclick="addFloorElement('bar-1p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'bar-1p')" class="palette-btn">
+                  <i data-lucide="wine" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">1-Top Bar</span>
+                </button>
+                <button onclick="addFloorElement('table-2p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-2p')" class="palette-btn">
+                  <i data-lucide="coffee" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
+                  <span class="truncate">2-Top Cozy</span>
+                </button>
+                <button onclick="addFloorElement('table-4p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-4p')" class="palette-btn">
+                  <i data-lucide="layers" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">4-Top Table</span>
+                </button>
+                <button onclick="addFloorElement('table-6p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'table-6p')" class="palette-btn">
+                  <i data-lucide="users" class="w-3 h-3 text-blue-400 flex-shrink-0"></i>
+                  <span class="truncate">6-Top Sofa</span>
+                </button>
+                <button onclick="addFloorElement('booth-8p')" draggable="true" ondragstart="handlePaletteDragStart(event, 'booth-8p')" class="palette-btn">
+                  <i data-lucide="crown" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">8-Top VIP Couch</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1.5 border-t border-zinc-850">
+              <span class="text-[9px] uppercase font-bold text-zinc-400 block mb-1">🏛️ Landmarks</span>
+              <div class="space-y-1">
+                <button onclick="addFloorElement('infra-bar')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-bar')" class="palette-btn text-slate-300">
+                  <i data-lucide="wine" class="w-3 h-3 text-slate-400 flex-shrink-0"></i>
+                  <span class="truncate">Bar Counter</span>
+                </button>
+                <button onclick="addFloorElement('infra-dj')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-dj')" class="palette-btn text-slate-300">
+                  <i data-lucide="music" class="w-3 h-3 text-purple-400 flex-shrink-0"></i>
+                  <span class="truncate">DJ Stage</span>
+                </button>
+                <button onclick="addFloorElement('infra-host')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-host')" class="palette-btn text-slate-300">
+                  <i data-lucide="log-in" class="w-3 h-3 text-emerald-400 flex-shrink-0"></i>
+                  <span class="truncate">Host Entrance</span>
+                </button>
+                <button onclick="addFloorElement('infra-tea')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-tea')" class="palette-btn text-slate-300">
+                  <i data-lucide="flame" class="w-3 h-3 text-brand-gold flex-shrink-0"></i>
+                  <span class="truncate">Samovar Bar</span>
+                </button>
+                <button onclick="addFloorElement('infra-wall')" draggable="true" ondragstart="handlePaletteDragStart(event, 'infra-wall')" class="palette-btn text-slate-300">
+                  <i data-lucide="columns-2" class="w-3 h-3 text-slate-400 flex-shrink-0"></i>
+                  <span class="truncate">Divider Wall</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1.5 border-t border-zinc-850 space-y-1">
+              <button onclick="loadEmpirePresetFloorplan()" class="w-full text-center py-1 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-gold border border-brand-gold/30 rounded-lg text-[9px] font-bold">
+                Empire Preset
+              </button>
+              <button onclick="clearToBlankCanvas()" class="w-full text-center py-1 bg-zinc-900 hover:bg-red-950 text-zinc-500 hover:text-red-300 border border-zinc-800 rounded-lg text-[9px] font-bold">
+                Clear Blank
+              </button>
+            </div>
+          </aside>
+
+          <!-- RIGHT CANVAS -->
+          <div class="flex-1 min-w-0 flex flex-col">
+            <div 
+              id="ownerFloorCanvas" 
+              class="floorplan-canvas"
+              ondragover="handleCanvasDragOver(event)"
+              ondrop="handleCanvasDrop(event)"
+              onpointermove="handleCanvasPointerMove(event)"
+              onpointerup="handleCanvasPointerUp(event)"
+            >
+              <!-- Injected via JS -->
+            </div>
+
+            <div class="flex items-center justify-between mt-1.5 text-[9px] text-zinc-500 font-mono">
+              <span id="activeZoneWatermark">Zone: All Space</span>
+              <span id="ownerFloorCountLabel">0 Active Elements</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 2: TAX RATES & SURCHARGES (OWNER ONLY) -->
+    <div id="owner-view-tax" class="owner-panel hidden flex flex-col gap-3">
+      <div class="pos-card rounded-2xl p-3.5">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
+              Owner Tax Rates &amp; Legal Surcharge Config
+            </h3>
+            <p class="text-[10px] text-zinc-400">Controls automatic POS &amp; Square calculation across all staff and customer devices</p>
+          </div>
+          <span class="text-[9px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-900">
+            🟢 Active &amp; Synced
+          </span>
+        </div>
+
+        <div class="space-y-3 mt-3 bg-zinc-950 p-3 rounded-xl border border-zinc-850 text-xs">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Lounge Jurisdiction / Location</label>
+            <input type="text" id="ownerLocationInput" value="Phoenix, Arizona" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Tax Display Label</label>
+              <input type="text" id="ownerTaxLabelInput" value="Phoenix Sales Tax" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-semibold focus:outline-none focus:border-brand-gold" />
+            </div>
+
+            <div>
+              <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Total Sales Tax Rate (%)</label>
+              <div class="flex items-center gap-1">
+                <input type="number" step="0.01" min="0" max="30" id="ownerTaxRateInput" value="8.60" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold font-mono focus:outline-none focus:border-brand-gold" />
+                <span class="text-xs font-bold text-zinc-400 font-mono">%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-black/60 p-2.5 rounded-lg border border-zinc-800/80 text-[11px] space-y-1">
+            <div class="flex justify-between text-zinc-400">
+              <span>Arizona State Base Rate:</span>
+              <span class="font-mono text-zinc-300">5.60%</span>
+            </div>
+            <div class="flex justify-between text-zinc-400">
+              <span>Maricopa County Rate:</span>
+              <span class="font-mono text-zinc-300">0.70%</span>
+            </div>
+            <div class="flex justify-between text-zinc-400">
+              <span>City of Phoenix Privilege Tax:</span>
+              <span class="font-mono text-zinc-300">2.30%</span>
+            </div>
+            <div class="pt-1 border-t border-zinc-800 flex justify-between font-bold text-white">
+              <span>Composite Active Rate:</span>
+              <span class="font-mono text-brand-gold" id="settingsEffectiveRate">8.60%</span>
+            </div>
+          </div>
+
+          <button onclick="saveOwnerTaxConfig()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 shadow-md active:scale-95">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Save &amp; Broadcast Tax Rate to All Tablets</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 3: HOOKAH PIPE HARDWARE FLEET (OWNER ONLY) -->
+    <div id="owner-view-pipes" class="owner-panel hidden flex flex-col gap-3">
+      <div class="pos-card rounded-2xl p-3.5">
+        <div class="flex justify-between items-center mb-2.5">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Hookah Pipe Hardware Fleet</h3>
+            <p class="text-[10px] text-zinc-400">Manage lounge stems, Russian Phunnels, HMDs &amp; serial tags</p>
+          </div>
+          <button onclick="openAddPipeModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Add Pipe</span>
+          </button>
+        </div>
+
+        <div class="space-y-2" id="ownerPipesList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 4: TOBACCO INVENTORY & SPREADSHEET IMPORTER (OWNER) -->
+    <div id="owner-view-stash" class="owner-panel hidden flex flex-col gap-3">
+      <div class="pos-card rounded-2xl p-3.5">
+        <div class="flex justify-between items-center mb-2.5">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Master Lounge Stash</h3>
+            <p class="text-[10px] text-zinc-400">Grams, Tins &amp; Excel Distributor Sync</p>
+          </div>
+          <button onclick="openSpreadsheetModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1">
+            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+            <span>Import Excel</span>
+          </button>
+        </div>
+
+        <div class="space-y-2" id="ownerStashList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== OWNER PIN MODAL ==================== -->
+  <div id="ownerPinModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-brand-gold/40 rounded-2xl max-w-xs w-full p-5 shadow-2xl text-center">
+      <div class="w-12 h-12 rounded-full bg-amber-500/10 text-brand-gold flex items-center justify-center mx-auto mb-2.5">
+        <i data-lucide="crown" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Owner Master Suite</h3>
+      <p class="text-[11px] text-zinc-400 mb-3.5">Enter Owner Master Passcode (Default: 6010)</p>
+
+      <input type="password" id="ownerPinInput" maxlength="4" placeholder="••••" class="w-36 mx-auto bg-black border border-zinc-700 rounded-xl px-3 py-2 text-center text-xl font-bold text-white tracking-widest focus:outline-none focus:border-brand-gold mb-3.5" />
+
+      <button onclick="verifyOwnerPin()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 rounded-xl shadow-lg transition active:scale-95">
+        Unlock Owner Controls
+      </button>
+
+      <a href="staff.html" class="block text-center text-[10px] text-zinc-500 hover:text-zinc-300 mt-3 font-semibold">
+        ← Back to Staff Operations
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== CREATE ZONE MODAL ==================== -->
+  <div id="createZoneModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-xs w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="map" class="w-4 h-4 text-brand-gold"></i>
+          Add Custom Floor Zone
+        </h3>
+        <button onclick="closeCreateZoneModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="my-3 space-y-2 text-xs">
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Name</label>
+          <input type="text" id="newZoneNameInput" placeholder="e.g. Outdoor Patio, Mezzanine" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone Icon</label>
+          <select id="newZoneIconSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
+            <option value="sun">🌿 Outdoor / Patio (Sun)</option>
+            <option value="layers">🛋️ Indoor Main Floor (Layers)</option>
+            <option value="crown">👑 VIP Velvet Section (Crown)</option>
+            <option value="wine">🍸 High Bar Counter (Wine)</option>
+            <option value="sparkles">✨ Private Cigar Lounge (Sparkles)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2 border-t border-zinc-800">
+        <button onclick="saveNewCustomZone()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs">
+          Create Zone ✓
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EDIT NODE MODAL ==================== -->
+  <div id="ownerEditNodeModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="ownerModalTitle">Edit Element</h3>
+        <button onclick="closeOwnerEditModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+      <div id="ownerModalContent" class="my-3 space-y-2.5 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-zinc-900 border border-zinc-700 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 text-xs font-semibold">
+    <span id="toastIcon">✨</span>
+    <span id="toastMsg">Action updated</span>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const STOKED_MASTER_INVENTORY = [
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' }
+    ];
+
+    const DEFAULT_TAX_CONFIG = {
+      location: 'Phoenix, Arizona',
+      primaryName: 'Phoenix Sales Tax',
+      primaryRate: 8.60
+    };
+
+    const DEFAULT_ZONES = [
+      { id: 'all', name: 'All Zones', icon: 'layout-grid' },
+      { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
+      { id: 'bar', name: 'Main Bar', icon: 'wine' },
+      { id: 'vip', name: 'VIP Lounge', icon: 'crown' },
+      { id: 'patio', name: 'Outdoor Patio', icon: 'sun' }
+    ];
+
+    const DEFAULT_PIPES_FLEET = [
+      { id: 'pipe-01', tag: 'P#01', brand: 'Alpha Hookah', model: 'Model X (Obsidian Gold)', bowl: 'Russian Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available' },
+      { id: 'pipe-02', tag: 'P#02', brand: 'Maklaud', model: 'Dzen (Brass Dragon)', bowl: 'Alpaca Mini Rook (18g)', hmd: 'Provost HMD', hose: 'Black Soft-Touch', status: 'available' },
+      { id: 'pipe-03', tag: 'P#03', brand: 'MattPear', model: 'Simple M (Black Edition)', bowl: 'Oblako Mono (20g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'available' },
+      { id: 'pipe-04', tag: 'P#04', brand: 'Wookah', model: 'Oak Edition (Crystal Base)', bowl: 'Solaris Classic (22g)', hmd: 'Lotus III Heat', hose: 'Brown Leather', status: 'occupied', assignedTable: 'Table 6 (6-Top)', guest: 'VIP-409' },
+      { id: 'pipe-05', tag: 'P#05', brand: 'Hoob', model: 'Apex Gold', bowl: 'Russian Killer Bowl (25g)', hmd: 'Provost HMD', hose: 'Gold Tip Silicone', status: 'occupied', assignedTable: 'VIP Booth 1 (8P)', guest: 'VIP-310' },
+      { id: 'pipe-06', tag: 'P#06', brand: 'DSH', model: 'Heavy Stainless Steel', bowl: 'Alpaca Rook (20g)', hmd: 'Kaloud Lotus III', hose: 'Black Silicone', status: 'available' },
+      { id: 'pipe-07', tag: 'P#07', brand: 'Alpha Hookah', model: 'Artist Bronze Edition', bowl: 'Oblako Phunnel (22g)', hmd: 'Kaloud Lotus III', hose: 'Ice Tip Silicone', status: 'occupied', assignedTable: 'Bar Stool 3', guest: 'VIP-102' }
+    ];
+
+    const EMPIRE_FULL_PRESET = [
+      { id: 'infra-main-bar', name: 'MAIN BAR', label: 'Main Bar Counter', zone: 'bar', type: 'infra-bar', isInfra: true, icon: 'wine', x: 4, y: 4, w: 180, h: 28, shape: 'rect', status: 'infra' },
+      { id: 'infra-dj-stage', name: 'DJ STAGE', label: 'DJ Stage & Sound', zone: 'indoor', type: 'infra-dj', isInfra: true, icon: 'music', x: 74, y: 4, w: 90, h: 36, shape: 'rect', status: 'infra' },
+      { id: 'infra-entrance', name: 'ENTRANCE', label: 'Host & Entrance', zone: 'indoor', type: 'infra-host', isInfra: true, icon: 'log-in', x: 4, y: 78, w: 90, h: 32, shape: 'rect', status: 'infra' },
+      { id: 'infra-tea-bar', name: 'SAMOVAR TEA', label: 'Samovar Station', zone: 'indoor', type: 'infra-tea', isInfra: true, icon: 'flame', x: 72, y: 78, w: 92, h: 32, shape: 'rect', status: 'infra' },
+
+      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 6, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 18, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 30, y: 16, w: 38, h: 38, shape: 'circle', status: 'occupied', tabBal: 38.00, guest: 'VIP-102', pipeId: 'pipe-07' },
+      { id: 'bar-4', name: 'B4', label: 'Bar Stool 4', zone: 'bar', type: 'bar-1p', capacity: 1, icon: 'wine', x: 42, y: 16, w: 38, h: 38, shape: 'circle', status: 'available', tabBal: 0 },
+
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 22, w: 86, h: 54, shape: 'rect', status: 'occupied', tabBal: 60.00, guest: 'VIP-310', coalTimer: 21, pipeId: 'pipe-05' },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P)', zone: 'vip', type: 'booth-8p', capacity: 8, icon: 'crown', x: 74, y: 48, w: 86, h: 54, shape: 'rect', status: 'available', tabBal: 0 },
+
+      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top)', zone: 'indoor', type: 'table-2p', capacity: 2, icon: 'coffee', x: 8, y: 38, w: 48, h: 48, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 26, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top)', zone: 'indoor', type: 'table-4p', capacity: 4, icon: 'layers', x: 46, y: 38, w: 56, h: 56, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'tbl-6', name: 'T6', label: 'Table 6 (6-Top)', zone: 'indoor', type: 'table-6p', capacity: 6, icon: 'users', x: 28, y: 64, w: 72, h: 48, shape: 'rect', status: 'occupied', tabBal: 35.00, guest: 'VIP-409', coalTimer: 19, pipeId: 'pipe-04' },
+      
+      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', type: 'table-4p', capacity: 4, icon: 'sun', x: 56, y: 64, w: 52, h: 52, shape: 'circle', status: 'available', tabBal: 0 }
+    ];
+
+    class OwnerStore {
+      static getFloorplan() {
+        const local = localStorage.getItem('empire_custom_floorplan_v2');
+        if (local === null) return EMPIRE_FULL_PRESET;
+        return JSON.parse(local);
+      }
+      static saveFloorplan(plan) {
+        localStorage.setItem('empire_custom_floorplan_v2', JSON.stringify(plan));
+      }
+      static getZones() {
+        const local = localStorage.getItem('empire_custom_zones');
+        if (!local) return DEFAULT_ZONES;
+        return JSON.parse(local);
+      }
+      static saveZones(z) {
+        localStorage.setItem('empire_custom_zones', JSON.stringify(z));
+      }
+      static getTaxConfig() {
+        const local = localStorage.getItem('empire_tax_config');
+        if (!local) return DEFAULT_TAX_CONFIG;
+        return JSON.parse(local);
+      }
+      static saveTaxConfig(c) {
+        localStorage.setItem('empire_tax_config', JSON.stringify(c));
+      }
+      static getPipes() {
+        const local = localStorage.getItem('empire_pipes_fleet');
+        if (!local) return DEFAULT_PIPES_FLEET;
+        return JSON.parse(local);
+      }
+      static savePipes(p) {
+        localStorage.setItem('empire_pipes_fleet', JSON.stringify(p));
+      }
+      static getInventory() {
+        const local = localStorage.getItem('empire_stoked_stash');
+        if (!local) return STOKED_MASTER_INVENTORY;
+        return JSON.parse(local);
+      }
+      static saveInventory(i) {
+        localStorage.setItem('empire_stoked_stash', JSON.stringify(i));
+      }
+    }
+
+    let activeZoneFilter = 'all';
+    let draggingNodeId = null;
+    let resizingNodeId = null;
+    let resizeType = null;
+    let resizeStart = { x: 0, y: 0, w: 0, h: 0 };
+    let activeEditNodeId = null;
+
+    function renderIcons() { if (window.lucide) lucide.createIcons(); }
+
+    function verifyOwnerPin() {
+      const pin = document.getElementById('ownerPinInput').value;
+      if (pin === '6010' || pin === '9999' || pin === '1234') {
+        document.getElementById('ownerPinModal').classList.add('hidden');
+        renderOwnerZoneTabs();
+        renderOwnerCanvas();
+        loadTaxSettingsUI();
+        renderOwnerPipesList();
+        renderOwnerStashList();
+        showToast('👑 Owner Suite Unlocked', 'Master layout architect & tax settings active.');
+      } else {
+        showToast('❌ Invalid Passcode', 'Owner access denied (Default: 6010).');
+      }
+    }
+
+    function lockOwnerPortal() {
+      document.getElementById('ownerPinInput').value = '';
+      document.getElementById('ownerPinModal').classList.remove('hidden');
+    }
+
+    function switchOwnerTab(tabId) {
+      document.querySelectorAll('.owner-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.owner-nav-btn').forEach(b => {
+        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
+        b.classList.add('text-zinc-400');
+      });
+
+      document.getElementById(`owner-view-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`owner-tab-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
+        activeBtn.classList.remove('text-zinc-400');
+      }
+
+      if (tabId === 'builder') { renderOwnerZoneTabs(); renderOwnerCanvas(); }
+      if (tabId === 'tax') loadTaxSettingsUI();
+      if (tabId === 'pipes') renderOwnerPipesList();
+      if (tabId === 'stash') renderOwnerStashList();
+      renderIcons();
+    }
+
+    // ==================== 2D CANVAS BUILDER ====================
+    function renderOwnerZoneTabs() {
+      const container = document.getElementById('ownerZoneTabsContainer');
+      container.innerHTML = '';
+      const zones = OwnerStore.getZones();
+      const plan = OwnerStore.getFloorplan();
+
+      zones.forEach(z => {
+        const isAll = (z.id === 'all');
+        const count = isAll ? plan.filter(n => !n.isInfra).length : plan.filter(n => n.zone === z.id && !n.isInfra).length;
+        const isActive = (activeZoneFilter === z.id);
+
+        const btn = document.createElement('button');
+        btn.className = `px-2 py-1 rounded-lg text-[10px] font-bold whitespace-nowrap transition flex items-center gap-1 ${isActive ? 'bg-zinc-800 text-brand-gold border border-zinc-700' : 'bg-black text-zinc-400 hover:text-white'}`;
+        btn.onclick = () => {
+          activeZoneFilter = z.id;
+          renderOwnerZoneTabs();
+          renderOwnerCanvas();
+        };
+        btn.innerHTML = `
+          <i data-lucide="${z.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
+          <span>${z.name}</span>
+          <span class="text-[8px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-mono">${count}</span>
+        `;
+        container.appendChild(btn);
+      });
+
+      renderIcons();
+    }
+
+    function renderOwnerCanvas() {
+      const canvas = document.getElementById('ownerFloorCanvas');
+      canvas.innerHTML = '';
+      const allPlan = OwnerStore.getFloorplan();
+      const zones = OwnerStore.getZones();
+
+      const visibleNodes = (activeZoneFilter === 'all') ? allPlan : allPlan.filter(n => n.zone === activeZoneFilter);
+      const curZoneObj = zones.find(z => z.id === activeZoneFilter);
+      document.getElementById('activeZoneWatermark').textContent = `Zone: ${curZoneObj ? curZoneObj.name : 'All Space'}`;
+
+      visibleNodes.forEach(node => {
+        const div = document.createElement('div');
+        div.id = `node-${node.id}`;
+        div.className = `floor-node ${node.shape === 'circle' ? 'rounded-full' : 'rounded-xl'} border-2 border-dashed border-zinc-500 bg-zinc-900/90`;
+        div.style.left = `${node.x}%`;
+        div.style.top = `${node.y}%`;
+        div.style.width = `${node.w}px`;
+        div.style.height = `${node.h}px`;
+
+        if (node.isInfra) div.className += ' infra-landmark';
+
+        div.innerHTML = `
+          <div class="resize-handle-right" onpointerdown="handleResizeStart(event, '${node.id}', 'right')"></div>
+          <div class="resize-handle-bottom" onpointerdown="handleResizeStart(event, '${node.id}', 'bottom')"></div>
+          <div class="resize-handle-corner" onpointerdown="handleResizeStart(event, '${node.id}', 'corner')"></div>
+          <div class="flex items-center gap-0.5 pointer-events-none">
+            <i data-lucide="${node.icon || 'layers'}" class="w-3 h-3 text-brand-gold"></i>
+            ${node.capacity ? `<span class="text-[8px] font-mono text-zinc-400 font-bold">${node.capacity}P</span>` : ''}
+          </div>
+          <span class="text-[10px] font-bold text-white tracking-tight pointer-events-none truncate max-w-[90%]">${node.name}</span>
+          <span class="text-[7px] text-zinc-500 pointer-events-none font-mono">${node.w}x${node.h}</span>
+        `;
+
+        div.onpointerdown = (e) => handleNodePointerDown(e, node.id);
+        div.onclick = (e) => {
+          if (!resizingNodeId && !draggingNodeId) openOwnerEditModal(node.id);
+        };
+
+        canvas.appendChild(div);
+      });
+
+      const seatingCount = visibleNodes.filter(n => !n.isInfra).length;
+      const infraCount = visibleNodes.filter(n => n.isInfra).length;
+      document.getElementById('ownerFloorCountLabel').textContent = `${seatingCount} Seats • ${infraCount} Landmarks`;
+      renderIcons();
+    }
+
+    function handlePaletteDragStart(e, presetType) {
+      e.dataTransfer.setData('text/plain', presetType);
+      e.dataTransfer.effectAllowed = 'copy';
+    }
+
+    function handleCanvasDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleCanvasDrop(e) {
+      e.preventDefault();
+      const presetType = e.dataTransfer.getData('text/plain');
+      if (!presetType) return;
+
+      const canvas = document.getElementById('ownerFloorCanvas');
+      const rect = canvas.getBoundingClientRect();
+      let dropX = ((e.clientX - rect.left) / rect.width) * 100;
+      let dropY = ((e.clientY - rect.top) / rect.height) * 100;
+
+      dropX = Math.max(2, Math.min(84, Math.round(dropX / 4) * 4));
+      dropY = Math.max(4, Math.min(82, Math.round(dropY / 4) * 4));
+
+      addFloorElement(presetType, dropX, dropY);
+    }
+
+    function handleNodePointerDown(e, nodeId) {
+      if (e.target.classList.contains('resize-handle-right') || 
+          e.target.classList.contains('resize-handle-bottom') || 
+          e.target.classList.contains('resize-handle-corner')) {
+        return;
+      }
+      e.stopPropagation();
+      draggingNodeId = nodeId;
+      const nodeEl = document.getElementById(`node-${nodeId}`);
+      if (nodeEl) nodeEl.classList.add('is-dragging');
+    }
+
+    function handleResizeStart(e, nodeId, type) {
+      e.stopPropagation();
+      e.preventDefault();
+      resizingNodeId = nodeId;
+      resizeType = type;
+
+      const plan = OwnerStore.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (node) {
+        resizeStart = {
+          x: e.clientX,
+          y: e.clientY,
+          w: node.w || 50,
+          h: node.h || 50,
+          shape: node.shape
+        };
+      }
+    }
+
+    function handleCanvasPointerMove(e) {
+      if (resizingNodeId && resizeType) {
+        const deltaX = e.clientX - resizeStart.x;
+        const deltaY = e.clientY - resizeStart.y;
+        
+        let newW = resizeStart.w;
+        let newH = resizeStart.h;
+
+        if (resizeType === 'right' || resizeType === 'corner') {
+          newW = Math.max(32, Math.min(260, Math.round((resizeStart.w + deltaX) / 4) * 4));
+        }
+        if (resizeType === 'bottom' || resizeType === 'corner') {
+          newH = Math.max(20, Math.min(220, Math.round((resizeStart.h + deltaY) / 4) * 4));
+        }
+
+        if (resizeStart.shape === 'circle') {
+          const maxDim = Math.max(newW, newH);
+          newW = maxDim;
+          newH = maxDim;
+        }
+
+        const nodeEl = document.getElementById(`node-${resizingNodeId}`);
+        if (nodeEl) {
+          nodeEl.style.width = `${newW}px`;
+          nodeEl.style.height = `${newH}px`;
+        }
+
+        const plan = OwnerStore.getFloorplan();
+        const nodeObj = plan.find(n => n.id === resizingNodeId);
+        if (nodeObj) {
+          nodeObj.w = newW;
+          nodeObj.h = newH;
+        }
+        return;
+      }
+
+      if (draggingNodeId) {
+        const canvas = document.getElementById('ownerFloorCanvas');
+        const rect = canvas.getBoundingClientRect();
+
+        let xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+        let yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+
+        xPercent = Math.max(2, Math.min(88, Math.round(xPercent / 4) * 4));
+        yPercent = Math.max(4, Math.min(84, Math.round(yPercent / 4) * 4));
+
+        const nodeEl = document.getElementById(`node-${draggingNodeId}`);
+        if (nodeEl) {
+          nodeEl.style.left = `${xPercent}%`;
+          nodeEl.style.top = `${yPercent}%`;
+        }
+
+        const plan = OwnerStore.getFloorplan();
+        const nodeObj = plan.find(n => n.id === draggingNodeId);
+        if (nodeObj) {
+          nodeObj.x = xPercent;
+          nodeObj.y = yPercent;
+        }
+      }
+    }
+
+    function handleCanvasPointerUp(e) {
+      if (resizingNodeId) {
+        const plan = OwnerStore.getFloorplan();
+        OwnerStore.saveFloorplan(plan);
+        resizingNodeId = null;
+        resizeType = null;
+        renderOwnerCanvas();
+        return;
+      }
+
+      if (draggingNodeId) {
+        const nodeEl = document.getElementById(`node-${draggingNodeId}`);
+        if (nodeEl) nodeEl.classList.remove('is-dragging');
+        const plan = OwnerStore.getFloorplan();
+        OwnerStore.saveFloorplan(plan);
+        draggingNodeId = null;
+      }
+    }
+
+    function addFloorElement(presetType, customX = 36, customY = 36) {
+      const plan = OwnerStore.getFloorplan();
+      const count = plan.filter(n => !n.isInfra).length + 1;
+      const targetZone = (activeZoneFilter === 'all') ? 'indoor' : activeZoneFilter;
+      
+      let newNode = {
+        id: `node-${Date.now()}`,
+        name: `T${count}`,
+        label: `Table ${count}`,
+        zone: targetZone,
+        type: presetType,
+        capacity: 4,
+        icon: 'layers',
+        x: customX,
+        y: customY,
+        w: 54,
+        h: 54,
+        shape: 'rect',
+        status: 'available',
+        tabBal: 0,
+        pipeId: null,
+        isInfra: false
+      };
+
+      if (presetType === 'bar-1p') {
+        newNode.name = `B${count}`;
+        newNode.label = `Bar Stool ${count}`;
+        newNode.capacity = 1;
+        newNode.icon = 'wine';
+        newNode.zone = 'bar';
+        newNode.w = 38;
+        newNode.h = 38;
+        newNode.shape = 'circle';
+      } else if (presetType === 'table-2p') {
+        newNode.name = `T${count}`;
+        newNode.label = `2-Top Round ${count}`;
+        newNode.capacity = 2;
+        newNode.icon = 'coffee';
+        newNode.w = 46;
+        newNode.h = 46;
+        newNode.shape = 'circle';
+      } else if (presetType === 'table-4p') {
+        newNode.name = `T${count}`;
+        newNode.label = `4-Top Table ${count}`;
+        newNode.capacity = 4;
+        newNode.icon = 'layers';
+        newNode.w = 56;
+        newNode.h = 56;
+        newNode.shape = 'rect';
+      } else if (presetType === 'table-6p') {
+        newNode.name = `T${count}`;
+        newNode.label = `6-Top Sofa ${count}`;
+        newNode.capacity = 6;
+        newNode.icon = 'users';
+        newNode.w = 72;
+        newNode.h = 48;
+        newNode.shape = 'rect';
+      } else if (presetType === 'booth-8p') {
+        newNode.name = `VIP ${count}`;
+        newNode.label = `8-Top VIP Couch ${count}`;
+        newNode.capacity = 8;
+        newNode.icon = 'crown';
+        newNode.zone = 'vip';
+        newNode.w = 86;
+        newNode.h = 54;
+        newNode.shape = 'rect';
+      } else if (presetType.startsWith('infra-')) {
+        newNode.isInfra = true;
+        newNode.status = 'infra';
+        if (presetType === 'infra-bar') {
+          newNode.name = 'BAR';
+          newNode.label = 'Bar Counter Structure';
+          newNode.icon = 'wine';
+          newNode.zone = 'bar';
+          newNode.w = 160;
+          newNode.h = 28;
+          newNode.shape = 'rect';
+        } else if (presetType === 'infra-dj') {
+          newNode.name = 'DJ STAGE';
+          newNode.label = 'DJ Booth & Sound';
+          newNode.icon = 'music';
+          newNode.w = 84;
+          newNode.h = 36;
+          newNode.shape = 'rect';
+        } else if (presetType === 'infra-host') {
+          newNode.name = 'ENTRANCE';
+          newNode.label = 'Host & Entrance';
+          newNode.icon = 'log-in';
+          newNode.w = 84;
+          newNode.h = 30;
+          newNode.shape = 'rect';
+        } else if (presetType === 'infra-tea') {
+          newNode.name = 'SAMOVAR';
+          newNode.label = 'Hot Tea & Samovar Bar';
+          newNode.icon = 'flame';
+          newNode.w = 84;
+          newNode.h = 30;
+          newNode.shape = 'rect';
+        } else if (presetType === 'infra-wall') {
+          newNode.name = 'DIVIDER';
+          newNode.label = 'Divider Wall';
+          newNode.icon = 'columns-2';
+          newNode.w = 120;
+          newNode.h = 16;
+          newNode.shape = 'rect';
+        }
+      }
+
+      plan.push(newNode);
+      OwnerStore.saveFloorplan(plan);
+      renderOwnerZoneTabs();
+      renderOwnerCanvas();
+      showToast('✨ Added', `${newNode.label} placed in zone "${newNode.zone}".`);
+    }
+
+    function clearToBlankCanvas() {
+      if (confirm('Clear entire layout to blank canvas?')) {
+        OwnerStore.saveFloorplan([]);
+        renderOwnerZoneTabs();
+        renderOwnerCanvas();
+        showToast('🧹 Blank Canvas', 'Floorplan cleared.');
+      }
+    }
+
+    function loadEmpirePresetFloorplan() {
+      OwnerStore.saveFloorplan(EMPIRE_FULL_PRESET);
+      renderOwnerZoneTabs();
+      renderOwnerCanvas();
+      showToast('🏛️ Loaded Preset', 'Empire full floorplan active.');
+    }
+
+    function openOwnerEditModal(nodeId) {
+      activeEditNodeId = nodeId;
+      const plan = OwnerStore.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (!node) return;
+
+      const zones = OwnerStore.getZones().filter(z => z.id !== 'all');
+      document.getElementById('ownerModalTitle').textContent = `Edit: ${node.name}`;
+
+      const content = document.getElementById('ownerModalContent');
+      content.innerHTML = `
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Display Label</label>
+            <input type="text" id="ownerNodeName" value="${node.name}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
+          </div>
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Zone</label>
+            <select id="ownerNodeZone" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-brand-gold font-bold">
+              ${zones.map(z => `<option value="${z.id}" ${node.zone === z.id ? 'selected' : ''}>${z.name}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Capacity</label>
+            <input type="number" id="ownerNodeCap" value="${node.capacity || 0}" ${node.isInfra ? 'disabled' : ''} class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
+          </div>
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Shape</label>
+            <select id="ownerNodeShape" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
+              <option value="rect" ${node.shape === 'rect' ? 'selected' : ''}>Rectangular</option>
+              <option value="circle" ${node.shape === 'circle' ? 'selected' : ''}>Round</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Width (px)</label>
+            <input type="number" id="ownerNodeW" value="${node.w}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
+          </div>
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Height (px)</label>
+            <input type="number" id="ownerNodeH" value="${node.h}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono" />
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-zinc-800">
+          <button onclick="saveOwnerNodeEdit()" class="flex-1 bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs">Save ✓</button>
+          <button onclick="deleteOwnerNode('${node.id}')" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 font-bold px-3 py-2 rounded-xl text-xs">Delete</button>
+        </div>
+      `;
+
+      document.getElementById('ownerEditNodeModal').classList.remove('hidden');
+    }
+
+    function saveOwnerNodeEdit() {
+      const plan = OwnerStore.getFloorplan();
+      const node = plan.find(n => n.id === activeEditNodeId);
+      if (node) {
+        node.name = document.getElementById('ownerNodeName').value || node.name;
+        node.zone = document.getElementById('ownerNodeZone').value || node.zone;
+        if (!node.isInfra) {
+          node.capacity = parseInt(document.getElementById('ownerNodeCap').value) || 0;
+        }
+        node.shape = document.getElementById('ownerNodeShape').value;
+        node.w = parseInt(document.getElementById('ownerNodeW').value) || node.w;
+        node.h = parseInt(document.getElementById('ownerNodeH').value) || node.h;
+        
+        OwnerStore.saveFloorplan(plan);
+        renderOwnerZoneTabs();
+        renderOwnerCanvas();
+        closeOwnerEditModal();
+        showToast('✓ Saved', `${node.name} updated.`);
+      }
+    }
+
+    function deleteOwnerNode(nodeId) {
+      let plan = OwnerStore.getFloorplan();
+      plan = plan.filter(n => n.id !== nodeId);
+      OwnerStore.saveFloorplan(plan);
+      renderOwnerZoneTabs();
+      renderOwnerCanvas();
+      closeOwnerEditModal();
+      showToast('🗑️ Deleted', 'Element removed from layout.');
+    }
+
+    function closeOwnerEditModal() { document.getElementById('ownerEditNodeModal').classList.add('hidden'); }
+
+    function openCreateZoneModal() {
+      document.getElementById('newZoneNameInput').value = '';
+      document.getElementById('createZoneModal').classList.remove('hidden');
+    }
+    function closeCreateZoneModal() { document.getElementById('createZoneModal').classList.add('hidden'); }
+    function saveNewCustomZone() {
+      const name = document.getElementById('newZoneNameInput').value.trim();
+      if (!name) return;
+      const icon = document.getElementById('newZoneIconSelect').value;
+      const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+      const zones = OwnerStore.getZones();
+      if (zones.some(z => z.id === id)) {
+        showToast('⚠️ Zone Exists', 'A zone with this name exists.');
+        return;
+      }
+
+      zones.push({ id, name, icon });
+      OwnerStore.saveZones(zones);
+      activeZoneFilter = id;
+      closeCreateZoneModal();
+      renderOwnerZoneTabs();
+      renderOwnerCanvas();
+      showToast('🏛️ Zone Added', `Zone "${name}" created.`);
+    }
+
+    // ==================== OWNER TAX MANAGER ====================
+    function loadTaxSettingsUI() {
+      const config = OwnerStore.getTaxConfig();
+      document.getElementById('ownerLocationInput').value = config.location || 'Phoenix, Arizona';
+      document.getElementById('ownerTaxLabelInput').value = config.primaryName || 'Phoenix Sales Tax';
+      document.getElementById('ownerTaxRateInput').value = (config.primaryRate || 8.60).toFixed(2);
+      document.getElementById('settingsEffectiveRate').textContent = `${(config.primaryRate || 8.60).toFixed(2)}%`;
+    }
+
+    function saveOwnerTaxConfig() {
+      const location = document.getElementById('ownerLocationInput').value || 'Phoenix, Arizona';
+      const label = document.getElementById('ownerTaxLabelInput').value || 'Sales Tax';
+      const rate = parseFloat(document.getElementById('ownerTaxRateInput').value) || 8.60;
+
+      const newConfig = {
+        location,
+        primaryName: label,
+        primaryRate: rate
+      };
+
+      OwnerStore.saveTaxConfig(newConfig);
+      document.getElementById('settingsEffectiveRate').textContent = `${rate.toFixed(2)}%`;
+      showToast('✅ Tax Saved', `${label} set to ${rate.toFixed(2)}% across all terminals.`);
+    }
+
+    // ==================== OWNER PIPE FLEET ====================
+    function renderOwnerPipesList() {
+      const container = document.getElementById('ownerPipesList');
+      container.innerHTML = '';
+      const pipes = OwnerStore.getPipes();
+
+      pipes.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between';
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-xs bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono">${p.tag}</span>
+            <div>
+              <span class="text-xs font-bold text-white block">${p.brand} — ${p.model}</span>
+              <span class="text-[10px] text-zinc-400">${p.bowl} • ${p.hmd} • ${p.hose}</span>
+            </div>
+          </div>
+
+          <span class="text-[10px] ${p.status === 'occupied' ? 'bg-red-950 text-red-300 border border-red-900' : 'bg-emerald-950 text-emerald-300 border border-emerald-900'} px-2 py-0.5 rounded font-bold">
+            ${p.status === 'occupied' ? `Assigned (${p.assignedTable || 'Table'})` : 'Available'}
+          </span>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderOwnerStashList() {
+      const container = document.getElementById('ownerStashList');
+      container.innerHTML = '';
+      const stash = OwnerStore.getInventory();
+
+      stash.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between text-xs';
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-6 rounded-full" style="background: ${item.color};"></span>
+            <div>
+              <span class="font-bold text-white block">${item.name} (${item.brand})</span>
+              <span class="text-[10px] text-zinc-400 font-mono">${item.grams}g remaining</span>
+            </div>
+          </div>
+          <span class="text-[10px] font-bold text-brand-gold bg-zinc-900 px-2 py-0.5 rounded">${item.stock.replace('_', ' ')}</span>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function showToast(title, msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastIcon').textContent = title.split(' ')[0];
+      document.getElementById('toastMsg').textContent = `${title.split(' ').slice(1).join(' ')}: ${msg}`;
+      t.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+      t.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+      }, 2400);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderIcons();
+    });
+  </script>
+</body>
+</html>
