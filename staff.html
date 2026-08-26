@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Staff POS &amp; KDS Portal</title>
+  <title>Empire Staff POS &amp; Master Mix Lab</title>
   <meta name="theme-color" content="#0B0E14" />
 
   <!-- Tailwind CSS CDN -->
@@ -41,8 +41,8 @@
       background: #0B0E14;
       color: #E2E8F0;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12), transparent 45%),
-        radial-gradient(circle at 100% 100%, rgba(229, 169, 60, 0.05), transparent 40%);
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.14), transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(229, 169, 60, 0.06), transparent 40%);
       background-attachment: fixed;
       -webkit-tap-highlight-color: transparent;
     }
@@ -56,6 +56,126 @@
     .pos-card:hover {
       border-color: rgba(168, 85, 247, 0.4);
     }
+
+    /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
+    .cylinder-wheel-container {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+      perspective: 900px;
+      touch-action: none;
+      cursor: grab;
+    }
+    .cylinder-wheel-container:active { cursor: grabbing; }
+    .cylinder-drum-viewport {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+    .cylinder-target-slot {
+      position: absolute;
+      top: 50%;
+      left: 8px;
+      right: 8px;
+      height: 44px;
+      transform: translateY(-50%);
+      background: rgba(168, 85, 247, 0.12);
+      border-top: 1.5px solid rgba(168, 85, 247, 0.6);
+      border-bottom: 1.5px solid rgba(168, 85, 247, 0.6);
+      border-radius: 12px;
+      pointer-events: none;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 0 10px rgba(168, 85, 247, 0.15);
+      z-index: 5;
+    }
+    .cylinder-drum-track {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      margin-top: -22px;
+      transform-style: preserve-3d;
+    }
+    .cylinder-item-row {
+      position: absolute;
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border: none;
+      background: transparent;
+      color: #E2E8F0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transform-origin: center center -110px;
+      transition: opacity 0.12s ease, transform 0.1s ease;
+      cursor: pointer;
+    }
+    .cylinder-item-row.active {
+      color: #FFFFFF;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    }
+    .cylinder-color-bar {
+      width: 5px;
+      height: 20px;
+      border-radius: 4px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    /* STOKED DRAGGABLE GRADIENT CONTROLLER */
+    .draggable-gradient-controller {
+      position: relative;
+      width: 100%;
+      height: 26px;
+      margin: 10px 0;
+      touch-action: none;
+      user-select: none;
+    }
+    .gradient-ribbon-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      position: absolute;
+      top: 7px;
+      left: 0;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 12px rgba(168,85,247,0.25);
+    }
+    .gradient-divider-pin {
+      position: absolute;
+      top: 0;
+      width: 22px;
+      height: 26px;
+      margin-left: -11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: ew-resize;
+      z-index: 10;
+    }
+    .divider-top-knob {
+      width: 16px;
+      height: 16px;
+      background: #FFFFFF;
+      border: 2px solid #A855F7;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      transform: translateY(-2px);
+    }
+    .divider-vertical-line {
+      width: 2px;
+      height: 100%;
+      background: #FFFFFF;
+      box-shadow: 0 0 4px rgba(0,0,0,0.8);
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-20 text-slate-200">
@@ -79,46 +199,163 @@
 
       <div>
         <div class="flex items-center gap-1.5">
-          <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE STAFF PORTAL</h1>
-          <span class="text-[9px] bg-red-950 text-red-300 font-mono px-1 py-0.2 rounded border border-red-800/40">STAFF ONLY</span>
+          <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE MASTER PORTAL</h1>
+          <span class="text-[9px] bg-purple-950 text-purple-300 font-mono px-1.5 py-0.2 rounded border border-purple-800/40">STAFF ONLY</span>
         </div>
         <div class="flex items-center gap-1 text-[11px] text-brand-gold font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Logged in: Staff #04 (Floor Leader)</span>
+          <span>Coal Master &amp; Floor POS Terminal</span>
         </div>
       </div>
     </div>
 
-    <!-- Lock / Sign Out Button -->
+    <!-- Lock Portal Button -->
     <button onclick="lockStaffPortal()" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition">
       <i data-lucide="lock" class="w-3 h-3 text-red-400"></i>
       <span>Lock</span>
     </button>
   </header>
 
-  <!-- ==================== 2. STAFF APP MODULES (POS / KDS / STASH) ==================== -->
+  <!-- ==================== 2. STAFF APP MODULES (4 DEDICATED VIEWS) ==================== -->
   <main id="staffMainApp" class="w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
     
-    <!-- Navigation Tabs -->
-    <div class="grid grid-cols-3 gap-1 p-1 bg-slate-950/90 border border-slate-800 rounded-xl text-xs font-bold">
-      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn py-2 rounded-lg bg-purple-600 text-white flex items-center justify-center gap-1.5 shadow-md">
-        <i data-lucide="tablet" class="w-3.5 h-3.5"></i>
-        <span>Server POS</span>
+    <!-- 4 Navigation Tabs -->
+    <div class="grid grid-cols-4 gap-1 p-1 bg-slate-950/90 border border-slate-800 rounded-xl text-xs font-bold">
+      <button onclick="switchStaffTab('lab')" id="staff-tab-lab" class="staff-nav-btn py-2 rounded-lg bg-purple-600 text-white flex items-center justify-center gap-1 shadow-md">
+        <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+        <span>Mix Lab</span>
       </button>
-      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn py-2 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5">
+      <button onclick="switchStaffTab('pos')" id="staff-tab-pos" class="staff-nav-btn py-2 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1">
+        <i data-lucide="tablet" class="w-3.5 h-3.5"></i>
+        <span>Floor POS</span>
+      </button>
+      <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn py-2 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1">
         <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
         <span>Coal KDS</span>
       </button>
-      <button onclick="switchStaffTab('stash')" id="staff-tab-stash" class="staff-nav-btn py-2 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1.5">
+      <button onclick="switchStaffTab('stash')" id="staff-tab-stash" class="staff-nav-btn py-2 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-1">
         <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span>Stoked Stash</span>
+        <span>Stash</span>
       </button>
     </div>
 
-    <!-- MODULE 1: SERVER FLOOR POS & SQUARE ANDROID READER -->
-    <div id="staff-view-pos" class="staff-panel flex flex-col gap-3">
+    <!-- MODULE 1: COMPLETE STOKED MIX LAB (FULL ENGINE) -->
+    <div id="staff-view-lab" class="staff-panel flex flex-col gap-3">
       
-      <!-- Table Tabs Overview -->
+      <!-- Top Lab Header with Buzz & Hardware Config -->
+      <div class="pos-card rounded-2xl p-3.5 border border-purple-500/30">
+        <div class="flex justify-between items-center mb-2">
+          <div>
+            <h2 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-accent"></i>
+              Stoked Master Lab Engine
+            </h2>
+            <p class="text-[10px] text-slate-400">Russian &amp; Tangiers Shisha Sommelier</p>
+          </div>
+          <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/50" id="labBuzzBadge">
+            7.8/10 DARK LEAF
+          </span>
+        </div>
+
+        <!-- Hardware Setup: Bowl Capacity & Pack Density -->
+        <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-800 text-xs">
+          <div>
+            <label class="text-[9px] text-slate-400 font-bold uppercase block mb-1">Bowl Model (Grams)</label>
+            <select id="labBowlSelect" onchange="handleBowlChange(this.value)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500 font-semibold">
+              <option value="22">Russian Oblako Phunnel (22g)</option>
+              <option value="18">Alpaca Mini Rook (18g)</option>
+              <option value="25">Tangiers Clay Phunnel (25g)</option>
+              <option value="35">Fruit Head Craft (35g)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-[9px] text-slate-400 font-bold uppercase block mb-1">Pack Fashion</label>
+            <select id="labPackSelect" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500 font-semibold">
+              <option value="semi-dense">Semi-Dense (Russian Burley)</option>
+              <option value="dense">Dense Pack (Tangiers Spec)</option>
+              <option value="fluff">Fluff Pack (Blonde Classic)</option>
+              <option value="overpack">Donut / Overpack</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Mix Spectrum & Draggable Gradient Controller -->
+      <div class="pos-card rounded-2xl p-3.5 border border-purple-500/20">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-xs font-bold text-white uppercase tracking-wider">Active Flavor Ratios</span>
+          <span class="text-[10px] text-brand-gold font-mono-nums font-bold" id="labTotalGramsText">22.0g Total Pack</span>
+        </div>
+
+        <!-- Draggable Gradient Controller (Photoshop Style Multi-Stop) -->
+        <div class="draggable-gradient-controller" id="draggableGradientBar">
+          <div class="gradient-ribbon-track" id="labGradientTrack"></div>
+        </div>
+
+        <!-- Portions & Gram Deduction Rows -->
+        <div class="space-y-2 mt-2" id="labPortionsContainer">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <!-- 3D Rotary Cylinder Wheel Drum (Stoked Physics) -->
+      <div class="pos-card rounded-2xl p-3 border border-purple-500/30 relative">
+        <div class="flex justify-between items-center mb-1 px-1">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
+            <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Tobacco Drum</span>
+          </div>
+          <span class="text-[10px] text-purple-300">Drag or scroll drum</span>
+        </div>
+
+        <!-- Brand Filter Tabs -->
+        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 mb-1" id="wheelBrandTabs"></div>
+
+        <!-- 3D Cylinder Viewport -->
+        <div 
+          id="rotaryWheel" 
+          class="cylinder-wheel-container"
+          onwheel="handleWheelScroll(event)"
+          ontouchstart="handleTouchStart(event)"
+          ontouchmove="handleTouchMove(event)"
+          ontouchend="handleTouchEnd(event)"
+        >
+          <div class="cylinder-drum-viewport">
+            <div class="cylinder-target-slot"></div>
+            <div class="cylinder-drum-track" id="cylinderDrumTrack"></div>
+          </div>
+        </div>
+
+        <!-- 1-Tap Add To Mix -->
+        <button onclick="confirmWheelSelection()" class="mt-2 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          <span id="wheelConfirmBtnText">+ Add to Bowl</span>
+        </button>
+      </div>
+
+      <!-- 1-Tap Dispatch Bowl to Table POS & Autonomous KDS -->
+      <div class="pos-card rounded-2xl p-3 flex items-center justify-between">
+        <div>
+          <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-bold">Target Lounge Table</span>
+          <select id="dispatchTableSelect" class="bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-xs text-brand-gold font-bold focus:outline-none">
+            <option value="6">Table #6 (VIP Lounge)</option>
+            <option value="4">Table #4 (Main Lounge)</option>
+            <option value="8">Table #8 (Patio)</option>
+            <option value="1">Table #1 (Bar)</option>
+          </select>
+        </div>
+
+        <button onclick="dispatchLabMixToTable()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-lg flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>Pack &amp; Start 25m Timer</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- MODULE 2: SERVER FLOOR POS & SQUARE ANDROID READER -->
+    <div id="staff-view-pos" class="staff-panel hidden flex flex-col gap-3">
       <div class="pos-card rounded-2xl p-3.5 border border-purple-500/30">
         <div class="flex justify-between items-center mb-2">
           <div>
@@ -126,14 +363,12 @@
             <p class="text-[10px] text-slate-400">Square Android Bluetooth Reader Connected</p>
           </div>
 
-          <!-- Square Android Reader Action Trigger -->
           <button onclick="triggerSquareAndroidReader()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-md active:scale-95">
             <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
             <span>Square Reader Tap</span>
           </button>
         </div>
 
-        <!-- Table Selector Buttons -->
         <div class="grid grid-cols-4 gap-1.5 mt-2">
           <button onclick="setPosTable(6, 'VIP Lounge', 35.00)" id="table-btn-6" class="table-pos-btn p-2 rounded-xl border-2 border-purple-500 bg-purple-500/15 text-center">
             <span class="block text-xs font-bold text-white">Table 6</span>
@@ -154,7 +389,6 @@
         </div>
       </div>
 
-      <!-- Quick Floor Order Additions -->
       <div class="pos-card rounded-2xl p-3.5">
         <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-2">
           Quick Add to <span id="posCurrentTableLabel" class="text-brand-gold">Table #6</span>
@@ -193,10 +427,9 @@
           </button>
         </div>
       </div>
-
     </div>
 
-    <!-- MODULE 2: COAL MASTER KDS & AUTONOMOUS 25-MINUTE HEAT TIMERS -->
+    <!-- MODULE 3: COAL MASTER KDS & AUTONOMOUS 25M TIMERS -->
     <div id="staff-view-kds" class="staff-panel hidden flex flex-col gap-3">
       <div class="pos-card rounded-2xl p-3.5 border border-red-500/30">
         <div class="flex justify-between items-center">
@@ -211,14 +444,11 @@
         <p class="text-[11px] text-slate-400 mt-1">Countdown automatically warns staff when coals need proactive rotation.</p>
       </div>
 
-      <div class="space-y-2.5" id="kdsTicketQueue">
-        <!-- Injected via JS -->
-      </div>
+      <div class="space-y-2.5" id="kdsTicketQueue"></div>
     </div>
 
-    <!-- MODULE 3: STOKED LOUNGE STASH SOMMELIER & EXCEL IMPORTER -->
+    <!-- MODULE 4: STOKED LOUNGE STASH SOMMELIER & EXCEL IMPORTER -->
     <div id="staff-view-stash" class="staff-panel hidden flex flex-col gap-3">
-      
       <div class="pos-card rounded-2xl p-3.5 border border-brand-gold/30">
         <div class="flex justify-between items-center mb-2.5">
           <div>
@@ -229,10 +459,6 @@
             <button onclick="openSpreadsheetModal()" class="bg-brand-gold/20 hover:bg-brand-gold/30 border border-brand-gold/40 text-brand-gold text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1 transition">
               <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
               <span>Import Excel</span>
-            </button>
-            <button onclick="showToast('✨ Stash Ready', 'Add flavor form active.')" class="bg-brand-gold hover:bg-brand-goldHover text-brand-darkBg text-xs font-bold px-2.5 py-1 rounded-xl flex items-center gap-1 transition">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              <span>+ Flavor</span>
             </button>
           </div>
         </div>
@@ -253,10 +479,7 @@
         </div>
       </div>
 
-      <!-- 1-Tap Stock Toggles List -->
-      <div class="space-y-2" id="stashItemsList">
-        <!-- Injected via JS -->
-      </div>
+      <div class="space-y-2" id="stashItemsList"></div>
     </div>
 
   </main>
@@ -267,7 +490,7 @@
       <div class="w-12 h-12 rounded-full bg-amber-500/20 text-brand-gold flex items-center justify-center mx-auto mb-2.5">
         <i data-lucide="key" class="w-6 h-6"></i>
       </div>
-      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Staff POS Login</h3>
+      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Staff Master Login</h3>
       <p class="text-[11px] text-slate-400 mb-3.5">Enter 4-digit staff passcode (Default: 1234)</p>
 
       <input type="password" id="staffPinInput" maxlength="4" placeholder="••••" class="w-36 mx-auto bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-center text-xl font-bold text-white tracking-widest focus:outline-none focus:border-brand-gold mb-3.5" />
@@ -307,22 +530,22 @@
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- ==================== JAVASCRIPT & STOKED ENGINE ==================== -->
   <script>
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze' },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze' },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
     ];
 
     class StaffStash {
@@ -339,6 +562,17 @@
         localStorage.setItem('empire_stoked_stash', JSON.stringify(items));
       }
 
+      static deductPortion(flavorId, grams) {
+        const items = this.getInventory();
+        const item = items.find(i => i.id === flavorId);
+        if (item) {
+          item.grams = Math.max(0, item.grams - grams);
+          if (item.grams <= 20) item.stock = 'low_stock';
+          if (item.grams === 0) item.stock = 'out_of_stock';
+          this.saveInventory(items);
+        }
+      }
+
       static toggleStockStatus(id) {
         const items = this.getInventory();
         const item = items.find(i => i.id === id);
@@ -352,10 +586,27 @@
       }
     }
 
+    // Mix Lab State
+    let labBowlCapacity = 22; // 22g standard Russian phunnel
+    let labPortions = [
+      { id: 'mh-pinkman', percent: 70 },
+      { id: 'tan-cane-mint', percent: 30 }
+    ];
+
+    // Rotary Wheel State
+    let selectedBrandFilter = 'all';
+    let filteredWheelItems = [];
+    let wheelSelectedIndex = 0;
+    let touchStartY = null;
+    let touchAccumulator = 0;
+
+    // Floor POS State
     let activePosTable = { num: 6, name: 'VIP Lounge', balance: 35.00 };
-    let currentStaffTab = 'pos';
+    let currentStaffTab = 'lab';
+
+    // KDS Timers
     let activeKdsTimers = [
-      { id: 'kds-1', table: 6, mix: 'MustHave: Pinkman + Tangiers: Cane Mint', startTime: Date.now() - (19 * 60 * 1000) }
+      { id: 'kds-1', table: 6, mix: 'MustHave: Pinkman (70%) + Tangiers: Cane Mint (30%)', startTime: Date.now() - (19 * 60 * 1000) }
     ];
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
@@ -364,7 +615,9 @@
       const pin = document.getElementById('staffPinInput').value;
       if (pin === '1234' || pin === '6010' || pin === '0000') {
         document.getElementById('staffPinModal').classList.add('hidden');
-        showToast('🔓 Staff Mode Unlocked', 'Welcome Staff #04.');
+        initRotaryWheel();
+        renderMixLab();
+        showToast('🔓 Staff Master Unlocked', 'Welcome Coal Master / Floor Server.');
       } else {
         showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
       }
@@ -390,11 +643,269 @@
         activeBtn.classList.remove('text-slate-400');
       }
 
+      if (tabId === 'lab') { initRotaryWheel(); renderMixLab(); }
       if (tabId === 'kds') renderKdsQueue();
       if (tabId === 'stash') renderStashInventory();
       renderIcons();
     }
 
+    // ==================== STOKED MIX LAB ENGINE ====================
+    function handleBowlChange(cap) {
+      labBowlCapacity = parseInt(cap, 10);
+      renderMixLab();
+    }
+
+    function initRotaryWheel() {
+      const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'];
+      const tabsContainer = document.getElementById('wheelBrandTabs');
+      tabsContainer.innerHTML = '';
+
+      brands.forEach(b => {
+        const btn = document.createElement('button');
+        const isActive = (b === selectedBrandFilter);
+        btn.className = `text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
+        btn.textContent = b === 'all' ? 'All Brands' : b;
+        btn.onclick = () => {
+          selectedBrandFilter = b;
+          wheelSelectedIndex = 0;
+          initRotaryWheel();
+        };
+        tabsContainer.appendChild(btn);
+      });
+
+      const inventory = StaffStash.getInventory();
+      filteredWheelItems = inventory.filter(item => selectedBrandFilter === 'all' || item.brand === selectedBrandFilter);
+      renderDrumTrack();
+    }
+
+    function renderDrumTrack() {
+      const track = document.getElementById('cylinderDrumTrack');
+      track.innerHTML = '';
+
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+
+      filteredWheelItems.forEach((item, index) => {
+        const diff = index - wheelSelectedIndex;
+        const isSelected = index === wheelSelectedIndex;
+        const isVisible = Math.abs(diff) <= 3;
+        if (!isVisible) return;
+
+        const yOffset = diff * 42;
+        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
+        const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
+        const rotateX = diff * -14;
+
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
+        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
+        row.style.opacity = opacity;
+
+        row.onclick = () => {
+          if (isSelected) confirmWheelSelection();
+          else { wheelSelectedIndex = index; renderDrumTrack(); }
+        };
+
+        row.innerHTML = `
+          <div class="flex items-center min-w-0">
+            <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+            <span class="truncate">${item.name}</span>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <span class="text-[9px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+            <span class="text-[9px] text-purple-300 font-bold font-mono-nums">${item.grams}g</span>
+          </div>
+        `;
+        track.appendChild(row);
+      });
+
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (activeItem) {
+        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" (${activeItem.brand})`;
+      }
+    }
+
+    function handleWheelScroll(e) {
+      e.preventDefault();
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) { wheelSelectedIndex++; renderDrumTrack(); }
+      else if (e.deltaY < 0 && wheelSelectedIndex > 0) { wheelSelectedIndex--; renderDrumTrack(); }
+    }
+
+    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; touchAccumulator = 0; }
+    function handleTouchMove(e) {
+      if (touchStartY === null) return;
+      const currentY = e.touches[0].clientY;
+      const delta = touchStartY - currentY;
+      touchStartY = currentY;
+      touchAccumulator += delta;
+
+      const step = 28;
+      const count = filteredWheelItems.length;
+      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
+        wheelSelectedIndex++; touchAccumulator = 0; renderDrumTrack();
+      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
+        wheelSelectedIndex--; touchAccumulator = 0; renderDrumTrack();
+      }
+    }
+    function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
+
+    function confirmWheelSelection() {
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (!activeItem) return;
+
+      const existing = labPortions.find(p => p.id === activeItem.id);
+      if (existing) {
+        showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
+        return;
+      }
+
+      if (labPortions.length >= 4) {
+        labPortions[labPortions.length - 1].id = activeItem.id;
+        showToast('🔄 Replaced', `Replaced slot with ${activeItem.name}.`);
+      } else {
+        labPortions.push({ id: activeItem.id, percent: 30 });
+        const split = Math.floor(100 / labPortions.length);
+        labPortions.forEach((p, i) => {
+          p.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
+        });
+        showToast('✨ Slotted into Mix', `${activeItem.name} added to bowl.`);
+      }
+
+      renderMixLab();
+    }
+
+    function renderMixLab() {
+      const inventory = StaffStash.getInventory();
+      
+      // 1. Build Multi-Stop Gradient
+      const track = document.getElementById('labGradientTrack');
+      let gradParts = [];
+      let cum = 0;
+      let totalStrength = 0;
+
+      labPortions.forEach(p => {
+        const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
+        const col = item.color || '#A855F7';
+        const start = cum;
+        cum += p.percent;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+        totalStrength += ((item.strength || 7) * (p.percent / 100));
+      });
+      track.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+      // 2. Render Portion Cards with Grams
+      const container = document.getElementById('labPortionsContainer');
+      container.innerHTML = '';
+
+      labPortions.forEach((slot, index) => {
+        const item = inventory.find(i => i.id === slot.id) || STOKED_MASTER_INVENTORY[0];
+        const grams = ((labBowlCapacity * slot.percent) / 100).toFixed(1);
+
+        const div = document.createElement('div');
+        div.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 flex items-center justify-between gap-2';
+        div.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="w-2 h-7 rounded-full" style="background: ${item.color};"></span>
+            <div class="truncate">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-white truncate">${item.name}</span>
+                <span class="text-[9px] bg-slate-800 text-slate-300 px-1 rounded">${item.brand}</span>
+              </div>
+              <span class="text-[10px] text-slate-400 font-mono-nums">${item.grams}g left in stash</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <span class="text-xs font-bold text-brand-gold font-mono-nums">${slot.percent}%</span>
+              <span class="text-[10px] text-purple-300 block font-mono-nums font-bold">${grams}g</span>
+            </div>
+
+            <div class="flex items-center bg-slate-900 rounded-lg p-0.5 border border-slate-800">
+              <button onclick="adjustLabPercent(${index}, -5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">-</button>
+              <button onclick="adjustLabPercent(${index}, 5)" class="w-5 h-5 text-xs font-bold bg-slate-800 text-slate-300 rounded">+</button>
+            </div>
+
+            <button onclick="removeLabPortion(${index})" class="text-slate-500 hover:text-red-400 p-1">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // 3. Update Buzz Badge & Totals
+      const roundedStr = totalStrength.toFixed(1);
+      document.getElementById('labBuzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      document.getElementById('labTotalGramsText').textContent = `${labBowlCapacity}.0g Total (${labPortions.length} Flavors)`;
+      renderIcons();
+    }
+
+    function adjustLabPercent(index, delta) {
+      if (labPortions.length <= 1) return;
+      let cur = labPortions[index].percent;
+      let next = Math.max(10, Math.min(90, cur + delta));
+      if (next === cur) return;
+
+      const diff = next - cur;
+      labPortions[index].percent = next;
+      const otherCount = labPortions.length - 1;
+      const otherDelta = -(diff / otherCount);
+
+      labPortions.forEach((f, i) => {
+        if (i !== index) f.percent = Math.round(f.percent + otherDelta);
+      });
+
+      let sum = labPortions.reduce((a, b) => a + b.percent, 0);
+      if (sum !== 100) {
+        labPortions[index === 0 ? 1 : 0].percent += (100 - sum);
+      }
+      renderMixLab();
+    }
+
+    function removeLabPortion(index) {
+      if (labPortions.length <= 1) {
+        showToast('⚠️ Bowl Requirement', 'Must have at least 1 flavor.');
+        return;
+      }
+      labPortions.splice(index, 1);
+      const split = Math.floor(100 / labPortions.length);
+      labPortions.forEach((f, i) => {
+        f.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
+      });
+      renderMixLab();
+    }
+
+    function dispatchLabMixToTable() {
+      const targetTable = document.getElementById('dispatchTableSelect').value;
+      const inventory = StaffStash.getInventory();
+
+      // Deduct exact grams from stash
+      const mixDesc = labPortions.map(p => {
+        const item = inventory.find(i => i.id === p.id);
+        const grams = ((labBowlCapacity * p.percent) / 100);
+        StaffStash.deductPortion(p.id, grams);
+        return `${item ? item.name : 'Shisha'} (${p.percent}%)`;
+      }).join(' + ');
+
+      // Add to Table Tab ($35.00)
+      addItemToCurrentTable(`Master Mix (${labBowlCapacity}g Bowl)`, 35.00);
+
+      // Auto-Start Autonomous 25m Timer on KDS
+      activeKdsTimers.unshift({
+        id: `kds-${Date.now()}`,
+        table: targetTable,
+        mix: mixDesc,
+        startTime: Date.now()
+      });
+
+      showToast('🚀 Dispatched & Grams Deducted', `Bowl sent to Table #${targetTable}. 25m heat timer started!`);
+    }
+
+    // ==================== FLOOR POS & SQUARE ANDROID READER ====================
     function setPosTable(num, name, bal) {
       activePosTable = { num, name, balance: bal };
       document.querySelectorAll('.table-pos-btn').forEach(b => {
@@ -436,7 +947,7 @@
       }, 1800);
     }
 
-    // Stash Inventory
+    // ==================== STASH INVENTORY ====================
     function renderStashInventory() {
       const list = document.getElementById('stashItemsList');
       list.innerHTML = '';
@@ -465,7 +976,7 @@
                 <span class="text-xs font-bold text-white">${item.name}</span>
                 <span class="text-[9px] bg-slate-900 text-slate-400 px-1 rounded">${item.brand}</span>
               </div>
-              <span class="text-[10px] text-slate-400 font-mono-nums">${item.grams}g remaining</span>
+              <span class="text-[10px] text-slate-400 font-mono-nums">${item.grams}g remaining in tin</span>
             </div>
           </div>
 
@@ -484,7 +995,7 @@
     function handleStockToggle(id) {
       const updated = StaffStash.toggleStockStatus(id);
       renderStashInventory();
-      showToast('🔄 Synced with Menu', `${updated.name} updated to ${updated.stock.replace('_', ' ')}.`);
+      showToast('🔄 Synced with Customer Menu', `${updated.name} updated to ${updated.stock.replace('_', ' ')}.`);
     }
 
     function simulateSpreadsheetUpload() {
@@ -496,7 +1007,7 @@
     function openSpreadsheetModal() { document.getElementById('spreadsheetModal').classList.remove('hidden'); }
     function closeSpreadsheetModal() { document.getElementById('spreadsheetModal').classList.add('hidden'); }
 
-    // KDS
+    // ==================== KDS ====================
     function renderKdsQueue() {
       const queue = document.getElementById('kdsTicketQueue');
       queue.innerHTML = '';
