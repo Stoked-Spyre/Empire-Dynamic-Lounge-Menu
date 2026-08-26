@@ -304,38 +304,23 @@
         </button>
       </div>
 
-      <!-- SOMMELIER BUZZ LEVEL (1-10 SCALE) & VIP PROFILE GAUGE -->
-      <div class="bg-black/90 p-2.5 rounded-xl border border-zinc-800 space-y-2">
-        <div class="flex flex-wrap justify-between items-center gap-1.5">
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] uppercase font-bold text-zinc-400">Buzz Level:</span>
-            <span id="labBuzzBadge" class="text-xs font-mono font-extrabold px-2 py-0.5 rounded border bg-red-950/80 text-red-300 border-red-800/60 flex items-center gap-1">
-              <span id="labBuzzIcon">⚡</span>
-              <strong id="labBuzzScoreText">7.6</strong>/10
-              <span id="labBuzzCategoryText" class="uppercase font-sans font-bold text-[9px] px-1 bg-black/50 rounded">BOLD</span>
-            </span>
-          </div>
-
-          <!-- Customer Account Buzz History Match -->
-          <div id="labGuestBuzzMatchBadge" class="text-[10px] font-semibold flex items-center gap-1 px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
-            <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
+      <!-- SOMMELIER BUZZ PILL INDICATOR -->
+      <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-zinc-950/80 rounded-xl border border-zinc-800">
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] uppercase font-bold text-zinc-400">Buzz Level:</span>
+          <!-- Dynamic Clean Pill Indicator -->
+          <div id="labBuzzBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-extrabold border shadow-sm transition-all duration-300 bg-red-950/80 text-red-300 border-red-700/80">
+            <span id="labBuzzIcon">⚡</span>
+            <span id="labBuzzScoreText" class="font-mono text-xs font-black">7.6</span>
+            <span class="text-[10px] text-zinc-400 font-normal">/10</span>
+            <span class="w-1 h-1 rounded-full bg-current opacity-60"></span>
+            <span id="labBuzzCategoryText" class="text-[10px] font-sans font-extrabold tracking-wider uppercase">BOLD</span>
           </div>
         </div>
 
-        <!-- 1-10 Buzz Spectrum Bar (1-3 Mild 🍃 | 4-6 Medium ⚖️ | 7-10 Bold ⚡) -->
-        <div class="space-y-1">
-          <div class="relative w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden flex border border-zinc-800">
-            <div class="w-[30%] bg-emerald-500/70 h-full border-r border-black/40" title="1-3 Mild"></div>
-            <div class="w-[30%] bg-amber-500/70 h-full border-r border-black/40" title="4-6 Medium"></div>
-            <div class="w-[40%] bg-red-500/70 h-full" title="7-10 Bold"></div>
-            <!-- Indicator Needle / Pin -->
-            <div id="labBuzzNeedle" class="absolute top-0 bottom-0 w-2.5 bg-white border border-black shadow-[0_0_8px_rgba(255,255,255,0.9)] rounded-full transition-all duration-300 -translate-x-1/2" style="left: 76%;"></div>
-          </div>
-          <div class="flex justify-between text-[8px] font-mono font-bold px-0.5">
-            <span class="text-emerald-400">1-3 Mild 🍃</span>
-            <span class="text-amber-400">4-6 Medium ⚖️</span>
-            <span class="text-red-400">7-10 Bold ⚡</span>
-          </div>
+        <!-- Customer Account Buzz History Match Pill -->
+        <div id="labGuestBuzzMatchBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-zinc-900 border-zinc-800 text-zinc-300">
+          <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
         </div>
       </div>
 
@@ -1161,13 +1146,23 @@
 
     function getBuzzInfo(buzzRating) {
       const r = parseFloat(buzzRating) || 0;
-      if (r <= 3.4) {
+      if (r === 0) {
+        return {
+          level: '0.0',
+          category: 'BLANK',
+          range: 'Blank Bowl',
+          icon: '🏺',
+          badgeClass: 'bg-zinc-900 text-zinc-400 border-zinc-800',
+          pillColor: '#71717A',
+          desc: 'Empty Pack'
+        };
+      } else if (r <= 3.4) {
         return {
           level: r.toFixed(1),
           category: 'MILD',
           range: '1-3 Mild',
           icon: '🍃',
-          badgeClass: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80',
+          badgeClass: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80 shadow-[0_0_12px_rgba(16,185,129,0.2)]',
           pillColor: '#10B981',
           desc: 'Blonde Leaf • Light Nicotine'
         };
@@ -1177,7 +1172,7 @@
           category: 'MEDIUM',
           range: '4-6 Medium',
           icon: '⚖️',
-          badgeClass: 'bg-amber-950/90 text-amber-300 border-amber-700/80',
+          badgeClass: 'bg-amber-950/90 text-amber-300 border-amber-700/80 shadow-[0_0_12px_rgba(245,158,11,0.2)]',
           pillColor: '#F59E0B',
           desc: 'Dark Leaf • Balanced Nicotine'
         };
@@ -1187,7 +1182,7 @@
           category: 'BOLD',
           range: '7-10 Bold',
           icon: '⚡',
-          badgeClass: 'bg-red-950/90 text-red-300 border-red-700/80',
+          badgeClass: 'bg-red-950/90 text-red-300 border-red-700/80 shadow-[0_0_12px_rgba(239,68,68,0.2)]',
           pillColor: '#EF4444',
           desc: 'Raw Dark Leaf • Heavy Nicotine'
         };
@@ -1201,7 +1196,7 @@
 
       const currentMember = CustomerStash.getCurrentVipMember();
       if (!currentMember || currentMember.preferredBuzz === undefined) {
-        matchBadge.className = 'text-[10px] font-semibold flex items-center gap-1 px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-zinc-900 border border-zinc-800 text-zinc-400';
         matchText.innerHTML = `<span>Guest Profile</span>`;
         return;
       }
@@ -1211,13 +1206,13 @@
       const diff = bowlBuzz - pref;
 
       if (Math.abs(diff) <= 0.6) {
-        matchBadge.className = 'text-[10px] font-bold flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/90 border border-emerald-800 text-emerald-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-emerald-950/90 border-emerald-800 text-emerald-300';
         matchText.innerHTML = `<span>🟢 Matches Your Usual (${pref.toFixed(1)} ${prefInfo.category})</span>`;
       } else if (diff < -0.6) {
-        matchBadge.className = 'text-[10px] font-bold flex items-center gap-1 px-2 py-0.5 rounded bg-sky-950/90 border border-sky-800 text-sky-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-sky-950/90 border-sky-800 text-sky-300';
         matchText.innerHTML = `<span>🔵 Lighter than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
       } else {
-        matchBadge.className = 'text-[10px] font-bold flex items-center gap-1 px-2 py-0.5 rounded bg-red-950/90 border border-red-800 text-red-300';
+        matchBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all duration-300 bg-red-950/90 border-red-800 text-red-300';
         matchText.innerHTML = `<span>🔴 Stronger than Your Usual (You prefer ${pref.toFixed(1)} ${prefInfo.category})</span>`;
       }
     }
@@ -1235,12 +1230,14 @@
       if (activeFlavors.length === 0) {
         ribbon.style.background = '#1E2533';
         document.getElementById('activeBowlTitle').textContent = 'In Your Bowl (Blank)';
+        const buzzBadge = document.getElementById('labBuzzBadge');
+        if (buzzBadge) buzzBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold border transition-all duration-300 bg-zinc-900 text-zinc-400 border-zinc-800';
         const scoreTxt = document.getElementById('labBuzzScoreText');
         if (scoreTxt) scoreTxt.textContent = '0.0';
         const catTxt = document.getElementById('labBuzzCategoryText');
         if (catTxt) catTxt.textContent = 'EMPTY';
-        const needle = document.getElementById('labBuzzNeedle');
-        if (needle) needle.style.left = '0%';
+        const iconTxt = document.getElementById('labBuzzIcon');
+        if (iconTxt) iconTxt.textContent = '🏺';
         document.getElementById('totalPriceText').textContent = '$0.00';
         document.getElementById('taxEstimateText').textContent = `+ $0.00 (${taxConfig.primaryRate}% tax)`;
         clearBtn.classList.add('hidden');
@@ -1323,10 +1320,10 @@
       const buzzVal = parseFloat(totalStrength.toFixed(1));
       const buzzInfo = getBuzzInfo(buzzVal);
 
-      // Update Buzz badge & text
+      // Update Buzz Pill badge & text
       const buzzBadge = document.getElementById('labBuzzBadge');
       if (buzzBadge) {
-        buzzBadge.className = `text-xs font-mono font-extrabold px-2 py-0.5 rounded border ${buzzInfo.badgeClass} flex items-center gap-1`;
+        buzzBadge.className = `inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-extrabold border transition-all duration-300 ${buzzInfo.badgeClass}`;
       }
       const iconTxt = document.getElementById('labBuzzIcon');
       if (iconTxt) iconTxt.textContent = buzzInfo.icon;
@@ -1334,14 +1331,6 @@
       if (scoreTxt) scoreTxt.textContent = buzzInfo.level;
       const catTxt = document.getElementById('labBuzzCategoryText');
       if (catTxt) catTxt.textContent = buzzInfo.category;
-
-      // Update Needle Position on 1-10 bar
-      const needle = document.getElementById('labBuzzNeedle');
-      if (needle) {
-        const pct = Math.max(0, Math.min(100, (buzzVal / 10) * 100));
-        needle.style.left = `${pct}%`;
-        needle.style.background = buzzInfo.pillColor;
-      }
 
       // Update Customer Account History comparison
       updateCustomerBuzzMatch(buzzVal);
