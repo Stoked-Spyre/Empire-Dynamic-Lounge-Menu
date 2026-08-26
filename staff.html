@@ -712,6 +712,26 @@
                   </select>
                 </div>
               </div>
+
+              <!-- VIP Member & Rewards Loyalty Selector -->
+              <div class="mt-2.5 pt-2 border-t border-zinc-850 space-y-1.5">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="text-[9px] uppercase font-bold text-zinc-400 flex items-center gap-1">
+                    <i data-lucide="award" class="w-3 h-3 text-brand-gold"></i>
+                    VIP Member &amp; Stash Points
+                  </span>
+                  <span class="text-[10px] text-brand-gold font-mono font-bold" id="staffVipPointsDisplay">⭐ 750 Pts</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5 text-xs">
+                  <select id="staffVipMemberSelect" onchange="handleStaffVipChange(this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-2 py-1.5 text-xs text-white font-bold focus:outline-none">
+                    <!-- Injected via JS -->
+                  </select>
+                  <select id="staffRewardSelect" onchange="handleStaffRewardChange(this.value)" class="w-full bg-zinc-950 border border-amber-800/50 text-brand-gold rounded-xl px-2 py-1.5 text-xs font-bold focus:outline-none">
+                    <option value="">🎁 No Reward (0 pts)</option>
+                    <!-- Populated with eligible reward tiers -->
+                  </select>
+                </div>
+              </div>
             </div>
 
             <!-- Products on Current Tab (Live Shisha Bowl + Drinks) -->
@@ -729,6 +749,13 @@
                 <span>Drinks &amp; Tea Subtotal</span>
                 <span class="font-mono-nums text-white" id="rightPanelDrinksSubtotal">$0.00</span>
               </div>
+
+              <!-- VIP Reward Discount Row -->
+              <div id="rightPanelDiscountRow" class="hidden flex justify-between text-emerald-400 text-[11px] font-bold">
+                <span id="rightPanelDiscountLabel">🎁 VIP Reward Discount</span>
+                <span class="font-mono-nums" id="rightPanelDiscountAmt">-$0.00</span>
+              </div>
+
               <div class="flex justify-between text-zinc-400 text-[11px]">
                 <span id="rightPanelTaxLabel">Phoenix Sales Tax (8.60%)</span>
                 <span class="font-mono-nums text-zinc-300" id="rightPanelTaxAmt">$0.00</span>
@@ -923,6 +950,10 @@
           <span>Subtotal</span>
           <span class="font-mono-nums text-white" id="summarySubtotal">$0.00</span>
         </div>
+        <div id="summaryRewardDiscountRow" class="hidden flex justify-between text-emerald-400 text-[11px] font-bold">
+          <span id="summaryRewardDiscountLabel">🎁 VIP Reward Discount</span>
+          <span class="font-mono-nums" id="summaryRewardDiscountAmt">-$0.00</span>
+        </div>
         <div class="flex justify-between text-zinc-400 text-[11px]">
           <span id="summaryTaxLabel">Phoenix Sales Tax (8.60%)</span>
           <span class="font-mono-nums text-zinc-300" id="summaryTax">$0.00</span>
@@ -1089,6 +1120,38 @@
         if (!local) return DEFAULT_TAX_CONFIG;
         return JSON.parse(local);
       }
+      static getRewardTiers() {
+        const local = localStorage.getItem('empire_reward_tiers');
+        if (!local) {
+          const defaultTiers = [
+            { id: 'tier-250', pointsReq: 250, label: 'Free Ice Tip ($5.00 Off)', discount: 5.00, icon: '❄️', desc: 'Complimentary Frozen Ice Tip' },
+            { id: 'tier-500', pointsReq: 500, label: 'Free Samovar Teapot ($14.00 Off)', discount: 14.00, icon: '🫖', desc: 'Complimentary Samovar Teapot or Sand Coffee' },
+            { id: 'tier-750', pointsReq: 750, label: '50% Off Refill (-$12.50)', discount: 12.50, icon: '🏺', desc: '50% off shisha repack / refill' },
+            { id: 'tier-1000', pointsReq: 1000, label: 'Free Shisha Bowl (-$35.00)', discount: 35.00, icon: '✨', desc: 'Free Russian Craft or Blonde Bowl' },
+            { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
+          ];
+          localStorage.setItem('empire_reward_tiers', JSON.stringify(defaultTiers));
+          return defaultTiers;
+        }
+        return JSON.parse(local);
+      }
+      static getVipMembers() {
+        const local = localStorage.getItem('empire_vip_members');
+        if (!local) {
+          const defaultMembers = [
+            { id: 'vip-409', name: 'Alex M.', phone: '480-555-0409', points: 750, tier: 'Gold VIP', totalSpent: 750.00 },
+            { id: 'vip-310', name: 'Marcus Sterling', phone: '602-555-0310', points: 1200, tier: 'Platinum VIP', totalSpent: 1200.00 },
+            { id: 'vip-102', name: 'Elena Rostova', phone: '623-555-0102', points: 450, tier: 'Silver VIP', totalSpent: 450.00 },
+            { id: 'vip-550', name: 'Jordan Hayes', phone: '480-555-0550', points: 280, tier: 'Silver VIP', totalSpent: 280.00 }
+          ];
+          localStorage.setItem('empire_vip_members', JSON.stringify(defaultMembers));
+          return defaultMembers;
+        }
+        return JSON.parse(local);
+      }
+      static saveVipMembers(members) {
+        localStorage.setItem('empire_vip_members', JSON.stringify(members));
+      }
       static deductPortion(flavorId, grams) {
         const items = this.getInventory();
         const item = items.find(i => i.id === flavorId);
@@ -1112,6 +1175,8 @@
       { id: 'tan-cane-mint', percent: 30 }
     ];
     let currentOrderDrinks = [];
+    let selectedStaffVipMemberId = 'vip-409';
+    let selectedStaffAppliedReward = null; // { id, discount, pointsReq, label }
 
     let selectedStationType = 'house_mixes';
     let filteredWheelItems = [];
@@ -2256,18 +2321,101 @@
       }
     }
 
+    // ==================== VIP REWARDS & LOYALTY SELECTOR ====================
+    function populateStaffVipSelectors() {
+      const members = StaffStash.getVipMembers();
+      const vipSel = document.getElementById('staffVipMemberSelect');
+      if (!vipSel) return;
+
+      vipSel.innerHTML = `
+        <option value="">👤 Walk-in Guest (No VIP)</option>
+        ${members.map(m => `
+          <option value="${m.id}" ${m.id === selectedStaffVipMemberId ? 'selected' : ''}>
+            👑 ${m.name} (${m.points} Pts)
+          </option>
+        `).join('')}
+      `;
+
+      updateStaffRewardOptions();
+    }
+
+    function handleStaffVipChange(memberId) {
+      selectedStaffVipMemberId = memberId;
+      selectedStaffAppliedReward = null;
+      updateStaffRewardOptions();
+      updateDispatchSummary();
+    }
+
+    function updateStaffRewardOptions() {
+      const members = StaffStash.getVipMembers();
+      const tiers = StaffStash.getRewardTiers();
+      const rewardSel = document.getElementById('staffRewardSelect');
+      const pointsBadge = document.getElementById('staffVipPointsDisplay');
+      if (!rewardSel) return;
+
+      const member = members.find(m => m.id === selectedStaffVipMemberId);
+      if (!member) {
+        pointsBadge.textContent = '⭐ 0 Pts';
+        rewardSel.innerHTML = `<option value="">🎁 No VIP Selected</option>`;
+        rewardSel.disabled = true;
+        return;
+      }
+
+      rewardSel.disabled = false;
+      pointsBadge.textContent = `⭐ ${member.points} Pts`;
+
+      const eligibleTiers = tiers.filter(t => member.points >= t.pointsReq);
+      rewardSel.innerHTML = `
+        <option value="">🎁 No Reward (0 pts)</option>
+        ${eligibleTiers.map(t => `
+          <option value="${t.id}" ${selectedStaffAppliedReward && selectedStaffAppliedReward.id === t.id ? 'selected' : ''}>
+            ${t.icon} ${t.label} (-${t.pointsReq} Pts)
+          </option>
+        `).join('')}
+        ${eligibleTiers.length === 0 ? '<option value="" disabled>🔒 Need more points</option>' : ''}
+      `;
+    }
+
+    function handleStaffRewardChange(rewardId) {
+      if (!rewardId) {
+        selectedStaffAppliedReward = null;
+        showToast('ℹ️ Reward Cleared', 'Standard tab pricing active.');
+      } else {
+        const tiers = StaffStash.getRewardTiers();
+        const tier = tiers.find(t => t.id === rewardId);
+        if (tier) {
+          selectedStaffAppliedReward = tier;
+          showToast('🎁 Reward Applied', `Redeemed ${tier.label} (-$${tier.discount.toFixed(2)}).`);
+        }
+      }
+      updateDispatchSummary();
+    }
+
     function updateDispatchSummary() {
       const taxConfig = StaffStash.getTaxConfig();
       const hookahBasePrice = (activeOrderPricingMode === 'refill') ? 25.00 : 35.00;
       const hasHookah = labPortions.length > 0;
       const hookahSubtotal = hasHookah ? hookahBasePrice : 0.00;
       const drinksSubtotal = currentOrderDrinks.reduce((sum, d) => sum + (d.price * (d.qty || 1)), 0);
-      const subtotal = hookahSubtotal + drinksSubtotal;
-      const taxAmt = subtotal * (taxConfig.primaryRate / 100);
-      const grandTotal = subtotal + taxAmt;
+      const rawSubtotal = hookahSubtotal + drinksSubtotal;
+      
+      const discountAmt = selectedStaffAppliedReward ? Math.min(rawSubtotal, selectedStaffAppliedReward.discount) : 0.00;
+      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
+      const grandTotal = discountedSubtotal + taxAmt;
 
       document.getElementById('rightPanelHookahSubtotal').textContent = `$${hookahSubtotal.toFixed(2)}`;
       document.getElementById('rightPanelDrinksSubtotal').textContent = `$${drinksSubtotal.toFixed(2)}`;
+
+      const discRow = document.getElementById('rightPanelDiscountRow');
+      if (discountAmt > 0) {
+        discRow.classList.remove('hidden');
+        document.getElementById('rightPanelDiscountLabel').textContent = `🎁 VIP Reward (${selectedStaffAppliedReward.label.split(' ')[0]} ${selectedStaffAppliedReward.label.split(' ')[1]})`;
+        document.getElementById('rightPanelDiscountAmt').textContent = `-$${discountAmt.toFixed(2)}`;
+      } else {
+        discRow.classList.add('hidden');
+      }
+
       document.getElementById('rightPanelTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
       document.getElementById('rightPanelTaxAmt').textContent = `$${taxAmt.toFixed(2)}`;
       document.getElementById('rightPanelGrandTotal').textContent = `$${grandTotal.toFixed(2)}`;
@@ -2290,10 +2438,13 @@
       const hasHookah = labPortions.length > 0;
       const hookahPrice = hasHookah ? ((activeOrderPricingMode === 'refill') ? 25.00 : 35.00) : 0.00;
       const drinksPrice = currentOrderDrinks.reduce((sum, d) => sum + (d.price * (d.qty || 1)), 0);
-      const subtotal = hookahPrice + drinksPrice;
-      const taxAmt = subtotal * (taxConfig.primaryRate / 100);
-      const grandTotal = subtotal + taxAmt;
+      const rawSubtotal = hookahPrice + drinksPrice;
+      const discountAmt = selectedStaffAppliedReward ? Math.min(rawSubtotal, selectedStaffAppliedReward.discount) : 0.00;
+      const finalSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = finalSubtotal * (taxConfig.primaryRate / 100);
+      const grandTotal = finalSubtotal + taxAmt;
 
+      // Deduct tobacco portions
       const mixDesc = labPortions.map(p => {
         const item = inventory.find(i => i.id === p.id);
         const grams = ((labBowlCapacity * p.percent) / 100);
@@ -2304,6 +2455,23 @@
       const ticketNumber = Math.floor(1000 + Math.random() * 9000);
       const ticketId = `EMP-${ticketNumber}`;
 
+      // Update Member Points & Balances
+      let memberName = 'Guest';
+      if (selectedStaffVipMemberId) {
+        const members = StaffStash.getVipMembers();
+        const member = members.find(m => m.id === selectedStaffVipMemberId);
+        if (member) {
+          memberName = member.name;
+          if (selectedStaffAppliedReward) {
+            member.points = Math.max(0, member.points - selectedStaffAppliedReward.pointsReq);
+          }
+          const earnedPts = Math.round(finalSubtotal * 10);
+          member.points += earnedPts;
+          member.totalSpent = (member.totalSpent || 0) + finalSubtotal;
+          StaffStash.saveVipMembers(members);
+        }
+      }
+
       // Update Floor Seat Data
       const plan = StaffStash.getFloorplan();
       const seatObj = plan.find(s => s.label.toLowerCase() === targetTable.toLowerCase() || s.name.toLowerCase() === targetTable.toLowerCase());
@@ -2313,11 +2481,12 @@
         if (!seatObj.tabs) seatObj.tabs = [];
 
         let drinkNotes = currentOrderDrinks.length > 0 ? ` + ${currentOrderDrinks.map(d => `${d.name} x${d.qty || 1}`).join(', ')}` : '';
+        let discountNote = discountAmt > 0 ? ` [VIP Reward -$${discountAmt.toFixed(2)}]` : '';
         seatObj.tabs.push({
           id: `tab-${Date.now()}`,
           ticketId: ticketId,
-          name: `Guest Tab (${activeOrderPricingMode === 'refill' ? 'Refill' : 'Hookah'}${drinkNotes ? ' + Drinks' : ''})`,
-          balance: subtotal,
+          name: `${memberName} (${activeOrderPricingMode === 'refill' ? 'Refill' : 'Hookah'}${drinkNotes ? ' + Drinks' : ''}${discountNote})`,
+          balance: finalSubtotal,
           pipeId: hasHookah ? pipeId : null,
           mix: hasHookah ? mixDesc : 'Drinks Only',
           burnStartTime: hasHookah ? Date.now() : null
@@ -2334,7 +2503,7 @@
         if (pipe) {
           pipe.status = 'occupied';
           pipe.assignedTable = targetTable;
-          pipe.guest = 'Guest';
+          pipe.guest = memberName;
           pipe.burnStartTime = Date.now();
           pipe.mix = mixDesc;
           StaffStash.savePipes(pipes);
@@ -2359,7 +2528,10 @@
         bowlCapacity: labBowlCapacity,
         portions: [...labPortions],
         drinks: [...currentOrderDrinks],
-        subtotal: subtotal,
+        rawSubtotal: rawSubtotal,
+        discountReward: selectedStaffAppliedReward,
+        discountAmt: discountAmt,
+        subtotal: finalSubtotal,
         taxRate: taxConfig.primaryRate,
         taxAmt: taxAmt,
         grandTotal: grandTotal,
@@ -2367,6 +2539,8 @@
       });
 
       currentOrderDrinks = [];
+      selectedStaffAppliedReward = null;
+      populateStaffVipSelectors();
       renderOrderDrinks();
       updateDispatchSummary();
     }
@@ -2425,7 +2599,17 @@
       }
 
       // Financials
-      document.getElementById('summarySubtotal').textContent = `$${data.subtotal.toFixed(2)}`;
+      document.getElementById('summarySubtotal').textContent = `$${data.rawSubtotal ? data.rawSubtotal.toFixed(2) : data.subtotal.toFixed(2)}`;
+      
+      const discRow = document.getElementById('summaryRewardDiscountRow');
+      if (data.discountAmt > 0 && data.discountReward) {
+        discRow.classList.remove('hidden');
+        document.getElementById('summaryRewardDiscountLabel').textContent = `🎁 VIP Reward (${data.discountReward.label.split(' ')[0]} ${data.discountReward.label.split(' ')[1]})`;
+        document.getElementById('summaryRewardDiscountAmt').textContent = `-$${data.discountAmt.toFixed(2)}`;
+      } else {
+        discRow.classList.add('hidden');
+      }
+
       document.getElementById('summaryTaxLabel').textContent = `Phoenix Sales Tax (${data.taxRate.toFixed(2)}%)`;
       document.getElementById('summaryTax').textContent = `$${data.taxAmt.toFixed(2)}`;
       document.getElementById('summaryGrandTotal').textContent = `$${data.grandTotal.toFixed(2)}`;
@@ -2570,6 +2754,7 @@
       renderStaffFloor();
       populateLabDispatchSelect();
       populatePipeFleetDropdown();
+      populateStaffVipSelectors();
       initBrandStationDial();
       renderMixLab();
       setupSpectrumDragListeners();

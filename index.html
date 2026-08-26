@@ -270,14 +270,19 @@
       </div>
     </div>
 
-    <!-- Right Controls: Coals & Seat Finder -->
+    <!-- Right Controls: Coals & VIP Rewards & Seat Finder -->
     <div class="flex items-center gap-1.5">
+      <button onclick="openRewardsLoyaltyModal()" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Points & Available Rewards">
+        <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span id="headerVipPointsBadge">⭐ 750 Pts</span>
+      </button>
+
       <button onclick="openSeatAssignModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="Assign your seat or table">
         <i data-lucide="map-pin" class="w-3 h-3 text-brand-gold"></i>
         <span id="seatBtnText">Seat</span>
       </button>
 
-      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
+      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
         <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
         <span>Coals</span>
       </button>
@@ -454,9 +459,45 @@
     </div>
   </div>
 
+  <!-- ==================== VIP REWARDS & LOYALTY MODAL ==================== -->
+  <div id="rewardsLoyaltyModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-amber-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl space-y-3">
+      <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center text-brand-gold">
+            <i data-lucide="award" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-crest font-bold text-white tracking-wider">VIP LOYALTY REWARDS</h3>
+            <p class="text-[10px] text-brand-gold font-mono" id="modalVipTierLabel">Gold VIP • Alex M.</p>
+          </div>
+        </div>
+        <button onclick="closeRewardsLoyaltyModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <!-- Current Points Balance Card -->
+      <div class="bg-black p-3 rounded-xl border border-zinc-800 text-center">
+        <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block">Available Stash Points</span>
+        <span class="text-2xl font-extrabold text-brand-gold font-mono-nums block mt-0.5" id="modalCurrentPointsDisplay">750 PTS</span>
+        <span class="text-[10px] text-emerald-400 font-semibold block mt-0.5">⚡ Earn 10 Pts per $1.00 spent</span>
+      </div>
+
+      <!-- Reward Tiers List -->
+      <div class="space-y-1.5 max-h-56 overflow-y-auto no-scrollbar pr-0.5" id="modalRewardTiersContainer">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="pt-1">
+        <button onclick="closeRewardsLoyaltyModal()" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs py-2 rounded-xl transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== END SESSION SQUARE CHECKOUT MODAL ==================== -->
   <div id="endSessionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
       <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
@@ -470,10 +511,31 @@
         <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <div class="my-3 space-y-1.5 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
+      <!-- VIP REWARDS REDEMPTION SECTION -->
+      <div class="my-2.5 bg-black p-2.5 rounded-xl border border-amber-500/30 space-y-2 text-xs">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <span class="font-bold text-white text-[11px]">Redeem VIP Points</span>
+          </div>
+          <span class="text-[10px] text-brand-gold font-mono font-bold" id="checkoutMemberPointsBadge">750 Pts Available</span>
+        </div>
+
+        <!-- Reward Tiers Selector Options -->
+        <div class="space-y-1" id="checkoutRewardsSelectorContainer">
+          <!-- Injected dynamically via JS with unlocked buttons / locked indicators -->
+        </div>
+      </div>
+
+      <div class="my-2.5 space-y-1.5 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
         <div class="flex justify-between text-zinc-300">
           <span>Active VIP Tab Subtotal</span>
           <span class="font-bold font-mono-nums" id="checkoutSubtotal">$35.00</span>
+        </div>
+
+        <div id="checkoutRewardDiscountRow" class="hidden flex justify-between text-emerald-400 font-bold">
+          <span id="checkoutRewardDiscountLabel">🎁 VIP Reward Discount</span>
+          <span class="font-mono-nums" id="checkoutRewardDiscountAmt">-$0.00</span>
         </div>
         
         <div class="flex justify-between text-zinc-400 text-[11px]">
@@ -500,7 +562,9 @@
           <button onclick="selectCheckoutTip(20)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">20%</button>
           <button onclick="selectCheckoutTip(25)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">25%</button>
         </div>
-          <button onclick="processSquarePayment()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+      </div>
+
+      <button onclick="processSquarePayment()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
         <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         <span>Pay with Square &amp; End Session</span>
       </button>
@@ -612,12 +676,26 @@
       { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C' },
       { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
     ];
-
     const DEFAULT_ZONES = [
       { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
       { id: 'bar', name: 'Main Bar', icon: 'wine' },
       { id: 'vip', name: 'VIP Lounge', icon: 'crown' },
       { id: 'patio', name: 'Outdoor Patio', icon: 'sun' }
+    ];
+
+    const DEFAULT_REWARD_TIERS = [
+      { id: 'tier-250', pointsReq: 250, label: 'Free Ice Tip ($5.00 Off)', discount: 5.00, icon: '❄️', desc: 'Complimentary Frozen Ice Tip' },
+      { id: 'tier-500', pointsReq: 500, label: 'Free Samovar Teapot ($14.00 Off)', discount: 14.00, icon: '🫖', desc: 'Complimentary Samovar Teapot or Sand Coffee' },
+      { id: 'tier-750', pointsReq: 750, label: '50% Off Refill (-$12.50)', discount: 12.50, icon: '🏺', desc: '50% off shisha repack / refill' },
+      { id: 'tier-1000', pointsReq: 1000, label: 'Free Shisha Bowl (-$35.00)', discount: 35.00, icon: '✨', desc: 'Free Russian Craft or Blonde Bowl' },
+      { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
+    ];
+
+    const DEFAULT_VIP_MEMBERS = [
+      { id: 'vip-409', name: 'Alex M.', phone: '480-555-0409', points: 750, tier: 'Gold VIP', totalSpent: 750.00 },
+      { id: 'vip-310', name: 'Marcus Sterling', phone: '602-555-0310', points: 1200, tier: 'Platinum VIP', totalSpent: 1200.00 },
+      { id: 'vip-102', name: 'Elena Rostova', phone: '623-555-0102', points: 450, tier: 'Silver VIP', totalSpent: 450.00 },
+      { id: 'vip-550', name: 'Jordan Hayes', phone: '480-555-0550', points: 280, tier: 'Silver VIP', totalSpent: 280.00 }
     ];
 
     class CustomerStash {
@@ -649,6 +727,33 @@
         }
         return JSON.parse(local);
       }
+
+      static getRewardTiers() {
+        const local = localStorage.getItem('empire_reward_tiers');
+        if (!local) {
+          localStorage.setItem('empire_reward_tiers', JSON.stringify(DEFAULT_REWARD_TIERS));
+          return DEFAULT_REWARD_TIERS;
+        }
+        return JSON.parse(local);
+      }
+
+      static getVipMembers() {
+        const local = localStorage.getItem('empire_vip_members');
+        if (!local) {
+          localStorage.setItem('empire_vip_members', JSON.stringify(DEFAULT_VIP_MEMBERS));
+          return DEFAULT_VIP_MEMBERS;
+        }
+        return JSON.parse(local);
+      }
+
+      static saveVipMembers(members) {
+        localStorage.setItem('empire_vip_members', JSON.stringify(members));
+      }
+
+      static getCurrentVipMember() {
+        const members = this.getVipMembers();
+        return members.find(m => m.id === 'vip-409') || members[0];
+      }
     }
 
     let currentVipTabId = 'VIP-409';
@@ -658,6 +763,7 @@
     let roundCount = 1;
     let tabBalance = 35.00;
     let currentSelectedTipPct = 18;
+    let selectedAppliedReward = null;
 
     let selectedStationType = 'house_mixes';
     let filteredWheelItems = [];
@@ -666,6 +772,57 @@
     let touchAccumulator = 0;
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
+
+    function updateVipPointsHeader() {
+      const member = CustomerStash.getCurrentVipMember();
+      const badge = document.getElementById('headerVipPointsBadge');
+      if (badge && member) {
+        badge.textContent = `⭐ ${member.points} Pts`;
+      }
+    }
+
+    // ==================== VIP REWARDS MODAL ====================
+    function openRewardsLoyaltyModal() {
+      const member = CustomerStash.getCurrentVipMember();
+      const tiers = CustomerStash.getRewardTiers();
+
+      document.getElementById('modalVipTierLabel').textContent = `${member.tier} • ${member.name} (${member.phone})`;
+      document.getElementById('modalCurrentPointsDisplay').textContent = `${member.points} PTS`;
+
+      const container = document.getElementById('modalRewardTiersContainer');
+      container.innerHTML = '';
+
+      tiers.forEach(tier => {
+        const isUnlocked = member.points >= tier.pointsReq;
+        const div = document.createElement('div');
+        div.className = `p-2.5 rounded-xl border flex items-center justify-between gap-2 text-xs ${isUnlocked ? 'bg-amber-950/30 border-amber-500/40 text-white' : 'bg-black/60 border-zinc-800/80 text-zinc-500'}`;
+        div.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-base">${tier.icon}</span>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold truncate ${isUnlocked ? 'text-white' : 'text-zinc-400'}">${tier.label}</span>
+                ${isUnlocked ? '<span class="text-[8px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-1 rounded">UNLOCKED</span>' : ''}
+              </div>
+              <span class="text-[10px] text-zinc-400 block">${tier.desc}</span>
+            </div>
+          </div>
+
+          <div class="text-right flex-shrink-0">
+            <span class="text-xs font-bold font-mono ${isUnlocked ? 'text-brand-gold' : 'text-zinc-500'}">${tier.pointsReq} Pts</span>
+            <span class="text-[9px] block ${isUnlocked ? 'text-emerald-400' : 'text-zinc-600'}">${isUnlocked ? 'Ready at Checkout' : `Need ${tier.pointsReq - member.points} more`}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById('rewardsLoyaltyModal').classList.remove('hidden');
+      renderIcons();
+    }
+
+    function closeRewardsLoyaltyModal() {
+      document.getElementById('rewardsLoyaltyModal').classList.add('hidden');
+    }
 
     function openSeatAssignModal() {
       document.getElementById('modalActiveSeatLabel').textContent = currentAssignedSeat === 'Floating VIP Tab' ? `👑 Floating VIP Tab #${currentVipTabId}` : `📍 ${currentAssignedSeat} (Tab #${currentVipTabId})`;
@@ -688,7 +845,6 @@
         return;
       }
 
-      // Group seats by zone
       zones.forEach(zone => {
         const zoneSeats = plan.filter(s => s.zone === zone.id || (zone.id === 'indoor' && !s.zone));
         if (zoneSeats.length === 0) return;
@@ -742,7 +898,6 @@
       }
     }
 
-    // ==================== STOKED STATION DIAL ====================
     function initBrandStationDial() {
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
@@ -900,35 +1055,6 @@
     }
     function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
 
-    function confirmWheelSelection() {
-      const activeItem = filteredWheelItems[wheelSelectedIndex];
-      if (!activeItem) return;
-
-      const isHouseMode = (selectedStationType === 'house_mixes');
-
-      if (isHouseMode) {
-        activeFlavors = [...activeItem.flavors];
-        activeMixName = activeItem.name;
-        showToast('👑 House Mix Loaded', `"${activeItem.name}" popped up into your bowl!`);
-      } else {
-        activeMixName = null;
-        if (activeFlavors.includes(activeItem.id)) {
-          showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
-          return;
-        }
-
-        if (activeFlavors.length >= 3) {
-          activeFlavors[activeFlavors.length - 1] = activeItem.id;
-          showToast('🔄 Replaced Slot', `Swapped slot with ${activeItem.name}.`);
-        } else {
-          activeFlavors.push(activeItem.id);
-          showToast('✨ Added to Bowl', `${activeItem.name} popped into mix above!`);
-        }
-      }
-
-      renderMixLab();
-    }
-
     function clearBowl() {
       activeFlavors = [];
       activeMixName = null;
@@ -936,44 +1062,32 @@
       showToast('🗑️ Bowl Cleared', 'Bowl is now blank.');
     }
 
-    // ==================== DRAGGABLE TOP SPECTRUM INTERACTIVE CONTROLLER ====================
     let activeCustomerDragHandleIndex = null;
-
     function setupCustomerSpectrumDragListeners() {
       const container = document.getElementById('spectrumDraggableArea');
       if (!container) return;
-
-      function getClientX(e) {
-        return e.touches ? e.touches[0].clientX : e.clientX;
-      }
-
+      function getClientX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
       function handleDragMove(e) {
         if (activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
         if (e.cancelable) e.preventDefault();
-
         const ribbon = document.getElementById('spectrumRibbon');
         if (!ribbon) return;
         const rect = ribbon.getBoundingClientRect();
         const clientX = getClientX(e);
         const rawPct = Math.round(((clientX - rect.left) / rect.width) * 100);
-
         let cum = 0;
         const cumPcts = activeFlavors.map(p => { cum += p.percent; return cum; });
-        
         const minBound = (activeCustomerDragHandleIndex === 0) ? 10 : (cumPcts[activeCustomerDragHandleIndex - 1] + 10);
         const maxBound = (activeCustomerDragHandleIndex === activeFlavors.length - 2) ? 90 : (cumPcts[activeCustomerDragHandleIndex + 1] - 10);
-
         const clampedPct = Math.max(minBound, Math.min(maxBound, rawPct));
         const oldCum = cumPcts[activeCustomerDragHandleIndex];
         const delta = clampedPct - oldCum;
-
         if (delta !== 0) {
           activeFlavors[activeCustomerDragHandleIndex].percent += delta;
           activeFlavors[activeCustomerDragHandleIndex + 1].percent -= delta;
           renderMixLab();
         }
       }
-
       function handleDragEnd() {
         activeCustomerDragHandleIndex = null;
         window.removeEventListener('mousemove', handleDragMove);
@@ -981,25 +1095,20 @@
         window.removeEventListener('mouseup', handleDragEnd);
         window.removeEventListener('touchend', handleDragEnd);
       }
-
       window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
         activeCustomerDragHandleIndex = handleIdx;
         window.addEventListener('mousemove', handleDragMove);
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('mouseup', handleDragEnd);
         window.addEventListener('touchend', handleDragEnd);
       };
-
       container.onmousedown = (e) => {
         if (e.target.classList.contains('spectrum-drag-thumb')) return;
         if (activeFlavors.length <= 1) return;
-
         const ribbon = document.getElementById('spectrumRibbon');
         const rect = ribbon.getBoundingClientRect();
         const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-
         let cum = 0;
         let closestIdx = 0;
         let minDiff = 999;
@@ -1012,7 +1121,6 @@
       };
     }
 
-    // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
       const taxConfig = CustomerStash.getTaxConfig();
@@ -1023,7 +1131,6 @@
       const clearBtn = document.getElementById('clearBowlBtn');
 
       if (handlesCont) handlesCont.innerHTML = '';
-
       if (activeFlavors.length === 0) {
         ribbon.style.background = '#1E2533';
         document.getElementById('activeBowlTitle').textContent = 'In Your Bowl (Blank)';
@@ -1031,113 +1138,231 @@
         document.getElementById('totalPriceText').textContent = '$0.00';
         document.getElementById('taxEstimateText').textContent = `+ $0.00 (${taxConfig.primaryRate}% tax)`;
         clearBtn.classList.add('hidden');
-
         container.innerHTML = `
           <div class="text-center py-4 text-xs text-zinc-500 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/40">
             <span class="block text-zinc-400 font-bold mb-0.5">Bowl is empty</span>
             <span>Select a <strong>👑 House Mix</strong> or spin the dial to add flavors.</span>
           </div>
         `;
-
         profileContainer.innerHTML = `<span class="text-[10px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>`;
-        renderIcons();
-        return;
+        renderIcons(); return;
       }
 
+      clearBtn.classList.remove('hidden');
+      document.getElementById('activeBowlTitle').textContent = activeMixName ? `👑 ${activeMixName}` : 'In Your Bowl Mix';
+      let gradParts = [];
+      let cum = 0;
+      let totalStrength = 0;
+      let activeProfilesSet = new Set();
+      activeFlavors.forEach(f => {
+        const item = inventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+        const col = item.color || '#E5A93C';
+        const start = cum;
+        cum += f.percent;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+        totalStrength += ((item.strength || 7) * (f.percent / 100));
+        if (item.profiles) item.profiles.forEach(p => activeProfilesSet.add(p));
+      });
+      ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+      if (handlesCont && activeFlavors.length > 1) {
+        let handleCum = 0;
+        for (let i = 0; i < activeFlavors.length - 1; i++) {
+          handleCum += activeFlavors[i].percent;
+          const thumb = document.createElement('div');
+          thumb.className = 'spectrum-drag-thumb';
+          thumb.style.left = `${handleCum}%`;
+          thumb.onmousedown = (e) => window.handleCustomerStartSpectrumDrag(e, i);
+          thumb.ontouchstart = (e) => window.handleCustomerStartSpectrumDrag(e, i);
+          handlesCont.appendChild(thumb);
+        }
+      }
+      container.innerHTML = '';
+      activeFlavors.forEach((f, idx) => {
+        const item = inventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+        const grams = ((22 * f.percent) / 100).toFixed(1);
+        const row = document.createElement('div');
+        row.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
+        row.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="w-1.5 h-6 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
+            <div class="truncate">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-white truncate">${item.name}</span>
+                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <span class="text-xs font-bold text-brand-gold font-mono-nums">${f.percent}%</span>
+              <span class="text-[9px] text-zinc-500 block font-mono-nums">${grams}g</span>
+            </div>
+            <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+      profileContainer.innerHTML = '';
+      const profileEmojis = { 'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓', 'Citrus': '🍋', 'Sweet': '🍯', 'Tropical': '🥭', 'Dessert': '🍰', 'Creamy': '🥛', 'Warm Spices': '🪵', 'Floral': '🌸', 'Orchard Fruit': '🍑', 'Beverage': '🥤', 'Tea': '🫖', 'Herbal': '🌿', 'Anise': '⭐', 'Heavy Nicotine': '⚡' };
+      activeProfilesSet.forEach(prof => {
+        const emoji = profileEmojis[prof] || '✦';
+        const span = document.createElement('span');
+        span.className = 'text-[9px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-800 flex items-center gap-1';
+        span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
+        profileContainer.appendChild(span);
+      });
+      const avgStr = totalStrength.toFixed(1);
+      document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      const isTangiers = activeFlavors.some(f => { const itm = inventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
+      const basePrice = isTangiers ? 38.00 : 35.00;
+      const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
+      const estTax = (finalPrice * (taxConfig.primaryRate / 100));
+      document.getElementById('totalPriceText').textContent = `$${finalPrice.toFixed(2)}`;
+      document.getElementById('taxEstimateText').textContent = `+ $${estTax.toFixed(2)} (${taxConfig.primaryRate}% tax)`;
+      document.getElementById('orderTypeLabel').textContent = roundCount === 1 ? '[FIRST BOWL]' : '[REFILL / REPACK -$10]';
+      renderIcons();
+    }
 
+    function confirmWheelSelection() {
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (!activeItem) return;
+      const isHouseMode = (selectedStationType === 'house_mixes');
+      if (isHouseMode) {
+        activeFlavors = activeItem.flavors.map((fid, idx) => ({ id: fid, percent: activeItem.ratios[idx] }));
+        activeMixName = activeItem.name;
+        showToast('👑 House Mix Loaded', `"${activeItem.name}" popped up into your bowl!`);
+      } else {
+        activeMixName = null;
+        const exists = activeFlavors.find(f => f.id === activeItem.id);
+        if (exists) { showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`); return; }
+        if (activeFlavors.length >= 4) {
+          activeFlavors[activeFlavors.length - 1].id = activeItem.id;
+          showToast('🔄 Replaced Slot', `Swapped slot with ${activeItem.name}.`);
+        } else {
+          activeFlavors.push({ id: activeItem.id, percent: 30 });
+          const split = Math.floor(100 / activeFlavors.length);
+          activeFlavors.forEach((p, i) => { p.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split; });
+          showToast('✨ Added to Bowl', `${activeItem.name} popped into mix above!`);
+        }
+      }
+      renderMixLab();
+    }
+
+    function removeFlavor(idx) {
+      if (activeFlavors.length <= 1) { clearBowl(); return; }
+      activeFlavors.splice(idx, 1);
+      activeMixName = null;
+      const split = Math.floor(100 / activeFlavors.length);
+      activeFlavors.forEach((p, i) => { p.percent = (i === 0) ? (100 - split * (activeFlavors.length - 1)) : split; });
+      renderMixLab();
+    }
 
     function dispatchOrder(mode) {
-      if (activeFlavors.length === 0) {
-        showToast('⚠️ Bowl is Empty', 'Please select flavors or a House Mix first.');
-        return;
-      }
+      if (activeFlavors.length === 0) { showToast('⚠️ Bowl is Empty', 'Please select flavors or a House Mix first.'); return; }
       const inventory = CustomerStash.getInventory();
       const taxConfig = CustomerStash.getTaxConfig();
       const price = parseFloat(document.getElementById('totalPriceText').textContent.replace('$', ''));
       const mixName = activeMixName || 'Custom Shisha Blend';
       const taxAmt = price * (taxConfig.primaryRate / 100);
       const grandTotal = price + taxAmt;
-      const ticketNumber = Math.floor(1000 + Math.random() * 9000);
-      const ticketId = `EMP-${ticketNumber}`;
+      const ticketId = `EMP-${Math.floor(1000 + Math.random() * 9000)}`;
       
       tabBalance += price;
       roundCount++;
 
-      const existingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
-      existingQueue.unshift({
-        id: `vip-order-${Date.now()}`,
-        tabId: currentVipTabId,
-        seat: currentAssignedSeat,
-        mix: mixName,
-        price,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
-      localStorage.setItem('empire_floating_vip_orders', JSON.stringify(existingQueue));
-
-      if (mode === 'square') {
-        openEndSessionModal();
-      } else {
-        // Show Sommelier Ticket Summary Modal to Customer
+      if (mode === 'square') { openEndSessionModal(); } 
+      else {
         document.getElementById('summaryTicketId').textContent = `TICKET #${ticketId}`;
         document.getElementById('summaryTicketTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         document.getElementById('summarySeatLabel').textContent = currentAssignedSeat;
         document.getElementById('summaryOrderType').textContent = (roundCount > 2) ? '🏺 Shisha Refill / Repack (-$10)' : '✨ Original Hookah';
         document.getElementById('summaryPipeTag').textContent = '🏺 Russian Dark Leaf Craft Hookah';
-
         const bowlContainer = document.getElementById('summaryBowlBreakdown');
         bowlContainer.innerHTML = '';
-        const slicePct = Math.round(100 / activeFlavors.length);
-        activeFlavors.forEach(fid => {
-          const item = inventory.find(i => i.id === fid) || STOKED_MASTER_INVENTORY[0];
+        activeFlavors.forEach(f => {
+          const item = inventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
           const row = document.createElement('div');
           row.className = 'flex justify-between text-zinc-300';
-          row.innerHTML = `
-            <span>• ${item.name} (${item.brand})</span>
-            <span class="text-brand-gold font-bold">${slicePct}%</span>
-          `;
+          row.innerHTML = `<span>• ${item.name} (${item.brand})</span><span class="text-brand-gold font-bold">${f.percent}%</span>`;
           bowlContainer.appendChild(row);
         });
-
         document.getElementById('summarySubtotal').textContent = `$${price.toFixed(2)}`;
         document.getElementById('summaryTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
         document.getElementById('summaryTax').textContent = `$${taxAmt.toFixed(2)}`;
         document.getElementById('summaryGrandTotal').textContent = `$${grandTotal.toFixed(2)}`;
-
         document.getElementById('ticketSummaryModal').classList.remove('hidden');
         renderIcons();
       }
     }
 
-    function closeTicketSummaryModal() {
-      document.getElementById('ticketSummaryModal').classList.add('hidden');
-      showToast('👑 VIP Ticket Dispatched', 'Staff alerted & coals are lighting.');
-      renderMixLab();
-    }
-
-    function requestCoalService() {
-      showToast('🔥 Coal Alert Dispatched', `Staff alerted for fresh coals at ${currentAssignedSeat}.`);
-    }
+    function closeTicketSummaryModal() { document.getElementById('ticketSummaryModal').classList.add('hidden'); showToast('👑 VIP Ticket Dispatched', 'Staff alerted & coals are lighting.'); renderMixLab(); }
 
     function openEndSessionModal() {
+      const member = CustomerStash.getCurrentVipMember();
+      const tiers = CustomerStash.getRewardTiers();
       const taxConfig = CustomerStash.getTaxConfig();
-      const taxAmt = tabBalance * (taxConfig.primaryRate / 100);
-
-      document.getElementById('checkoutSubtotal').textContent = `$${tabBalance.toFixed(2)}`;
-      document.getElementById('checkoutTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
-      document.getElementById('checkoutTaxAmt').textContent = `$${taxAmt.toFixed(2)}`;
-      
+      selectedAppliedReward = null;
+      document.getElementById('checkoutMemberPointsBadge').textContent = `${member.points} Pts Available`;
+      const rewardsContainer = document.getElementById('checkoutRewardsSelectorContainer');
+      rewardsContainer.innerHTML = '';
+      tiers.forEach(tier => {
+        const isEligible = member.points >= tier.pointsReq;
+        const btn = document.createElement('button');
+        btn.id = `reward-tier-btn-${tier.id}`;
+        btn.className = `w-full p-2 rounded-xl text-left flex items-center justify-between transition border ${isEligible ? 'bg-zinc-900 border-zinc-800 hover:border-brand-gold text-white' : 'bg-zinc-950 border-zinc-900 opacity-40 cursor-not-allowed text-zinc-500'}`;
+        if (isEligible) btn.onclick = () => toggleCheckoutReward(tier);
+        btn.innerHTML = `
+          <div class="flex items-center gap-1.5"><span>${tier.icon}</span><span class="font-bold text-xs">${tier.label}</span></div>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[10px] ${isEligible ? 'text-brand-gold font-bold' : 'text-zinc-500'}">-${tier.pointsReq} Pts</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isEligible ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-600'}">${isEligible ? 'REDEEM' : 'LOCKED'}</span>
+          </div>
+        `;
+        rewardsContainer.appendChild(btn);
+      });
       calculateCheckoutTotal(currentSelectedTipPct);
       document.getElementById('endSessionModal').classList.remove('hidden');
+      renderIcons();
+    }
+
+    function toggleCheckoutReward(tier) {
+      if (selectedAppliedReward && selectedAppliedReward.id === tier.id) {
+        selectedAppliedReward = null; showToast('ℹ️ Discount Removed', 'Regular tab price restored.');
+      } else {
+        selectedAppliedReward = tier; showToast('🎁 Reward Applied', `Redeemed ${tier.label} (-$${tier.discount.toFixed(2)}).`);
+      }
+      const tiers = CustomerStash.getRewardTiers();
+      tiers.forEach(t => {
+        const b = document.getElementById(`reward-tier-btn-${t.id}`);
+        if (!b) return;
+        if (selectedAppliedReward && selectedAppliedReward.id === t.id) b.className = 'w-full p-2 rounded-xl text-left flex items-center justify-between transition border bg-amber-950/60 border-brand-gold text-white shadow-md';
+        else {
+          const isEligible = CustomerStash.getCurrentVipMember().points >= t.pointsReq;
+          b.className = `w-full p-2 rounded-xl text-left flex items-center justify-between transition border ${isEligible ? 'bg-zinc-900 border-zinc-800 hover:border-brand-gold text-white' : 'bg-zinc-950 border-zinc-900 opacity-40 cursor-not-allowed text-zinc-500'}`;
+        }
+      });
+      calculateCheckoutTotal(currentSelectedTipPct);
     }
 
     function closeEndSessionModal() { document.getElementById('endSessionModal').classList.add('hidden'); }
 
     function calculateCheckoutTotal(tipPct) {
       const taxConfig = CustomerStash.getTaxConfig();
-      const taxAmt = tabBalance * (taxConfig.primaryRate / 100);
-      const tipAmt = tabBalance * (tipPct / 100);
-      const grandTotal = tabBalance + taxAmt + tipAmt;
-
+      const rawSubtotal = tabBalance;
+      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
+      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = discountedSubtotal * (tipPct / 100);
+      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+      document.getElementById('checkoutSubtotal').textContent = `$${rawSubtotal.toFixed(2)}`;
+      const discountRow = document.getElementById('checkoutRewardDiscountRow');
+      if (discountAmt > 0) {
+        discountRow.classList.remove('hidden');
+        document.getElementById('checkoutRewardDiscountLabel').textContent = `🎁 VIP Reward (${selectedAppliedReward.label.split(' ')[0]} ${selectedAppliedReward.label.split(' ')[1]})`;
+        document.getElementById('checkoutRewardDiscountAmt').textContent = `-$${discountAmt.toFixed(2)}`;
+      } else discountRow.classList.add('hidden');
+      document.getElementById('checkoutTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
+      document.getElementById('checkoutTaxAmt').textContent = `$${taxAmt.toFixed(2)}`;
       document.getElementById('checkoutGrandTotal').textContent = `$${grandTotal.toFixed(2)} (inc. $${tipAmt.toFixed(2)} tip)`;
     }
 
@@ -1149,15 +1374,28 @@
       });
       event.target.classList.add('bg-brand-gold', 'border-brand-gold', 'text-black');
       event.target.classList.remove('bg-zinc-900', 'border-zinc-800', 'text-zinc-300');
-
       calculateCheckoutTotal(pct);
     }
 
     function processSquarePayment() {
+      const member = CustomerStash.getCurrentVipMember();
+      const members = CustomerStash.getVipMembers();
+      const rawSubtotal = tabBalance;
+      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
+      const paidSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const pointsEarned = Math.round(paidSubtotal * 10);
+      if (selectedAppliedReward) member.points = Math.max(0, member.points - selectedAppliedReward.pointsReq);
+      member.points += pointsEarned;
+      member.totalSpent = (member.totalSpent || 0) + paidSubtotal;
+      const idx = members.findIndex(m => m.id === member.id);
+      if (idx !== -1) members[idx] = member;
+      CustomerStash.saveVipMembers(members);
       closeEndSessionModal();
-      showToast('🏁 Session Closed', `VIP Tab #${currentVipTabId} paid via Square Web Payments. Table reset!`);
+      showToast('🏁 VIP Tab Settled', `Square paid. +${pointsEarned} Pts earned! New balance: ${member.points} Pts.`);
+      updateVipPointsHeader();
       tabBalance = 0.00;
       roundCount = 1;
+      selectedAppliedReward = null;
       clearBowl();
     }
 
@@ -1170,13 +1408,14 @@
       setTimeout(() => {
         t.classList.remove('opacity-100', 'translate-y-0');
         t.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-      }, 2400);
+      }, 2600);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       initBrandStationDial();
       renderMixLab();
       setupCustomerSpectrumDragListeners();
+      updateVipPointsHeader();
     });
   </script>
 </body>

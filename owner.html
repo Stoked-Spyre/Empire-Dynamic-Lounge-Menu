@@ -205,22 +205,26 @@
   <main id="ownerMainApp" class="w-full max-w-2xl px-3.5 pt-3 flex flex-col gap-3.5">
     
     <!-- Navigation Tabs for Owner Controls -->
-    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
-      <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[11px]">
+    <div class="grid grid-cols-5 gap-1 p-1 bg-zinc-950 border border-zinc-850 rounded-xl text-xs font-bold">
+      <button onclick="switchOwnerTab('builder')" id="owner-tab-builder" class="owner-nav-btn py-2 rounded-lg bg-brand-gold text-black flex items-center justify-center gap-1 shadow-md font-extrabold text-[10px]">
         <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
-        <span>Floor Architect</span>
+        <span>Floor</span>
       </button>
-      <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+      <button onclick="switchOwnerTab('tax')" id="owner-tab-tax" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
         <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span>Tax Rates ⚙️</span>
+        <span>Taxes ⚙️</span>
       </button>
-      <button onclick="switchOwnerTab('pipes')" id="owner-tab-pipes" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+      <button onclick="switchOwnerTab('pipes')" id="owner-tab-pipes" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span>Pipe Fleet</span>
+        <span>Pipes</span>
       </button>
-      <button onclick="switchOwnerTab('stash')" id="owner-tab-stash" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[11px]">
+      <button onclick="switchOwnerTab('stash')" id="owner-tab-stash" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
         <i data-lucide="package" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span>Inventory</span>
+        <span>Stock</span>
+      </button>
+      <button onclick="switchOwnerTab('rewards')" id="owner-tab-rewards" class="owner-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
+        <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+        <span>Rewards</span>
       </button>
     </div>
 
@@ -440,6 +444,82 @@
       </div>
     </div>
 
+    <!-- MODULE 5: VIP LOYALTY & REWARDS ARCHITECT (OWNER) -->
+    <div id="owner-view-rewards" class="owner-panel hidden flex flex-col gap-3.5">
+      
+      <!-- Card 1: Loyalty Accrual & Configuration -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="award" class="w-4 h-4 text-brand-gold"></i>
+              Points Earn Rate &amp; VIP Accrual Rules
+            </h3>
+            <p class="text-[10px] text-zinc-400">Configure points multiplier per dollar spent across all tabs</p>
+          </div>
+          <span class="text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold px-2 py-0.5 rounded">
+            ACTIVE SYSTEM ✓
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-black p-2.5 rounded-xl border border-zinc-800">
+            <label class="text-[10px] text-zinc-400 font-bold block mb-1">Points Earned per $1.00</label>
+            <div class="flex items-center gap-1.5">
+              <input type="number" id="ownerRewardEarnRateInput" value="10" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1 text-brand-gold font-bold font-mono text-sm focus:outline-none" />
+              <span class="text-[11px] text-zinc-400">Pts</span>
+            </div>
+          </div>
+
+          <div class="bg-black p-2.5 rounded-xl border border-zinc-800">
+            <label class="text-[10px] text-zinc-400 font-bold block mb-1">New VIP Welcome Bonus</label>
+            <div class="flex items-center gap-1.5">
+              <input type="number" id="ownerRewardBonusInput" value="100" class="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2 py-1 text-white font-bold font-mono text-sm focus:outline-none" />
+              <span class="text-[11px] text-zinc-400">Pts</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="saveOwnerLoyaltyConfig()" class="w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-brand-gold"></i>
+          <span>Save Accrual Rules</span>
+        </button>
+      </div>
+
+      <!-- Card 2: Threshold Discount Tiers -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Redeemable Discount Thresholds</h3>
+            <p class="text-[10px] text-zinc-400">Points requirements and discount amounts applied at checkout</p>
+          </div>
+        </div>
+
+        <div class="space-y-1.5" id="ownerRewardTiersList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Card 3: VIP Members Database & Quick Adjustments -->
+      <div class="pos-card rounded-2xl p-3.5 space-y-2.5">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider">VIP Member Stash Balances</h3>
+            <p class="text-[10px] text-zinc-400">Live points balances, lifetime spend &amp; 1-tap credits</p>
+          </div>
+          <button onclick="openAddVipMemberModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold text-xs font-bold px-2 py-1 rounded-xl flex items-center gap-1">
+            <i data-lucide="user-plus" class="w-3 h-3"></i>
+            <span>+ VIP</span>
+          </button>
+        </div>
+
+        <div class="space-y-1.5" id="ownerVipMembersList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+    </div>
+
   </main>
 
   <!-- ==================== OWNER PIN MODAL ==================== -->
@@ -507,6 +587,49 @@
         <button onclick="closeOwnerEditModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
       <div id="ownerModalContent" class="my-3 space-y-2.5 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ==================== ADD VIP MEMBER MODAL ==================== -->
+  <div id="addVipMemberModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-brand-gold/40 rounded-2xl max-w-xs w-full p-4 shadow-2xl space-y-3">
+      <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="user-plus" class="w-4 h-4 text-brand-gold"></i>
+          Add New VIP Member
+        </h3>
+        <button onclick="closeAddVipMemberModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Full Name</label>
+          <input type="text" id="newVipNameInput" placeholder="e.g. Jordan Hayes" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-brand-gold" />
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Phone Number</label>
+          <input type="text" id="newVipPhoneInput" placeholder="e.g. 480-555-0550" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-brand-gold" />
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">VIP Tier</label>
+          <select id="newVipTierSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-bold">
+            <option value="Silver VIP">Silver VIP</option>
+            <option value="Gold VIP" selected>Gold VIP</option>
+            <option value="Platinum VIP">Platinum VIP</option>
+            <option value="Black Diamond VIP">Black Diamond VIP</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Starting Bonus Points</label>
+          <input type="number" id="newVipPointsInput" value="100" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-brand-gold font-bold font-mono focus:outline-none" />
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2 border-t border-zinc-800">
+        <button onclick="saveNewVipMember()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs">
+          Enroll VIP Member ✓
+        </button>
+      </div>
     </div>
   </div>
 
@@ -618,6 +741,51 @@
       static saveInventory(i) {
         localStorage.setItem('empire_stoked_stash', JSON.stringify(i));
       }
+      static getRewardTiers() {
+        const local = localStorage.getItem('empire_reward_tiers');
+        if (!local) {
+          const defaultTiers = [
+            { id: 'tier-250', pointsReq: 250, label: 'Free Ice Tip ($5.00 Off)', discount: 5.00, icon: '❄️', desc: 'Complimentary Frozen Ice Tip' },
+            { id: 'tier-500', pointsReq: 500, label: 'Free Samovar Teapot ($14.00 Off)', discount: 14.00, icon: '🫖', desc: 'Complimentary Samovar Teapot or Sand Coffee' },
+            { id: 'tier-750', pointsReq: 750, label: '50% Off Refill (-$12.50)', discount: 12.50, icon: '🏺', desc: '50% off shisha repack / refill' },
+            { id: 'tier-1000', pointsReq: 1000, label: 'Free Shisha Bowl (-$35.00)', discount: 35.00, icon: '✨', desc: 'Free Russian Craft or Blonde Bowl' },
+            { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
+          ];
+          localStorage.setItem('empire_reward_tiers', JSON.stringify(defaultTiers));
+          return defaultTiers;
+        }
+        return JSON.parse(local);
+      }
+      static saveRewardTiers(t) {
+        localStorage.setItem('empire_reward_tiers', JSON.stringify(t));
+      }
+      static getVipMembers() {
+        const local = localStorage.getItem('empire_vip_members');
+        if (!local) {
+          const defaultMembers = [
+            { id: 'vip-409', name: 'Alex M.', phone: '480-555-0409', points: 750, tier: 'Gold VIP', totalSpent: 750.00 },
+            { id: 'vip-310', name: 'Marcus Sterling', phone: '602-555-0310', points: 1200, tier: 'Platinum VIP', totalSpent: 1200.00 },
+            { id: 'vip-102', name: 'Elena Rostova', phone: '623-555-0102', points: 450, tier: 'Silver VIP', totalSpent: 450.00 },
+            { id: 'vip-550', name: 'Jordan Hayes', phone: '480-555-0550', points: 280, tier: 'Silver VIP', totalSpent: 280.00 }
+          ];
+          localStorage.setItem('empire_vip_members', JSON.stringify(defaultMembers));
+          return defaultMembers;
+        }
+        return JSON.parse(local);
+      }
+      static saveVipMembers(m) {
+        localStorage.setItem('empire_vip_members', JSON.stringify(m));
+      }
+      static getLoyaltyConfig() {
+        const local = localStorage.getItem('empire_loyalty_config');
+        if (!local) {
+          return { earnRate: 10, welcomeBonus: 100, enabled: true };
+        }
+        return JSON.parse(local);
+      }
+      static saveLoyaltyConfig(c) {
+        localStorage.setItem('empire_loyalty_config', JSON.stringify(c));
+      }
     }
 
     let activeZoneFilter = 'all';
@@ -638,6 +806,7 @@
         loadTaxSettingsUI();
         renderOwnerPipesList();
         renderOwnerStashList();
+        renderOwnerRewardsUI();
         showToast('👑 Owner Suite Unlocked', 'Master layout architect & tax settings active.');
       } else {
         showToast('❌ Invalid Passcode', 'Owner access denied (Default: 6010).');
@@ -667,6 +836,7 @@
       if (tabId === 'tax') loadTaxSettingsUI();
       if (tabId === 'pipes') renderOwnerPipesList();
       if (tabId === 'stash') renderOwnerStashList();
+      if (tabId === 'rewards') renderOwnerRewardsUI();
       renderIcons();
     }
 
@@ -1203,6 +1373,135 @@
         `;
         container.appendChild(div);
       });
+    }
+
+    // ==================== OWNER VIP LOYALTY & REWARDS ARCHITECT ====================
+    function renderOwnerRewardsUI() {
+      const config = OwnerStore.getLoyaltyConfig();
+      const tiers = OwnerStore.getRewardTiers();
+      const members = OwnerStore.getVipMembers();
+
+      // Card 1: Accrual inputs
+      const earnInput = document.getElementById('ownerRewardEarnRateInput');
+      const bonusInput = document.getElementById('ownerRewardBonusInput');
+      if (earnInput) earnInput.value = config.earnRate || 10;
+      if (bonusInput) bonusInput.value = config.welcomeBonus || 100;
+
+      // Card 2: Discount Tiers List
+      const tiersCont = document.getElementById('ownerRewardTiersList');
+      if (tiersCont) {
+        tiersCont.innerHTML = '';
+        tiers.forEach((tier, idx) => {
+          const row = document.createElement('div');
+          row.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between text-xs';
+          row.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="text-lg">${tier.icon}</span>
+              <div>
+                <span class="font-bold text-white block">${tier.label}</span>
+                <span class="text-[10px] text-zinc-400">${tier.desc}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-brand-gold font-bold text-xs">${tier.pointsReq} Pts</span>
+              <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded border border-amber-800/40">
+                -$${tier.discount.toFixed(2)} Off
+              </span>
+            </div>
+          `;
+          tiersCont.appendChild(row);
+        });
+      }
+
+      // Card 3: VIP Members List
+      const membersCont = document.getElementById('ownerVipMembersList');
+      if (membersCont) {
+        membersCont.innerHTML = '';
+        members.forEach(m => {
+          const div = document.createElement('div');
+          div.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between text-xs';
+          div.innerHTML = `
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-brand-gold flex items-center justify-center font-bold text-xs">
+                ${m.name.charAt(0)}
+              </div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-white">${m.name}</span>
+                  <span class="text-[9px] bg-zinc-900 text-zinc-400 font-bold px-1.5 py-0.2 rounded font-mono">${m.tier}</span>
+                </div>
+                <span class="text-[10px] text-zinc-400 font-mono">${m.phone} • Lifetime: $${(m.totalSpent || 0).toFixed(0)}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-extrabold text-brand-gold font-mono-nums">${m.points} PTS</span>
+              <div class="flex items-center gap-0.5">
+                <button onclick="adjustMemberPoints('${m.id}', -50)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded flex items-center justify-center font-bold text-[10px]" title="Deduct 50 Pts">-</button>
+                <button onclick="adjustMemberPoints('${m.id}', 100)" class="w-5 h-5 bg-zinc-900 hover:bg-zinc-800 text-brand-gold rounded flex items-center justify-center font-bold text-[10px]" title="Credit 100 Pts">+</button>
+              </div>
+            </div>
+          `;
+          membersCont.appendChild(div);
+        });
+      }
+    }
+
+    function saveOwnerLoyaltyConfig() {
+      const earnRate = parseInt(document.getElementById('ownerRewardEarnRateInput').value) || 10;
+      const welcomeBonus = parseInt(document.getElementById('ownerRewardBonusInput').value) || 100;
+      OwnerStore.saveLoyaltyConfig({ earnRate, welcomeBonus, enabled: true });
+      showToast('⭐ Loyalty Saved', `Earn rate set to ${earnRate} pts / $1.00 spent.`);
+    }
+
+    function adjustMemberPoints(memberId, delta) {
+      const members = OwnerStore.getVipMembers();
+      const member = members.find(m => m.id === memberId);
+      if (member) {
+        member.points = Math.max(0, member.points + delta);
+        OwnerStore.saveVipMembers(members);
+        renderOwnerRewardsUI();
+        showToast('⭐ Points Adjusted', `${member.name} now has ${member.points} Pts.`);
+      }
+    }
+
+    function openAddVipMemberModal() {
+      document.getElementById('newVipNameInput').value = '';
+      document.getElementById('newVipPhoneInput').value = '';
+      document.getElementById('newVipPointsInput').value = '100';
+      document.getElementById('addVipMemberModal').classList.remove('hidden');
+    }
+
+    function closeAddVipMemberModal() {
+      document.getElementById('addVipMemberModal').classList.add('hidden');
+    }
+
+    function saveNewVipMember() {
+      const name = document.getElementById('newVipNameInput').value.trim();
+      const phone = document.getElementById('newVipPhoneInput').value.trim() || '480-555-0000';
+      const tier = document.getElementById('newVipTierSelect').value;
+      const points = parseInt(document.getElementById('newVipPointsInput').value) || 100;
+
+      if (!name) {
+        showToast('⚠️ Name Required', 'Please enter VIP guest full name.');
+        return;
+      }
+
+      const members = OwnerStore.getVipMembers();
+      const newMember = {
+        id: `vip-${Date.now().toString().slice(-4)}`,
+        name,
+        phone,
+        tier,
+        points,
+        totalSpent: 0
+      };
+
+      members.unshift(newMember);
+      OwnerStore.saveVipMembers(members);
+      closeAddVipMemberModal();
+      renderOwnerRewardsUI();
+      showToast('👑 VIP Enrolled', `${name} enrolled with ${points} Welcome Pts!`);
     }
 
     function showToast(title, msg) {
