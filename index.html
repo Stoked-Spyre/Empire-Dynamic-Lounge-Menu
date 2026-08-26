@@ -449,12 +449,84 @@
           <button onclick="selectCheckoutTip(20)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">20%</button>
           <button onclick="selectCheckoutTip(25)" class="tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-lg text-xs font-bold">25%</button>
         </div>
-      </div>
-
-      <button onclick="processSquarePayment()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+          <button onclick="processSquarePayment()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
         <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         <span>Pay with Square &amp; End Session</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ==================== SOMMELIER TICKET SUMMARY MODAL ==================== -->
+  <div id="ticketSummaryModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-amber-500/40 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3.5">
+      
+      <!-- Ticket Header -->
+      <div class="flex justify-between items-start pb-2.5 border-b border-zinc-800">
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h3 class="text-xs font-crest font-bold text-white tracking-wider">SOMMELIER VIP TICKET</h3>
+          </div>
+          <p class="text-[10px] font-mono text-brand-gold mt-0.5" id="summaryTicketId">TICKET #EMP-8492</p>
+        </div>
+
+        <span class="text-[9px] bg-zinc-900 text-zinc-400 font-mono px-2 py-0.5 rounded border border-zinc-800" id="summaryTicketTime">
+          10:24 PM
+        </span>
+      </div>
+
+      <!-- Target Table & Pipe Hardware Identification -->
+      <div class="bg-black p-3 rounded-2xl border border-zinc-800 space-y-1.5 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">Assigned Lounge Seat:</span>
+          <span class="font-bold text-white" id="summarySeatLabel">👑 Floating VIP Tab</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">Order Category:</span>
+          <span class="font-bold text-emerald-400" id="summaryOrderType">✨ Original Hookah</span>
+        </div>
+        <div class="flex justify-between items-center pt-1 border-t border-zinc-850">
+          <span class="text-zinc-400">Lounge Pipe:</span>
+          <span class="font-bold text-brand-gold font-mono" id="summaryPipeTag">🏺 Russian Dark Leaf Craft Setup</span>
+        </div>
+        <div class="flex justify-between items-center text-[10px] text-zinc-500">
+          <span>Standard 22g Pack</span>
+          <span class="text-emerald-400">🔥 25m Heat Clock Started</span>
+        </div>
+      </div>
+
+      <!-- Shisha Blend Breakdown -->
+      <div class="bg-black p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
+        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Shisha Bowl Breakdown:</span>
+        <div class="space-y-1 font-mono text-[11px]" id="summaryBowlBreakdown">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Financials & Phoenix Tax Breakdown -->
+      <div class="bg-zinc-900/60 p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
+        <div class="flex justify-between text-zinc-400 text-[11px]">
+          <span>Subtotal</span>
+          <span class="font-mono-nums text-white" id="summarySubtotal">$0.00</span>
+        </div>
+        <div class="flex justify-between text-zinc-400 text-[11px]">
+          <span id="summaryTaxLabel">Phoenix Sales Tax (8.60%)</span>
+          <span class="font-mono-nums text-zinc-300" id="summaryTax">$0.00</span>
+        </div>
+        <div class="pt-1.5 border-t border-zinc-800 flex justify-between text-sm font-extrabold text-white">
+          <span>Ticket Total</span>
+          <span class="text-brand-gold font-mono-nums" id="summaryGrandTotal">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="pt-1">
+        <button onclick="closeTicketSummaryModal()" class="w-full py-2.5 bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          <span>Track on Lounge Floor ✓</span>
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -934,8 +1006,15 @@
         showToast('⚠️ Bowl is Empty', 'Please select flavors or a House Mix first.');
         return;
       }
+      const inventory = CustomerStash.getInventory();
+      const taxConfig = CustomerStash.getTaxConfig();
       const price = parseFloat(document.getElementById('totalPriceText').textContent.replace('$', ''));
       const mixName = activeMixName || 'Custom Shisha Blend';
+      const taxAmt = price * (taxConfig.primaryRate / 100);
+      const grandTotal = price + taxAmt;
+      const ticketNumber = Math.floor(1000 + Math.random() * 9000);
+      const ticketId = `EMP-${ticketNumber}`;
+      
       tabBalance += price;
       roundCount++;
 
@@ -953,9 +1032,41 @@
       if (mode === 'square') {
         openEndSessionModal();
       } else {
-        showToast('👑 VIP Order Dispatched', `"${mixName}" ($${price.toFixed(2)}) dispatched on ${currentAssignedSeat}.`);
-        renderMixLab();
+        // Show Sommelier Ticket Summary Modal to Customer
+        document.getElementById('summaryTicketId').textContent = `TICKET #${ticketId}`;
+        document.getElementById('summaryTicketTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('summarySeatLabel').textContent = currentAssignedSeat;
+        document.getElementById('summaryOrderType').textContent = (roundCount > 2) ? '🏺 Shisha Refill / Repack (-$10)' : '✨ Original Hookah';
+        document.getElementById('summaryPipeTag').textContent = '🏺 Russian Dark Leaf Craft Hookah';
+
+        const bowlContainer = document.getElementById('summaryBowlBreakdown');
+        bowlContainer.innerHTML = '';
+        const slicePct = Math.round(100 / activeFlavors.length);
+        activeFlavors.forEach(fid => {
+          const item = inventory.find(i => i.id === fid) || STOKED_MASTER_INVENTORY[0];
+          const row = document.createElement('div');
+          row.className = 'flex justify-between text-zinc-300';
+          row.innerHTML = `
+            <span>• ${item.name} (${item.brand})</span>
+            <span class="text-brand-gold font-bold">${slicePct}%</span>
+          `;
+          bowlContainer.appendChild(row);
+        });
+
+        document.getElementById('summarySubtotal').textContent = `$${price.toFixed(2)}`;
+        document.getElementById('summaryTaxLabel').textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
+        document.getElementById('summaryTax').textContent = `$${taxAmt.toFixed(2)}`;
+        document.getElementById('summaryGrandTotal').textContent = `$${grandTotal.toFixed(2)}`;
+
+        document.getElementById('ticketSummaryModal').classList.remove('hidden');
+        renderIcons();
       }
+    }
+
+    function closeTicketSummaryModal() {
+      document.getElementById('ticketSummaryModal').classList.add('hidden');
+      showToast('👑 VIP Ticket Dispatched', 'Staff alerted & coals are lighting.');
+      renderMixLab();
     }
 
     function requestCoalService() {

@@ -64,7 +64,7 @@
     .lounge-diagram-canvas {
       position: relative;
       width: 100%;
-      height: 390px;
+      height: 380px;
       background-color: #05080E;
       background-image: 
         radial-gradient(circle at 50% 50%, rgba(229, 169, 60, 0.03) 0%, transparent 70%),
@@ -168,15 +168,62 @@
       50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
     }
 
-    /* STOKED 3D ROTARY CYLINDER DRUM */
+    /* STOKED DUAL SPLIT DIAL & ROTARY DRUM */
+    .v-ruler-sidebar {
+      width: 105px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding-right: 6px;
+      overflow-y: auto;
+      max-height: 200px;
+    }
+    .v-ruler-track {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .v-ruler-mark-station {
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94A3B8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid transparent;
+    }
+    .v-ruler-mark-station:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .v-ruler-mark-station.active {
+      color: #000000;
+      background: #E5A93C;
+      font-weight: 800;
+      border-color: #E5A93C;
+      box-shadow: 0 2px 8px rgba(229, 169, 60, 0.3);
+    }
+    .v-ruler-station-count {
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.75;
+    }
+
     .cylinder-wheel-container {
       position: relative;
-      width: 100%;
-      height: 185px;
+      flex: 1;
+      height: 200px;
       overflow: hidden;
       perspective: 900px;
       touch-action: none;
       cursor: grab;
+      background: #06090E;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .cylinder-wheel-container:active { cursor: grabbing; }
     .cylinder-drum-viewport {
@@ -237,22 +284,13 @@
       flex-shrink: 0;
     }
 
-    .draggable-gradient-controller {
-      position: relative;
-      width: 100%;
-      height: 24px;
-      margin: 8px 0;
-      touch-action: none;
-      user-select: none;
-    }
-    .gradient-ribbon-track {
-      width: 100%;
-      height: 10px;
+    /* SPECTRUM TRACK */
+    .spectrum-track {
+      height: 9px;
       border-radius: 999px;
-      position: absolute;
-      top: 7px;
-      left: 0;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
+      transition: background 0.3s ease;
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -285,7 +323,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Live Floor Map &amp; Multi-Tab Pipe Sommelier</span>
+          <span>Live Floor Map, Identical Lab &amp; Ticket Engine</span>
         </div>
       </div>
     </div>
@@ -386,7 +424,7 @@
 
     </div>
 
-    <!-- MODULE 2: COMPLETE ORDER & MIX LAB (TAB 1: SHISHA MIX LAB / TAB 2: DRINKS SECTION) -->
+    <!-- MODULE 2: ORDER & MIX LAB (IDENTICAL SETUP: TAB 1 SHISHA LAB + TAB 2 DRINKS) -->
     <div id="staff-view-lab" class="staff-panel hidden flex flex-col gap-3">
       
       <!-- SUB-NAV: TAB 1 (SHISHA MIX LAB) vs TAB 2 (DRINKS & BEVERAGES) -->
@@ -401,7 +439,7 @@
         </button>
       </div>
 
-      <!-- TAB 1 CONTENT: COMPLETE SHISHA MIX LAB & HOUSE BLENDS -->
+      <!-- ==================== TAB 1: SHISHA MIX LAB (IDENTICAL TO CUSTOMER) ==================== -->
       <div id="lab-content-shisha" class="space-y-3">
         
         <!-- TOP OF TAB 1: REFILL / ORIGINAL ORDER TOGGLE BUTTON -->
@@ -421,37 +459,82 @@
           </div>
         </div>
 
-        <!-- 👑 HOUSE BLENDS / HOUSE MIXES SECTION -->
-        <div class="pos-card rounded-2xl p-3">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-              <i data-lucide="crown" class="w-3.5 h-3.5 text-brand-gold"></i>
-              Empire House Blends
-            </span>
-            <span class="text-[9px] text-zinc-400">1-Tap Load Signature Mix</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2" id="houseBlendsQuickList">
-            <!-- Injected via JS: Pink Cane, Siberian Midnight, Kashmir Velvet, etc -->
-          </div>
-        </div>
-
-        <!-- BOWL SPEC & PACK FASHION -->
-        <div class="pos-card rounded-2xl p-3.5">
-          <div class="flex justify-between items-center mb-2">
-            <div>
-              <h2 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
-                Stoked Custom Sommelier Lab
-              </h2>
-              <p class="text-[10px] text-zinc-400">Dark Leaf, Blonde &amp; Tangiers Phunnels</p>
+        <!-- 1. DYNAMIC IN YOUR BOWL MIX TRAY (IDENTICAL SPECTRUM & CHIPS) -->
+        <section class="pos-card rounded-2xl p-3.5">
+          <div class="flex justify-between items-center mb-1.5">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
+              <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">In Your Bowl Mix</span>
             </div>
-            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800" id="labBuzzBadge">
-              7.8/10 DARK LEAF
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800 font-mono" id="labBuzzBadge">
+                7.8/10 DARK LEAF
+              </span>
+              <button onclick="clearStaffBowl()" id="clearBowlBtn" class="text-[10px] text-zinc-500 hover:text-red-400 font-semibold">
+                Clear ✕
+              </button>
+            </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-zinc-850 text-xs">
+          <!-- Spectrum Gradient Track -->
+          <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5 bg-zinc-900"></div>
+
+          <!-- Dynamically Populated Flavor Chips Tray -->
+          <div class="space-y-1.5" id="flavorSlotsContainer">
+            <!-- Injected via JS -->
+          </div>
+        </section>
+
+        <!-- 2. STOKED SPLIT DIAL: HOUSE MIXES & BRANDS (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
+        <section class="pos-card rounded-2xl p-3">
+          <div class="flex justify-between items-center mb-2 px-1">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
+              <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
+            </div>
+            <span class="text-[10px] text-zinc-400 font-medium">Select Station • Spin Drum</span>
+          </div>
+
+          <div class="flex gap-2.5 items-stretch">
+            
+            <!-- LEFT: HOUSE MIXES & BRANDS VERTICAL STATION DIAL -->
+            <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
+              <div class="v-ruler-track" id="brandStationsTrack">
+                <!-- Populated via JS: House Mixes, MustHave, Tangiers, Darkside, etc -->
+              </div>
+            </aside>
+
+            <!-- RIGHT: 3D MECHANICAL ROTARY DRUM -->
+            <div 
+              id="rotaryWheel" 
+              class="cylinder-wheel-container"
+              onwheel="handleWheelScroll(event)"
+              ontouchstart="handleTouchStart(event)"
+              ontouchmove="handleTouchMove(event)"
+              ontouchend="handleTouchEnd(event)"
+            >
+              <div class="cylinder-drum-viewport">
+                <div class="cylinder-target-slot"></div>
+                <div class="cylinder-drum-track" id="cylinderDrumTrack">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <button 
+            onclick="confirmWheelSelection()" 
+            class="mt-2.5 w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 transition active:scale-98"
+          >
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <span id="wheelConfirmBtnText">+ Add to Bowl</span>
+          </button>
+        </section>
+
+        <!-- 3. HARDWARE FLEET & BOWL SPEC SELECTOR -->
+        <section class="pos-card rounded-2xl p-3">
+          <div class="grid grid-cols-2 gap-2 text-xs">
             <div>
               <label class="text-[9px] text-zinc-400 font-bold uppercase block mb-1">Bowl Model (Grams)</label>
               <select id="labBowlSelect" onchange="handleBowlChange(this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-brand-gold font-semibold">
@@ -469,64 +552,18 @@
               </select>
             </div>
           </div>
-        </div>
-
-        <!-- ACTIVE RATIOS GRADIENT CONTROLLER -->
-        <div class="pos-card rounded-2xl p-3.5">
-          <div class="flex justify-between items-center mb-1">
-            <span class="text-xs font-bold text-white uppercase tracking-wider">Active Flavor Ratios</span>
-            <span class="text-[10px] text-brand-gold font-mono-nums font-bold" id="labTotalGramsText">22.0g Total Pack</span>
-          </div>
-
-          <div class="draggable-gradient-controller" id="draggableGradientBar">
-            <div class="gradient-ribbon-track" id="labGradientTrack"></div>
-          </div>
-
-          <div class="space-y-2 mt-2" id="labPortionsContainer"></div>
-        </div>
-
-        <!-- ROTARY DIAL & DRUM -->
-        <div class="pos-card rounded-2xl p-3 relative">
-          <div class="flex justify-between items-center mb-1 px-1">
-            <div class="flex items-center gap-1.5">
-              <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
-              <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Tobacco Drum</span>
-            </div>
-            <span class="text-[10px] text-zinc-400">Select brand &amp; spin</span>
-          </div>
-
-          <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 mb-1" id="wheelBrandTabs"></div>
-
-          <div 
-            id="rotaryWheel" 
-            class="cylinder-wheel-container"
-            onwheel="handleWheelScroll(event)"
-            ontouchstart="handleTouchStart(event)"
-            ontouchmove="handleTouchMove(event)"
-            ontouchend="handleTouchEnd(event)"
-          >
-            <div class="cylinder-drum-viewport">
-              <div class="cylinder-target-slot"></div>
-              <div class="cylinder-drum-track" id="cylinderDrumTrack"></div>
-            </div>
-          </div>
-
-          <button onclick="confirmWheelSelection()" class="mt-2 w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 transition active:scale-98">
-            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-gold"></i>
-            <span id="wheelConfirmBtnText">+ Add to Bowl</span>
-          </button>
-        </div>
+        </section>
 
       </div>
 
-      <!-- TAB 2 CONTENT: DRINKS & BEVERAGES SECTION -->
+      <!-- ==================== TAB 2: DRINKS & BEVERAGES SECTION ==================== -->
       <div id="lab-content-drinks" class="hidden space-y-3">
         <div class="pos-card rounded-2xl p-3.5">
-          <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-2 flex items-center gap-1.5">
+          <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-1 flex items-center gap-1.5">
             <i data-lucide="coffee" class="w-3.5 h-3.5 text-brand-gold"></i>
-            Empire Tea Bar, Coffees &amp; Craft Mocktails
+            Empire Tea Bar, Coffees &amp; Refreshments
           </h3>
-          <p class="text-[10px] text-zinc-400 mb-3">1-Tap add drinks and table refreshments to this tab</p>
+          <p class="text-[10px] text-zinc-400 mb-3">1-Tap add beverages and table refreshments to this ticket</p>
 
           <div class="grid grid-cols-2 gap-2">
             <button onclick="addDrinkToOrder('Empire Hot Samovar Teapot', 14.00, '🫖')" class="p-2.5 bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 rounded-xl text-left flex justify-between items-center text-xs">
@@ -589,14 +626,14 @@
       <div class="pos-card rounded-2xl p-3 flex items-center justify-between">
         <div>
           <span class="text-[9px] uppercase tracking-wider text-zinc-400 block font-bold">Target Lounge Seat</span>
-          <select id="dispatchTableSelect" class="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-brand-gold font-bold focus:outline-none">
+          <select id="dispatchTableSelect" onchange="updateDispatchSummary()" class="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-brand-gold font-bold focus:outline-none">
             <!-- Injected via JS -->
           </select>
         </div>
 
         <button onclick="dispatchLabMixToTable()" class="bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-bold py-2.5 px-4 rounded-xl shadow-lg flex items-center gap-1.5 active:scale-95">
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
-          <span id="dispatchBtnLabel">Open Tab &amp; Start 25m Timer ($35)</span>
+          <span id="dispatchBtnLabel">Generate Ticket &amp; Start ($35.00)</span>
         </button>
       </div>
 
@@ -704,6 +741,93 @@
     </div>
   </div>
 
+  <!-- ==================== SOMMELIER TICKET SUMMARY MODAL ==================== -->
+  <div id="ticketSummaryModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-amber-500/40 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-3.5">
+      
+      <!-- Ticket Header -->
+      <div class="flex justify-between items-start pb-2.5 border-b border-zinc-800">
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h3 class="text-xs font-crest font-bold text-white tracking-wider">OFFICIAL SOMMELIER TICKET</h3>
+          </div>
+          <p class="text-[10px] font-mono text-brand-gold mt-0.5" id="summaryTicketId">TICKET #EMP-8492</p>
+        </div>
+
+        <span class="text-[9px] bg-zinc-900 text-zinc-400 font-mono px-2 py-0.5 rounded border border-zinc-800" id="summaryTicketTime">
+          10:24 PM
+        </span>
+      </div>
+
+      <!-- Target Table & Pipe Hardware Identification -->
+      <div class="bg-black p-3 rounded-2xl border border-zinc-800 space-y-1.5 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">Target Lounge Seat:</span>
+          <span class="font-bold text-white" id="summarySeatLabel">Table 6 (6-Top Sofa)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-zinc-400">Order Category:</span>
+          <span class="font-bold text-emerald-400" id="summaryOrderType">✨ Original Hookah</span>
+        </div>
+        <div class="flex justify-between items-center pt-1 border-t border-zinc-850">
+          <span class="text-zinc-400">Assigned Pipe:</span>
+          <span class="font-bold text-brand-gold font-mono" id="summaryPipeTag">🏺 P#04 (Wookah Oak Edition)</span>
+        </div>
+        <div class="flex justify-between items-center text-[10px] text-zinc-500">
+          <span id="summaryBowlSpec">Russian Oblako (22g)</span>
+          <span class="text-emerald-400">🔥 25m Heat Clock Started</span>
+        </div>
+      </div>
+
+      <!-- Shisha Blend Breakdown -->
+      <div class="bg-black p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
+        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Shisha Bowl Breakdown:</span>
+        <div class="space-y-1 font-mono text-[11px]" id="summaryBowlBreakdown">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Drinks & Add-ons Section (if any) -->
+      <div id="summaryDrinksSection" class="hidden bg-black p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
+        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">Drinks &amp; Table Add-ons:</span>
+        <div class="space-y-1 text-[11px]" id="summaryDrinksBreakdown">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Financials & Phoenix Tax Breakdown -->
+      <div class="bg-zinc-900/60 p-3 rounded-2xl border border-zinc-800 space-y-1 text-xs">
+        <div class="flex justify-between text-zinc-400 text-[11px]">
+          <span>Subtotal</span>
+          <span class="font-mono-nums text-white" id="summarySubtotal">$0.00</span>
+        </div>
+        <div class="flex justify-between text-zinc-400 text-[11px]">
+          <span id="summaryTaxLabel">Phoenix Sales Tax (8.60%)</span>
+          <span class="font-mono-nums text-zinc-300" id="summaryTax">$0.00</span>
+        </div>
+        <div class="pt-1.5 border-t border-zinc-800 flex justify-between text-sm font-extrabold text-white">
+          <span>Ticket Total</span>
+          <span class="text-brand-gold font-mono-nums" id="summaryGrandTotal">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button onclick="printTicketSlip()" class="py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-750 text-zinc-300 hover:text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-400"></i>
+          <span>Print Slip</span>
+        </button>
+
+        <button onclick="closeTicketSummaryModal()" class="py-2.5 bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          <span>Done ✓</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ==================== STAFF PIN LOGIN MODAL ==================== -->
   <div id="staffPinModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-xs w-full p-5 shadow-2xl text-center">
@@ -745,12 +869,12 @@
       { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
     ];
 
-    const EMPIRE_HOUSE_BLENDS = [
-      { id: 'blend-pink-cane', name: 'Pink Cane Sensation', tagline: 'MustHave Pinkman + Tangiers Cane Mint', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], color: '#EC4899' },
-      { id: 'blend-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Darkside Supernova + BlackBurn Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], color: '#6366F1' },
-      { id: 'blend-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Tangiers Kashmir Peach + MustHave Milky Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], color: '#FB923C' },
-      { id: 'blend-empire-royalty', name: 'Empire Royalty VIP', tagline: 'Cane Mint, Falling Star Mango & Frosty Chill', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], color: '#E5A93C' },
-      { id: 'blend-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Tangiers Orange Soda + MustHave Pinkman', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], color: '#F97316' }
+    const EMPIRE_HOUSE_MIXES = [
+      { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'MustHave Pinkman + Tangiers Cane Mint', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899' },
+      { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Darkside Supernova + BlackBurn Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1' },
+      { id: 'mix-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Tangiers Kashmir Peach + MustHave Milky Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], badge: 'Rich', color: '#FB923C' },
+      { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C' },
+      { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
     ];
 
     const DEFAULT_TAX_CONFIG = {
@@ -868,7 +992,7 @@
     ];
     let currentOrderDrinks = [];
 
-    let selectedBrandFilter = 'all';
+    let selectedStationType = 'house_mixes';
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
     let touchStartY = null;
@@ -891,7 +1015,7 @@
         renderStaffFloor();
         renderFloatingVIPQueue();
         populatePosQuickSeats();
-        renderHouseBlendsList();
+        initBrandStationDial();
         populatePipeFleetDropdown();
         showToast('🔓 Staff Operations Live', 'Floor map and multi-tab sommelier ready.');
       } else {
@@ -930,9 +1054,8 @@
 
       if (tabId === 'seating') { renderZoneFilterBar(); renderStaffFloor(); renderFloatingVIPQueue(); }
       if (tabId === 'lab') { 
-        renderHouseBlendsList(); 
+        initBrandStationDial(); 
         populatePipeFleetDropdown(); 
-        initRotaryWheel(); 
         renderMixLab(); 
         updateDispatchSummary(); 
       }
@@ -1396,33 +1519,321 @@
       }
     }
 
-    function renderHouseBlendsList() {
-      const container = document.getElementById('houseBlendsQuickList');
-      if (!container) return;
-      container.innerHTML = '';
+    // ==================== STOKED STATION DIAL (IDENTICAL TO CUSTOMER) ====================
+    function initBrandStationDial() {
+      const inventory = StaffStash.getInventory();
+      const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
+      
+      const stationsTrack = document.getElementById('brandStationsTrack');
+      if (!stationsTrack) return;
+      stationsTrack.innerHTML = '';
 
-      EMPIRE_HOUSE_BLENDS.forEach(blend => {
-        const btn = document.createElement('button');
-        btn.className = 'p-2 rounded-xl bg-black border border-zinc-850 hover:border-brand-gold text-left transition flex items-center gap-2';
-        btn.onclick = () => loadHouseBlendIntoLab(blend);
-        btn.innerHTML = `
-          <span class="w-2 h-7 rounded-full flex-shrink-0" style="background: ${blend.color};"></span>
-          <div class="min-w-0">
-            <span class="font-bold text-xs text-white block truncate">${blend.name}</span>
-            <span class="text-[9px] text-zinc-400 block truncate">${blend.tagline}</span>
-          </div>
+      // 1. House Mixes Station
+      const houseStation = document.createElement('div');
+      const isHouseActive = selectedStationType === 'house_mixes';
+      houseStation.className = `v-ruler-mark-station ${isHouseActive ? 'active' : ''}`;
+      houseStation.onclick = () => {
+        selectedStationType = 'house_mixes';
+        wheelSelectedIndex = 0;
+        initBrandStationDial();
+        renderDrumTrack();
+      };
+      houseStation.innerHTML = `
+        <span class="truncate text-brand-gold font-bold">👑 House Mixes</span>
+        <span class="v-ruler-station-count">${EMPIRE_HOUSE_MIXES.length}</span>
+      `;
+      stationsTrack.appendChild(houseStation);
+
+      // 2. All Single Flavors
+      const allStation = document.createElement('div');
+      const isAllActive = selectedStationType === 'all';
+      allStation.className = `v-ruler-mark-station ${isAllActive ? 'active' : ''}`;
+      allStation.onclick = () => {
+        selectedStationType = 'all';
+        wheelSelectedIndex = 0;
+        initBrandStationDial();
+        renderDrumTrack();
+      };
+      allStation.innerHTML = `
+        <span class="truncate">All Flavors</span>
+        <span class="v-ruler-station-count">${inventory.length}</span>
+      `;
+      stationsTrack.appendChild(allStation);
+
+      // 3. Individual Brand Stations
+      distinctBrands.forEach(brandName => {
+        const inStockCount = inventory.filter(i => i.brand === brandName).length;
+        if (inStockCount === 0) return;
+
+        const station = document.createElement('div');
+        const isActive = selectedStationType.toLowerCase() === brandName.toLowerCase();
+        station.className = `v-ruler-mark-station ${isActive ? 'active' : ''}`;
+        station.onclick = () => {
+          selectedStationType = brandName;
+          wheelSelectedIndex = 0;
+          initBrandStationDial();
+          renderDrumTrack();
+        };
+        station.innerHTML = `
+          <span class="truncate">${brandName}</span>
+          <span class="v-ruler-station-count">${inStockCount}</span>
         `;
-        container.appendChild(btn);
+        stationsTrack.appendChild(station);
       });
+
+      if (selectedStationType === 'house_mixes') {
+        filteredWheelItems = EMPIRE_HOUSE_MIXES;
+      } else {
+        filteredWheelItems = inventory.filter(item => (selectedStationType === 'all' || item.brand.toLowerCase() === selectedStationType.toLowerCase()));
+      }
+      renderDrumTrack();
     }
 
-    function loadHouseBlendIntoLab(blend) {
-      labPortions = blend.flavors.map((fid, idx) => ({
-        id: fid,
-        percent: blend.ratios[idx]
-      }));
+    function renderDrumTrack() {
+      const track = document.getElementById('cylinderDrumTrack');
+      if (!track) return;
+      track.innerHTML = '';
+
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+
+      const isHouseMode = (selectedStationType === 'house_mixes');
+
+      filteredWheelItems.forEach((item, index) => {
+        const diff = index - wheelSelectedIndex;
+        const isSelected = index === wheelSelectedIndex;
+        const isVisible = Math.abs(diff) <= 3;
+        if (!isVisible) return;
+
+        const yOffset = diff * 42;
+        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
+        const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
+        const rotateX = diff * -14;
+
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
+        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
+        row.style.opacity = opacity;
+
+        row.onclick = () => {
+          if (isSelected) confirmWheelSelection();
+          else { wheelSelectedIndex = index; renderDrumTrack(); }
+        };
+
+        if (isHouseMode) {
+          row.innerHTML = `
+            <div class="flex items-center min-w-0">
+              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+              <span class="truncate font-bold">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="text-[9px] bg-amber-950/80 text-brand-gold border border-amber-800/40 px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
+            </div>
+          `;
+        } else {
+          row.innerHTML = `
+            <div class="flex items-center min-w-0">
+              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+              <span class="truncate">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+              <span class="text-[9px] text-zinc-400 font-bold font-mono-nums">${item.grams}g</span>
+            </div>
+          `;
+        }
+        track.appendChild(row);
+      });
+
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (activeItem) {
+        if (isHouseMode) {
+          document.getElementById('wheelConfirmBtnText').textContent = `👑 Load House Mix: "${activeItem.name}"`;
+        } else {
+          document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Bowl`;
+        }
+      }
+    }
+
+    function handleWheelScroll(e) {
+      e.preventDefault();
+      const count = filteredWheelItems.length;
+      if (count === 0) return;
+      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) { wheelSelectedIndex++; renderDrumTrack(); }
+      else if (e.deltaY < 0 && wheelSelectedIndex > 0) { wheelSelectedIndex--; renderDrumTrack(); }
+    }
+
+    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; touchAccumulator = 0; }
+    function handleTouchMove(e) {
+      if (touchStartY === null) return;
+      const currentY = e.touches[0].clientY;
+      const delta = touchStartY - currentY;
+      touchStartY = currentY;
+      touchAccumulator += delta;
+
+      const step = 28;
+      const count = filteredWheelItems.length;
+      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
+        wheelSelectedIndex++; touchAccumulator = 0; renderDrumTrack();
+      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
+        wheelSelectedIndex--; touchAccumulator = 0; renderDrumTrack();
+      }
+    }
+    function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
+
+    function confirmWheelSelection() {
+      const activeItem = filteredWheelItems[wheelSelectedIndex];
+      if (!activeItem) return;
+
+      if (selectedStationType === 'house_mixes') {
+        // Load the full House Mix into the bowl!
+        labPortions = activeItem.flavors.map((fid, idx) => ({
+          id: fid,
+          percent: activeItem.ratios[idx]
+        }));
+        document.getElementById('activeBowlTitle').textContent = `👑 ${activeItem.name}`;
+        showToast('👑 House Mix Loaded', `"${activeItem.name}" slotted into bowl.`);
+      } else {
+        // Add single flavor
+        const existing = labPortions.find(p => p.id === activeItem.id);
+        if (existing) {
+          showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
+          return;
+        }
+
+        if (labPortions.length >= 4) {
+          labPortions[labPortions.length - 1].id = activeItem.id;
+          showToast('🔄 Slot Replaced', `Replaced with ${activeItem.name}.`);
+        } else {
+          labPortions.push({ id: activeItem.id, percent: 30 });
+          const split = Math.floor(100 / labPortions.length);
+          labPortions.forEach((p, i) => {
+            p.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
+          });
+          showToast('✨ Added to Bowl', `${activeItem.name} added.`);
+        }
+      }
+
       renderMixLab();
-      showToast('👑 Blend Loaded', `"${blend.name}" loaded into bowl.`);
+    }
+
+    function clearStaffBowl() {
+      labPortions = [];
+      document.getElementById('activeBowlTitle').textContent = 'In Your Bowl Mix (Blank)';
+      renderMixLab();
+      showToast('🧹 Bowl Cleared', 'Bowl is blank. Select house mixes or custom flavors.');
+    }
+
+    function renderMixLab() {
+      const inventory = StaffStash.getInventory();
+      const spectrum = document.getElementById('spectrumRibbon');
+      const container = document.getElementById('flavorSlotsContainer');
+      if (!spectrum || !container) return;
+
+      container.innerHTML = '';
+
+      if (labPortions.length === 0) {
+        spectrum.style.background = '#1E2533';
+        document.getElementById('labBuzzBadge').textContent = 'BLANK BOWL';
+        container.innerHTML = `<span class="text-[11px] text-zinc-500 italic block text-center py-2">No shisha in bowl. Select a House Mix or single flavor below.</span>`;
+        return;
+      }
+
+      let gradParts = [];
+      let cum = 0;
+      let totalStrength = 0;
+
+      labPortions.forEach(p => {
+        const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
+        const col = item.color || '#E5A93C';
+        const start = cum;
+        cum += p.percent;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+        totalStrength += ((item.strength || 7) * (p.percent / 100));
+      });
+      spectrum.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+      labPortions.forEach((slot, index) => {
+        const item = inventory.find(i => i.id === slot.id) || STOKED_MASTER_INVENTORY[0];
+        const grams = ((labBowlCapacity * slot.percent) / 100).toFixed(1);
+
+        const div = document.createElement('div');
+        div.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2';
+        div.innerHTML = `
+          <div class="flex items-center gap-2 min-w-0 flex-1">
+            <span class="w-2 h-7 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
+            <div class="truncate">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-white truncate">${item.name}</span>
+                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 rounded font-bold">${item.brand}</span>
+              </div>
+              <span class="text-[10px] text-zinc-500 font-mono-nums">${item.grams}g left in stash</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="text-right">
+              <span class="text-xs font-bold text-brand-gold font-mono-nums">${slot.percent}%</span>
+              <span class="text-[10px] text-zinc-400 block font-mono-nums font-bold">${grams}g</span>
+            </div>
+
+            <div class="flex items-center bg-black rounded-lg p-0.5 border border-zinc-800">
+              <button onclick="adjustLabPercent(${index}, -5)" class="w-5 h-5 text-xs font-bold bg-zinc-900 text-zinc-300 rounded">-</button>
+              <button onclick="adjustLabPercent(${index}, 5)" class="w-5 h-5 text-xs font-bold bg-zinc-900 text-zinc-300 rounded">+</button>
+            </div>
+
+            <button onclick="removeLabPortion(${index})" class="text-zinc-500 hover:text-red-400 p-1">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      const roundedStr = totalStrength.toFixed(1);
+      document.getElementById('labBuzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+      renderIcons();
+    }
+
+    function adjustLabPercent(index, delta) {
+      if (labPortions.length <= 1) return;
+      let cur = labPortions[index].percent;
+      let next = Math.max(10, Math.min(90, cur + delta));
+      if (next === cur) return;
+
+      const diff = next - cur;
+      labPortions[index].percent = next;
+      const otherCount = labPortions.length - 1;
+      const otherDelta = -(diff / otherCount);
+
+      labPortions.forEach((f, i) => {
+        if (i !== index) f.percent = Math.round(f.percent + otherDelta);
+      });
+
+      let sum = labPortions.reduce((a, b) => a + b.percent, 0);
+      if (sum !== 100) {
+        labPortions[index === 0 ? 1 : 0].percent += (100 - sum);
+      }
+      renderMixLab();
+    }
+
+    function removeLabPortion(index) {
+      if (labPortions.length <= 1) {
+        clearStaffBowl();
+        return;
+      }
+      labPortions.splice(index, 1);
+      const split = Math.floor(100 / labPortions.length);
+      labPortions.forEach((f, i) => {
+        f.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
+      });
+      renderMixLab();
+    }
+
+    function handleBowlChange(cap) {
+      labBowlCapacity = parseInt(cap, 10);
+      renderMixLab();
     }
 
     function populatePipeFleetDropdown() {
@@ -1443,7 +1854,7 @@
       currentOrderDrinks.push({ name, price, icon, id: `drk-${Date.now()}` });
       renderOrderDrinks();
       updateDispatchSummary();
-      showToast('☕ Drink Added', `${name} ($${price.toFixed(2)}) added to tab.`);
+      showToast('☕ Drink Added', `${name} ($${price.toFixed(2)}) added to ticket.`);
     }
 
     function removeDrinkFromOrder(idx) {
@@ -1478,33 +1889,46 @@
     }
 
     function updateDispatchSummary() {
-      const targetTable = document.getElementById('dispatchTableSelect')?.value || 'Table 6';
       const hookahBasePrice = (activeOrderPricingMode === 'refill') ? 25.00 : 35.00;
       const drinksTotal = currentOrderDrinks.reduce((sum, d) => sum + d.price, 0);
-      const total = hookahBasePrice + drinksTotal;
+      const total = (labPortions.length > 0 ? hookahBasePrice : 0) + drinksTotal;
 
       const label = document.getElementById('dispatchBtnLabel');
       if (label) {
-        label.textContent = `Open Tab & Start 25m Timer ($${total.toFixed(2)})`;
+        label.textContent = `Generate Ticket & Start ($${total.toFixed(2)})`;
       }
     }
 
+    // ==================== TICKET GENERATOR & SUMMARY VIEW ====================
     function dispatchLabMixToTable() {
-      const targetTable = document.getElementById('dispatchTableSelect').value;
+      const targetTable = document.getElementById('dispatchTableSelect').value || 'Table 6 (6-Top)';
       const inventory = StaffStash.getInventory();
       const pipeId = document.getElementById('labPipeFleetSelect')?.value || 'pipe-01';
+      const taxConfig = StaffStash.getTaxConfig();
+
+      if (labPortions.length === 0 && currentOrderDrinks.length === 0) {
+        showToast('⚠️ Empty Order', 'Please add shisha or drinks to create a ticket.');
+        return;
+      }
+
+      const hasHookah = labPortions.length > 0;
+      const hookahPrice = hasHookah ? ((activeOrderPricingMode === 'refill') ? 25.00 : 35.00) : 0.00;
+      const drinksPrice = currentOrderDrinks.reduce((sum, d) => sum + d.price, 0);
+      const subtotal = hookahPrice + drinksPrice;
+      const taxAmt = subtotal * (taxConfig.primaryRate / 100);
+      const grandTotal = subtotal + taxAmt;
 
       const mixDesc = labPortions.map(p => {
         const item = inventory.find(i => i.id === p.id);
         const grams = ((labBowlCapacity * p.percent) / 100);
         StaffStash.deductPortion(p.id, grams);
-        return `${item ? item.name : 'Shisha'} (${p.percent}%)`;
+        return `${item ? item.name : 'Shisha'} (${p.percent}% • ${grams.toFixed(1)}g)`;
       }).join(' + ');
 
-      const hookahPrice = (activeOrderPricingMode === 'refill') ? 25.00 : 35.00;
-      const drinksPrice = currentOrderDrinks.reduce((sum, d) => sum + d.price, 0);
-      const totalTabBal = hookahPrice + drinksPrice;
+      const ticketNumber = Math.floor(1000 + Math.random() * 9000);
+      const ticketId = `EMP-${ticketNumber}`;
 
+      // Update Floor Seat Data
       const plan = StaffStash.getFloorplan();
       const seatObj = plan.find(s => s.label.toLowerCase() === targetTable.toLowerCase() || s.name.toLowerCase() === targetTable.toLowerCase());
 
@@ -1515,269 +1939,133 @@
         let drinkNotes = currentOrderDrinks.length > 0 ? ` + ${currentOrderDrinks.map(d => d.name).join(', ')}` : '';
         seatObj.tabs.push({
           id: `tab-${Date.now()}`,
+          ticketId: ticketId,
           name: `Guest Tab (${activeOrderPricingMode === 'refill' ? 'Refill' : 'Hookah'}${drinkNotes ? ' + Drinks' : ''})`,
-          balance: totalTabBal,
-          pipeId: pipeId,
-          mix: mixDesc,
-          burnStartTime: Date.now()
+          balance: subtotal,
+          pipeId: hasHookah ? pipeId : null,
+          mix: hasHookah ? mixDesc : 'Drinks Only',
+          burnStartTime: hasHookah ? Date.now() : null
         });
 
         StaffStash.saveFloorplan(plan);
       }
 
-      // Update Pipe Status
-      const pipes = StaffStash.getPipes();
-      const pipe = pipes.find(p => p.id === pipeId);
-      if (pipe) {
-        pipe.status = 'occupied';
-        pipe.assignedTable = targetTable;
-        pipe.guest = 'Guest';
-        pipe.burnStartTime = Date.now();
-        StaffStash.savePipes(pipes);
+      // Update Pipe Fleet
+      let assignedPipeObj = null;
+      if (hasHookah) {
+        const pipes = StaffStash.getPipes();
+        const pipe = pipes.find(p => p.id === pipeId);
+        if (pipe) {
+          pipe.status = 'occupied';
+          pipe.assignedTable = targetTable;
+          pipe.guest = 'Guest';
+          pipe.burnStartTime = Date.now();
+          pipe.mix = mixDesc;
+          StaffStash.savePipes(pipes);
+          assignedPipeObj = pipe;
+        }
+
+        // Add to KDS
+        activeKdsTimers.unshift({
+          id: `kds-${Date.now()}`,
+          table: targetTable,
+          mix: mixDesc,
+          startTime: Date.now()
+        });
       }
 
-      // Add to KDS
-      activeKdsTimers.unshift({
-        id: `kds-${Date.now()}`,
-        table: targetTable,
-        mix: mixDesc,
-        startTime: Date.now()
+      // SHOW SOMMELIER TICKET SUMMARY MODAL
+      displayTicketSummary({
+        ticketId: ticketId,
+        seatLabel: targetTable,
+        orderType: activeOrderPricingMode === 'refill' ? '🏺 Shisha Refill / Repack' : '✨ Original Hookah',
+        pipe: assignedPipeObj,
+        bowlCapacity: labBowlCapacity,
+        portions: [...labPortions],
+        drinks: [...currentOrderDrinks],
+        subtotal: subtotal,
+        taxRate: taxConfig.primaryRate,
+        taxAmt: taxAmt,
+        grandTotal: grandTotal,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
 
       currentOrderDrinks = [];
       renderOrderDrinks();
-      showToast('🚀 Tab Created & Dispatched', `Hookah sent to ${targetTable} ($${totalTabBal.toFixed(2)}). 25m heat timer started!`);
-      switchStaffTab('seating');
     }
 
-    function handleBowlChange(cap) {
-      labBowlCapacity = parseInt(cap, 10);
-      renderMixLab();
-    }
-
-    function initRotaryWheel() {
-      const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'];
-      const tabsContainer = document.getElementById('wheelBrandTabs');
-      if (!tabsContainer) return;
-      tabsContainer.innerHTML = '';
-
-      brands.forEach(b => {
-        const btn = document.createElement('button');
-        const isActive = (b === selectedBrandFilter);
-        btn.className = `text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap transition ${isActive ? 'bg-zinc-800 text-brand-gold border border-zinc-700' : 'bg-black text-zinc-400 hover:text-white'}`;
-        btn.textContent = b === 'all' ? 'All Brands' : b;
-        btn.onclick = () => {
-          selectedBrandFilter = b;
-          wheelSelectedIndex = 0;
-          initRotaryWheel();
-        };
-        tabsContainer.appendChild(btn);
-      });
-
+    function displayTicketSummary(data) {
       const inventory = StaffStash.getInventory();
-      filteredWheelItems = inventory.filter(item => selectedBrandFilter === 'all' || item.brand === selectedBrandFilter);
-      renderDrumTrack();
-    }
-
-    function renderDrumTrack() {
-      const track = document.getElementById('cylinderDrumTrack');
-      if (!track) return;
-      track.innerHTML = '';
-
-      const count = filteredWheelItems.length;
-      if (count === 0) return;
-
-      filteredWheelItems.forEach((item, index) => {
-        const diff = index - wheelSelectedIndex;
-        const isSelected = index === wheelSelectedIndex;
-        const isVisible = Math.abs(diff) <= 3;
-        if (!isVisible) return;
-
-        const yOffset = diff * 42;
-        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
-        const opacity = isSelected ? 1 : Math.max(0.25, 1 - Math.abs(diff) * 0.28);
-        const rotateX = diff * -14;
-
-        const row = document.createElement('button');
-        row.type = 'button';
-        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
-        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
-        row.style.opacity = opacity;
-
-        row.onclick = () => {
-          if (isSelected) confirmWheelSelection();
-          else { wheelSelectedIndex = index; renderDrumTrack(); }
-        };
-
-        row.innerHTML = `
-          <div class="flex items-center min-w-0">
-            <span class="cylinder-color-bar" style="background: ${item.color};"></span>
-            <span class="truncate">${item.name}</span>
-          </div>
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-            <span class="text-[9px] text-zinc-400 font-bold font-mono-nums">${item.grams}g</span>
-          </div>
-        `;
-        track.appendChild(row);
-      });
-
-      const activeItem = filteredWheelItems[wheelSelectedIndex];
-      if (activeItem) {
-        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" (${activeItem.brand})`;
-      }
-    }
-
-    function handleWheelScroll(e) {
-      e.preventDefault();
-      const count = filteredWheelItems.length;
-      if (count === 0) return;
-      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) { wheelSelectedIndex++; renderDrumTrack(); }
-      else if (e.deltaY < 0 && wheelSelectedIndex > 0) { wheelSelectedIndex--; renderDrumTrack(); }
-    }
-
-    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; touchAccumulator = 0; }
-    function handleTouchMove(e) {
-      if (touchStartY === null) return;
-      const currentY = e.touches[0].clientY;
-      const delta = touchStartY - currentY;
-      touchStartY = currentY;
-      touchAccumulator += delta;
-
-      const step = 28;
-      const count = filteredWheelItems.length;
-      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
-        wheelSelectedIndex++; touchAccumulator = 0; renderDrumTrack();
-      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
-        wheelSelectedIndex--; touchAccumulator = 0; renderDrumTrack();
-      }
-    }
-    function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
-
-    function confirmWheelSelection() {
-      const activeItem = filteredWheelItems[wheelSelectedIndex];
-      if (!activeItem) return;
-
-      const existing = labPortions.find(p => p.id === activeItem.id);
-      if (existing) {
-        showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
-        return;
-      }
-
-      if (labPortions.length >= 4) {
-        labPortions[labPortions.length - 1].id = activeItem.id;
-        showToast('🔄 Replaced', `Replaced slot with ${activeItem.name}.`);
-      } else {
-        labPortions.push({ id: activeItem.id, percent: 30 });
-        const split = Math.floor(100 / labPortions.length);
-        labPortions.forEach((p, i) => {
-          p.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
-        });
-        showToast('✨ Slotted into Mix', `${activeItem.name} added to bowl.`);
-      }
-
-      renderMixLab();
-    }
-
-    function renderMixLab() {
-      const inventory = StaffStash.getInventory();
+      document.getElementById('summaryTicketId').textContent = `TICKET #${data.ticketId}`;
+      document.getElementById('summaryTicketTime').textContent = data.time;
+      document.getElementById('summarySeatLabel').textContent = data.seatLabel;
+      document.getElementById('summaryOrderType').textContent = data.orderType;
       
-      const track = document.getElementById('labGradientTrack');
-      if (!track) return;
-      let gradParts = [];
-      let cum = 0;
-      let totalStrength = 0;
+      if (data.pipe) {
+        document.getElementById('summaryPipeTag').textContent = `🏺 ${data.pipe.tag} • ${data.pipe.brand} (${data.pipe.model})`;
+        document.getElementById('summaryBowlSpec').textContent = `Bowl: ${data.bowlCapacity}g • ${data.pipe.bowl || 'Oblako Phunnel'}`;
+      } else {
+        document.getElementById('summaryPipeTag').textContent = 'No Pipe (Beverages Only)';
+        document.getElementById('summaryBowlSpec').textContent = 'Tea Bar & Refreshments';
+      }
 
-      labPortions.forEach(p => {
-        const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
-        const col = item.color || '#E5A93C';
-        const start = cum;
-        cum += p.percent;
-        gradParts.push(`${col} ${start}% ${cum}%`);
-        totalStrength += ((item.strength || 7) * (p.percent / 100));
-      });
-      track.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+      // Bowl breakdown
+      const bowlContainer = document.getElementById('summaryBowlBreakdown');
+      bowlContainer.innerHTML = '';
+      if (data.portions.length > 0) {
+        data.portions.forEach(p => {
+          const item = inventory.find(i => i.id === p.id) || STOKED_MASTER_INVENTORY[0];
+          const grams = ((data.bowlCapacity * p.percent) / 100).toFixed(1);
+          const row = document.createElement('div');
+          row.className = 'flex justify-between text-zinc-300';
+          row.innerHTML = `
+            <span>• ${item.name} (${item.brand})</span>
+            <span class="text-brand-gold font-bold">${p.percent}% (${grams}g)</span>
+          `;
+          bowlContainer.appendChild(row);
+        });
+      } else {
+        bowlContainer.innerHTML = `<span class="text-zinc-500 italic">No shisha pack in this ticket.</span>`;
+      }
 
-      const container = document.getElementById('labPortionsContainer');
-      if (!container) return;
-      container.innerHTML = '';
+      // Drinks breakdown
+      const drinksSection = document.getElementById('summaryDrinksSection');
+      const drinksContainer = document.getElementById('summaryDrinksBreakdown');
+      drinksContainer.innerHTML = '';
+      if (data.drinks.length > 0) {
+        drinksSection.classList.remove('hidden');
+        data.drinks.forEach(d => {
+          const row = document.createElement('div');
+          row.className = 'flex justify-between text-zinc-300';
+          row.innerHTML = `
+            <span>${d.icon} ${d.name}</span>
+            <span class="text-brand-gold font-bold font-mono-nums">$${d.price.toFixed(2)}</span>
+          `;
+          drinksContainer.appendChild(row);
+        });
+      } else {
+        drinksSection.classList.add('hidden');
+      }
 
-      labPortions.forEach((slot, index) => {
-        const item = inventory.find(i => i.id === slot.id) || STOKED_MASTER_INVENTORY[0];
-        const grams = ((labBowlCapacity * slot.percent) / 100).toFixed(1);
+      // Financials
+      document.getElementById('summarySubtotal').textContent = `$${data.subtotal.toFixed(2)}`;
+      document.getElementById('summaryTaxLabel').textContent = `Phoenix Sales Tax (${data.taxRate.toFixed(2)}%)`;
+      document.getElementById('summaryTax').textContent = `$${data.taxAmt.toFixed(2)}`;
+      document.getElementById('summaryGrandTotal').textContent = `$${data.grandTotal.toFixed(2)}`;
 
-        const div = document.createElement('div');
-        div.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2.5 flex items-center justify-between gap-2';
-        div.innerHTML = `
-          <div class="flex items-center gap-2 min-w-0 flex-1">
-            <span class="w-2 h-7 rounded-full" style="background: ${item.color};"></span>
-            <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1 rounded font-bold">${item.brand}</span>
-              </div>
-              <span class="text-[10px] text-zinc-500 font-mono-nums">${item.grams}g left in stash</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <div class="text-right">
-              <span class="text-xs font-bold text-brand-gold font-mono-nums">${slot.percent}%</span>
-              <span class="text-[10px] text-zinc-400 block font-mono-nums font-bold">${grams}g</span>
-            </div>
-
-            <div class="flex items-center bg-black rounded-lg p-0.5 border border-zinc-800">
-              <button onclick="adjustLabPercent(${index}, -5)" class="w-5 h-5 text-xs font-bold bg-zinc-900 text-zinc-300 rounded">-</button>
-              <button onclick="adjustLabPercent(${index}, 5)" class="w-5 h-5 text-xs font-bold bg-zinc-900 text-zinc-300 rounded">+</button>
-            </div>
-
-            <button onclick="removeLabPortion(${index})" class="text-zinc-500 hover:text-red-400 p-1">
-              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-
-      const roundedStr = totalStrength.toFixed(1);
-      document.getElementById('labBuzzBadge').textContent = `${roundedStr}/10 ${roundedStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
-      document.getElementById('labTotalGramsText').textContent = `${labBowlCapacity}.0g Total (${labPortions.length} Flavors)`;
+      document.getElementById('ticketSummaryModal').classList.remove('hidden');
       renderIcons();
     }
 
-    function adjustLabPercent(index, delta) {
-      if (labPortions.length <= 1) return;
-      let cur = labPortions[index].percent;
-      let next = Math.max(10, Math.min(90, cur + delta));
-      if (next === cur) return;
-
-      const diff = next - cur;
-      labPortions[index].percent = next;
-      const otherCount = labPortions.length - 1;
-      const otherDelta = -(diff / otherCount);
-
-      labPortions.forEach((f, i) => {
-        if (i !== index) f.percent = Math.round(f.percent + otherDelta);
-      });
-
-      let sum = labPortions.reduce((a, b) => a + b.percent, 0);
-      if (sum !== 100) {
-        labPortions[index === 0 ? 1 : 0].percent += (100 - sum);
-      }
-      renderMixLab();
+    function closeTicketSummaryModal() {
+      document.getElementById('ticketSummaryModal').classList.add('hidden');
+      switchStaffTab('seating');
+      showToast('✓ Ticket Live', 'Floor map and coal KDS updated.');
     }
 
-    function removeLabPortion(index) {
-      if (labPortions.length <= 1) {
-        showToast('⚠️ Bowl Requirement', 'Must have at least 1 flavor.');
-        return;
-      }
-      labPortions.splice(index, 1);
-      const split = Math.floor(100 / labPortions.length);
-      labPortions.forEach((f, i) => {
-        f.percent = (i === 0) ? (100 - split * (labPortions.length - 1)) : split;
-      });
-      renderMixLab();
+    function printTicketSlip() {
+      window.print();
+      showToast('🖨️ KDS Slip Sent', 'Printed to kitchen and bar printers.');
     }
 
     // ==================== FLOOR POS & SQUARE ANDROID READER ====================
