@@ -42,24 +42,21 @@
   </script>
 
   <style>
-    html {
-      font-size: 18px; /* +2px global base scale */
-    }
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #000000;
-      color: #E2E8F0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #09090B;
+      color: #F4F4F5;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       -webkit-user-select: none;
     }
-    .font-crest { font-family: 'Cinzel', serif; }
-    .font-mono-nums { font-family: 'JetBrains Mono', monospace; }
+    .font-crest { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono-nums { font-variant-numeric: tabular-nums; }
     
     .obsidian-card {
-      background: #0D1117;
+      background: #121215;
       border: 1px solid rgba(255, 255, 255, 0.07);
     }
 
@@ -278,19 +275,19 @@
     <!-- Center/Right: Guest QR Badge OR VIP Actions -->
     <div id="headerGuestRightView" class="flex items-center gap-1.5">
       <div class="text-right">
-        <span class="text-xs font-crest tracking-wider font-bold text-white block">EMPIRE HOOKAH</span>
-        <span class="text-[10px] text-brand-gold font-mono font-semibold">QR Digital Menu</span>
+        <span class="text-xs font-bold tracking-wider text-zinc-100 uppercase block">EMPIRE HOOKAH</span>
+        <span class="text-[10px] text-zinc-400 font-medium">Digital Lounge Menu</span>
       </div>
     </div>
 
     <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
-      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Stash & Smoke History">
-        <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+      <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95" title="View VIP Stash & Smoke History">
+        <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
         <span id="headerVipPointsBadge">⭐ 750 Pts</span>
       </button>
 
-      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
-        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
+      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95">
+        <i data-lucide="flame" class="w-3.5 h-3.5 text-red-400"></i>
         <span>Coals</span>
       </button>
 
@@ -303,21 +300,21 @@
 
   <!-- Top Navigation View Switcher (Visible only when VIP is logged in) -->
   <nav id="vipTopNav" class="hidden w-full max-w-lg px-3.5 pt-2.5 pb-1">
-    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950/90 border border-zinc-800 rounded-2xl text-xs font-bold shadow-lg">
-      <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-brand-gold text-black flex items-center justify-center gap-1.5 shadow-md font-extrabold text-[12px] transition active:scale-95">
+    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-900/90 border border-zinc-800/80 rounded-2xl text-xs font-medium shadow-lg">
+      <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-zinc-800 text-white flex items-center justify-center gap-1.5 shadow-sm font-semibold text-xs transition active:scale-95">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
         <span>Menu</span>
       </button>
-      <button onclick="switchCustomerTab('lab')" id="cust-tab-lab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
-        <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
+      <button onclick="switchCustomerTab('lab')" id="cust-tab-lab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
+        <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-amber-400"></i>
         <span>Mix Lab</span>
       </button>
-      <button onclick="switchCustomerTab('rewards')" id="cust-tab-rewards" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
-        <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
+      <button onclick="switchCustomerTab('rewards')" id="cust-tab-rewards" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
+        <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
         <span>VIP Stash</span>
       </button>
-      <button onclick="switchCustomerTab('tab')" id="cust-tab-tab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-[12px] transition active:scale-95">
-        <i data-lucide="receipt" class="w-3.5 h-3.5 text-brand-gold"></i>
+      <button onclick="switchCustomerTab('tab')" id="cust-tab-tab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
+        <i data-lucide="receipt" class="w-3.5 h-3.5 text-amber-400"></i>
         <span>My Tab</span>
       </button>
     </div>
@@ -329,53 +326,50 @@
     <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
     <div id="customer-view-menu" class="customer-panel flex flex-col gap-3">
       
-      <!-- 1. Lounge Policies & Pricing Hero Banner (Clean Typographic Layout - NO PILLS) -->
-      <section class="obsidian-card rounded-2xl p-3.5 space-y-2">
+      <!-- 1. Lounge Policies & Pricing Hero Banner -->
+      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-base">👑</span>
-            <div>
-              <h2 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE LOUNGE MENU</h2>
-              <p class="text-[11px] text-zinc-400 font-mono" id="menuLoungeHours">Daily: 5:00 PM – 2:00 AM</p>
-            </div>
+          <div>
+            <h2 class="font-bold text-xs tracking-wider text-zinc-100 uppercase">EMPIRE LOUNGE MENU</h2>
+            <p class="text-xs text-zinc-400" id="menuLoungeHours">Daily: 5:00 PM – 2:00 AM</p>
           </div>
-          <div class="flex items-center gap-1.5 text-[11px] font-mono justify-end">
-            <span class="text-red-400 font-semibold" id="menuRuleAgeBadge">🔞 21+ Required</span>
-            <span class="text-zinc-600">•</span>
-            <span class="text-brand-gold font-semibold" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
+          <div class="flex items-center gap-2 text-xs text-zinc-400 justify-end font-medium">
+            <span class="text-red-400/90" id="menuRuleAgeBadge">🔞 21+ Required</span>
+            <span class="text-zinc-600">·</span>
+            <span class="text-amber-400" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
           </div>
         </div>
 
         <!-- General Pricing Quick Bar -->
-        <div class="grid grid-cols-3 gap-1.5 pt-0.5 text-center font-mono">
-          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
-            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Original Hookah</span>
-            <span class="text-xs font-bold text-brand-gold" id="menuPriceOriginal">$35.00</span>
+        <div class="grid grid-cols-3 gap-2 pt-0.5 text-center">
+          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
+            <span class="text-[11px] text-zinc-400 block font-medium">Original Hookah</span>
+            <span class="text-sm font-semibold text-zinc-100 tabular-nums" id="menuPriceOriginal">$35.00</span>
           </div>
-          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
-            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Refill / Repack</span>
-            <span class="text-xs font-bold text-emerald-400" id="menuPriceRefill">$25.00</span>
+          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
+            <span class="text-[11px] text-zinc-400 block font-medium">Refill / Repack</span>
+            <span class="text-sm font-semibold text-emerald-400 tabular-nums" id="menuPriceRefill">$25.00</span>
           </div>
-          <div class="bg-black/80 p-1.5 rounded-xl border border-zinc-850">
-            <span class="text-[10px] text-zinc-400 block uppercase font-sans font-bold">Tangiers Noir</span>
-            <span class="text-xs font-bold text-brand-gold" id="menuPriceTangiers">$38.00</span>
+          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
+            <span class="text-[11px] text-zinc-400 block font-medium">Tangiers Noir</span>
+            <span class="text-sm font-semibold text-amber-400 tabular-nums" id="menuPriceTangiers">$38.00</span>
           </div>
         </div>
 
-        <p class="text-[11px] text-zinc-400 italic text-center" id="menuPolicyNotice">
+        <p class="text-xs text-zinc-400 italic text-center" id="menuPolicyNotice">
           Minimum 1 pipe per 2 guests. 90-minute lounge session per round.
         </p>
       </section>
 
       <!-- 2. Menu Sub-Tabs Switcher -->
-      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-950 rounded-xl border border-zinc-850 text-xs font-bold">
-        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-brand-gold text-black font-extrabold text-[12px] flex items-center justify-center gap-1 shadow-sm">
-          <span>👑 House Mixes</span>
+      <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-900/80 rounded-xl border border-zinc-800/80 text-xs">
+        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-zinc-800 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
+          <span>👑 House Blends</span>
         </button>
-        <button onclick="switchMenuSubTab('flavors')" id="menu-subtab-flavors" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+        <button onclick="switchMenuSubTab('flavors')" id="menu-subtab-flavors" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium text-xs flex items-center justify-center gap-1 transition">
           <span>🍃 Single Flavors</span>
         </button>
-        <button onclick="switchMenuSubTab('drinks')" id="menu-subtab-drinks" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white text-[12px] flex items-center justify-center gap-1">
+        <button onclick="switchMenuSubTab('drinks')" id="menu-subtab-drinks" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium text-xs flex items-center justify-center gap-1 transition">
           <span>☕ Drinks &amp; Tea</span>
         </button>
       </div>
@@ -385,25 +379,25 @@
         <!-- Injected via JS -->
       </div>
 
-      <!-- 4. Sub-Tab 2: Master Flavors with Filter System (Clean Segment Strip - NO PILLS) -->
+      <!-- 4. Sub-Tab 2: Master Flavors with Filter System -->
       <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
         
         <!-- Luxury Minimalist Filter Navigation Strip -->
-        <div class="bg-zinc-950 p-2.5 rounded-2xl border border-zinc-850 space-y-2">
+        <div class="bg-zinc-900/60 p-2.5 rounded-2xl border border-zinc-800/80 space-y-2">
           <!-- Filter Dimension Switcher -->
-          <div class="flex items-center justify-between border-b border-zinc-850 pb-1.5 px-1">
+          <div class="flex items-center justify-between border-b border-zinc-800/80 pb-2 px-1">
             <div class="flex items-center gap-4 text-xs">
-              <button onclick="setFilterCategory('profile')" id="filterCatBtn-profile" class="font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition">
+              <button onclick="setFilterCategory('profile')" id="filterCatBtn-profile" class="font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition">
                 Tasting Notes
               </button>
               <button onclick="setFilterCategory('region')" id="filterCatBtn-region" class="font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition">
                 Origin Region
               </button>
             </div>
-            <span id="flavorFilterActiveCount" class="text-[11px] font-mono text-brand-gold">13 Flavors</span>
+            <span id="flavorFilterActiveCount" class="text-xs text-zinc-400 tabular-nums">13 Flavors</span>
           </div>
 
-          <!-- Dynamic Text Tabs Strip (Clean Underline / Text Highlight - NO PILLS) -->
+          <!-- Dynamic Text Tabs Strip -->
           <div class="flex gap-4 overflow-x-auto no-scrollbar py-0.5 px-1 text-xs whitespace-nowrap" id="flavorFilterStrip">
             <!-- Populated via JS based on filter category: Profile or Region -->
           </div>
@@ -1568,8 +1562,8 @@
       activeMenuSubTab = subTabId;
       document.querySelectorAll('.menu-sub-panel').forEach(p => p.classList.add('hidden'));
       document.querySelectorAll('.menu-sub-btn').forEach(b => {
-        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
-        b.classList.add('text-zinc-400');
+        b.classList.remove('bg-zinc-800', 'text-white', 'shadow-sm', 'font-semibold');
+        b.classList.add('text-zinc-400', 'font-medium');
       });
 
       const activeSubPanel = document.getElementById(`menu-view-${subTabId}`);
@@ -1577,8 +1571,8 @@
 
       const activeBtn = document.getElementById(`menu-subtab-${subTabId}`);
       if (activeBtn) {
-        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-sm', 'font-extrabold');
-        activeBtn.classList.remove('text-zinc-400');
+        activeBtn.classList.add('bg-zinc-800', 'text-white', 'shadow-sm', 'font-semibold');
+        activeBtn.classList.remove('text-zinc-400', 'font-medium');
       }
 
       renderIcons();
@@ -1630,8 +1624,8 @@
         if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
 
         if (buzzPill) {
-          buzzPill.className = 'flex items-center gap-1.5 text-xs font-mono';
-          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-bold text-white">${buzz.icon} ${buzz.level}/10</span><span class="text-zinc-500">•</span><span class="font-sans font-bold uppercase text-[10px] ${buzz.textColor}">${buzz.category}</span>`;
+          buzzPill.className = 'flex items-center gap-1.5 text-xs';
+          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-semibold text-zinc-100">${buzz.icon} ${buzz.level}/10</span><span class="text-zinc-500">·</span><span class="font-medium uppercase text-xs ${buzz.textColor}">${buzz.category}</span>`;
         }
 
         if (trackEl) {
@@ -1642,14 +1636,14 @@
         if (headingEl) headingEl.textContent = 'Bowl Composition Breakdown (22g Pack):';
         if (listEl) {
           listEl.innerHTML = recipeList.map(r => `
-            <div class="flex justify-between items-center text-xs p-1.5 bg-black/40 rounded-xl border border-zinc-850">
-              <div class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
-                <span class="font-bold text-white">${r.item.name}</span>
-                <span class="text-[10px] text-zinc-400">• ${r.item.brand}</span>
-                <span class="text-[10px] text-zinc-500">• ${r.item.countryFlag || '🌍'} ${r.item.region || 'Craft'}</span>
+            <div class="flex justify-between items-center text-xs p-2 bg-zinc-950/80 rounded-xl border border-zinc-800/80">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
+                <span class="font-semibold text-zinc-100">${r.item.name}</span>
+                <span class="text-[11px] text-zinc-500">· ${r.item.brand}</span>
+                <span class="text-[11px] text-zinc-500">· ${r.item.countryFlag || '🌍'}</span>
               </div>
-              <span class="font-mono text-brand-gold font-bold">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
+              <span class="font-semibold text-zinc-100 tabular-nums">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
             </div>
           `).join('');
         }
@@ -1657,22 +1651,22 @@
         if (descEl) descEl.textContent = mix.desc;
         if (tagsEl) {
           tagsEl.innerHTML = `
-            <span class="text-[10px] text-brand-gold font-bold">22g Pack</span>
-            <span class="text-zinc-600">•</span>
-            <span class="text-[10px] text-zinc-300 font-medium">Russian Craft Clay Bowl</span>
-            <span class="text-zinc-600">•</span>
-            <span class="text-[10px] text-zinc-300 font-medium">Kaloud Lotus HMD</span>
+            <span class="text-xs text-amber-400 font-medium">22g Pack</span>
+            <span class="text-zinc-600">·</span>
+            <span class="text-xs text-zinc-300">Russian Craft Clay Bowl</span>
+            <span class="text-zinc-600">·</span>
+            <span class="text-xs text-zinc-300">Kaloud Lotus HMD</span>
           `;
         }
 
         if (actionEl) {
           actionEl.innerHTML = isVipLoggedIn ? `
-            <button onclick="closeMenuItemDetailModal(); loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+            <button onclick="closeMenuItemDetailModal(); loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
               <i data-lucide="flask-conical" class="w-4 h-4"></i>
               <span>Order Mix / Open in Mix Lab →</span>
             </button>
           ` : `
-            <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+            <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-amber-300 font-semibold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
               <i data-lucide="lock" class="w-4 h-4"></i>
               <span>Log In on Lounge Wi-Fi to Self-Order</span>
             </button>
@@ -1686,13 +1680,13 @@
         const buzz = getBuzzInfo(item.strength || 7);
 
         if (titleEl) titleEl.textContent = item.name;
-        if (badgeEl) badgeEl.textContent = `${item.brand} • ${item.countryFlag || '🌍'} ${item.region || 'Craft'}`;
+        if (badgeEl) badgeEl.textContent = `${item.brand} · ${item.countryFlag || '🌍'} ${item.region || 'Craft'}`;
         if (taglineEl) taglineEl.textContent = `${item.category === 'tangiers' ? 'Tangiers Noir Dark Leaf' : item.category === 'russian' ? 'Russian Dark Leaf Craft' : 'Blonde Leaf Craft'}`;
         if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
 
         if (buzzPill) {
-          buzzPill.className = 'flex items-center gap-1.5 text-xs font-mono';
-          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-bold text-white">${buzz.icon} Str ${item.strength || 7}/10</span><span class="text-zinc-500">•</span><span class="font-sans font-bold uppercase text-[10px] ${buzz.textColor}">${buzz.category}</span>`;
+          buzzPill.className = 'flex items-center gap-1.5 text-xs';
+          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-semibold text-zinc-100">${buzz.icon} Str ${item.strength || 7}/10</span><span class="text-zinc-500">·</span><span class="font-medium uppercase text-xs ${buzz.textColor}">${buzz.category}</span>`;
         }
 
         if (trackEl) {
@@ -1785,10 +1779,10 @@
       const regBtn = document.getElementById('filterCatBtn-region');
       if (profBtn && regBtn) {
         if (cat === 'profile') {
-          profBtn.className = 'font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition';
+          profBtn.className = 'font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition';
           regBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
         } else {
-          regBtn.className = 'font-bold text-brand-gold border-b-2 border-brand-gold pb-0.5 transition';
+          regBtn.className = 'font-semibold text-zinc-100 border-b-2 border-amber-400 pb-0.5 transition';
           profBtn.className = 'font-medium text-zinc-400 hover:text-zinc-200 pb-0.5 transition';
         }
       }
@@ -1806,8 +1800,8 @@
           const btn = document.createElement('button');
           btn.onclick = () => filterFlavorsByProfile(item.id);
           if (isSelected) {
-            btn.className = 'text-white font-bold text-xs flex items-center gap-1.5 border-b border-brand-gold pb-0.5 flex-shrink-0';
-            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span><span>${item.label}</span>`;
+            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-0.5 flex-shrink-0';
+            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
           } else {
             btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
             btn.innerHTML = `<span>${item.label}</span>`;
@@ -1820,8 +1814,8 @@
           const btn = document.createElement('button');
           btn.onclick = () => filterFlavorsByRegion(item.id);
           if (isSelected) {
-            btn.className = 'text-white font-bold text-xs flex items-center gap-1.5 border-b border-brand-gold pb-0.5 flex-shrink-0';
-            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span><span>${item.label}</span>`;
+            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-0.5 flex-shrink-0';
+            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
           } else {
             btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-0.5';
             btn.innerHTML = `<span>${item.label}</span>`;
@@ -1855,7 +1849,7 @@
       if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
       if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
 
-      // 2. Render Sub-Tab 1: House Mixes (Sleek cards with bottom sheet trigger)
+      // 2. Render Sub-Tab 1: House Mixes (Clean minimal cards)
       const houseCont = document.getElementById('menu-view-house');
       if (houseCont) {
         houseCont.innerHTML = '';
@@ -1877,42 +1871,37 @@
           const buzz = getBuzzInfo(buzzVal);
 
           const card = document.createElement('div');
-          card.className = 'obsidian-card rounded-2xl p-3 border border-zinc-800 space-y-2 transition-all hover:border-amber-500/40 cursor-pointer active:scale-[0.99]';
-          card.onclick = (e) => {
-            if (e.target.closest('button')) return;
-            openMenuItemDetailModal(mix.id, 'house');
-          };
+          card.className = 'group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none';
+          card.onclick = () => openMenuItemDetailModal(mix.id, 'house');
 
           card.innerHTML = `
-            <div class="flex justify-between items-start">
-              <div>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] text-brand-gold font-bold font-mono uppercase">${mix.badge || 'Craft #1'}</span>
-                  <span class="text-zinc-600">•</span>
-                  <h3 class="font-bold text-white text-xs">${mix.name}</h3>
+            <div class="flex items-start justify-between gap-3">
+              <!-- Left Side: Clean & Uncluttered -->
+              <div class="min-w-0 flex-1 space-y-1">
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-white transition">${mix.name}</h3>
+                  ${mix.badge ? `<span class="text-[10px] uppercase font-semibold tracking-wider text-amber-400 bg-amber-950/40 px-1.5 py-0.5 rounded">${mix.badge}</span>` : ''}
                 </div>
-                <p class="text-[11px] text-zinc-400 mt-0.5">${mix.tagline}</p>
+                <p class="text-xs text-zinc-400 leading-snug line-clamp-1">${mix.tagline || mix.desc}</p>
+                
+                <!-- Miniature Ribbon Track -->
+                <div class="h-1 rounded-full w-full bg-zinc-800/80 overflow-hidden mt-2" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
               </div>
 
-              <span class="text-xs font-mono font-extrabold text-brand-gold">
-                $${(pricing.originalPrice || 35.00).toFixed(2)}
-              </span>
-            </div>
+              <!-- Right Side: Buzz Top Right, Price Bottom Right -->
+              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[50px]">
+                <!-- Top Right: Buzz Rating -->
+                <div class="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                  <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
+                  <span class="text-zinc-200 font-semibold">${buzz.level}</span>
+                  <span class="text-[11px] text-zinc-500 uppercase tracking-wide">· ${buzz.category}</span>
+                </div>
 
-            <!-- Sleek Miniature Gradient Track Ribbon -->
-            <div class="h-1 rounded-full overflow-hidden w-full bg-zinc-900" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
-
-            <div class="flex items-center justify-between pt-0.5 text-xs">
-              <!-- Typographic Buzz Indicator (NO PILLS) -->
-              <div class="flex items-center gap-1.5 text-[11px] font-mono">
-                <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
-                <span class="font-bold text-white">${buzz.icon} ${buzz.level}</span>
-                <span class="text-[10px] font-sans font-bold uppercase ${buzz.textColor}">${buzz.category}</span>
+                <!-- Bottom Right: Price -->
+                <span class="text-sm font-semibold text-zinc-100 tabular-nums">
+                  $${(pricing.originalPrice || 35.00).toFixed(2)}
+                </span>
               </div>
-
-              <button onclick="openMenuItemDetailModal('${mix.id}', 'house')" class="text-[11px] font-bold text-brand-gold hover:text-amber-300 flex items-center gap-1 transition">
-                <span>Composition ↗</span>
-              </button>
             </div>
           `;
           houseCont.appendChild(card);
@@ -1944,49 +1933,39 @@
           const isOut = item.stock === 'out_of_stock';
           const buzz = getBuzzInfo(item.strength || 7);
           const card = document.createElement('div');
-          card.className = `obsidian-card rounded-2xl p-3 border transition-all cursor-pointer ${isOut ? 'bg-zinc-950/40 border-zinc-900 opacity-60' : 'border-zinc-800 hover:border-zinc-700 active:scale-[0.99]'}`;
-          card.onclick = (e) => {
-            if (e.target.closest('button')) return;
-            openMenuItemDetailModal(item.id, 'flavor');
-          };
+          card.className = `group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none ${isOut ? 'opacity-50 pointer-events-none' : ''}`;
+          card.onclick = () => openMenuItemDetailModal(item.id, 'flavor');
 
           card.innerHTML = `
-            <div class="flex justify-between items-start gap-2">
-              <div class="flex items-start gap-2.5 min-w-0 flex-1">
-                <span class="w-1.5 h-9 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color};"></span>
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="font-bold text-white text-xs ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</span>
-                    <span class="text-[10px] text-zinc-400">• ${item.brand}</span>
-                    <span class="text-[10px] text-zinc-400 font-mono">• ${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
-                    ${isOut ? '<span class="text-[9px] text-red-400 font-bold ml-1">OUT OF STOCK ✕</span>' : ''}
-                  </div>
-                  <p class="text-[11px] text-zinc-400 mt-0.5 truncate">${item.desc}</p>
-                  
-                  <div class="flex items-center gap-2 text-[10px] text-zinc-400 mt-1 font-mono">
-                    <span class="flex items-center gap-1">
-                      <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
-                      <span>${buzz.icon} Str ${item.strength || 7}/10</span>
-                      <span class="uppercase font-bold ${buzz.textColor}">${buzz.category}</span>
-                    </span>
-                    <span class="text-zinc-600">•</span>
-                    <span class="text-zinc-400 truncate">${(item.profiles || []).join(', ')}</span>
-                  </div>
+            <div class="flex items-start justify-between gap-3">
+              <!-- Left Side: Clean & Uncluttered -->
+              <div class="min-w-0 flex-1 space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color || '#E5A93C'};"></span>
+                  <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-white transition ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</h3>
+                  <span class="text-xs text-zinc-500 font-medium">· ${item.brand}</span>
+                  <span class="text-xs text-zinc-500">· ${item.countryFlag || '🌍'}</span>
                 </div>
+                <p class="text-xs text-zinc-400 leading-snug line-clamp-1">${item.desc}</p>
+                <p class="text-[11px] text-zinc-500 tracking-wide line-clamp-1">${(item.profiles || []).join(' · ')}</p>
               </div>
 
-              <div class="flex flex-col items-end gap-1 flex-shrink-0">
+              <!-- Right Side: Buzz Top Right, Price / Out Bottom Right -->
+              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[50px]">
+                <!-- Top Right: Buzz Rating -->
+                <div class="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
+                  <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
+                  <span class="text-zinc-200 font-semibold">${item.strength || 7}</span>
+                  <span class="text-[11px] text-zinc-500 uppercase tracking-wide">· ${buzz.category}</span>
+                </div>
+
+                <!-- Bottom Right: Price or Out -->
                 ${isOut ? `
-                  <span class="text-[11px] text-zinc-600 font-bold">Out</span>
-                ` : isVipLoggedIn ? `
-                  <button onclick="addSingleFlavorAndGoToLab('${item.id}')" class="px-2.5 py-1 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-brand-gold hover:bg-brand-goldHover text-black shadow-md">
-                    <i data-lucide="plus" class="w-3 h-3"></i>
-                    <span>+ Add</span>
-                  </button>
+                  <span class="text-xs font-semibold text-red-400/90 uppercase tracking-wider">Out</span>
                 ` : `
-                  <button onclick="openMenuItemDetailModal('${item.id}', 'flavor')" class="text-[11px] font-bold text-brand-gold hover:text-white transition">
-                    <span>Details ↗</span>
-                  </button>
+                  <span class="text-sm font-semibold text-zinc-100 tabular-nums">
+                    $${(pricing.originalPrice || 35.00).toFixed(2)}
+                  </span>
                 `}
               </div>
             </div>
@@ -2007,33 +1986,21 @@
         ];
 
         drinksCont.innerHTML = `
-          <div class="obsidian-card rounded-2xl p-3 space-y-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-white block mb-1">☕ Samovar Station &amp; Beverages</span>
-            <div class="space-y-2">
-              ${drinksList.map(d => `
-                <div class="bg-black p-3 rounded-xl border border-zinc-800 flex items-center justify-between gap-2.5">
-                  <div class="flex items-center gap-2.5 min-w-0">
-                    <span class="text-2xl flex-shrink-0">${d.icon}</span>
-                    <div>
-                      <div class="flex items-center gap-1.5">
-                        <span class="font-bold text-white text-xs">${d.name}</span>
-                        <span class="text-xs font-bold text-brand-gold font-mono">$${d.price.toFixed(2)}</span>
-                      </div>
-                      <p class="text-[11px] text-zinc-400 mt-0.5">${d.desc}</p>
-                    </div>
+          <div class="space-y-2">
+            ${drinksList.map(d => `
+              <div onclick="${isVipLoggedIn ? `addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')` : `openVipLoginModal()`}" class="rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0 flex-1">
+                  <span class="text-2xl flex-shrink-0">${d.icon}</span>
+                  <div class="min-w-0 flex-1">
+                    <h3 class="text-sm font-semibold text-zinc-100 tracking-tight">${d.name}</h3>
+                    <p class="text-xs text-zinc-400 mt-0.5 line-clamp-1">${d.desc}</p>
                   </div>
-                  ${isVipLoggedIn ? `
-                    <button onclick="addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl text-xs font-bold flex-shrink-0 active:scale-95">
-                      + Order
-                    </button>
-                  ` : `
-                    <button onclick="openVipLoginModal()" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white rounded-xl text-xs font-semibold flex-shrink-0 active:scale-95">
-                      Log In
-                    </button>
-                  `}
                 </div>
-              `).join('')}
-            </div>
+                <div class="text-right flex-shrink-0">
+                  <span class="text-sm font-semibold text-zinc-100 tabular-nums">$${d.price.toFixed(2)}</span>
+                </div>
+              </div>
+            `).join('')}
           </div>
         `;
       }
@@ -2071,28 +2038,28 @@
         } else {
           history.forEach(item => {
             const card = document.createElement('div');
-            card.className = 'bg-black/90 p-3 rounded-2xl border border-zinc-800 space-y-1.5 text-xs transition hover:border-amber-500/40';
+            card.className = 'bg-[#141417] p-3.5 rounded-2xl border border-zinc-800/80 space-y-2 text-xs transition hover:border-zinc-700/80';
             card.innerHTML = `
               <div class="flex justify-between items-start">
                 <div>
                   <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="font-bold text-white text-xs">${item.name}</span>
-                    <span class="text-[9px] bg-zinc-900 text-zinc-400 font-mono px-1 rounded">${item.date}</span>
+                    <span class="font-semibold text-zinc-100 text-sm">${item.name}</span>
+                    <span class="text-xs text-zinc-500 font-medium">· ${item.date}</span>
                   </div>
-                  <p class="text-[11px] text-zinc-300 font-mono mt-0.5">${item.flavors}</p>
+                  <p class="text-xs text-zinc-400 mt-0.5">${item.flavors}</p>
                 </div>
-                <span class="text-[10px] text-brand-gold font-bold bg-zinc-950 px-1.5 py-0.5 rounded border border-zinc-800">${item.rating || '5.0 ★'}</span>
+                <span class="text-xs font-semibold text-amber-400 bg-zinc-950 px-2 py-0.5 rounded-lg border border-zinc-800">${item.rating || '5.0 ★'}</span>
               </div>
 
-              <div class="flex items-center justify-between pt-1 border-t border-zinc-850">
-                <div class="flex items-center gap-1.5 text-[11px] font-mono">
+              <div class="flex items-center justify-between pt-2 border-t border-zinc-800/60">
+                <div class="flex items-center gap-1.5 text-xs text-zinc-400">
                   <span class="w-1.5 h-1.5 rounded-full" style="background: ${item.dotColor || '#EF4444'};"></span>
-                  <span class="font-bold text-white">${item.icon || '⚡'} Buzz ${item.buzz || 7.6}/10</span>
-                  <span class="text-[10px] font-sans font-bold uppercase text-zinc-400">${item.category || 'BOLD'}</span>
+                  <span class="font-semibold text-zinc-200">${item.icon || '⚡'} Buzz ${item.buzz || 7.6}/10</span>
+                  <span class="text-[11px] text-zinc-500 uppercase tracking-wide">· ${item.category || 'BOLD'}</span>
                 </div>
 
-                <button onclick="reorderPreviousBowl('${item.mixId}')" class="px-2.5 py-1 bg-brand-gold hover:bg-brand-goldHover text-black rounded-xl font-extrabold text-[11px] flex items-center gap-1 active:scale-95 transition shadow-sm">
-                  <i data-lucide="rotate-cw" class="w-3 h-3"></i>
+                <button onclick="reorderPreviousBowl('${item.mixId}')" class="px-3 py-1 bg-brand-gold hover:bg-brand-goldHover text-black rounded-xl font-bold text-xs flex items-center gap-1 active:scale-95 transition shadow-sm">
+                  <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
                   <span>Re-Smoke Bowl</span>
                 </button>
               </div>
