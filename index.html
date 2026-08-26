@@ -239,51 +239,57 @@
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
   <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
-  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-3.5 py-2.5 flex items-center justify-between">
+  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-3.5 py-2 flex items-center justify-between">
     
     <!-- Left: VIP Log In Button (Public Guest View) OR VIP Profile Info (Logged In View) -->
     <div id="headerGuestView" class="flex items-center gap-2">
       <!-- Top Left VIP Login Button -->
-      <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
+      <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
         <i data-lucide="lock" class="w-3.5 h-3.5"></i>
         <span>VIP Log In</span>
       </button>
 
-      <div class="flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-850">
+      <div class="flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-900/80 px-2 py-1 rounded-lg border border-zinc-800/60">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
         <span id="headerWifiStatusText">📶 Empire Wi-Fi</span>
       </div>
     </div>
 
     <div id="headerVipView" class="hidden flex items-center gap-2">
-      <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold font-bold text-xs">
+      <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs">
         <span id="vipAvatarLetter">A</span>
       </div>
       <div>
         <div class="flex items-center gap-1.5">
           <span class="font-bold text-white text-xs" id="vipMemberNameDisplay">Alex M.</span>
-          <span class="text-[9px] bg-amber-950 text-brand-gold font-mono font-bold px-1 rounded border border-amber-800/50" id="vipTierDisplay">GOLD VIP</span>
+          <span class="text-[9px] bg-amber-950 text-amber-400 font-semibold px-1 rounded border border-amber-800/50" id="vipTierDisplay">GOLD VIP</span>
         </div>
-        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[11px] text-zinc-300 font-semibold hover:text-brand-gold transition">
+        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[11px] text-zinc-300 font-medium hover:text-amber-400 transition">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="headerSeatDisplay" class="font-bold text-brand-gold">Floating VIP Tab #409</span>
+          <span id="headerSeatDisplay" class="font-semibold text-amber-400">Floating VIP Tab #409</span>
           <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
         </button>
       </div>
     </div>
 
-    <!-- Center/Right: Guest QR Badge OR VIP Actions -->
-    <div id="headerGuestRightView" class="flex items-center gap-1.5">
-      <div class="text-right">
-        <span class="text-xs font-bold tracking-wider text-zinc-100 uppercase block">EMPIRE HOOKAH</span>
-        <span class="text-[10px] text-zinc-400 font-medium">Digital Lounge Menu</span>
+    <!-- Center: Empire Lounge Signature Logo (No Text Headers) -->
+    <div class="flex items-center justify-center">
+      <div class="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]" title="Empire Lounge">
+        <svg class="w-5 h-5 fill-current text-amber-400" viewBox="0 0 100 100">
+          <path d="M50 14 L62 32 L84 22 L76 48 L24 48 L16 22 L38 32 Z M28 54 L72 54 L68 76 L50 86 L32 76 Z M46 60 L54 60 L52 74 L48 74 Z" fill-rule="evenodd"/>
+        </svg>
       </div>
+    </div>
+
+    <!-- Right: Guest Balance / VIP Actions -->
+    <div id="headerGuestRightView" class="flex items-center gap-1.5 w-[70px] justify-end">
+      <!-- Minimalist balance space -->
     </div>
 
     <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
       <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95" title="View VIP Stash & Smoke History">
         <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span id="headerVipPointsBadge">⭐ 750 Pts</span>
+        <span id="headerVipPointsBadge">⭐ 750</span>
       </button>
 
       <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 transition active:scale-95">
@@ -324,42 +330,25 @@
   <main class="w-full max-w-lg px-3.5 pt-1.5 flex flex-col gap-3">
 
     <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
-    <div id="customer-view-menu" class="customer-panel flex flex-col gap-3">
+    <div id="customer-view-menu" class="customer-panel flex flex-col gap-2.5">
       
-      <!-- 1. Lounge Policies & Pricing Hero Banner -->
-      <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-xs tracking-wider text-zinc-100 uppercase">EMPIRE LOUNGE MENU</h2>
-            <p class="text-xs text-zinc-400" id="menuLoungeHours">Daily: 5:00 PM – 2:00 AM</p>
-          </div>
-          <div class="flex items-center gap-2 text-xs text-zinc-400 justify-end font-medium">
-            <span class="text-red-400/90" id="menuRuleAgeBadge">🔞 21+ Required</span>
-            <span class="text-zinc-600">·</span>
-            <span class="text-amber-400" id="menuRulePipeBadge">👥 2 Guests / Pipe</span>
-          </div>
+      <!-- 1. Ambient Lounge Policies & Pricing Strip (Seamless, No Bulky Card) -->
+      <div class="flex items-center justify-between text-xs px-1 text-zinc-400 font-medium tracking-tight">
+        <div class="flex items-center gap-1.5 text-zinc-400">
+          <span id="menuRuleAgeBadge">🔞 21+</span>
+          <span class="text-zinc-700">·</span>
+          <span id="menuRulePipeBadge">👥 2 / Pipe</span>
+          <span class="text-zinc-700">·</span>
+          <span id="menuLoungeHours" class="text-zinc-500">5PM–2AM</span>
         </div>
-
-        <!-- General Pricing Quick Bar -->
-        <div class="grid grid-cols-3 gap-2 pt-0.5 text-center">
-          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
-            <span class="text-[11px] text-zinc-400 block font-medium">Original Hookah</span>
-            <span class="text-sm font-semibold text-zinc-100 tabular-nums" id="menuPriceOriginal">$35.00</span>
-          </div>
-          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
-            <span class="text-[11px] text-zinc-400 block font-medium">Refill / Repack</span>
-            <span class="text-sm font-semibold text-emerald-400 tabular-nums" id="menuPriceRefill">$25.00</span>
-          </div>
-          <div class="bg-zinc-950/80 p-2 rounded-xl border border-zinc-800/80">
-            <span class="text-[11px] text-zinc-400 block font-medium">Tangiers Noir</span>
-            <span class="text-sm font-semibold text-amber-400 tabular-nums" id="menuPriceTangiers">$38.00</span>
-          </div>
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35</strong></span>
+          <span class="text-zinc-700">·</span>
+          <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25</strong></span>
+          <span class="text-zinc-700">·</span>
+          <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38</strong></span>
         </div>
-
-        <p class="text-xs text-zinc-400 italic text-center" id="menuPolicyNotice">
-          Minimum 1 pipe per 2 guests. 90-minute lounge session per round.
-        </p>
-      </section>
+      </div>
 
       <!-- 2. Menu Sub-Tabs Switcher -->
       <div class="grid grid-cols-3 gap-1 p-1 bg-zinc-900/80 rounded-xl border border-zinc-800/80 text-xs">
@@ -1091,6 +1080,30 @@
 
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
+    const BRAND_WATERMARKS = {
+      empire: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 14 L62 32 L84 22 L76 48 L24 48 L16 22 L38 32 Z M28 54 L72 54 L68 76 L50 86 L32 76 Z M46 60 L54 60 L52 74 L48 74 Z" fill-rule="evenodd"/></svg>`,
+      musthave: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M20 25 L35 25 L50 50 L65 25 L80 25 L80 80 L66 80 L66 48 L54 68 L46 68 L34 48 L34 80 L20 80 Z M38 12 L50 18 L62 12 L56 22 L44 22 Z"/></svg>`,
+      tangiers: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M15 22 L85 22 L85 36 L58 36 L58 82 L42 82 L42 36 L15 36 Z M50 10 C53 15 60 17 65 15 C62 20 55 22 50 20 C45 22 38 20 35 15 C40 17 47 15 50 10 Z"/></svg>`,
+      darkside: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 10 L85 32 L85 68 L50 90 L15 68 L15 32 Z M50 24 L28 40 L28 60 L50 76 L72 60 L72 40 Z M50 35 L62 44 L62 56 L50 65 L38 56 L38 44 Z"/></svg>`,
+      blackburn: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M25 18 L55 18 C68 18 76 25 76 34 C76 40 71 46 63 48 C73 50 79 57 79 67 C79 78 70 85 55 85 L25 85 Z M42 32 L42 45 L53 45 C58 45 62 42 62 38 C62 34 58 32 53 32 Z M42 57 L42 71 L55 71 C61 71 65 68 65 64 C65 60 61 57 55 57 Z"/></svg>`,
+      alfakher: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 15 C55 25 68 28 80 25 C75 35 65 40 58 42 L58 85 L42 85 L42 42 C35 40 25 35 20 25 C32 28 45 25 50 15 Z M32 60 L68 60 L64 74 L36 74 Z"/></svg>`,
+      starbuzz: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 5 L61 35 L95 38 L68 60 L76 92 L50 74 L24 92 L32 60 L5 38 L39 35 Z"/></svg>`,
+      adalya: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 15 L78 82 L62 82 L55 64 L45 64 L38 82 L22 82 Z M50 35 L47 52 L53 52 Z M18 45 C28 42 35 32 38 20 C25 24 18 34 18 45 Z M82 45 C72 42 65 32 62 20 C75 24 82 34 82 45 Z"/></svg>`
+    };
+
+    function getBrandWatermark(brandName) {
+      if (!brandName) return BRAND_WATERMARKS.empire;
+      const b = brandName.toLowerCase().replace(/[^a-z]/g, '');
+      if (b.includes('musthave')) return BRAND_WATERMARKS.musthave;
+      if (b.includes('tangiers')) return BRAND_WATERMARKS.tangiers;
+      if (b.includes('darkside')) return BRAND_WATERMARKS.darkside;
+      if (b.includes('blackburn')) return BRAND_WATERMARKS.blackburn;
+      if (b.includes('fakher')) return BRAND_WATERMARKS.alfakher;
+      if (b.includes('starbuzz')) return BRAND_WATERMARKS.starbuzz;
+      if (b.includes('adalya')) return BRAND_WATERMARKS.adalya;
+      return BRAND_WATERMARKS.empire;
+    }
+
     const STOKED_MASTER_INVENTORY = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'], region: 'Russia', countryFlag: '🇷🇺' },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'], region: 'Russia', countryFlag: '🇷🇺' },
@@ -1849,7 +1862,7 @@
       if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
       if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
 
-      // 2. Render Sub-Tab 1: House Mixes (Clean minimal cards)
+      // 2. Render Sub-Tab 1: House Mixes (Clean minimal cards with Lounge Watermark)
       const houseCont = document.getElementById('menu-view-house');
       if (houseCont) {
         houseCont.innerHTML = '';
@@ -1871,11 +1884,16 @@
           const buzz = getBuzzInfo(buzzVal);
 
           const card = document.createElement('div');
-          card.className = 'group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none';
+          card.className = 'relative overflow-hidden group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none';
           card.onclick = () => openMenuItemDetailModal(mix.id, 'house');
 
           card.innerHTML = `
-            <div class="flex items-start justify-between gap-3">
+            <!-- Empire Lounge Watermark in Background -->
+            <div class="absolute -right-3 -bottom-3 w-28 h-28 pointer-events-none opacity-[0.06] group-hover:opacity-[0.12] transition-opacity duration-300 text-amber-400 flex items-center justify-center overflow-hidden">
+              ${BRAND_WATERMARKS.empire}
+            </div>
+
+            <div class="relative z-10 flex items-start justify-between gap-3">
               <!-- Left Side: Clean & Uncluttered -->
               <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex items-center gap-2">
@@ -1908,7 +1926,7 @@
         });
       }
 
-      // 3. Render Sub-Tab 2: Master Flavors
+      // 3. Render Sub-Tab 2: Master Flavors (with Brand Watermarks)
       renderFlavorFilterStrip();
       const flavorsCont = document.getElementById('menuFlavorsContainer');
       if (flavorsCont) {
@@ -1932,12 +1950,18 @@
         filtered.forEach(item => {
           const isOut = item.stock === 'out_of_stock';
           const buzz = getBuzzInfo(item.strength || 7);
+          const brandWatermark = getBrandWatermark(item.brand);
           const card = document.createElement('div');
-          card.className = `group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none ${isOut ? 'opacity-50 pointer-events-none' : ''}`;
+          card.className = `relative overflow-hidden group rounded-2xl bg-[#141417] hover:bg-[#18181c] border border-zinc-800/80 hover:border-zinc-700/80 p-3.5 transition-all duration-150 cursor-pointer active:scale-[0.99] select-none ${isOut ? 'opacity-50 pointer-events-none' : ''}`;
           card.onclick = () => openMenuItemDetailModal(item.id, 'flavor');
 
           card.innerHTML = `
-            <div class="flex items-start justify-between gap-3">
+            <!-- Brand Logo Watermark in Background -->
+            <div class="absolute -right-3 -bottom-3 w-28 h-28 pointer-events-none opacity-[0.05] group-hover:opacity-[0.10] transition-opacity duration-300 text-zinc-100 flex items-center justify-center overflow-hidden">
+              ${brandWatermark}
+            </div>
+
+            <div class="relative z-10 flex items-start justify-between gap-3">
               <!-- Left Side: Clean & Uncluttered -->
               <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex items-center gap-2">
