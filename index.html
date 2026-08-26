@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Stoked Mix Lab</title>
+  <title>Empire Hookah Lounge — Stoked Lab Dial</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0B0E14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,11 +60,63 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
+    /* STOKED VERTICAL RULER STATION DIAL (LEFT COLUMN) */
+    .v-ruler-sidebar {
+      width: 130px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding-right: 4px;
+      overflow-y: auto;
+      max-height: 220px;
+    }
+    .v-ruler-track {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .v-ruler-mark-station {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px 6px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #94A3B8;
+      background: transparent;
+      transition: all 0.15s ease;
+      border-left: 2.5px solid transparent;
+    }
+    .v-ruler-mark-station:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .v-ruler-mark-station.active {
+      color: #FFFFFF;
+      background: rgba(168, 85, 247, 0.15);
+      border-left: 2.5px solid #A855F7;
+      box-shadow: inset 0 0 12px rgba(168, 85, 247, 0.15);
+    }
+    .v-ruler-station-count {
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: #64748B;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    .v-ruler-mark-station.active .v-ruler-station-count {
+      color: #D8B4FE;
+      background: rgba(168, 85, 247, 0.3);
+    }
+
+    /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM (RIGHT COLUMN) */
     .cylinder-wheel-container {
       position: relative;
-      width: 100%;
-      height: 195px;
+      flex: 1;
+      height: 220px;
       overflow: hidden;
       perspective: 900px;
       touch-action: none;
@@ -80,16 +132,16 @@
     .cylinder-target-slot {
       position: absolute;
       top: 50%;
-      left: 6px;
-      right: 6px;
-      height: 46px;
+      left: 4px;
+      right: 4px;
+      height: 44px;
       transform: translateY(-50%);
-      background: rgba(168, 85, 247, 0.12);
+      background: rgba(168, 85, 247, 0.14);
       border-top: 1.5px solid rgba(168, 85, 247, 0.65);
       border-bottom: 1.5px solid rgba(168, 85, 247, 0.65);
-      border-radius: 12px;
+      border-radius: 10px;
       pointer-events: none;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.28), inset 0 0 10px rgba(168, 85, 247, 0.18);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 0 10px rgba(168, 85, 247, 0.18);
       z-index: 5;
     }
     .cylinder-drum-track {
@@ -97,21 +149,21 @@
       top: 50%;
       left: 0;
       width: 100%;
-      margin-top: -23px;
+      margin-top: -22px;
       transform-style: preserve-3d;
     }
     .cylinder-item-row {
       position: absolute;
       width: 100%;
-      height: 46px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 18px;
+      padding: 0 12px;
       border: none;
       background: transparent;
-      color: #E2E8F0;
-      font-size: 0.88rem;
+      color: #CBD5E1;
+      font-size: 0.84rem;
       font-weight: 700;
       transform-origin: center center -110px;
       transition: opacity 0.12s ease, transform 0.1s ease;
@@ -123,18 +175,18 @@
       text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
     }
     .cylinder-color-bar {
-      width: 5px;
-      height: 22px;
-      border-radius: 4px;
-      margin-right: 10px;
+      width: 4px;
+      height: 18px;
+      border-radius: 3px;
+      margin-right: 8px;
       flex-shrink: 0;
     }
 
     /* CONTINUOUS SPECTRUM GRADIENT TRACK */
     .spectrum-track {
-      height: 10px;
+      height: 8px;
       border-radius: 999px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 14px rgba(168,85,247,0.3);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 0 12px rgba(168,85,247,0.25);
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -172,7 +224,7 @@
       </div>
     </div>
 
-    <!-- Right Controls: Call Coals & 21+ -->
+    <!-- Right Controls: Coals & 21+ -->
     <div class="flex items-center gap-2">
       <button onclick="requestCoalService()" class="bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition active:scale-95">
         <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
@@ -186,86 +238,83 @@
     </div>
   </header>
 
-  <!-- ==================== 2. MAIN STOKED MIX LAB ENTRY VIEW ==================== -->
+  <!-- ==================== 2. MAIN STOKED MIX LAB VIEW ==================== -->
   <main class="w-full max-w-lg px-3.5 pt-2.5 flex flex-col gap-3">
 
-    <!-- A. ACTIVE MIX DECK & SPECTRUM GRADIENT -->
-    <section class="stoked-lab-card rounded-2xl p-3.5 border border-purple-500/25">
-      
-      <!-- Top Title & Strength Rating Badge -->
-      <div class="flex justify-between items-center mb-2">
+    <!-- 1. DYNAMIC IN YOUR BOWL TRAY (POPS UP DYNAMICALLY ABOVE THE DIAL) -->
+    <section class="stoked-lab-card rounded-2xl p-3.5 border border-purple-500/30 transition-all">
+      <div class="flex justify-between items-center mb-1.5">
         <div class="flex items-center gap-1.5">
           <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-accent"></i>
-          <span class="text-xs font-bold text-white uppercase tracking-wider">Russian &amp; Tangiers Mix</span>
+          <span class="text-xs font-bold text-white uppercase tracking-wider">In Your Bowl Mix</span>
         </div>
-        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/50" id="labBuzzBadge">
+        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/50 font-mono" id="labBuzzBadge">
           7.6/10 DARK LEAF
         </span>
       </div>
 
-      <!-- Mix Recipe Name Input -->
-      <input 
-        type="text" 
-        id="mixNameInput"
-        value="Pink Cane Sensation" 
-        placeholder="Name your custom bowl..."
-        class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3 py-1.5 text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 mb-2"
-      />
-
       <!-- Continuous Multi-Stop Spectrum Gradient Track -->
-      <div id="spectrumRibbon" class="spectrum-track w-full mb-3"></div>
+      <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5"></div>
 
-      <!-- Active Selected Flavor Slots (1 to 3 Flavors) -->
-      <div class="space-y-2" id="flavorSlotsContainer">
-        <!-- Injected dynamically via JS -->
+      <!-- Dynamically Populated Flavor Chips Tray -->
+      <div class="space-y-1.5" id="flavorSlotsContainer">
+        <!-- Injected dynamically via JS as flavors are selected -->
       </div>
     </section>
 
-    <!-- B. STOKED 3D MECHANICAL ROTARY CYLINDER DRUM DIAL -->
-    <section class="stoked-lab-card rounded-2xl p-3 border border-purple-500/30 relative">
-      <div class="flex justify-between items-center mb-1 px-1">
+    <!-- 2. STOKED SPLIT DIAL: BRAND LIST & DIAL (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
+    <section class="stoked-lab-card rounded-2xl p-3 border border-purple-500/30">
+      
+      <div class="flex justify-between items-center mb-2 px-1">
         <div class="flex items-center gap-1.5">
           <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-accent animate-spin" style="animation-duration: 12s;"></i>
-          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Lounge Shisha Dial</span>
+          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
         </div>
-        <span class="text-[10px] text-purple-300 font-medium">Scroll / Drag drum</span>
+        <span class="text-[10px] text-purple-300 font-medium">Select Brand • Spin Drum</span>
       </div>
 
-      <!-- Category & Brand Filter Tabs -->
-      <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1 mb-1" id="wheelBrandTabs">
-        <!-- Injected via JS -->
-      </div>
+      <!-- Dual Split Layout: Brands on Left, Flavor Drum on Right -->
+      <div class="flex gap-2.5 items-stretch">
+        
+        <!-- LEFT: BRANDS VERTICAL STATION DIAL -->
+        <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
+          <div class="v-ruler-track" id="brandStationsTrack">
+            <!-- Brand stations populated via JS -->
+          </div>
+        </aside>
 
-      <!-- 3D Mechanical Cylinder Drum Container -->
-      <div 
-        id="rotaryWheel" 
-        class="cylinder-wheel-container"
-        onwheel="handleWheelScroll(event)"
-        ontouchstart="handleTouchStart(event)"
-        ontouchmove="handleTouchMove(event)"
-        ontouchend="handleTouchEnd(event)"
-      >
-        <div class="cylinder-drum-viewport">
-          <!-- Center Illuminated Target Slot -->
-          <div class="cylinder-target-slot"></div>
-          <!-- 3D Drum Items Track -->
-          <div class="cylinder-drum-track" id="cylinderDrumTrack">
-            <!-- Populated via JS -->
+        <!-- RIGHT: 3D MECHANICAL ROTARY FLAVORS DRUM -->
+        <div 
+          id="rotaryWheel" 
+          class="cylinder-wheel-container"
+          onwheel="handleWheelScroll(event)"
+          ontouchstart="handleTouchStart(event)"
+          ontouchmove="handleTouchMove(event)"
+          ontouchend="handleTouchEnd(event)"
+        >
+          <div class="cylinder-drum-viewport">
+            <!-- Center Target Slot -->
+            <div class="cylinder-target-slot"></div>
+            <!-- 3D Drum Items Track -->
+            <div class="cylinder-drum-track" id="cylinderDrumTrack">
+              <!-- Populated via JS -->
+            </div>
           </div>
         </div>
+
       </div>
 
       <!-- 1-Tap Add To Bowl Confirmation Button -->
       <button 
         onclick="confirmWheelSelection()" 
-        class="mt-2 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
+        class="mt-2.5 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98"
       >
         <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
         <span id="wheelConfirmBtnText">+ Add to Bowl</span>
       </button>
     </section>
 
-    <!-- C. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
+    <!-- 3. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
     <section class="stoked-lab-card rounded-2xl p-3 border border-slate-800">
       <div class="flex items-center justify-between mb-2">
         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
@@ -283,7 +332,7 @@
       </div>
     </section>
 
-    <!-- D. STICKY ORDER SUBMISSION & TAB DISPATCH BAR -->
+    <!-- 4. STICKY ORDER SUBMISSION & TAB DISPATCH BAR -->
     <div class="sticky bottom-2 z-30 bg-brand-darkBg/95 backdrop-blur-md p-3 rounded-2xl border border-purple-500/30 shadow-2xl flex items-center justify-between">
       <div>
         <div class="flex items-center gap-1.5">
@@ -360,9 +409,9 @@
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT & STOKED DIAL ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
-    // Master Stoked Shisha Catalog (with tasting profile metadata)
+    // Master Stoked Shisha Inventory Data
     const STOKED_MASTER_INVENTORY = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
@@ -390,13 +439,13 @@
       }
     }
 
-    // Active Selection
+    // Active Selection (Starts with Pink Cane)
     let activeFlavors = ['mh-pinkman', 'tan-cane-mint'];
     let roundCount = 1;
     let tabBalance = 35.00;
 
-    // Rotary Dial State
-    let selectedBrandFilter = 'all';
+    // Dial State
+    let selectedBrandStation = 'all';
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
     let touchStartY = null;
@@ -404,30 +453,56 @@
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
-    // ==================== STOKED 3D MECHANICAL ROTARY DIAL ====================
-    function initRotaryWheel() {
-      const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'];
-      const tabsContainer = document.getElementById('wheelBrandTabs');
-      tabsContainer.innerHTML = '';
+    // ==================== STOKED BRANDS VERTICAL STATION DIAL ====================
+    function initBrandStationDial() {
+      const inventory = CustomerStash.getInventory();
+      const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
+      
+      const stationsTrack = document.getElementById('brandStationsTrack');
+      stationsTrack.innerHTML = '';
 
-      brands.forEach(b => {
-        const btn = document.createElement('button');
-        const isActive = (b === selectedBrandFilter);
-        btn.className = `text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap transition ${isActive ? 'bg-purple-600 text-white' : 'bg-slate-900 text-slate-400 hover:text-white'}`;
-        btn.textContent = b === 'all' ? 'All Brands' : b;
-        btn.onclick = () => {
-          selectedBrandFilter = b;
+      // 1. All Brands Station
+      const allStation = document.createElement('div');
+      const isAllActive = selectedBrandStation === 'all';
+      allStation.className = `v-ruler-mark-station ${isAllActive ? 'active' : ''}`;
+      allStation.onclick = () => {
+        selectedBrandStation = 'all';
+        wheelSelectedIndex = 0;
+        initBrandStationDial();
+        renderDrumTrack();
+      };
+      allStation.innerHTML = `
+        <span class="truncate">All Brands</span>
+        <span class="v-ruler-station-count">${inventory.filter(i => i.stock !== 'out_of_stock').length}</span>
+      `;
+      stationsTrack.appendChild(allStation);
+
+      // 2. Distinct Brand Stations
+      distinctBrands.forEach(brandName => {
+        const inStockCount = inventory.filter(i => i.brand === brandName && i.stock !== 'out_of_stock').length;
+        if (inStockCount === 0) return;
+
+        const station = document.createElement('div');
+        const isActive = selectedBrandStation.toLowerCase() === brandName.toLowerCase();
+        station.className = `v-ruler-mark-station ${isActive ? 'active' : ''}`;
+        station.onclick = () => {
+          selectedBrandStation = brandName;
           wheelSelectedIndex = 0;
-          initRotaryWheel();
+          initBrandStationDial();
+          renderDrumTrack();
         };
-        tabsContainer.appendChild(btn);
+        station.innerHTML = `
+          <span class="truncate">${brandName}</span>
+          <span class="v-ruler-station-count">${inStockCount}</span>
+        `;
+        stationsTrack.appendChild(station);
       });
 
-      const inventory = CustomerStash.getInventory();
-      filteredWheelItems = inventory.filter(item => (selectedBrandFilter === 'all' || item.brand === selectedBrandFilter) && item.stock !== 'out_of_stock');
+      filteredWheelItems = inventory.filter(item => (selectedBrandStation === 'all' || item.brand.toLowerCase() === selectedBrandStation.toLowerCase()) && item.stock !== 'out_of_stock');
       renderDrumTrack();
     }
 
+    // ==================== STOKED 3D MECHANICAL ROTARY FLAVOR WHEEL ====================
     function renderDrumTrack() {
       const track = document.getElementById('cylinderDrumTrack');
       track.innerHTML = '';
@@ -472,7 +547,7 @@
 
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (activeItem) {
-        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Mix`;
+        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Bowl`;
       }
     }
 
@@ -513,16 +588,16 @@
 
       if (activeFlavors.length >= 3) {
         activeFlavors[activeFlavors.length - 1] = activeItem.id;
-        showToast('🔄 Replaced', `Replaced slot with ${activeItem.name}.`);
+        showToast('🔄 Replaced Slot', `Swapped slot with ${activeItem.name}.`);
       } else {
         activeFlavors.push(activeItem.id);
-        showToast('✨ Added to Bowl', `${activeItem.name} added.`);
+        showToast('✨ Added to Bowl', `${activeItem.name} popped into mix above!`);
       }
 
       renderMixLab();
     }
 
-    // ==================== MIX LAB & PROFILE INDICATORS ====================
+    // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
       
@@ -549,14 +624,14 @@
       });
       ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
 
-      // 2. Render Active Selected Chips
+      // 2. Render Active Selected Chips in Top Tray (Above Dial)
       const container = document.getElementById('flavorSlotsContainer');
       container.innerHTML = '';
 
       activeFlavors.forEach((id, idx) => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
         const row = document.createElement('div');
-        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5';
+        row.className = 'bg-slate-950/80 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
         row.innerHTML = `
           <div class="flex items-center gap-2 min-w-0 flex-1">
             <span class="w-1.5 h-6 rounded-full" style="background: ${item.color};"></span>
@@ -568,7 +643,7 @@
             </div>
           </div>
 
-          <button onclick="removeFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-1 flex-shrink-0">
+          <button onclick="removeFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-1 flex-shrink-0" title="Remove from mix">
             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         `;
@@ -637,7 +712,7 @@
 
     function dispatchOrder(mode) {
       const price = parseFloat(document.getElementById('totalPriceText').textContent.replace('$', ''));
-      const mixName = document.getElementById('mixNameInput').value || 'Custom Shisha Blend';
+      const mixName = 'Custom Shisha Blend';
       tabBalance += price;
       roundCount++;
 
@@ -695,7 +770,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      initRotaryWheel();
+      initBrandStationDial();
       renderMixLab();
     });
   </script>
