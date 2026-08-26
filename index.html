@@ -233,8 +233,8 @@
         <span id="seatBtnText">Seat</span>
       </button>
 
-      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
-        <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
+      <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
+        <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
         <span>Coals</span>
       </button>
     </div>
@@ -365,7 +365,7 @@
 
   </main>
 
-  <!-- ==================== INTERACTIVE LOUNGE SEAT ASSIGNMENT MODAL ==================== -->
+  <!-- ==================== DYNAMIC LOUNGE SEAT ASSIGNMENT MODAL ==================== -->
   <div id="seatAssignModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-zinc-800">
@@ -392,89 +392,9 @@
         </button>
       </div>
 
-      <!-- Interactive Lounge Seating Map Selection -->
-      <div class="space-y-3 max-h-64 overflow-y-auto no-scrollbar pr-1 text-xs">
-        <!-- 1. Bar Seating -->
-        <div>
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
-            <i data-lucide="wine" class="w-3 h-3 text-brand-gold"></i>
-            Bar Counter Stools
-          </span>
-          <div class="grid grid-cols-3 gap-1.5">
-            <button onclick="selectSeatLocation('Bar Seat #1', 'bar-1')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 1</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('Bar Seat #2', 'bar-2')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 2</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('Bar Seat #3', 'bar-3')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 3</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('Bar Seat #4', 'bar-4')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 4</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('Bar Seat #5', 'bar-5')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 5</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('Bar Seat #6', 'bar-6')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">Bar 6</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. VIP Booths -->
-        <div>
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
-            <i data-lucide="crown" class="w-3 h-3 text-brand-gold"></i>
-            VIP Velvet Booths
-          </span>
-          <div class="grid grid-cols-3 gap-1.5">
-            <button onclick="selectSeatLocation('VIP Booth #1', 'vip-1')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">VIP 1</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('VIP Booth #2', 'vip-2')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">VIP 2</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-            <button onclick="selectSeatLocation('VIP Booth #3', 'vip-3')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">VIP 3</span>
-              <span class="text-[9px] text-emerald-400">Available</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 3. Main Lounge Tables -->
-        <div>
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
-            <i data-lucide="layers" class="w-3 h-3 text-brand-gold"></i>
-            Main Lounge Tables
-          </span>
-          <div class="grid grid-cols-4 gap-1.5">
-            <button onclick="selectSeatLocation('Table #1', 'tbl-1')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">T1</span>
-              <span class="text-[9px] text-emerald-400">Open</span>
-            </button>
-            <button onclick="selectSeatLocation('Table #2', 'tbl-2')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">T2</span>
-              <span class="text-[9px] text-emerald-400">Open</span>
-            </button>
-            <button onclick="selectSeatLocation('Table #3', 'tbl-3')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">T3</span>
-              <span class="text-[9px] text-emerald-400">Open</span>
-            </button>
-            <button onclick="selectSeatLocation('Table #4', 'tbl-4')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
-              <span class="font-bold text-white block">T4</span>
-              <span class="text-[9px] text-emerald-400">Open</span>
-            </button>
-          </div>
-        </div>
+      <!-- Dynamic Interactive Floorplan Grid Sections -->
+      <div class="space-y-3 max-h-64 overflow-y-auto no-scrollbar pr-1 text-xs" id="dynamicSeatCategoriesContainer">
+        <!-- Injected dynamically from active floorplan -->
       </div>
 
       <p class="text-[10px] text-zinc-500 text-center mt-3">
@@ -499,14 +419,12 @@
         <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
       </div>
 
-      <!-- Itemized Receipt Breakdown -->
       <div class="my-3 space-y-1.5 bg-black p-3 rounded-xl border border-zinc-800 text-xs">
         <div class="flex justify-between text-zinc-300">
           <span>Active VIP Tab Subtotal</span>
           <span class="font-bold font-mono-nums" id="checkoutSubtotal">$35.00</span>
         </div>
         
-        <!-- Calculated Dynamic Phoenix Sales Tax -->
         <div class="flex justify-between text-zinc-400 text-[11px]">
           <span id="checkoutTaxLabel">Phoenix Sales Tax (8.60%)</span>
           <span class="font-bold font-mono-nums text-zinc-300" id="checkoutTaxAmt">$3.01</span>
@@ -523,7 +441,6 @@
         </div>
       </div>
 
-      <!-- Gratuity Selection -->
       <div class="mb-3">
         <label class="text-[10px] text-zinc-400 font-semibold block mb-1">Add Gratuity for Staff</label>
         <div class="grid grid-cols-4 gap-1.5 text-center">
@@ -549,7 +466,6 @@
 
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
-    // Master Stoked Shisha Inventory
     const STOKED_MASTER_INVENTORY = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
@@ -566,7 +482,6 @@
       { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
     ];
 
-    // Master Curated House Mixes
     const EMPIRE_HOUSE_MIXES = [
       { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'Lounge Signature Blend', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899' },
       { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Arctic Freeze & Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1' },
@@ -575,11 +490,23 @@
       { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316' }
     ];
 
-    const DEFAULT_TAX_CONFIG = {
-      location: 'Phoenix, Arizona',
-      primaryName: 'Phoenix Sales Tax',
-      primaryRate: 8.60
-    };
+    const DEFAULT_FLOORPLAN = [
+      { id: 'bar-1', name: 'B1', label: 'Bar 1', type: 'bar', shape: 'circle' },
+      { id: 'bar-2', name: 'B2', label: 'Bar 2', type: 'bar', shape: 'circle' },
+      { id: 'bar-3', name: 'B3', label: 'Bar 3', type: 'bar', shape: 'circle' },
+      { id: 'bar-4', name: 'B4', label: 'Bar 4', type: 'bar', shape: 'circle' },
+      { id: 'bar-5', name: 'B5', label: 'Bar 5', type: 'bar', shape: 'circle' },
+      { id: 'bar-6', name: 'B6', label: 'Bar 6', type: 'bar', shape: 'circle' },
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1', type: 'booth', shape: 'rect' },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2', type: 'booth', shape: 'rect' },
+      { id: 'vip-3', name: 'VIP 3', label: 'VIP Booth 3', type: 'booth', shape: 'rect' },
+      { id: 'tbl-1', name: 'T1', label: 'Table 1', type: 'table-round', shape: 'circle' },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2', type: 'table-round', shape: 'circle' },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3', type: 'table-round', shape: 'circle' },
+      { id: 'tbl-4', name: 'T4', label: 'Table 4', type: 'table-rect', shape: 'rect' },
+      { id: 'tbl-6', name: 'T6', label: 'Table 6 (VIP)', type: 'table-rect', shape: 'rect' },
+      { id: 'patio-1', name: 'P1', label: 'Patio 1', type: 'table-round', shape: 'circle' }
+    ];
 
     class CustomerStash {
       static getInventory() {
@@ -591,20 +518,27 @@
         return JSON.parse(local);
       }
 
+      static getFloorplan() {
+        const local = localStorage.getItem('empire_custom_floorplan');
+        if (!local) {
+          localStorage.setItem('empire_custom_floorplan', JSON.stringify(DEFAULT_FLOORPLAN));
+          return DEFAULT_FLOORPLAN;
+        }
+        return JSON.parse(local);
+      }
+
       static getTaxConfig() {
         const local = localStorage.getItem('empire_tax_config');
         if (!local) {
-          localStorage.setItem('empire_tax_config', JSON.stringify(DEFAULT_TAX_CONFIG));
-          return DEFAULT_TAX_CONFIG;
+          return { location: 'Phoenix, Arizona', primaryName: 'Phoenix Sales Tax', primaryRate: 8.60 };
         }
         return JSON.parse(local);
       }
     }
 
-    // VIP FLOATING TAB & SEAT IDENTITY
     let currentVipTabId = 'VIP-409';
-    let currentAssignedSeat = 'Floating VIP Tab'; // 'Floating VIP Tab' or 'Bar Seat #3', 'Table #6', etc.
-    let activeFlavors = []; // Blank on startup
+    let currentAssignedSeat = 'Floating VIP Tab';
+    let activeFlavors = [];
     let activeMixName = null;
     let roundCount = 1;
     let tabBalance = 35.00;
@@ -618,10 +552,79 @@
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
-    // ==================== SEATING & FLOATING TAB LOGIC ====================
     function openSeatAssignModal() {
       document.getElementById('modalActiveSeatLabel').textContent = currentAssignedSeat === 'Floating VIP Tab' ? `👑 Floating VIP Tab #${currentVipTabId}` : `📍 ${currentAssignedSeat} (Tab #${currentVipTabId})`;
+      
+      const plan = CustomerStash.getFloorplan();
+      const container = document.getElementById('dynamicSeatCategoriesContainer');
+      container.innerHTML = '';
+
+      // Group by Bar, Booth, Table
+      const bars = plan.filter(s => s.type === 'bar');
+      const booths = plan.filter(s => s.type === 'booth');
+      const tables = plan.filter(s => s.type.includes('table') || s.type === 'table-round' || s.type === 'table-rect');
+
+      if (bars.length > 0) {
+        const barDiv = document.createElement('div');
+        barDiv.innerHTML = `
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
+            <i data-lucide="wine" class="w-3 h-3 text-brand-gold"></i>
+            Bar Counter Stools (${bars.length})
+          </span>
+          <div class="grid grid-cols-3 gap-1.5">
+            ${bars.map(s => `
+              <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
+                <span class="font-bold text-white block">${s.name}</span>
+                <span class="text-[9px] text-emerald-400">Available</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(barDiv);
+      }
+
+      if (booths.length > 0) {
+        const boothDiv = document.createElement('div');
+        boothDiv.className = 'mt-2.5';
+        boothDiv.innerHTML = `
+          <span class="text-[10px] uppercase font-bold text-brand-gold tracking-wider block mb-1 flex items-center gap-1">
+            <i data-lucide="crown" class="w-3 h-3 text-brand-gold"></i>
+            VIP Velvet Booths (${booths.length})
+          </span>
+          <div class="grid grid-cols-3 gap-1.5">
+            ${booths.map(s => `
+              <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
+                <span class="font-bold text-white block">${s.name}</span>
+                <span class="text-[9px] text-emerald-400">Available</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(boothDiv);
+      }
+
+      if (tables.length > 0) {
+        const tblDiv = document.createElement('div');
+        tblDiv.className = 'mt-2.5';
+        tblDiv.innerHTML = `
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider block mb-1 flex items-center gap-1">
+            <i data-lucide="layers" class="w-3 h-3 text-brand-gold"></i>
+            Main Floor &amp; Patio Tables (${tables.length})
+          </span>
+          <div class="grid grid-cols-4 gap-1.5">
+            ${tables.map(s => `
+              <button onclick="selectSeatLocation('${s.label}', '${s.id}')" class="seat-picker-btn p-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-brand-gold text-center">
+                <span class="font-bold text-white block">${s.name}</span>
+                <span class="text-[9px] text-emerald-400">Open</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(tblDiv);
+      }
+
       document.getElementById('seatAssignModal').classList.remove('hidden');
+      renderIcons();
     }
 
     function closeSeatAssignModal() {
@@ -655,7 +658,6 @@
       const stationsTrack = document.getElementById('brandStationsTrack');
       stationsTrack.innerHTML = '';
 
-      // 1. 👑 HOUSE MIXES STATION
       const houseStation = document.createElement('div');
       const isHouseActive = selectedStationType === 'house_mixes';
       houseStation.className = `v-ruler-mark-station ${isHouseActive ? 'active' : ''}`;
@@ -671,7 +673,6 @@
       `;
       stationsTrack.appendChild(houseStation);
 
-      // 2. All Brands Station
       const allStation = document.createElement('div');
       const isAllActive = selectedStationType === 'all';
       allStation.className = `v-ruler-mark-station ${isAllActive ? 'active' : ''}`;
@@ -687,7 +688,6 @@
       `;
       stationsTrack.appendChild(allStation);
 
-      // 3. Distinct Brand Stations
       distinctBrands.forEach(brandName => {
         const inStockCount = inventory.filter(i => i.brand === brandName && i.stock !== 'out_of_stock').length;
         if (inStockCount === 0) return;
@@ -716,7 +716,6 @@
       renderDrumTrack();
     }
 
-    // ==================== STOKED 3D MECHANICAL ROTARY DRUM ====================
     function renderDrumTrack() {
       const track = document.getElementById('cylinderDrumTrack');
       track.innerHTML = '';
@@ -897,7 +896,6 @@
       });
       ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
 
-      // Render Active Flavor Chips
       container.innerHTML = '';
       activeFlavors.forEach((id, idx) => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
@@ -921,7 +919,6 @@
         container.appendChild(row);
       });
 
-      // Render Bowl Profiles
       profileContainer.innerHTML = '';
       const profileEmojis = {
         'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓',
@@ -938,7 +935,6 @@
         profileContainer.appendChild(span);
       });
 
-      // Update Buzz Badge, Pricing & Action Bar
       const avgStr = (totalStrength / activeFlavors.length).toFixed(1);
       document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
 
@@ -974,7 +970,6 @@
       tabBalance += price;
       roundCount++;
 
-      // Save order to shared active floating queue for staff
       const existingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
       existingQueue.unshift({
         id: `vip-order-${Date.now()}`,

@@ -59,6 +59,43 @@
       border-color: rgba(255, 255, 255, 0.15);
     }
 
+    /* MICROS / ALOHA VISUAL FLOORPLAN CANVAS */
+    .floorplan-canvas {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      background-color: #06090E;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .floor-seat-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: box-shadow 0.15s ease, transform 0.1s ease;
+      z-index: 10;
+    }
+    .floor-seat-node:active {
+      transform: scale(0.96);
+    }
+    .floor-seat-node.is-dragging {
+      opacity: 0.85;
+      z-index: 50;
+      box-shadow: 0 0 20px rgba(229, 169, 60, 0.5) !important;
+      cursor: grabbing !important;
+    }
+
     /* STOKED 3D MECHANICAL ROTARY CYLINDER DRUM */
     .cylinder-wheel-container {
       position: relative;
@@ -177,7 +214,7 @@
         </div>
         <div class="flex items-center gap-1 text-[11px] text-zinc-400 font-semibold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Bar &amp; Table Seats, POS &amp; KDS</span>
+          <span>Micros Floor Builder, POS &amp; KDS</span>
         </div>
       </div>
     </div>
@@ -203,8 +240,8 @@
         <span>POS</span>
       </button>
       <button onclick="switchStaffTab('seating')" id="staff-tab-seating" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
-        <i data-lucide="armchair" class="w-3 h-3 text-brand-gold"></i>
-        <span>Seats</span>
+        <i data-lucide="layout-grid" class="w-3 h-3 text-brand-gold"></i>
+        <span>Floor</span>
       </button>
       <button onclick="switchStaffTab('kds')" id="staff-tab-kds" class="staff-nav-btn py-2 rounded-lg text-zinc-400 hover:text-white flex items-center justify-center gap-1 text-[10px]">
         <i data-lucide="flame" class="w-3 h-3 text-brand-coal"></i>
@@ -307,13 +344,7 @@
         <div>
           <span class="text-[9px] uppercase tracking-wider text-zinc-400 block font-bold">Target Lounge Seat</span>
           <select id="dispatchTableSelect" class="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-brand-gold font-bold focus:outline-none">
-            <option value="Bar 1">Bar Seat #1</option>
-            <option value="Bar 2">Bar Seat #2</option>
-            <option value="Bar 3">Bar Seat #3</option>
-            <option value="VIP 1">VIP Booth #1</option>
-            <option value="VIP 2">VIP Booth #2</option>
-            <option value="Table 6">Table #6 (VIP Lounge)</option>
-            <option value="Table 4">Table #4 (Main Floor)</option>
+            <!-- Populated dynamically from active floorplan -->
           </select>
         </div>
 
@@ -339,23 +370,8 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-4 gap-1.5 mt-2">
-          <button onclick="setPosTable('Table 6', 'VIP Lounge', 35.00)" id="table-btn-Table 6" class="table-pos-btn p-2 rounded-xl border-2 border-brand-gold bg-amber-500/10 text-center">
-            <span class="block text-xs font-bold text-white">Table 6</span>
-            <span class="block text-[9px] text-brand-gold font-mono-nums" id="posTable6Bal">$35.00</span>
-          </button>
-          <button onclick="setPosTable('Bar 3', 'Bar Counter', 38.00)" id="table-btn-Bar 3" class="table-pos-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-center">
-            <span class="block text-xs font-bold text-white">Bar 3</span>
-            <span class="block text-[9px] text-brand-gold font-mono-nums" id="posBar3Bal">$38.00</span>
-          </button>
-          <button onclick="setPosTable('VIP 1', 'Velvet Booth', 60.00)" id="table-btn-VIP 1" class="table-pos-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-center">
-            <span class="block text-xs font-bold text-white">VIP 1</span>
-            <span class="block text-[9px] text-brand-gold font-mono-nums" id="posVip1Bal">$60.00</span>
-          </button>
-          <button onclick="setPosTable('Table 4', 'Main Lounge', 0.00)" id="table-btn-Table 4" class="table-pos-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-center">
-            <span class="block text-xs font-bold text-white">Table 4</span>
-            <span class="block text-[9px] text-zinc-500 font-mono-nums" id="posTable4Bal">$0.00</span>
-          </button>
+        <div class="grid grid-cols-4 gap-1.5 mt-2" id="posQuickSeatsBar">
+          <!-- Populated via JS from active floorplan -->
         </div>
       </div>
 
@@ -399,12 +415,12 @@
       </div>
     </div>
 
-    <!-- MODULE 3: INTERACTIVE LOUNGE SEAT SET UP & FLOATING VIP TABS -->
+    <!-- MODULE 3: MICROS / ALOHA VISUAL FLOORPLAN & SEAT BUILDER ENGINE -->
     <div id="staff-view-seating" class="staff-panel hidden flex flex-col gap-3">
       
-      <!-- A. Floating VIP Orders Dock (Unassigned Seat Queue) -->
-      <div class="pos-card rounded-2xl p-3.5 border border-amber-500/30">
-        <div class="flex justify-between items-center mb-2">
+      <!-- A. Floating VIP Orders Dock -->
+      <div class="pos-card rounded-2xl p-3 border border-amber-500/30">
+        <div class="flex justify-between items-center mb-1.5">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 bg-brand-gold rounded-full animate-ping"></span>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Floating VIP Tabs Queue</h3>
@@ -413,65 +429,60 @@
             1 Waiting for Seat
           </span>
         </div>
-        <p class="text-[11px] text-zinc-400 mb-2.5">VIP members can order before seating. Click "Assign Seat" to link their floating tab to any Bar seat or Table.</p>
-
-        <div class="space-y-2" id="floatingVipTabsContainer">
-          <!-- Injected via JS -->
+        <div class="space-y-1.5" id="floatingVipTabsContainer">
+          <!-- Populated via JS -->
         </div>
       </div>
 
-      <!-- B. Interactive Lounge Visual Floorplan -->
-      <div class="pos-card rounded-2xl p-3.5">
-        <div class="flex justify-between items-center mb-3">
+      <!-- B. Floorplan Mode Toggle & Builder Toolbar -->
+      <div class="pos-card rounded-2xl p-3">
+        <div class="flex justify-between items-center mb-2">
           <div>
-            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Lounge Seating Floorplan</h3>
-            <p class="text-[10px] text-zinc-400">Live occupancy • Tap any seat to manage tab or assign VIPs</p>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-brand-gold"></i>
+              Visual Lounge Floorplan
+            </h3>
+            <p class="text-[10px] text-zinc-400" id="floorModeStatusText">Live Monitor: Tap any table to view tab or assign coals</p>
           </div>
-          <span class="text-[9px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900 font-bold">
-            Interactive
-          </span>
-        </div>
 
-        <!-- 1. Bar Counter Stools Grid -->
-        <div class="mb-3.5 bg-black/60 p-2.5 rounded-xl border border-zinc-850">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] uppercase font-bold text-zinc-400 flex items-center gap-1">
-              <i data-lucide="wine" class="w-3 h-3 text-brand-gold"></i>
-              High Bar Counter (6 Stools)
-            </span>
-            <span class="text-[9px] text-zinc-500 font-mono">1 Active</span>
-          </div>
-          <div class="grid grid-cols-6 gap-1.5" id="barSeatsGrid">
-            <!-- Populated via JS -->
+          <!-- Mode Toggle Button -->
+          <div class="flex items-center gap-1.5">
+            <button onclick="toggleFloorBuilderMode()" id="builderModeBtn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-zinc-300 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition active:scale-95">
+              <i data-lucide="pencil" class="w-3 h-3 text-brand-gold"></i>
+              <span id="builderModeBtnText">Edit Floor Plan 🛠️</span>
+            </button>
           </div>
         </div>
 
-        <!-- 2. VIP Velvet Booths Grid -->
-        <div class="mb-3.5 bg-black/60 p-2.5 rounded-xl border border-zinc-850">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] uppercase font-bold text-brand-gold flex items-center gap-1">
-              <i data-lucide="crown" class="w-3 h-3 text-brand-gold"></i>
-              VIP Velvet Booths (3 Booths)
-            </span>
-            <span class="text-[9px] text-zinc-500 font-mono">1 Active</span>
-          </div>
-          <div class="grid grid-cols-3 gap-2" id="vipBoothsGrid">
-            <!-- Populated via JS -->
-          </div>
+        <!-- Builder Palette (Visible only in Edit Mode) -->
+        <div id="floorBuilderPalette" class="hidden my-2.5 p-2 bg-black rounded-xl border border-zinc-800 flex items-center justify-between gap-1 overflow-x-auto no-scrollbar">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 px-1">Add:</span>
+          <button onclick="addFloorElement('bar')" class="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg text-xs font-bold text-white whitespace-nowrap">+ Bar Stool</button>
+          <button onclick="addFloorElement('table-round')" class="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg text-xs font-bold text-white whitespace-nowrap">+ Round (2-4P)</button>
+          <button onclick="addFloorElement('table-rect')" class="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg text-xs font-bold text-white whitespace-nowrap">+ Rect Table</button>
+          <button onclick="addFloorElement('booth')" class="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 rounded-lg text-xs font-bold text-brand-gold whitespace-nowrap">+ VIP Booth</button>
+          <button onclick="resetDefaultFloorplan()" class="px-2 py-1 bg-red-950 text-red-300 hover:bg-red-900 border border-red-800 rounded-lg text-xs font-bold whitespace-nowrap">Reset</button>
         </div>
 
-        <!-- 3. Main Floor & Patio Tables Grid -->
-        <div class="bg-black/60 p-2.5 rounded-xl border border-zinc-850">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[10px] uppercase font-bold text-zinc-400 flex items-center gap-1">
-              <i data-lucide="layers" class="w-3 h-3 text-brand-gold"></i>
-              Main Floor &amp; Patio Tables (7 Tables)
-            </span>
-            <span class="text-[9px] text-zinc-500 font-mono">1 Active</span>
+        <!-- 2D Interactive Floorplan Canvas -->
+        <div 
+          id="floorCanvas" 
+          class="floorplan-canvas"
+          onpointerdown="handleCanvasPointerDown(event)"
+          onpointermove="handleCanvasPointerMove(event)"
+          onpointerup="handleCanvasPointerUp(event)"
+        >
+          <!-- Floor nodes dynamically injected via JS -->
+        </div>
+
+        <!-- Legend / Floor Stats -->
+        <div class="flex items-center justify-between mt-2 pt-2 border-t border-zinc-850 text-[10px] text-zinc-400">
+          <div class="flex items-center gap-3">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-gold"></span> Occupied Tab</span>
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Shisha / Coal Due</span>
           </div>
-          <div class="grid grid-cols-4 gap-2" id="mainTablesGrid">
-            <!-- Populated via JS -->
-          </div>
+          <span id="floorSeatCountLabel" class="font-mono">16 Active Seats</span>
         </div>
 
       </div>
@@ -597,6 +608,29 @@
 
   </main>
 
+  <!-- ==================== SEAT PROPERTIES & TAB ACTION MODAL ==================== -->
+  <div id="seatActionModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
+      <div class="flex justify-between items-center pb-2 border-b border-zinc-800">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center text-brand-gold">
+            <i data-lucide="armchair" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="modalSeatTitle">Table Properties</h3>
+            <p class="text-[10px] text-zinc-400" id="modalSeatSubtitle">Seat Options &amp; Tab Control</p>
+          </div>
+        </div>
+        <button onclick="closeSeatActionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
+      </div>
+
+      <!-- Content dynamically switched: Edit Node vs Live Tab Action -->
+      <div id="seatModalContent" class="my-3 space-y-2.5 text-xs">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== STAFF PIN LOGIN MODAL ==================== -->
   <div id="staffPinModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-xs w-full p-5 shadow-2xl text-center">
@@ -667,6 +701,30 @@
       primaryRate: 8.60
     };
 
+    // MICROS / ALOHA DEFAULT 2D SEATING FLOORPLAN
+    const DEFAULT_FLOORPLAN = [
+      // 1. High Bar Row (Top Left)
+      { id: 'bar-1', name: 'B1', label: 'Bar 1', type: 'bar', x: 4, y: 8, w: 42, h: 42, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-2', name: 'B2', label: 'Bar 2', type: 'bar', x: 16, y: 8, w: 42, h: 42, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-3', name: 'B3', label: 'Bar 3', type: 'bar', x: 28, y: 8, w: 42, h: 42, shape: 'circle', status: 'occupied', tabBal: 38.00, guest: 'VIP-102' },
+      { id: 'bar-4', name: 'B4', label: 'Bar 4', type: 'bar', x: 40, y: 8, w: 42, h: 42, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-5', name: 'B5', label: 'Bar 5', type: 'bar', x: 52, y: 8, w: 42, h: 42, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'bar-6', name: 'B6', label: 'Bar 6', type: 'bar', x: 64, y: 8, w: 42, h: 42, shape: 'circle', status: 'available', tabBal: 0 },
+      
+      // 2. VIP Velvet Booths (Right Column)
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1', type: 'booth', x: 76, y: 8, w: 84, h: 62, shape: 'rect', status: 'occupied', tabBal: 60.00, guest: 'VIP-310', coalTimer: 21 },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2', type: 'booth', x: 76, y: 36, w: 84, h: 62, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'vip-3', name: 'VIP 3', label: 'VIP Booth 3', type: 'booth', x: 76, y: 64, w: 84, h: 62, shape: 'rect', status: 'available', tabBal: 0 },
+
+      // 3. Center Floor & Patio Tables (Middle & Bottom)
+      { id: 'tbl-1', name: 'T1', label: 'Table 1', type: 'table-round', x: 6, y: 36, w: 56, h: 56, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2', type: 'table-round', x: 26, y: 36, w: 56, h: 56, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3', type: 'table-round', x: 46, y: 36, w: 56, h: 56, shape: 'circle', status: 'available', tabBal: 0 },
+      { id: 'tbl-4', name: 'T4', label: 'Table 4', type: 'table-rect', x: 6, y: 64, w: 72, h: 52, shape: 'rect', status: 'available', tabBal: 0 },
+      { id: 'tbl-6', name: 'T6', label: 'Table 6 (VIP)', type: 'table-rect', x: 30, y: 64, w: 76, h: 52, shape: 'rect', status: 'occupied', tabBal: 35.00, guest: 'VIP-409', coalTimer: 19 },
+      { id: 'patio-1', name: 'P1', label: 'Patio 1', type: 'table-round', x: 55, y: 64, w: 50, h: 50, shape: 'circle', status: 'available', tabBal: 0 }
+    ];
+
     class StaffStash {
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
@@ -679,6 +737,19 @@
 
       static saveInventory(items) {
         localStorage.setItem('empire_stoked_stash', JSON.stringify(items));
+      }
+
+      static getFloorplan() {
+        const local = localStorage.getItem('empire_custom_floorplan');
+        if (!local) {
+          localStorage.setItem('empire_custom_floorplan', JSON.stringify(DEFAULT_FLOORPLAN));
+          return DEFAULT_FLOORPLAN;
+        }
+        return JSON.parse(local);
+      }
+
+      static saveFloorplan(plan) {
+        localStorage.setItem('empire_custom_floorplan', JSON.stringify(plan));
       }
 
       static getTaxConfig() {
@@ -718,6 +789,11 @@
       }
     }
 
+    let isBuilderMode = false;
+    let draggingNodeId = null;
+    let dragStartPos = { x: 0, y: 0 };
+    let activeModalSeatId = null;
+
     let labBowlCapacity = 22;
     let labPortions = [
       { id: 'mh-pinkman', percent: 70 },
@@ -737,26 +813,6 @@
       { id: 'kds-1', table: 'Table 6', mix: 'MustHave: Pinkman (70%) + Tangiers: Cane Mint (30%)', startTime: Date.now() - (19 * 60 * 1000) }
     ];
 
-    // LOUNGE SEATING MASTER STATE
-    const LOUNGE_SEATS = [
-      { id: 'bar-1', name: 'Bar 1', type: 'bar', status: 'available', tabBal: 0 },
-      { id: 'bar-2', name: 'Bar 2', type: 'bar', status: 'available', tabBal: 0 },
-      { id: 'bar-3', name: 'Bar 3', type: 'bar', status: 'occupied', tabBal: 38.00, guest: 'VIP-102' },
-      { id: 'bar-4', name: 'Bar 4', type: 'bar', status: 'available', tabBal: 0 },
-      { id: 'bar-5', name: 'Bar 5', type: 'bar', status: 'available', tabBal: 0 },
-      { id: 'bar-6', name: 'Bar 6', type: 'bar', status: 'available', tabBal: 0 },
-      { id: 'vip-1', name: 'VIP 1', type: 'vip', status: 'occupied', tabBal: 60.00, guest: 'VIP-310' },
-      { id: 'vip-2', name: 'VIP 2', type: 'vip', status: 'available', tabBal: 0 },
-      { id: 'vip-3', name: 'VIP 3', type: 'vip', status: 'available', tabBal: 0 },
-      { id: 'tbl-1', name: 'Table 1', type: 'table', status: 'available', tabBal: 0 },
-      { id: 'tbl-2', name: 'Table 2', type: 'table', status: 'available', tabBal: 0 },
-      { id: 'tbl-3', name: 'Table 3', type: 'table', status: 'available', tabBal: 0 },
-      { id: 'tbl-4', name: 'Table 4', type: 'table', status: 'available', tabBal: 0 },
-      { id: 'tbl-6', name: 'Table 6', type: 'table', status: 'occupied', tabBal: 35.00, guest: 'VIP-409' },
-      { id: 'patio-1', name: 'Patio 1', type: 'table', status: 'available', tabBal: 0 },
-      { id: 'patio-2', name: 'Patio 2', type: 'table', status: 'available', tabBal: 0 }
-    ];
-
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
     function verifyStaffPin() {
@@ -765,7 +821,8 @@
         document.getElementById('staffPinModal').classList.add('hidden');
         initRotaryWheel();
         renderMixLab();
-        renderSeatingModule();
+        renderFloorCanvas();
+        populatePosQuickSeats();
         showToast('🔓 Staff Master Unlocked', 'Welcome Coal Master / Floor Server.');
       } else {
         showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
@@ -793,7 +850,8 @@
       }
 
       if (tabId === 'lab') { initRotaryWheel(); renderMixLab(); }
-      if (tabId === 'seating') renderSeatingModule();
+      if (tabId === 'pos') populatePosQuickSeats();
+      if (tabId === 'seating') renderFloorCanvas();
       if (tabId === 'kds') renderKdsQueue();
       if (tabId === 'stash') renderStashInventory();
       if (tabId === 'settings') loadTaxSettingsUI();
@@ -805,6 +863,411 @@
       renderMixLab();
     }
 
+    // ==================== MICROS / ALOHA VISUAL FLOORPLAN ENGINE ====================
+    function toggleFloorBuilderMode() {
+      isBuilderMode = !isBuilderMode;
+      const btnText = document.getElementById('builderModeBtnText');
+      const statusText = document.getElementById('floorModeStatusText');
+      const palette = document.getElementById('floorBuilderPalette');
+      const btn = document.getElementById('builderModeBtn');
+
+      if (isBuilderMode) {
+        btnText.textContent = 'Save Floor Plan ✓';
+        btn.classList.add('bg-brand-gold', 'text-black', 'border-brand-gold');
+        btn.classList.remove('bg-zinc-900', 'text-zinc-300');
+        statusText.textContent = '🛠️ Builder Mode: Drag seats to move, tap to configure/stack/delete';
+        palette.classList.remove('hidden');
+        showToast('🛠️ Builder Mode Enabled', 'Drag & rearrange tables on the floor grid.');
+      } else {
+        btnText.textContent = 'Edit Floor Plan 🛠️';
+        btn.classList.remove('bg-brand-gold', 'text-black', 'border-brand-gold');
+        btn.classList.add('bg-zinc-900', 'text-zinc-300');
+        statusText.textContent = 'Live Monitor: Tap any table to view tab or assign coals';
+        palette.classList.add('hidden');
+        showToast('✅ Layout Saved', 'Floorplan updated across all staff terminals.');
+      }
+      renderFloorCanvas();
+    }
+
+    function renderFloorCanvas() {
+      const canvas = document.getElementById('floorCanvas');
+      canvas.innerHTML = '';
+      const plan = StaffStash.getFloorplan();
+
+      // Render Floating VIP Queue at top
+      renderFloatingVIPQueue();
+
+      plan.forEach(node => {
+        const div = document.createElement('div');
+        div.id = `seat-node-${node.id}`;
+        div.className = `floor-seat-node ${node.shape === 'circle' ? 'rounded-full' : 'rounded-xl'} border-2`;
+        div.style.left = `${node.x}%`;
+        div.style.top = `${node.y}%`;
+        div.style.width = `${node.w}px`;
+        div.style.height = `${node.h}px`;
+
+        const isOcc = (node.status === 'occupied');
+        const hasCoal = Boolean(node.coalTimer);
+
+        if (isBuilderMode) {
+          div.style.cursor = 'grab';
+          div.classList.add('border-dashed', 'border-zinc-500', 'bg-zinc-900/90');
+        } else if (hasCoal) {
+          div.classList.add('border-red-500', 'bg-red-950/40', 'animate-pulse');
+        } else if (isOcc) {
+          div.classList.add('border-brand-gold', 'bg-amber-950/30');
+        } else {
+          div.classList.add('border-zinc-800', 'bg-zinc-950', 'hover:border-zinc-700');
+        }
+
+        // Inner Label & Info
+        let iconHtml = '';
+        if (node.type === 'bar') iconHtml = '<i data-lucide="wine" class="w-3 h-3 text-brand-gold mb-0.5"></i>';
+        else if (node.type === 'booth') iconHtml = '<i data-lucide="crown" class="w-3.5 h-3.5 text-brand-gold mb-0.5"></i>';
+
+        div.innerHTML = `
+          ${iconHtml}
+          <span class="text-[11px] font-bold text-white tracking-tight">${node.name}</span>
+          ${!isBuilderMode && isOcc ? `<span class="text-[9px] font-mono text-brand-gold font-bold">$${node.tabBal.toFixed(0)}</span>` : ''}
+          ${isBuilderMode ? '<span class="text-[8px] text-zinc-500">drag</span>' : ''}
+        `;
+
+        div.onpointerdown = (e) => handleNodePointerDown(e, node.id);
+        div.onclick = (e) => {
+          if (!isBuilderMode) {
+            openLiveSeatActionModal(node.id);
+          } else {
+            openEditSeatModal(node.id);
+          }
+        };
+
+        canvas.appendChild(div);
+      });
+
+      document.getElementById('floorSeatCountLabel').textContent = `${plan.length} Active Seats`;
+      populateLabDispatchSelect();
+      renderIcons();
+    }
+
+    function renderFloatingVIPQueue() {
+      const floatingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
+      const container = document.getElementById('floatingVipTabsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const unassignedList = floatingQueue.filter(q => q.seat === 'Floating VIP Tab');
+      document.getElementById('floatingQueueCount').textContent = `${unassignedList.length} Waiting for Seat`;
+
+      if (unassignedList.length === 0) {
+        container.innerHTML = `<div class="text-center py-2 text-xs text-zinc-500 italic">No floating VIP orders waiting. All guests seated.</div>`;
+        return;
+      }
+
+      const plan = StaffStash.getFloorplan();
+
+      unassignedList.forEach(order => {
+        const div = document.createElement('div');
+        div.className = 'bg-black p-2 rounded-xl border border-zinc-800 flex items-center justify-between gap-2 text-xs';
+        div.innerHTML = `
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded">👑 VIP #${order.tabId}</span>
+              <span class="font-bold text-white">${order.mix}</span>
+            </div>
+            <span class="text-[10px] text-zinc-400 font-mono">Ordered at ${order.time} • $${order.price.toFixed(2)}</span>
+          </div>
+
+          <select onchange="assignFloatingTabToSeat('${order.id}', this.value)" class="bg-zinc-900 border border-zinc-700 text-[11px] text-brand-gold font-bold rounded-lg px-2 py-1 focus:outline-none">
+            <option value="">+ Assign Seat</option>
+            ${plan.map(s => `<option value="${s.label}">${s.label} (${s.name})</option>`).join('')}
+          </select>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function assignFloatingTabToSeat(orderId, targetSeat) {
+      if (!targetSeat) return;
+      const floatingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
+      const order = floatingQueue.find(q => q.id === orderId);
+      if (order) {
+        order.seat = targetSeat;
+        localStorage.setItem('empire_floating_vip_orders', JSON.stringify(floatingQueue));
+        
+        const plan = StaffStash.getFloorplan();
+        const seatObj = plan.find(s => s.label.toLowerCase() === targetSeat.toLowerCase() || s.name.toLowerCase() === targetSeat.toLowerCase());
+        if (seatObj) {
+          seatObj.status = 'occupied';
+          seatObj.tabBal += order.price;
+          seatObj.guest = `VIP-${order.tabId}`;
+          StaffStash.saveFloorplan(plan);
+        }
+
+        renderFloorCanvas();
+        showToast('📍 Seat Linked', `Floating VIP #${order.tabId} tab assigned to ${targetSeat}.`);
+      }
+    }
+
+    // Drag-and-Drop Floor Positioning
+    function handleNodePointerDown(e, nodeId) {
+      if (!isBuilderMode) return;
+      e.stopPropagation();
+      draggingNodeId = nodeId;
+      const nodeEl = document.getElementById(`seat-node-${nodeId}`);
+      if (nodeEl) nodeEl.classList.add('is-dragging');
+    }
+
+    function handleCanvasPointerMove(e) {
+      if (!isBuilderMode || !draggingNodeId) return;
+      const canvas = document.getElementById('floorCanvas');
+      const rect = canvas.getBoundingClientRect();
+
+      let xPercent = ((e.clientX - rect.left) / rect.width) * 100;
+      let yPercent = ((e.clientY - rect.top) / rect.height) * 100;
+
+      // Snap to 4% grid
+      xPercent = Math.max(2, Math.min(88, Math.round(xPercent / 4) * 4));
+      yPercent = Math.max(4, Math.min(84, Math.round(yPercent / 4) * 4));
+
+      const nodeEl = document.getElementById(`seat-node-${draggingNodeId}`);
+      if (nodeEl) {
+        nodeEl.style.left = `${xPercent}%`;
+        nodeEl.style.top = `${yPercent}%`;
+      }
+
+      const plan = StaffStash.getFloorplan();
+      const nodeObj = plan.find(n => n.id === draggingNodeId);
+      if (nodeObj) {
+        nodeObj.x = xPercent;
+        nodeObj.y = yPercent;
+      }
+    }
+
+    function handleCanvasPointerUp(e) {
+      if (draggingNodeId) {
+        const nodeEl = document.getElementById(`seat-node-${draggingNodeId}`);
+        if (nodeEl) nodeEl.classList.remove('is-dragging');
+        const plan = StaffStash.getFloorplan();
+        StaffStash.saveFloorplan(plan);
+        draggingNodeId = null;
+      }
+    }
+
+    function addFloorElement(type) {
+      const plan = StaffStash.getFloorplan();
+      const count = plan.length + 1;
+      let newNode = {
+        id: `custom-${Date.now()}`,
+        name: `T${count}`,
+        label: `Table ${count}`,
+        type: type,
+        x: 40,
+        y: 40,
+        w: 54,
+        h: 54,
+        shape: type.includes('rect') || type === 'booth' ? 'rect' : 'circle',
+        status: 'available',
+        tabBal: 0
+      };
+
+      if (type === 'bar') {
+        newNode.name = `B${count}`;
+        newNode.label = `Bar Stool ${count}`;
+        newNode.w = 42;
+        newNode.h = 42;
+      } else if (type === 'booth') {
+        newNode.name = `VIP ${count}`;
+        newNode.label = `VIP Booth ${count}`;
+        newNode.w = 84;
+        newNode.h = 60;
+      }
+
+      plan.push(newNode);
+      StaffStash.saveFloorplan(plan);
+      renderFloorCanvas();
+      showToast('✨ Element Added', `New ${newNode.label} added to floorplan. Drag to position.`);
+    }
+
+    function resetDefaultFloorplan() {
+      if (confirm('Reset floorplan back to Empire Lounge default layout?')) {
+        StaffStash.saveFloorplan(DEFAULT_FLOORPLAN);
+        renderFloorCanvas();
+        showToast('🔄 Floorplan Reset', 'Restored default lounge layout.');
+      }
+    }
+
+    // Modal Property Controls
+    function openEditSeatModal(nodeId) {
+      activeModalSeatId = nodeId;
+      const plan = StaffStash.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (!node) return;
+
+      document.getElementById('modalSeatTitle').textContent = `Edit Seat: ${node.name}`;
+      document.getElementById('modalSeatSubtitle').textContent = 'Micros Table & Property Editor';
+
+      const content = document.getElementById('seatModalContent');
+      content.innerHTML = `
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Display Label</label>
+          <input type="text" id="editNodeNameInput" value="${node.name}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
+        </div>
+        <div>
+          <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Full Name</label>
+          <input type="text" id="editNodeLabelInput" value="${node.label}" class="w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Shape</label>
+            <select id="editNodeShapeSelect" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white">
+              <option value="circle" ${node.shape === 'circle' ? 'selected' : ''}>Round (Circle)</option>
+              <option value="rect" ${node.shape === 'rect' ? 'selected' : ''}>Rectangular</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[10px] text-zinc-400 font-bold uppercase block mb-1">Size (px)</label>
+            <input type="number" id="editNodeSizeInput" value="${node.w}" class="w-full bg-black border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white font-mono" />
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-zinc-800">
+          <button onclick="saveNodeProperties()" class="flex-1 bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-2 rounded-xl text-xs">Save Seat</button>
+          <button onclick="deleteFloorNode('${node.id}')" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 font-bold px-3 py-2 rounded-xl text-xs">Delete</button>
+        </div>
+      `;
+
+      document.getElementById('seatActionModal').classList.remove('hidden');
+    }
+
+    function saveNodeProperties() {
+      const plan = StaffStash.getFloorplan();
+      const node = plan.find(n => n.id === activeModalSeatId);
+      if (node) {
+        node.name = document.getElementById('editNodeNameInput').value || node.name;
+        node.label = document.getElementById('editNodeLabelInput').value || node.label;
+        node.shape = document.getElementById('editNodeShapeSelect').value;
+        const size = parseInt(document.getElementById('editNodeSizeInput').value) || node.w;
+        node.w = size;
+        node.h = node.shape === 'rect' ? Math.round(size * 0.72) : size;
+        StaffStash.saveFloorplan(plan);
+        renderFloorCanvas();
+        closeSeatActionModal();
+        showToast('✓ Saved', `${node.label} properties updated.`);
+      }
+    }
+
+    function deleteFloorNode(nodeId) {
+      let plan = StaffStash.getFloorplan();
+      plan = plan.filter(n => n.id !== nodeId);
+      StaffStash.saveFloorplan(plan);
+      renderFloorCanvas();
+      closeSeatActionModal();
+      showToast('🗑️ Seat Removed', 'Removed from floor layout.');
+    }
+
+    function openLiveSeatActionModal(nodeId) {
+      activeModalSeatId = nodeId;
+      const plan = StaffStash.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (!node) return;
+
+      document.getElementById('modalSeatTitle').textContent = node.label;
+      document.getElementById('modalSeatSubtitle').textContent = `Status: ${node.status.toUpperCase()} • Balance: $${node.tabBal.toFixed(2)}`;
+
+      const content = document.getElementById('seatModalContent');
+      content.innerHTML = `
+        <div class="bg-black p-3 rounded-xl border border-zinc-800 flex justify-between items-center mb-2">
+          <div>
+            <span class="text-[10px] text-zinc-400 block font-semibold">Active Tab Balance</span>
+            <span class="text-base font-bold text-brand-gold font-mono-nums">$${node.tabBal.toFixed(2)}</span>
+          </div>
+          <button onclick="openSeatInPos('${node.label}', ${node.tabBal})" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs">
+            Open in POS 💳
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="startCoalTimerForSeat('${node.label}')" class="p-2.5 bg-red-950/40 hover:bg-red-950/70 border border-red-800/50 rounded-xl text-left text-xs">
+            <span class="font-bold text-red-300 block flex items-center gap-1"><i data-lucide="flame" class="w-3.5 h-3.5"></i> Start Coals</span>
+            <span class="text-[9px] text-zinc-400">25m Burn Clock</span>
+          </button>
+
+          <button onclick="clearSeatTab('${node.id}')" class="p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-left text-xs">
+            <span class="font-bold text-white block">Reset Seat</span>
+            <span class="text-[9px] text-zinc-400">Clear Occupancy</span>
+          </button>
+        </div>
+      `;
+
+      document.getElementById('seatActionModal').classList.remove('hidden');
+      renderIcons();
+    }
+
+    function openSeatInPos(label, bal) {
+      closeSeatActionModal();
+      setPosTable(label, 'Seat', bal);
+      switchStaffTab('pos');
+    }
+
+    function startCoalTimerForSeat(seatLabel) {
+      activeKdsTimers.unshift({
+        id: `kds-${Date.now()}`,
+        table: seatLabel,
+        mix: 'Russian Dark Leaf Craft Bowl',
+        startTime: Date.now()
+      });
+      closeSeatActionModal();
+      renderFloorCanvas();
+      showToast('🔥 Coal Timer Started', `25m burn cycle active for ${seatLabel}.`);
+    }
+
+    function clearSeatTab(nodeId) {
+      const plan = StaffStash.getFloorplan();
+      const node = plan.find(n => n.id === nodeId);
+      if (node) {
+        node.status = 'available';
+        node.tabBal = 0;
+        node.guest = null;
+        node.coalTimer = null;
+        StaffStash.saveFloorplan(plan);
+        renderFloorCanvas();
+        closeSeatActionModal();
+        showToast('✓ Seat Cleared', `${node.label} reset to available.`);
+      }
+    }
+
+    function closeSeatActionModal() {
+      document.getElementById('seatActionModal').classList.add('hidden');
+    }
+
+    function populatePosQuickSeats() {
+      const plan = StaffStash.getFloorplan();
+      const container = document.getElementById('posQuickSeatsBar');
+      if (!container) return;
+      container.innerHTML = '';
+
+      plan.slice(0, 8).forEach(seat => {
+        const btn = document.createElement('button');
+        const isActive = activePosTable.num === seat.label;
+        btn.id = `table-btn-${seat.label}`;
+        btn.className = `table-pos-btn p-2 rounded-xl text-center transition ${isActive ? 'border-2 border-brand-gold bg-amber-500/10' : 'border border-zinc-800 bg-zinc-950'}`;
+        btn.onclick = () => setPosTable(seat.label, seat.type, seat.tabBal);
+        btn.innerHTML = `
+          <span class="block text-xs font-bold text-white truncate">${seat.name}</span>
+          <span class="block text-[9px] font-mono-nums ${seat.tabBal > 0 ? 'text-brand-gold font-bold' : 'text-zinc-500'}">$${seat.tabBal.toFixed(0)}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function populateLabDispatchSelect() {
+      const plan = StaffStash.getFloorplan();
+      const sel = document.getElementById('dispatchTableSelect');
+      if (!sel) return;
+      sel.innerHTML = plan.map(s => `<option value="${s.label}">${s.label} (${s.name})</option>`).join('');
+    }
+
+    // ==================== MIX LAB ====================
     function initRotaryWheel() {
       const brands = ['all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'];
       const tabsContainer = document.getElementById('wheelBrandTabs');
@@ -1049,121 +1512,6 @@
       showToast('🚀 Dispatched & Grams Deducted', `Bowl sent to ${targetTable}. 25m heat timer started!`);
     }
 
-    // ==================== INTERACTIVE LOUNGE SEATING MODULE ====================
-    function renderSeatingModule() {
-      // 1. Render Floating VIP Tabs Queue
-      const floatingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
-      const container = document.getElementById('floatingVipTabsContainer');
-      container.innerHTML = '';
-
-      const unassignedList = floatingQueue.filter(q => q.seat === 'Floating VIP Tab');
-      document.getElementById('floatingQueueCount').textContent = `${unassignedList.length} Waiting for Seat`;
-
-      if (unassignedList.length === 0) {
-        container.innerHTML = `<div class="text-center py-3 text-xs text-zinc-500 italic">No floating VIP orders waiting. All guests assigned to seats.</div>`;
-      } else {
-        unassignedList.forEach((order, idx) => {
-          const div = document.createElement('div');
-          div.className = 'bg-black p-2.5 rounded-xl border border-zinc-800 flex items-center justify-between gap-2';
-          div.innerHTML = `
-            <div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[9px] bg-amber-950 text-brand-gold font-bold px-1.5 py-0.2 rounded">👑 VIP #${order.tabId}</span>
-                <span class="text-xs font-bold text-white">${order.mix}</span>
-              </div>
-              <span class="text-[10px] text-zinc-400 font-mono">Ordered at ${order.time} • $${order.price.toFixed(2)}</span>
-            </div>
-
-            <div class="flex items-center gap-1.5">
-              <select onchange="assignFloatingTabToSeat('${order.id}', this.value)" class="bg-zinc-900 border border-zinc-700 text-[11px] text-brand-gold font-bold rounded-lg px-2 py-1 focus:outline-none">
-                <option value="">+ Assign Seat</option>
-                <option value="Bar 1">Bar Seat #1</option>
-                <option value="Bar 2">Bar Seat #2</option>
-                <option value="Bar 3">Bar Seat #3</option>
-                <option value="VIP 1">VIP Booth #1</option>
-                <option value="VIP 2">VIP Booth #2</option>
-                <option value="Table 1">Table #1</option>
-                <option value="Table 4">Table #4</option>
-                <option value="Table 6">Table #6</option>
-              </select>
-            </div>
-          `;
-          container.appendChild(div);
-        });
-      }
-
-      // 2. Render Bar Seats
-      const barGrid = document.getElementById('barSeatsGrid');
-      barGrid.innerHTML = '';
-      LOUNGE_SEATS.filter(s => s.type === 'bar').forEach(seat => {
-        const isOcc = seat.status === 'occupied';
-        const div = document.createElement('div');
-        div.className = `p-2 rounded-xl border text-center transition cursor-pointer ${isOcc ? 'bg-amber-950/20 border-brand-gold' : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700'}`;
-        div.onclick = () => setPosTable(seat.name, 'Bar Stool', seat.tabBal);
-        div.innerHTML = `
-          <span class="block text-[11px] font-bold text-white">${seat.name}</span>
-          <span class="block text-[9px] font-mono ${isOcc ? 'text-brand-gold font-bold' : 'text-zinc-500'}">${isOcc ? `$${seat.tabBal.toFixed(0)}` : 'Open'}</span>
-        `;
-        barGrid.appendChild(div);
-      });
-
-      // 3. Render VIP Booths
-      const vipGrid = document.getElementById('vipBoothsGrid');
-      vipGrid.innerHTML = '';
-      LOUNGE_SEATS.filter(s => s.type === 'vip').forEach(seat => {
-        const isOcc = seat.status === 'occupied';
-        const div = document.createElement('div');
-        div.className = `p-2.5 rounded-xl border text-center transition cursor-pointer ${isOcc ? 'bg-amber-950/20 border-brand-gold' : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700'}`;
-        div.onclick = () => setPosTable(seat.name, 'VIP Booth', seat.tabBal);
-        div.innerHTML = `
-          <div class="flex items-center justify-center gap-1">
-            <i data-lucide="crown" class="w-3 h-3 text-brand-gold"></i>
-            <span class="text-xs font-bold text-white">${seat.name}</span>
-          </div>
-          <span class="block text-[10px] font-mono mt-0.5 ${isOcc ? 'text-brand-gold font-bold' : 'text-zinc-500'}">${isOcc ? `$${seat.tabBal.toFixed(2)} (${seat.guest})` : 'Available'}</span>
-        `;
-        vipGrid.appendChild(div);
-      });
-
-      // 4. Render Main Tables
-      const tablesGrid = document.getElementById('mainTablesGrid');
-      tablesGrid.innerHTML = '';
-      LOUNGE_SEATS.filter(s => s.type === 'table').forEach(seat => {
-        const isOcc = seat.status === 'occupied';
-        const div = document.createElement('div');
-        div.className = `p-2 rounded-xl border text-center transition cursor-pointer ${isOcc ? 'bg-amber-950/20 border-brand-gold' : 'bg-zinc-950 border-zinc-800 hover:border-zinc-700'}`;
-        div.onclick = () => setPosTable(seat.name, 'Table', seat.tabBal);
-        div.innerHTML = `
-          <span class="block text-xs font-bold text-white">${seat.name}</span>
-          <span class="block text-[9px] font-mono mt-0.5 ${isOcc ? 'text-brand-gold font-bold' : 'text-zinc-500'}">${isOcc ? `$${seat.tabBal.toFixed(2)}` : 'Open'}</span>
-        `;
-        tablesGrid.appendChild(div);
-      });
-
-      renderIcons();
-    }
-
-    function assignFloatingTabToSeat(orderId, targetSeat) {
-      if (!targetSeat) return;
-      const floatingQueue = JSON.parse(localStorage.getItem('empire_floating_vip_orders') || '[]');
-      const order = floatingQueue.find(q => q.id === orderId);
-      if (order) {
-        order.seat = targetSeat;
-        localStorage.setItem('empire_floating_vip_orders', JSON.stringify(floatingQueue));
-        
-        // Update seat occupancy
-        const seatObj = LOUNGE_SEATS.find(s => s.name.toLowerCase() === targetSeat.toLowerCase());
-        if (seatObj) {
-          seatObj.status = 'occupied';
-          seatObj.tabBal += order.price;
-          seatObj.guest = `VIP-${order.tabId}`;
-        }
-
-        renderSeatingModule();
-        showToast('📍 Seat Linked', `Floating VIP #${order.tabId} tab assigned to ${targetSeat}.`);
-      }
-    }
-
     // ==================== FLOOR POS & SQUARE ANDROID READER ====================
     function setPosTable(seatName, type, bal) {
       activePosTable = { num: seatName, name: type, balance: bal };
@@ -1339,7 +1687,7 @@
 
     setInterval(() => {
       if (currentStaffTab === 'kds') renderKdsQueue();
-      if (currentStaffTab === 'seating') renderSeatingModule();
+      if (currentStaffTab === 'seating' && !isBuilderMode) renderFloorCanvas();
     }, 10000);
 
     window.addEventListener('DOMContentLoaded', () => {
