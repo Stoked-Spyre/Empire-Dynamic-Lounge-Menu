@@ -62,7 +62,7 @@
 
     /* STOKED VERTICAL RULER STATION DIAL (LEFT COLUMN) */
     .v-ruler-sidebar {
-      width: 125px;
+      width: 130px;
       flex-shrink: 0;
       border-right: 1px solid rgba(255, 255, 255, 0.06);
       padding-right: 3px;
@@ -95,7 +95,7 @@
     }
     .v-ruler-mark-station.active {
       color: #FFFFFF;
-      background: rgba(229, 169, 60, 0.1);
+      background: rgba(229, 169, 60, 0.12);
       border-left: 2.5px solid #E5A93C;
     }
     .v-ruler-station-count {
@@ -185,6 +185,7 @@
       height: 7px;
       border-radius: 999px;
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      transition: background 0.3s ease;
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -193,7 +194,7 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
-  <!-- ==================== 1. TOP APP BAR (FLAT OBSIDIAN OLED) ==================== -->
+  <!-- ==================== 1. TOP APP BAR ==================== -->
   <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
     <!-- Brand Crest -->
     <div class="flex items-center gap-2.5">
@@ -244,23 +245,28 @@
       <div class="flex justify-between items-center mb-1.5">
         <div class="flex items-center gap-1.5">
           <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
-          <span class="text-xs font-bold text-white uppercase tracking-wider">In Your Bowl Mix</span>
+          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">In Your Bowl Mix</span>
         </div>
-        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800 font-mono" id="labBuzzBadge">
-          7.6/10 DARK LEAF
-        </span>
+        <div class="flex items-center gap-2">
+          <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800 font-mono" id="labBuzzBadge">
+            BLANK BOWL
+          </span>
+          <button onclick="clearBowl()" id="clearBowlBtn" class="text-[10px] text-zinc-500 hover:text-red-400 font-semibold hidden">
+            Clear ✕
+          </button>
+        </div>
       </div>
 
       <!-- Continuous Multi-Stop Spectrum Gradient Track -->
-      <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5"></div>
+      <div id="spectrumRibbon" class="spectrum-track w-full mb-2.5 bg-zinc-900"></div>
 
       <!-- Dynamically Populated Flavor Chips Tray -->
       <div class="space-y-1.5" id="flavorSlotsContainer">
-        <!-- Injected dynamically via JS as flavors are selected -->
+        <!-- Injected dynamically via JS as flavors or house mixes are selected -->
       </div>
     </section>
 
-    <!-- 2. STOKED SPLIT DIAL: BRAND LIST & DIAL (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
+    <!-- 2. STOKED SPLIT DIAL: HOUSE MIXES & BRANDS (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
     <section class="obsidian-card rounded-2xl p-3">
       
       <div class="flex justify-between items-center mb-2 px-1">
@@ -268,20 +274,20 @@
           <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
           <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
         </div>
-        <span class="text-[10px] text-zinc-400 font-medium">Select Brand • Spin Drum</span>
+        <span class="text-[10px] text-zinc-400 font-medium">Select Category • Spin Drum</span>
       </div>
 
-      <!-- Dual Split Layout: Brands on Left, Flavor Drum on Right -->
+      <!-- Dual Split Layout: Brands & House Mixes on Left, Drum on Right -->
       <div class="flex gap-2.5 items-stretch">
         
-        <!-- LEFT: BRANDS VERTICAL STATION DIAL -->
+        <!-- LEFT: HOUSE MIXES & BRANDS VERTICAL STATION DIAL -->
         <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
           <div class="v-ruler-track" id="brandStationsTrack">
-            <!-- Brand stations populated via JS -->
+            <!-- Populated via JS -->
           </div>
         </aside>
 
-        <!-- RIGHT: 3D MECHANICAL ROTARY FLAVORS DRUM -->
+        <!-- RIGHT: 3D MECHANICAL ROTARY DRUM -->
         <div 
           id="rotaryWheel" 
           class="cylinder-wheel-container"
@@ -326,7 +332,7 @@
 
       <!-- Dynamic Flavor Note Pills -->
       <div class="flex items-center gap-1.5 flex-wrap" id="bowlProfileBadges">
-        <!-- Injected dynamically based on active selection -->
+        <span class="text-[10px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>
       </div>
     </section>
 
@@ -337,7 +343,7 @@
           <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
           <span class="text-[9px] text-zinc-500 font-mono">Table #6</span>
         </div>
-        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$35.00</span>
+        <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$0.00</span>
       </div>
       
       <div class="flex items-center gap-2">
@@ -409,6 +415,7 @@
 
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
+    // Master Stoked Shisha Inventory
     const STOKED_MASTER_INVENTORY = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
@@ -425,6 +432,55 @@
       { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
     ];
 
+    // Master Curated House Mixes
+    const EMPIRE_HOUSE_MIXES = [
+      {
+        id: 'mix-pink-cane',
+        name: 'Pink Cane Sensation',
+        tagline: 'Lounge Signature Blend',
+        flavors: ['mh-pinkman', 'tan-cane-mint'],
+        ratios: [70, 30],
+        badge: 'Craft #1',
+        color: '#EC4899'
+      },
+      {
+        id: 'mix-siberian-midnight',
+        name: 'Siberian Midnight Tea',
+        tagline: 'Arctic Freeze & Green Tea',
+        flavors: ['ds-supernova', 'bb-green-tea'],
+        ratios: [30, 70],
+        badge: 'Staff Fav',
+        color: '#6366F1'
+      },
+      {
+        id: 'mix-kashmir-velvet',
+        name: 'Kashmir Velvet Cream',
+        tagline: 'Spiced Floral Kashmir & Sweet Rice',
+        flavors: ['tan-kashmir-peach', 'mh-milky-rice'],
+        ratios: [60, 40],
+        badge: 'Rich',
+        color: '#FB923C'
+      },
+      {
+        id: 'mix-empire-royalty',
+        name: 'Empire Royalty',
+        tagline: 'Cane Mint, Mango & Siberian Freeze',
+        flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'],
+        ratios: [35, 35, 30],
+        badge: 'VIP',
+        color: '#E5A93C'
+      },
+      {
+        id: 'mix-citrus-bliss',
+        name: 'Fizzy Citrus Rush',
+        tagline: 'Valencia Orange & Grapefruit Zest',
+        flavors: ['tan-orange-soda', 'mh-pinkman'],
+        ratios: [50, 50],
+        badge: 'Fresh',
+        color: '#F97316'
+      }
+    ];
+
     class CustomerStash {
       static getInventory() {
         const local = localStorage.getItem('empire_stoked_stash');
@@ -436,11 +492,13 @@
       }
     }
 
-    let activeFlavors = ['mh-pinkman', 'tan-cane-mint'];
+    // ACTIVE SELECTION STARTS BLANK!
+    let activeFlavors = []; // Blank on startup
+    let activeMixName = null;
     let roundCount = 1;
     let tabBalance = 35.00;
 
-    let selectedBrandStation = 'all';
+    let selectedStationType = 'house_mixes'; // 'house_mixes' | 'all' | brandName
     let filteredWheelItems = [];
     let wheelSelectedIndex = 0;
     let touchStartY = null;
@@ -448,6 +506,7 @@
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
+    // ==================== STOKED STATION DIAL (HOUSE MIXES & BRANDS) ====================
     function initBrandStationDial() {
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
@@ -455,32 +514,48 @@
       const stationsTrack = document.getElementById('brandStationsTrack');
       stationsTrack.innerHTML = '';
 
-      // 1. All Brands Station
+      // 1. 👑 HOUSE MIXES STATION (FIRST ITEM)
+      const houseStation = document.createElement('div');
+      const isHouseActive = selectedStationType === 'house_mixes';
+      houseStation.className = `v-ruler-mark-station ${isHouseActive ? 'active' : ''}`;
+      houseStation.onclick = () => {
+        selectedStationType = 'house_mixes';
+        wheelSelectedIndex = 0;
+        initBrandStationDial();
+        renderDrumTrack();
+      };
+      houseStation.innerHTML = `
+        <span class="truncate text-brand-gold font-bold">👑 House Mixes</span>
+        <span class="v-ruler-station-count">${EMPIRE_HOUSE_MIXES.length}</span>
+      `;
+      stationsTrack.appendChild(houseStation);
+
+      // 2. All Brands Station
       const allStation = document.createElement('div');
-      const isAllActive = selectedBrandStation === 'all';
+      const isAllActive = selectedStationType === 'all';
       allStation.className = `v-ruler-mark-station ${isAllActive ? 'active' : ''}`;
       allStation.onclick = () => {
-        selectedBrandStation = 'all';
+        selectedStationType = 'all';
         wheelSelectedIndex = 0;
         initBrandStationDial();
         renderDrumTrack();
       };
       allStation.innerHTML = `
-        <span class="truncate">All Brands</span>
+        <span class="truncate">All Single Flavors</span>
         <span class="v-ruler-station-count">${inventory.filter(i => i.stock !== 'out_of_stock').length}</span>
       `;
       stationsTrack.appendChild(allStation);
 
-      // 2. Distinct Brand Stations
+      // 3. Distinct Brand Stations
       distinctBrands.forEach(brandName => {
         const inStockCount = inventory.filter(i => i.brand === brandName && i.stock !== 'out_of_stock').length;
         if (inStockCount === 0) return;
 
         const station = document.createElement('div');
-        const isActive = selectedBrandStation.toLowerCase() === brandName.toLowerCase();
+        const isActive = selectedStationType.toLowerCase() === brandName.toLowerCase();
         station.className = `v-ruler-mark-station ${isActive ? 'active' : ''}`;
         station.onclick = () => {
-          selectedBrandStation = brandName;
+          selectedStationType = brandName;
           wheelSelectedIndex = 0;
           initBrandStationDial();
           renderDrumTrack();
@@ -492,16 +567,23 @@
         stationsTrack.appendChild(station);
       });
 
-      filteredWheelItems = inventory.filter(item => (selectedBrandStation === 'all' || item.brand.toLowerCase() === selectedBrandStation.toLowerCase()) && item.stock !== 'out_of_stock');
+      if (selectedStationType === 'house_mixes') {
+        filteredWheelItems = EMPIRE_HOUSE_MIXES;
+      } else {
+        filteredWheelItems = inventory.filter(item => (selectedStationType === 'all' || item.brand.toLowerCase() === selectedStationType.toLowerCase()) && item.stock !== 'out_of_stock');
+      }
       renderDrumTrack();
     }
 
+    // ==================== STOKED 3D MECHANICAL ROTARY DRUM ====================
     function renderDrumTrack() {
       const track = document.getElementById('cylinderDrumTrack');
       track.innerHTML = '';
 
       const count = filteredWheelItems.length;
       if (count === 0) return;
+
+      const isHouseMode = (selectedStationType === 'house_mixes');
 
       filteredWheelItems.forEach((item, index) => {
         const diff = index - wheelSelectedIndex;
@@ -525,22 +607,38 @@
           else { wheelSelectedIndex = index; renderDrumTrack(); }
         };
 
-        row.innerHTML = `
-          <div class="flex items-center min-w-0">
-            <span class="cylinder-color-bar" style="background: ${item.color};"></span>
-            <span class="truncate">${item.name}</span>
-          </div>
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-            <span class="text-[9px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
-          </div>
-        `;
+        if (isHouseMode) {
+          row.innerHTML = `
+            <div class="flex items-center min-w-0">
+              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+              <span class="truncate font-bold">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="text-[9px] bg-amber-950/80 text-brand-gold border border-amber-800/40 px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
+            </div>
+          `;
+        } else {
+          row.innerHTML = `
+            <div class="flex items-center min-w-0">
+              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
+              <span class="truncate">${item.name}</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="text-[9px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
+              <span class="text-[9px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
+            </div>
+          `;
+        }
         track.appendChild(row);
       });
 
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (activeItem) {
-        document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Bowl`;
+        if (isHouseMode) {
+          document.getElementById('wheelConfirmBtnText').textContent = `👑 Load House Mix: "${activeItem.name}"`;
+        } else {
+          document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Bowl`;
+        }
       }
     }
 
@@ -574,33 +672,76 @@
       const activeItem = filteredWheelItems[wheelSelectedIndex];
       if (!activeItem) return;
 
-      if (activeFlavors.includes(activeItem.id)) {
-        showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
-        return;
-      }
+      const isHouseMode = (selectedStationType === 'house_mixes');
 
-      if (activeFlavors.length >= 3) {
-        activeFlavors[activeFlavors.length - 1] = activeItem.id;
-        showToast('🔄 Replaced Slot', `Swapped slot with ${activeItem.name}.`);
+      if (isHouseMode) {
+        // Load all constituent flavors of the house mix
+        activeFlavors = [...activeItem.flavors];
+        activeMixName = activeItem.name;
+        showToast('👑 House Mix Loaded', `"${activeItem.name}" popped up into your bowl!`);
       } else {
-        activeFlavors.push(activeItem.id);
-        showToast('✨ Added to Bowl', `${activeItem.name} popped into mix above!`);
+        activeMixName = null;
+        if (activeFlavors.includes(activeItem.id)) {
+          showToast('ℹ️ Already in Bowl', `${activeItem.name} is in your mix.`);
+          return;
+        }
+
+        if (activeFlavors.length >= 3) {
+          activeFlavors[activeFlavors.length - 1] = activeItem.id;
+          showToast('🔄 Replaced Slot', `Swapped slot with ${activeItem.name}.`);
+        } else {
+          activeFlavors.push(activeItem.id);
+          showToast('✨ Added to Bowl', `${activeItem.name} popped into mix above!`);
+        }
       }
 
       renderMixLab();
     }
 
+    function clearBowl() {
+      activeFlavors = [];
+      activeMixName = null;
+      renderMixLab();
+      showToast('🗑️ Bowl Cleared', 'Bowl is now blank.');
+    }
+
+    // ==================== MIX LAB: DYNAMIC POP-UP TRAY & PROFILES ====================
     function renderMixLab() {
       const inventory = CustomerStash.getInventory();
-      
-      // 1. Build Spectrum Gradient
       const ribbon = document.getElementById('spectrumRibbon');
+      const container = document.getElementById('flavorSlotsContainer');
+      const profileContainer = document.getElementById('bowlProfileBadges');
+      const clearBtn = document.getElementById('clearBowlBtn');
+
+      if (activeFlavors.length === 0) {
+        // Blank Bowl State
+        ribbon.style.background = '#1E2533';
+        document.getElementById('activeBowlTitle').textContent = 'In Your Bowl (Blank)';
+        document.getElementById('labBuzzBadge').textContent = 'BLANK BOWL';
+        document.getElementById('totalPriceText').textContent = '$0.00';
+        clearBtn.classList.add('hidden');
+
+        container.innerHTML = `
+          <div class="text-center py-4 text-xs text-zinc-500 border border-dashed border-zinc-800 rounded-xl bg-zinc-950/40">
+            <span class="block text-zinc-400 font-bold mb-0.5">Bowl is empty</span>
+            <span>Select a <strong>👑 House Mix</strong> or spin the dial to add flavors.</span>
+          </div>
+        `;
+
+        profileContainer.innerHTML = `<span class="text-[10px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>`;
+        renderIcons();
+        return;
+      }
+
+      // Active Flavors Present
+      clearBtn.classList.remove('hidden');
+      document.getElementById('activeBowlTitle').textContent = activeMixName ? `👑 ${activeMixName}` : 'In Your Bowl Mix';
+
       let gradParts = [];
       let cum = 0;
       let totalStrength = 0;
       let activeProfilesSet = new Set();
-
-      const slicePercent = 100 / Math.max(1, activeFlavors.length);
+      const slicePercent = 100 / activeFlavors.length;
 
       activeFlavors.forEach(id => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
@@ -616,10 +757,8 @@
       });
       ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
 
-      // 2. Render Active Selected Chips in Top Tray (Above Dial)
-      const container = document.getElementById('flavorSlotsContainer');
+      // Render Active Flavor Chips
       container.innerHTML = '';
-
       activeFlavors.forEach((id, idx) => {
         const item = inventory.find(i => i.id === id) || STOKED_MASTER_INVENTORY[0];
         const row = document.createElement('div');
@@ -642,10 +781,8 @@
         container.appendChild(row);
       });
 
-      // 3. Render Bowl Profiles & Tasting Notes Badges
-      const profileContainer = document.getElementById('bowlProfileBadges');
+      // Render Bowl Profiles
       profileContainer.innerHTML = '';
-
       const profileEmojis = {
         'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓',
         'Citrus': '🍋', 'Sweet': '🍯', 'Tropical': '🥭', 'Dessert': '🍰', 'Creamy': '🥛',
@@ -661,8 +798,8 @@
         profileContainer.appendChild(span);
       });
 
-      // 4. Update Buzz Badge, Pricing & Action Bar
-      const avgStr = (totalStrength / Math.max(1, activeFlavors.length)).toFixed(1);
+      // Update Buzz Badge, Pricing & Action Bar
+      const avgStr = (totalStrength / activeFlavors.length).toFixed(1);
       document.getElementById('labBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
 
       const isTangiers = activeFlavors.some(id => {
@@ -680,17 +817,18 @@
     }
 
     function removeFlavor(idx) {
-      if (activeFlavors.length <= 1) {
-        showToast('⚠️ Minimum Requirement', 'Please keep at least 1 flavor in your bowl.');
-        return;
-      }
       activeFlavors.splice(idx, 1);
+      activeMixName = null;
       renderMixLab();
     }
 
     function dispatchOrder(mode) {
+      if (activeFlavors.length === 0) {
+        showToast('⚠️ Bowl is Empty', 'Please select flavors or a House Mix first.');
+        return;
+      }
       const price = parseFloat(document.getElementById('totalPriceText').textContent.replace('$', ''));
-      const mixName = 'Custom Shisha Blend';
+      const mixName = activeMixName || 'Custom Shisha Blend';
       tabBalance += price;
       roundCount++;
 
@@ -732,7 +870,7 @@
       showToast('🏁 Session Closed', 'Table #6 tab paid via Square Web Payments. Table reset!');
       tabBalance = 0.00;
       roundCount = 1;
-      renderMixLab();
+      clearBowl();
     }
 
     function showToast(title, msg) {
