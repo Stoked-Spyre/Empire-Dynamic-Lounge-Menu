@@ -1158,12 +1158,15 @@
       const b = brandName.toLowerCase().replace(/[^a-z]/g, '');
       let src = null;
       if (b.includes('empire')) src = 'logos/empire_clean.png';
-      else if (b.includes('fakher')) src = 'logos/al_fakher_clean.png';
-      else if (b.includes('blackburn')) src = 'logos/black_burn_clean.png';
-      else if (b.includes('darkside')) src = 'logos/darkside_clean.png';
-      else if (b.includes('deus')) src = 'logos/deus_clean.png';
-      else if (b.includes('starbuzz')) src = 'logos/starbuzz_clean.png';
+      else if (b.includes('musthave')) src = 'logos/musthave_clean.png';
       else if (b.includes('tangiers')) src = 'logos/tangiers_clean.png';
+      else if (b.includes('darkside')) src = 'logos/darkside_clean.png';
+      else if (b.includes('blackburn')) src = 'logos/black_burn_clean.png';
+      else if (b.includes('fakher')) src = 'logos/al_fakher_clean.png';
+      else if (b.includes('starbuzz')) src = 'logos/starbuzz_clean.png';
+      else if (b.includes('adalya')) src = 'logos/adalya_clean.png';
+      else if (b.includes('deus')) src = 'logos/deus_clean.png';
+      else if (b.includes('eternal')) src = 'logos/eternal_smoke_clean.png';
 
       if (src) {
         return `<img src="${src}" alt="${brandName}" class="max-h-12 max-w-[90px] object-contain opacity-[0.09] group-hover:opacity-[0.18] transition-opacity duration-300 pointer-events-none select-none" />`;
@@ -2103,16 +2106,13 @@
               totalRendered += brandFlavors.length;
               const meta = BRAND_METADATA[brandName] || { subtitle: 'Premium Tobacco', origin: 'Craft', leafType: 'Dark Leaf' };
               
-              // Brand Group Header
+              // Brand Group Header (Bold, Clean & Highly Legible)
               const brandSection = document.createElement('div');
-              brandSection.className = 'pt-1.5 space-y-2';
+              brandSection.className = 'pt-2 space-y-2';
               brandSection.innerHTML = `
                 <div class="flex items-center justify-between px-1 border-b border-zinc-800/80 pb-1.5">
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400">${brandName}</span>
-                    <span class="text-[11px] text-zinc-400 font-medium">· ${meta.subtitle}</span>
-                  </div>
-                  <span class="text-[10px] text-zinc-500 font-mono">${meta.origin}</span>
+                  <span class="text-sm font-bold uppercase tracking-wider text-amber-400">${brandName}</span>
+                  <span class="text-xs text-zinc-400 font-mono">${meta.origin || ''}</span>
                 </div>
                 <div class="space-y-2 brand-items-list"></div>
               `;
