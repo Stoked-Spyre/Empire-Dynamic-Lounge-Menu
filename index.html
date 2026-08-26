@@ -321,16 +321,7 @@
     <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
     <div id="customer-view-menu" class="customer-panel flex flex-col gap-2.5">
       
-      <!-- 1. Ambient Lounge Pricing Rates Strip (Clean, Rates Only) -->
-      <div class="flex items-center justify-center gap-4 text-xs py-1 text-zinc-300 font-medium tracking-tight">
-        <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35.00</strong></span>
-        <span class="text-zinc-700">·</span>
-        <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25.00</strong></span>
-        <span class="text-zinc-700">·</span>
-        <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38.00</strong></span>
-      </div>
-
-      <!-- 2. Menu Sub-Tabs Switcher (House Blends is Default Subtab) -->
+      <!-- 1. Menu Sub-Tabs Switcher (House Blends is Default Subtab) -->
       <div class="grid grid-cols-3 gap-1 p-1 bg-transparent rounded-xl text-xs">
         <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
           <span>👑 House Blends</span>
@@ -343,12 +334,12 @@
         </button>
       </div>
 
-      <!-- 3. Sub-Tab 1: House Mixes -->
+      <!-- 2. Sub-Tab 1: House Mixes -->
       <div id="menu-view-house" class="menu-sub-panel space-y-2.5">
         <!-- Injected via JS -->
       </div>
 
-      <!-- 4. Sub-Tab 2: Master Flavors with Dual-Pivot Explorer (By Profile vs By Brand) -->
+      <!-- 3. Sub-Tab 2: Master Flavors with Dual-Pivot Explorer (By Profile vs By Brand) -->
       <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
         
         <!-- Flavor Explorer Pivot Header -->
@@ -366,6 +357,15 @@
           </div>
         </div>
 
+        <!-- Ambient Lounge Pricing Rates Strip (Shown exclusively on Single Flavors) -->
+        <div class="flex items-center justify-center gap-4 text-xs py-1.5 px-2 text-zinc-300 font-medium tracking-tight bg-zinc-950/60 border border-zinc-850/80 rounded-xl">
+          <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35.00</strong></span>
+          <span class="text-zinc-700">·</span>
+          <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25.00</strong></span>
+          <span class="text-zinc-700">·</span>
+          <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38.00</strong></span>
+        </div>
+
         <!-- Filter Navigation Strip -->
         <div class="bg-transparent">
           <div class="flex gap-4 overflow-x-auto no-scrollbar py-1 px-1 text-xs whitespace-nowrap border-b border-zinc-800/60" id="flavorFilterStrip">
@@ -377,9 +377,17 @@
         <div class="space-y-2.5" id="menuFlavorsContainer">
           <!-- Injected via JS -->
         </div>
+
+        <!-- Product Tier Disclaimer Note -->
+        <div class="pt-3 pb-1 border-t border-zinc-900">
+          <p class="text-[11px] text-zinc-500 text-center italic leading-relaxed">
+            *Disclaimer, any bowl containing a different tier of product is charged at that higher tier.
+          </p>
+        </div>
+
       </div>
 
-      <!-- 5. Sub-Tab 3: Drinks & Tea Bar -->
+      <!-- 4. Sub-Tab 3: Drinks & Tea Bar -->
       <div id="menu-view-drinks" class="menu-sub-panel hidden space-y-2.5">
         <!-- Injected via JS -->
       </div>
@@ -1951,16 +1959,10 @@
         houseCont.innerHTML = '';
         EMPIRE_HOUSE_MIXES.forEach(mix => {
           let totalStrength = 0;
-          let ribbonGradients = [];
-          let cumPct = 0;
-
           mix.flavors.forEach((fId, fIdx) => {
             const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
             const pct = mix.ratios[fIdx] || 50;
             totalStrength += ((item.strength || 7) * (pct / 100));
-            const start = cumPct;
-            cumPct += pct;
-            ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
           });
 
           const buzzVal = parseFloat(totalStrength.toFixed(1));
@@ -1971,14 +1973,14 @@
           card.onclick = () => openMenuItemDetailModal(mix.id, 'house');
 
           card.innerHTML = `
-            <!-- Empire Lounge Watermark along Bottom Right -->
-            <div class="absolute right-2 -bottom-2 max-w-[120px] max-h-16 pointer-events-none flex items-end justify-end overflow-hidden">
+            <!-- Empire Lounge Watermark along Bottom-Middle (Clear of right price column) -->
+            <div class="absolute right-24 bottom-1 max-w-[90px] max-h-14 pointer-events-none flex items-end justify-end overflow-hidden">
               ${getBrandLogoWatermarkHtml('empire')}
             </div>
 
             <div class="relative z-10 flex items-start justify-between gap-3">
-              <!-- Left Side: Clean & Uncluttered -->
-              <div class="min-w-0 flex-1 space-y-1">
+              <!-- Left Side: Clean & Uncluttered with Flavor Profile Spheres -->
+              <div class="min-w-0 flex-1 space-y-1.5">
                 <div class="flex items-center gap-1.5">
                   <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-amber-300 transition">${mix.name}</h3>
                   <i data-lucide="info" class="w-3 h-3 text-zinc-500 group-hover:text-amber-400 transition flex-shrink-0"></i>
@@ -1986,12 +1988,24 @@
                 </div>
                 <p class="text-xs text-zinc-400 leading-snug line-clamp-1">${mix.tagline || mix.desc}</p>
                 
-                <!-- Miniature Ribbon Track -->
-                <div class="h-1 rounded-full w-full bg-zinc-900 overflow-hidden mt-2" style="background: linear-gradient(90deg, ${ribbonGradients.join(', ')});"></div>
+                <!-- Clean Flavor Profile Spheres (No Spectrum Bar) -->
+                <div class="flex items-center gap-2 pt-0.5 flex-wrap">
+                  ${mix.flavors.map((fId, fIdx) => {
+                    const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+                    const pct = mix.ratios[fIdx] || 50;
+                    return `
+                      <div class="flex items-center gap-1" title="${item.name} (${pct}%)">
+                        <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${item.color || '#E5A93C'}; box-shadow: 0 0 5px ${item.color || '#E5A93C'}99;"></span>
+                        <span class="text-[11px] text-zinc-400 font-medium">${item.name}</span>
+                        <span class="text-[10px] text-zinc-600 font-mono">${pct}%</span>
+                      </div>
+                    `;
+                  }).join('<span class="text-zinc-700 text-xs">·</span>')}
+                </div>
               </div>
 
-              <!-- Right Side: Buzz Top Right, Price Bottom Right -->
-              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[50px]">
+              <!-- Right Side: Buzz Top Right, Price Bottom Right (Pure Black Un-Obscured Area) -->
+              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[52px]">
                 <!-- Top Right: Buzz Rating -->
                 <div class="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
                   <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
@@ -2024,8 +2038,8 @@
           card.onclick = () => openMenuItemDetailModal(item.id, 'flavor');
 
           card.innerHTML = `
-            <!-- Brand Logo Watermark along Bottom Right -->
-            <div class="absolute right-2 -bottom-2 max-w-[120px] max-h-16 pointer-events-none flex items-end justify-end overflow-hidden">
+            <!-- Brand Logo Watermark along Bottom-Middle (Clear of right price column) -->
+            <div class="absolute right-24 bottom-1 max-w-[90px] max-h-14 pointer-events-none flex items-end justify-end overflow-hidden">
               ${getBrandLogoWatermarkHtml(item.brand)}
             </div>
 
@@ -2033,7 +2047,7 @@
               <!-- Left Side: Clean & Uncluttered -->
               <div class="min-w-0 flex-1 space-y-1">
                 <div class="flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color || '#E5A93C'};"></span>
+                  <span class="w-2 h-2 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color || '#E5A93C'}; box-shadow: 0 0 5px ${item.color || '#E5A93C'}99;"></span>
                   <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-amber-300 transition ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</h3>
                   <i data-lucide="info" class="w-3 h-3 text-zinc-600 group-hover:text-amber-400 transition flex-shrink-0"></i>
                   <span class="text-xs text-zinc-500 font-medium">· ${item.brand}</span>
