@@ -241,59 +241,68 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
-  <!-- ==================== 1. TOP APP BAR (FLOATING VIP TAB IDENTITY) ==================== -->
-  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
-    <!-- Brand Crest & VIP Floating Tab Status -->
-    <div class="flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center p-1 shadow-md">
-        <svg viewBox="0 0 100 100" class="w-full h-full text-slate-300">
-          <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="2 2" />
-          <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5" />
-          <line x1="22" y1="22" x2="78" y2="78" stroke="currentColor" stroke-width="1.5" />
-          <line x1="78" y1="22" x2="22" y2="78" stroke="currentColor" stroke-width="1.5" />
-          <text x="50" y="32" font-family="'Cinzel', serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#E5A93C">E</text>
-          <text x="31" y="54" font-family="'Cinzel', serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#FFFFFF">H</text>
-          <text x="69" y="54" font-family="'Cinzel', serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#FFFFFF">L</text>
-          <path d="M50 63 L50 78 M46 65 L54 65 M48 78 L52 78 M47 72 C47 75 53 75 53 72 Z" stroke="#E5A93C" stroke-width="1.5" fill="none" stroke-linecap="round" />
-        </svg>
-      </div>
+  <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
+  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-800/80 sticky top-0 z-40 px-3.5 py-2.5 flex items-center justify-between">
+    
+    <!-- Left: VIP Log In Button (Public Guest View) OR VIP Profile Info (Logged In View) -->
+    <div id="headerGuestView" class="flex items-center gap-2">
+      <!-- Top Left VIP Login Button -->
+      <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
+        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+        <span>VIP Log In</span>
+      </button>
 
+      <div class="flex items-center gap-1 text-[11px] text-zinc-400 bg-zinc-950 px-2 py-1 rounded-lg border border-zinc-850">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="headerWifiStatusText">📶 Empire Wi-Fi</span>
+      </div>
+    </div>
+
+    <div id="headerVipView" class="hidden flex items-center gap-2">
+      <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold font-bold text-xs">
+        <span id="vipAvatarLetter">A</span>
+      </div>
       <div>
         <div class="flex items-center gap-1.5">
-          <h1 class="font-crest font-bold text-xs tracking-wider text-white">EMPIRE HOOKAH</h1>
-          <span class="text-[10px] bg-amber-950/80 text-brand-gold font-mono px-1 py-0.2 rounded border border-amber-800/50 font-bold">👑 VIP PASS</span>
+          <span class="font-bold text-white text-xs" id="vipMemberNameDisplay">Alex M.</span>
+          <span class="text-[9px] bg-amber-950 text-brand-gold font-mono font-bold px-1 rounded border border-amber-800/50" id="vipTierDisplay">GOLD VIP</span>
         </div>
-        
-        <!-- Interactive Seat Selector Dropdown / Modal Trigger -->
-        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[13px] text-zinc-300 font-semibold hover:text-brand-gold transition mt-0.5">
+        <button onclick="openSeatAssignModal()" class="flex items-center gap-1 text-[11px] text-zinc-300 font-semibold hover:text-brand-gold transition">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="headerSeatDisplay" class="font-bold text-white">👑 Floating VIP Tab #409</span>
+          <span id="headerSeatDisplay" class="font-bold text-brand-gold">Floating VIP Tab #409</span>
           <i data-lucide="chevron-down" class="w-3 h-3 text-zinc-400"></i>
         </button>
       </div>
     </div>
 
-    <!-- Right Controls: Coals & VIP Rewards & Seat Finder -->
-    <div class="flex items-center gap-1.5">
-      <button onclick="openRewardsLoyaltyModal()" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Points & Available Rewards">
+    <!-- Center/Right: Guest QR Badge OR VIP Actions -->
+    <div id="headerGuestRightView" class="flex items-center gap-1.5">
+      <div class="text-right">
+        <span class="text-xs font-crest tracking-wider font-bold text-white block">EMPIRE HOOKAH</span>
+        <span class="text-[10px] text-brand-gold font-mono font-semibold">QR Digital Menu</span>
+      </div>
+    </div>
+
+    <div id="headerVipRightView" class="hidden flex items-center gap-1.5">
+      <button onclick="openRewardsLoyaltyModal()" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-brand-gold px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="View VIP Points & Rewards">
         <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
         <span id="headerVipPointsBadge">⭐ 750 Pts</span>
-      </button>
-
-      <button onclick="openSeatAssignModal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95" title="Assign your seat or table">
-        <i data-lucide="map-pin" class="w-3 h-3 text-brand-gold"></i>
-        <span id="seatBtnText">Seat</span>
       </button>
 
       <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition active:scale-95">
         <i data-lucide="flame" class="w-3.5 h-3.5 text-brand-coal"></i>
         <span>Coals</span>
       </button>
+
+      <button onclick="vipLogout()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white p-1.5 rounded-lg text-xs transition active:scale-95" title="Log Out / Return to Public Menu">
+        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+      </button>
     </div>
+
   </header>
 
-  <!-- Top Navigation View Switcher -->
-  <nav class="w-full max-w-lg px-3.5 pt-2.5 pb-1">
+  <!-- Top Navigation View Switcher (Visible only when VIP is logged in) -->
+  <nav id="vipTopNav" class="hidden w-full max-w-lg px-3.5 pt-2.5 pb-1">
     <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-950/90 border border-zinc-800 rounded-2xl text-xs font-bold shadow-lg">
       <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-brand-gold text-black flex items-center justify-center gap-1.5 shadow-md font-extrabold text-[12px] transition active:scale-95">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -571,8 +580,8 @@
 
   </main>
 
-  <!-- ==================== FLOATING BOTTOM MOBILE NAVIGATION DOCK ==================== -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-zinc-800/80 px-4 py-2 flex justify-around items-center backdrop-blur-md">
+  <!-- ==================== FLOATING BOTTOM MOBILE NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
+  <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-zinc-800/80 px-4 py-2 flex justify-around items-center backdrop-blur-md">
     <button onclick="switchCustomerTab('menu')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-menu">
       <i data-lucide="book-open" class="w-4 h-4 text-brand-gold"></i>
       <span class="text-[10px] font-bold">Menu</span>
@@ -590,6 +599,60 @@
       <span class="text-[10px] font-bold">Checkout</span>
     </button>
   </nav>
+
+  <!-- ==================== VIP LOGIN & WI-FI VERIFICATION MODAL ==================== -->
+  <div id="vipLoginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-zinc-950 border border-amber-500/40 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4">
+      
+      <!-- Modal Header -->
+      <div class="flex justify-between items-start pb-2.5 border-b border-zinc-800">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-gold">
+            <i data-lucide="crown" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-crest font-bold text-xs tracking-wider text-white">VIP SELF-ORDERING</h3>
+            <p class="text-[11px] text-zinc-400">Empire Lounge On-Premise Portal</p>
+          </div>
+        </div>
+        <button onclick="closeVipLoginModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2.5 py-1 rounded-lg">✕</button>
+      </div>
+
+      <!-- Wi-Fi Verification Check Card -->
+      <div class="p-3 rounded-2xl border transition-all" id="wifiCheckStatusCard">
+        <!-- Injected dynamically based on wifi status -->
+      </div>
+
+      <!-- VIP Member Phone Lookup Form -->
+      <div class="space-y-2.5" id="vipLoginFormSection">
+        <div>
+          <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">VIP Phone Number / Member ID</label>
+          <input type="tel" id="vipPhoneInput" placeholder="480-555-0409" class="w-full bg-black border border-zinc-800 focus:border-brand-gold rounded-xl px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none" />
+        </div>
+
+        <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+          <i data-lucide="unlock" class="w-4 h-4"></i>
+          <span>Log In &amp; Unlock Self-Ordering</span>
+        </button>
+
+        <!-- Quick VIP Demo Accounts for instant 1-tap testing -->
+        <div class="pt-1">
+          <span class="text-[10px] text-zinc-500 block uppercase font-bold text-center mb-1.5">Quick VIP Profile Select:</span>
+          <div class="grid grid-cols-2 gap-1.5 text-left text-xs">
+            <button onclick="quickVipLogin('vip-409')" class="p-2 rounded-xl bg-black border border-zinc-800 hover:border-amber-500/40 text-zinc-300 hover:text-white">
+              <span class="font-bold block text-brand-gold">Alex M.</span>
+              <span class="text-[10px] text-zinc-500 font-mono">Gold VIP • 750 Pts</span>
+            </button>
+            <button onclick="quickVipLogin('vip-310')" class="p-2 rounded-xl bg-black border border-zinc-800 hover:border-amber-500/40 text-zinc-300 hover:text-white">
+              <span class="font-bold block text-brand-gold">Marcus S.</span>
+              <span class="text-[10px] text-zinc-500 font-mono">Platinum • 1200 Pts</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ==================== DYNAMIC ZONE-GROUPED LOUNGE SEAT ASSIGNMENT MODAL ==================== -->
   <div id="seatAssignModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -992,7 +1055,144 @@
     let selectedFlavorProfileFilter = 'all';
     let selectedFlavorRegionFilter = 'all';
 
+    let isVipLoggedIn = false; // Default: Public QR Guest mode (Menu only, no extra tabs)
+    let isConnectedToLoungeWifi = true; // Wi-Fi check simulation (verified on-premise)
+
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
+
+    // ==================== VIP LOGIN & WI-FI VERIFICATION ====================
+    function openVipLoginModal() {
+      checkLoungeWifiStatus();
+      document.getElementById('vipLoginModal').classList.remove('hidden');
+      renderIcons();
+    }
+
+    function closeVipLoginModal() {
+      document.getElementById('vipLoginModal').classList.add('hidden');
+    }
+
+    function checkLoungeWifiStatus() {
+      const card = document.getElementById('wifiCheckStatusCard');
+      if (!card) return;
+
+      if (isConnectedToLoungeWifi) {
+        card.className = 'p-3 rounded-2xl border bg-emerald-950/40 border-emerald-500/40 text-xs space-y-1';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="font-bold text-emerald-300 text-xs">Lounge Wi-Fi Verified ✓</span>
+            </div>
+            <button onclick="toggleLoungeWifiSimulation()" class="text-[10px] text-zinc-400 hover:text-zinc-200 underline font-mono">Simulate Off</button>
+          </div>
+          <p class="text-[11px] text-emerald-400/80">Connected to <strong>Empire-VIP-WiFi</strong> (On-Premises). VIP self-ordering active.</p>
+        `;
+        const submitBtn = document.getElementById('vipLoginSubmitBtn');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.className = 'w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition';
+        }
+      } else {
+        card.className = 'p-3 rounded-2xl border bg-red-950/40 border-red-500/40 text-xs space-y-1.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-red-400"></span>
+              <span class="font-bold text-red-300 text-xs">Off-Network (No Lounge Wi-Fi)</span>
+            </div>
+            <button onclick="toggleLoungeWifiSimulation()" class="text-[10px] bg-red-900 text-red-200 px-2 py-0.5 rounded font-bold hover:bg-red-800">Connect Wi-Fi</button>
+          </div>
+          <p class="text-[11px] text-red-300/90">Please connect to <strong>'Empire-VIP-WiFi'</strong> inside the lounge to authenticate VIP self-ordering.</p>
+        `;
+        const submitBtn = document.getElementById('vipLoginSubmitBtn');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.className = 'w-full bg-zinc-800 text-zinc-500 font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed';
+        }
+      }
+      renderIcons();
+    }
+
+    function toggleLoungeWifiSimulation() {
+      isConnectedToLoungeWifi = !isConnectedToLoungeWifi;
+      const wifiText = document.getElementById('headerWifiStatusText');
+      if (wifiText) {
+        wifiText.textContent = isConnectedToLoungeWifi ? '📶 Empire Wi-Fi' : '⚠️ No Lounge Wi-Fi';
+      }
+      checkLoungeWifiStatus();
+      showToast(
+        isConnectedToLoungeWifi ? '📶 Wi-Fi Connected' : '⚠️ Wi-Fi Disconnected',
+        isConnectedToLoungeWifi ? 'Connected to Empire-VIP-WiFi.' : 'Device is off-network.'
+      );
+    }
+
+    function attemptVipLogin() {
+      if (!isConnectedToLoungeWifi) {
+        showToast('⚠️ Wi-Fi Required', 'Connect to Empire-VIP-WiFi to unlock self-ordering.');
+        return;
+      }
+      const phone = document.getElementById('vipPhoneInput')?.value.trim();
+      const members = CustomerStash.getVipMembers();
+      const match = members.find(m => m.phone.replace(/\D/g, '') === (phone ? phone.replace(/\D/g, '') : '')) || members[0];
+      loginAsVipMember(match);
+    }
+
+    function quickVipLogin(memberId) {
+      if (!isConnectedToLoungeWifi) {
+        showToast('⚠️ Wi-Fi Required', 'Connect to Empire-VIP-WiFi to unlock self-ordering.');
+        return;
+      }
+      const members = CustomerStash.getVipMembers();
+      const match = members.find(m => m.id === memberId) || members[0];
+      loginAsVipMember(match);
+    }
+
+    function loginAsVipMember(member) {
+      isVipLoggedIn = true;
+      currentVipTabId = member.id.toUpperCase();
+      
+      // Update UI for VIP state
+      document.getElementById('headerGuestView').classList.add('hidden');
+      document.getElementById('headerGuestRightView').classList.add('hidden');
+      document.getElementById('headerVipView').classList.remove('hidden');
+      document.getElementById('headerVipRightView').classList.remove('hidden');
+      
+      const topNav = document.getElementById('vipTopNav');
+      if (topNav) topNav.classList.remove('hidden');
+
+      const bottomDock = document.getElementById('vipBottomDock');
+      if (bottomDock) bottomDock.classList.remove('hidden');
+
+      document.getElementById('vipMemberNameDisplay').textContent = member.name;
+      document.getElementById('vipTierDisplay').textContent = (member.tier || 'GOLD VIP').toUpperCase();
+      document.getElementById('vipAvatarLetter').textContent = member.name.charAt(0);
+      document.getElementById('headerSeatDisplay').textContent = `Floating VIP Tab #${member.id.replace('vip-', '')}`;
+
+      closeVipLoginModal();
+      updateVipPointsHeader();
+      renderCustomerMenu();
+      showToast('👑 VIP Authenticated', `Welcome back, ${member.name}! Self-ordering unlocked.`);
+      renderIcons();
+    }
+
+    function vipLogout() {
+      isVipLoggedIn = false;
+      document.getElementById('headerGuestView').classList.remove('hidden');
+      document.getElementById('headerGuestRightView').classList.remove('hidden');
+      document.getElementById('headerVipView').classList.add('hidden');
+      document.getElementById('headerVipRightView').classList.add('hidden');
+
+      const topNav = document.getElementById('vipTopNav');
+      if (topNav) topNav.classList.add('hidden');
+
+      const bottomDock = document.getElementById('vipBottomDock');
+      if (bottomDock) bottomDock.classList.add('hidden');
+
+      switchCustomerTab('menu');
+      renderCustomerMenu();
+      showToast('🔒 Logged Out', 'Returned to Public QR Menu mode.');
+      renderIcons();
+    }
 
     function switchCustomerTab(tabId) {
       activeCustomerTab = tabId;
@@ -1150,10 +1350,17 @@
 
               <p class="text-[11px] text-zinc-400 italic">${mix.desc || 'Signature handcrafted shisha bowl blend.'}</p>
 
-              <button onclick="loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
-                <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
-                <span>Order Mix / Open in Mix Lab →</span>
-              </button>
+              ${isVipLoggedIn ? `
+                <button onclick="loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
+                  <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i>
+                  <span>Order Mix / Open in Mix Lab →</span>
+                </button>
+              ` : `
+                <button onclick="openVipLoginModal()" class="w-full bg-amber-950/70 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+                  <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                  <span>Log In on Lounge Wi-Fi to Self-Order</span>
+                </button>
+              `}
             </div>
           `;
           houseCont.appendChild(card);
@@ -1211,14 +1418,22 @@
               </div>
 
               <div class="flex flex-col items-end gap-1 flex-shrink-0">
-                <button 
-                  onclick="${isOut ? '' : `addSingleFlavorAndGoToLab('${item.id}')`}" 
-                  class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 ${isOut ? 'bg-zinc-900 text-zinc-600 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-goldHover text-black shadow-md'}"
-                  ${isOut ? 'disabled' : ''}
-                >
-                  <i data-lucide="${isOut ? 'slash' : 'plus'}" class="w-3 h-3"></i>
-                  <span>${isOut ? 'Out' : '+ Add'}</span>
-                </button>
+                ${isOut ? `
+                  <button class="px-2.5 py-1.5 rounded-xl font-bold text-xs bg-zinc-900 text-zinc-600 cursor-not-allowed" disabled>
+                    <i data-lucide="slash" class="w-3 h-3"></i>
+                    <span>Out</span>
+                  </button>
+                ` : isVipLoggedIn ? `
+                  <button onclick="addSingleFlavorAndGoToLab('${item.id}')" class="px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-brand-gold hover:bg-brand-goldHover text-black shadow-md">
+                    <i data-lucide="plus" class="w-3 h-3"></i>
+                    <span>+ Add</span>
+                  </button>
+                ` : `
+                  <button onclick="openVipLoginModal()" class="px-2.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 transition active:scale-95 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold">
+                    <i data-lucide="lock" class="w-3 h-3"></i>
+                    <span>Log In</span>
+                  </button>
+                `}
               </div>
             </div>
           `;
@@ -1253,9 +1468,15 @@
                       <p class="text-[11px] text-zinc-400 mt-0.5">${d.desc}</p>
                     </div>
                   </div>
-                  <button onclick="addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl text-xs font-bold flex-shrink-0 active:scale-95">
-                    + Order
-                  </button>
+                  ${isVipLoggedIn ? `
+                    <button onclick="addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-brand-gold rounded-xl text-xs font-bold flex-shrink-0 active:scale-95">
+                      + Order
+                    </button>
+                  ` : `
+                    <button onclick="openVipLoginModal()" class="px-2.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white rounded-xl text-xs font-semibold flex-shrink-0 active:scale-95">
+                      Log In
+                    </button>
+                  `}
                 </div>
               `).join('')}
             </div>
