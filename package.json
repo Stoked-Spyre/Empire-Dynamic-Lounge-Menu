@@ -1,0 +1,26 @@
+{
+  "name": "empire-dynamic-lounge-menu",
+  "version": "1.0.0",
+  "description": "Dynamic Ordering, Social Table Tabs & Russian Shisha Mixology Lab for Empire Hookah Lounge (Est. 2010)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stoked-Spyre/Empire-Dynamic-Lounge-Menu.git"
+  },
+  "keywords": [
+    "hookah",
+    "lounge",
+    "ordering",
+    "mixology",
+    "tangiers",
+    "russian-shisha",
+    "pwa",
+    "square"
+  ],
+  "author": "Empire Hookah Lounge",
+  "license": "UNLICENSED"
+}
