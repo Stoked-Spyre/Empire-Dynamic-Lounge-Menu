@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Empire Hookah Lounge — Menu</title>
+  <title>Empire Hookah Lounge — Menu &amp; Mix Lab</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0B0E14" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,12 +49,8 @@
       background-attachment: fixed;
       -webkit-tap-highlight-color: transparent;
     }
-    .font-crest {
-      font-family: 'Cinzel', serif;
-    }
-    .font-mono-nums {
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .font-crest { font-family: 'Cinzel', serif; }
+    .font-mono-nums { font-family: 'JetBrains Mono', monospace; }
     .shopify-card {
       background: #131824;
       border: 1px solid #232C42;
@@ -65,6 +61,11 @@
     }
     .tab-drawer {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .spectrum-track {
+      height: 8px;
+      border-radius: 999px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 10px rgba(168,85,247,0.25);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -98,15 +99,13 @@
       </div>
     </div>
 
-    <!-- Right Controls: Profile & Running Tab Pill -->
+    <!-- Right Controls: 21+ & Tab Drawer Pill -->
     <div class="flex items-center gap-2">
-      <!-- 21+ Verified Badge -->
       <div class="flex items-center gap-1 bg-slate-900 border border-slate-800 px-2 py-1 rounded-full text-[10px] text-brand-gold font-bold">
         <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
         <span>21+</span>
       </div>
 
-      <!-- Cart / Tab Badge -->
       <button onclick="toggleTabDrawer()" class="relative bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
         <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
         <span class="font-mono-nums" id="navTabBalance">$35.00</span>
@@ -114,7 +113,7 @@
     </div>
   </header>
 
-  <!-- ==================== 2. CUSTOMER MENU STOREFRONT ==================== -->
+  <!-- ==================== 2. MAIN STOREFRONT & MENU ==================== -->
   <main class="w-full max-w-xl px-4 pt-3 flex flex-col gap-3.5">
     
     <!-- Hero Lounge Banner -->
@@ -124,7 +123,7 @@
           EST. 2010 • PHOENIX
         </span>
         <h2 class="text-sm font-bold text-white mt-1">Russian &amp; Tangiers Shisha Bar</h2>
-        <p class="text-[11px] text-slate-400">Showing in-stock craft flavors, teapots &amp; daily specials.</p>
+        <p class="text-[11px] text-slate-400">Tap any brand to craft your bowl with in-stock flavors.</p>
       </div>
       <button onclick="requestCoalService()" class="z-10 bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition active:scale-95 flex-shrink-0">
         <i data-lucide="flame" class="w-4 h-4 text-brand-coal"></i>
@@ -142,14 +141,67 @@
       <button onclick="filterCustomerCategory('drinks')" class="cust-cat-pill bg-slate-900 text-slate-300 hover:text-white text-xs font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap">🫖 Teas &amp; Drinks</button>
     </div>
 
-    <!-- Live In-Stock Product Grid (Shopify Aesthetic) -->
+    <!-- Live In-Stock Product Grid -->
     <div class="grid grid-cols-2 gap-2.5" id="customerProductGrid">
       <!-- Populated via JS from Stash in-stock inventory -->
     </div>
 
   </main>
 
-  <!-- ==================== SHOPIFY-STYLE SLIDING TAB DRAWER ==================== -->
+  <!-- ==================== 3. SIMPLIFIED CUSTOMER MIX LAB MODAL ==================== -->
+  <div id="flavorMixerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-brand-surface border border-purple-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl flex flex-col gap-3">
+      
+      <!-- Top Title & Strength Badge -->
+      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+        <div>
+          <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="mixerModalTitle">Customize Bowl Mix</h3>
+          <p class="text-[10px] text-slate-400">Select 1 to 3 in-stock flavors (Equal Blend)</p>
+        </div>
+        <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-900/60 text-purple-300 border border-purple-700/40 font-mono" id="mixerBuzzBadge">
+          7.6/10 DARK LEAF
+        </span>
+      </div>
+
+      <!-- Continuous Spectrum Gradient Ribbon Preview -->
+      <div>
+        <div id="customerSpectrumRibbon" class="spectrum-track w-full mb-1.5"></div>
+        <span class="text-[9px] text-slate-400 block text-right font-mono" id="customerFlavorsCount">2 Flavors Active</span>
+      </div>
+
+      <!-- Active Selection Tag Chips -->
+      <div class="space-y-1.5" id="mixerActiveChips"></div>
+
+      <!-- In-Stock Flavors for Selected Brand -->
+      <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1" id="mixerFlavorsList"></div>
+
+      <!-- BOWL PROFILES & TASTING NOTES INDICATOR (Small indicator at bottom of bowl) -->
+      <div class="p-2.5 bg-slate-950/80 border border-slate-800 rounded-xl">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+            <i data-lucide="sparkles" class="w-3 h-3 text-brand-gold"></i>
+            Bowl Profile &amp; Tasting Notes
+          </span>
+          <span class="text-[9px] text-emerald-400 font-bold">Standard 22g Pack</span>
+        </div>
+        <!-- Dynamic Profile Badges -->
+        <div class="flex items-center gap-1 flex-wrap" id="mixerProfileBadges">
+          <!-- Populated e.g. #Mints 🍃, #Berries 🍓, #Citrus 🍋 -->
+        </div>
+      </div>
+
+      <!-- Add to Tab Confirmation Button -->
+      <div class="pt-1">
+        <button onclick="confirmMixAndAddToTab()" class="w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span id="mixerAddBtnText">Add Bowl to Tab ($35.00)</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 4. SHOPIFY-STYLE SLIDING TAB DRAWER ==================== -->
   <div id="tabDrawerOverlay" onclick="toggleTabDrawer()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
   
   <div id="tabDrawer" class="tab-drawer fixed bottom-0 right-0 left-0 max-w-lg mx-auto bg-brand-surface border-t border-brand-border rounded-t-3xl p-4 z-50 translate-y-full shadow-2xl">
@@ -194,32 +246,7 @@
     </div>
   </div>
 
-  <!-- ==================== SHOPIFY FLAVOR MIXER MODAL ==================== -->
-  <div id="flavorMixerModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-brand-surface border border-purple-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
-      <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-        <div>
-          <h3 class="text-xs font-bold text-white uppercase tracking-wider" id="mixerModalTitle">Customize Bowl Mix</h3>
-          <p class="text-[10px] text-slate-400">Select 1 to 3 in-stock flavors</p>
-        </div>
-        <button onclick="closeFlavorMixerModal()" class="text-slate-400 hover:text-white text-xs bg-slate-900 px-2 py-1 rounded-lg">✕</button>
-      </div>
-
-      <!-- Active Selection Tag Chips -->
-      <div class="my-3 space-y-1.5" id="mixerActiveChips"></div>
-
-      <!-- In-Stock Flavors for Selected Brand -->
-      <div class="space-y-1.5 max-h-56 overflow-y-auto pr-1" id="mixerFlavorsList"></div>
-
-      <!-- Add to Tab Confirmation Button -->
-      <button onclick="confirmMixAndAddToTab()" class="mt-3 w-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-2.5 rounded-xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
-        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-        <span id="mixerAddBtnText">Add Bowl to Tab ($35.00)</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- ==================== END SESSION SQUARE CHECKOUT MODAL ==================== -->
+  <!-- ==================== 5. END SESSION SQUARE CHECKOUT MODAL ==================== -->
   <div id="endSessionModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-brand-surface border border-emerald-500/40 rounded-2xl max-w-sm w-full p-4 shadow-2xl">
       <div class="flex justify-between items-center pb-2.5 border-b border-slate-800">
@@ -273,23 +300,22 @@
     <span id="toastMsg">Action updated</span>
   </div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- ==================== JAVASCRIPT & CUSTOMER LAB ENGINE ==================== -->
   <script>
-    // Master Stoked Catalog
     const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Pink Grapefruit & Strawberry' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry' },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint' },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach' },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley' },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze' },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf' },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze' },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint' }
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, grams: 240, stock: 'in_stock', color: '#EC4899', desc: 'Raspberry, Grapefruit & Strawberry', profiles: ['Berries', 'Citrus', 'Sweet'] },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, grams: 210, stock: 'in_stock', color: '#38BDF8', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Ice', 'Cooling'] },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, grams: 180, stock: 'in_stock', color: '#FCD34D', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dessert', 'Creamy'] },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, grams: 190, stock: 'in_stock', color: '#A855F7', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries'] },
+      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 200, stock: 'in_stock', color: '#10B981', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints', 'Heavy Nicotine'] },
+      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, grams: 180, stock: 'in_stock', color: '#FB923C', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Warm Spices', 'Floral', 'Orchard Fruit'] },
+      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, grams: 150, stock: 'in_stock', color: '#F97316', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citrus', 'Beverage'] },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, grams: 220, stock: 'in_stock', color: '#F59E0B', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Sweet'] },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, grams: 160, stock: 'in_stock', color: '#6366F1', desc: 'Deep Siberian Arctic Freeze', profiles: ['Extreme Ice', 'Mints'] },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, grams: 170, stock: 'in_stock', color: '#84CC16', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Tea', 'Herbal'] },
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 5, grams: 350, stock: 'in_stock', color: '#EF4444', desc: 'Traditional Anise & Crisp Apple', profiles: ['Anise', 'Orchard Fruit'] },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 4, grams: 280, stock: 'in_stock', color: '#3B82F6', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'] },
+      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 5, grams: 250, stock: 'in_stock', color: '#EC4899', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Mints'] }
     ];
 
     class CustomerStash {
@@ -309,9 +335,7 @@
     let selectedBrandObj = null;
     let selectedMixFlavors = [];
 
-    function renderIcons() {
-      if (window.lucide) lucide.createIcons();
-    }
+    function renderIcons() { if (window.lucide) lucide.createIcons(); }
 
     function filterCustomerCategory(cat) {
       currentCustomerCat = cat;
@@ -365,7 +389,7 @@
           <div class="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/80">
             <span class="text-xs font-bold text-brand-gold font-mono-nums">${price}</span>
             <span class="text-[10px] text-purple-300 font-bold bg-purple-500/10 px-2 py-0.5 rounded-lg">
-              Blend ✦
+              Mix Lab ✦
             </span>
           </div>
         `;
@@ -399,8 +423,9 @@
       }
     }
 
+    // ==================== SIMPLIFIED CUSTOMER MIX LAB ====================
     function openFlavorMixerModal() {
-      document.getElementById('mixerModalTitle').textContent = `${selectedBrandObj.brand} Shisha`;
+      document.getElementById('mixerModalTitle').textContent = `${selectedBrandObj.brand} Lab`;
       renderMixerFlavors();
       document.getElementById('flavorMixerModal').classList.remove('hidden');
       renderIcons();
@@ -411,18 +436,50 @@
     }
 
     function renderMixerFlavors() {
+      const inventory = CustomerStash.getInventory();
+      
+      // 1. Build Spectrum Gradient & Collect Profiles
+      const ribbon = document.getElementById('customerSpectrumRibbon');
+      let gradParts = [];
+      let cum = 0;
+      let totalStrength = 0;
+      let activeProfilesSet = new Set();
+
+      const slicePercent = 100 / Math.max(1, selectedMixFlavors.length);
+
+      selectedMixFlavors.forEach(fName => {
+        const item = inventory.find(i => i.name === fName) || STOKED_MASTER_INVENTORY[0];
+        const col = item.color || '#A855F7';
+        const start = cum;
+        cum += slicePercent;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+        totalStrength += (item.strength || 7);
+
+        if (item.profiles) {
+          item.profiles.forEach(p => activeProfilesSet.add(p));
+        }
+      });
+      ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+      document.getElementById('customerFlavorsCount').textContent = `${selectedMixFlavors.length} / 3 Flavors Active`;
+
+      // 2. Render Active Selected Chips
       const chips = document.getElementById('mixerActiveChips');
       chips.innerHTML = '';
-      selectedMixFlavors.forEach((f, idx) => {
+      selectedMixFlavors.forEach((fName, idx) => {
+        const item = inventory.find(i => i.name === fName) || { color: '#A855F7' };
         const chip = document.createElement('div');
         chip.className = 'flex justify-between items-center bg-slate-950/70 border border-purple-500/30 px-2.5 py-1.5 rounded-xl text-xs text-white';
         chip.innerHTML = `
-          <span class="font-bold">${f}</span>
-          ${selectedMixFlavors.length > 1 ? `<button onclick="removeMixerFlavor(${idx})" class="text-slate-500 hover:text-red-400">✕</button>` : ''}
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full" style="background: ${item.color};"></span>
+            <span class="font-bold">${fName}</span>
+          </div>
+          ${selectedMixFlavors.length > 1 ? `<button onclick="removeMixerFlavor(${idx})" class="text-slate-500 hover:text-red-400 p-0.5">✕</button>` : ''}
         `;
         chips.appendChild(chip);
       });
 
+      // 3. Render In-Stock Choices
       const list = document.getElementById('mixerFlavorsList');
       list.innerHTML = '';
       selectedBrandObj.items.forEach(item => {
@@ -431,17 +488,55 @@
         div.onclick = () => toggleMixerFlavor(item.name);
         div.className = `p-2 rounded-xl text-xs font-semibold flex justify-between items-center cursor-pointer transition ${isSelected ? 'bg-purple-600/20 border border-purple-500 text-white' : 'bg-slate-900/60 border border-slate-800 text-slate-300 hover:border-slate-700'}`;
         div.innerHTML = `
-          <div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" style="background: ${item.color};"></span>
             <span>${item.name}</span>
-            ${item.stock === 'low_stock' ? '<span class="text-[8px] bg-amber-950 text-amber-300 font-bold px-1 rounded ml-1.5">Low Stock</span>' : ''}
+            ${item.stock === 'low_stock' ? '<span class="text-[8px] bg-amber-950 text-amber-300 font-bold px-1 rounded">Low Stock</span>' : ''}
           </div>
-          <span class="text-xs">${isSelected ? '✓' : '+'}</span>
+          <span class="text-xs font-bold text-purple-300">${isSelected ? '✓' : '+'}</span>
         `;
         list.appendChild(div);
       });
 
+      // 4. Render Bowl Profile & Tasting Notes Indicators at the Bottom
+      const profileContainer = document.getElementById('mixerProfileBadges');
+      profileContainer.innerHTML = '';
+      
+      const profileEmojis = {
+        'Mints': '🍃',
+        'Ice': '❄️',
+        'Cooling': '🧊',
+        'Extreme Ice': '🥶',
+        'Berries': '🍓',
+        'Citrus': '🍋',
+        'Sweet': '🍯',
+        'Tropical': '🥭',
+        'Dessert': '🍰',
+        'Creamy': '🥛',
+        'Warm Spices': '🪵',
+        'Floral': '🌸',
+        'Orchard Fruit': '🍑',
+        'Beverage': '🥤',
+        'Tea': '🫖',
+        'Herbal': '🌿',
+        'Anise': '⭐',
+        'Heavy Nicotine': '⚡'
+      };
+
+      activeProfilesSet.forEach(prof => {
+        const emoji = profileEmojis[prof] || '✦';
+        const span = document.createElement('span');
+        span.className = 'text-[9px] font-bold bg-slate-900 text-slate-300 px-2 py-0.5 rounded-lg border border-slate-800 flex items-center gap-1';
+        span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
+        profileContainer.appendChild(span);
+      });
+
+      // 5. Update Strength Rating & Price
+      const avgStr = (totalStrength / Math.max(1, selectedMixFlavors.length)).toFixed(1);
+      document.getElementById('mixerBuzzBadge').textContent = `${avgStr}/10 ${avgStr >= 8 ? 'HEAVY BUZZ' : 'DARK LEAF'}`;
+
       const price = roundCount === 1 ? selectedBrandObj.price : (selectedBrandObj.price - 10);
-      document.getElementById('mixerAddBtnText').textContent = `Add to Tab ($${price.toFixed(2)})`;
+      document.getElementById('mixerAddBtnText').textContent = `Add Bowl to Tab ($${price.toFixed(2)})`;
     }
 
     function toggleMixerFlavor(name) {
@@ -468,7 +563,7 @@
 
       closeFlavorMixerModal();
       document.getElementById('navTabBalance').textContent = `$${tabBalance.toFixed(2)}`;
-      showToast('🏺 Bowl Dispatched', `Added to Table tab. Server & Coal station alerted!`);
+      showToast('🏺 Bowl Dispatched', `Added to Table tab. Prep alerted!`);
     }
 
     function toggleTabDrawer() {
@@ -532,7 +627,6 @@
       }, 2400);
     }
 
-    // Read Table Param if scanned e.g. ?table=6
     window.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const tableNum = params.get('table') || '6';
