@@ -365,14 +365,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Tablet Top Right Controls -->
-    <div class="flex items-center gap-2">
-      <button onclick="lockStaffPortal()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
-        <i data-lucide="lock" class="w-3.5 h-3.5 text-red-400"></i>
-        <span>Lock</span>
-      </button>
-    </div>
   </header>
 
   <!-- ==================== 2. MAIN APP CONTAINER ==================== -->
@@ -972,23 +964,6 @@
     </div>
   </div>
 
-  <!-- ==================== STAFF PIN LOGIN MODAL ==================== -->
-  <div id="staffPinModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-xs w-full p-5 shadow-2xl text-center">
-      <div class="w-12 h-12 rounded-full bg-amber-500/10 text-brand-gold flex items-center justify-center mx-auto mb-2.5">
-        <i data-lucide="key" class="w-6 h-6"></i>
-      </div>
-      <h3 class="text-sm font-bold text-white uppercase tracking-wider">Staff Operations Login</h3>
-      <p class="text-[11px] text-zinc-400 mb-3.5">Enter 4-digit staff passcode (Default: 1234)</p>
-
-      <input type="password" id="staffPinInput" maxlength="4" placeholder="••••" class="w-36 mx-auto bg-black border border-zinc-700 rounded-xl px-3 py-2 text-center text-xl font-bold text-white tracking-widest focus:outline-none focus:border-brand-gold mb-3.5" />
-
-      <button onclick="verifyStaffPin()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 rounded-xl shadow-lg transition active:scale-95">
-        Unlock Staff Operations
-      </button>
-    </div>
-  </div>
-
   <!-- ==================== TOAST ==================== -->
   <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-zinc-900 border border-zinc-700 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 text-xs font-semibold">
     <span id="toastIcon">✨</span>
@@ -1194,39 +1169,6 @@
     ];
 
     function renderIcons() { if (window.lucide) lucide.createIcons(); }
-
-    function verifyStaffPin() {
-      const pin = document.getElementById('staffPinInput').value;
-      if (pin === '1234' || pin === '6010' || pin === '0000') {
-        document.getElementById('staffPinModal').classList.add('hidden');
-        renderZoneFilterBar();
-        renderStaffFloor();
-        renderFloatingVIPQueue();
-        populatePosQuickSeats();
-        initBrandStationDial();
-        populatePipeFleetDropdown();
-        setupSpectrumDragListeners();
-        renderMixLab();
-        updateDispatchSummary();
-        showToast('🔓 Tablet POS Unlocked', 'Dual-panel sommelier order builder ready.');
-      } else {
-        showToast('❌ Invalid Passcode', 'Please try again (Default: 1234).');
-      }
-    }
-
-    function lockStaffPortal() {
-      document.getElementById('staffPinInput').value = '';
-      document.getElementById('staffPinModal').classList.remove('hidden');
-    }
-
-    function promptOwnerLogin() {
-      const pass = prompt('Enter Owner Master Passcode (Default: 6010):');
-      if (pass === '6010' || pass === '9999') {
-        window.location.href = 'owner.html';
-      } else if (pass !== null) {
-        showToast('❌ Access Denied', 'Invalid Owner Master Passcode.');
-      }
-    }
 
     function switchStaffTab(tabId) {
       currentStaffTab = tabId;

@@ -48,7 +48,7 @@ server.listen(PORT, HOST, () => {
         console.log(`Network: http://${net.address}:${PORT}`);
       }
     }
-  }
-  console.log(`\nCustomer View: http://localhost:${PORT}`);
-  console.log(`Staff Portal:  http://localhost:${PORT}/staff.html (PIN: 1234)\n`);
+  console.log(`\nCustomer Menu: http://localhost:${PORT}`);
+  console.log(`Staff App:     http://localhost:${PORT}/staff.html`);
+  console.log(`Owner Suite:   http://localhost:${PORT}/owner.html\n`);
 });
