@@ -2642,6 +2642,35 @@
     </div>
   </div>
 
+  <!-- ==================== BEVERAGE VARIANT SELECTION MODAL ==================== -->
+  <div id="beverageVariantModal" class="fixed inset-0 z-50 hidden flex flex-col justify-end">
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-[4px] transition-opacity duration-300" onclick="closeBeverageVariantModal()"></div>
+    <div class="relative w-full max-w-lg mx-auto sommelier-card-frame max-h-[85vh] overflow-y-auto no-scrollbar p-3.5 z-10 bg-[#0D0D11] border-t-2 border-x border-amber-500/50 rounded-none shadow-2xl">
+      <div class="flex items-center justify-center gap-2 mb-2 opacity-85 cursor-pointer" onclick="closeBeverageVariantModal()">
+        <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+        <span class="text-amber-400 text-[9px] tracking-widest select-none">◆</span>
+        <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
+      </div>
+      <div class="sommelier-inner-frame px-4 pt-2 pb-3 space-y-3 relative overflow-hidden rounded-none border border-white/[0.08]">
+        <div class="flex items-center justify-between pb-2 border-b border-white/[0.08]">
+          <div>
+            <h3 class="font-serif text-sm font-bold text-white tracking-wide uppercase" id="bevVariantModalTitle">Coca-Cola Craft &amp; Classic Sodas</h3>
+            <p class="text-[10px] text-zinc-400 font-sans italic" id="bevVariantModalDesc">Select chilled product to stage into tray</p>
+          </div>
+          <button onclick="closeBeverageVariantModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-2 py-0.5">✕</button>
+        </div>
+        <div class="space-y-1.5 max-h-64 overflow-y-auto no-scrollbar pr-0.5" id="bevVariantsListContainer">
+          <!-- Injected dynamically via JS -->
+        </div>
+        <div class="pt-1 text-center">
+          <span class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.24em] cursor-pointer hover:text-zinc-300 transition" onclick="closeBeverageVariantModal()">
+            [ TAP OUTSIDE TO RETURN TO MENU ]
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== FLOATING BOTTOM LUXURY NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
   <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-8 py-2.5 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
     <button onclick="handleAddToOrderDockClick()" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-order">
@@ -4619,6 +4648,245 @@
     let selectorMode = 'brands'; // 'brands' | 'profiles'
     let activeBrandStation = 'signatures'; 
     let activeProfileStation = 'mints';
+    let activeStagedDrinks = []; // Array of { id, name, price, qty }
+
+    const EMPIRE_BEVERAGE_MENU = [
+      {
+        id: 'coke-products',
+        name: 'Coca-Cola Craft & Classic Sodas',
+        price: 4.00,
+        desc: 'Served ice-cold with glassware. Tap to select Coca-Cola, Diet, Zero, Sprite, Dr Pepper, Fanta, Ginger Ale or Mexican Coke.',
+        hasVariants: true,
+        variants: [
+          { id: 'coke-classic', name: 'Coca-Cola Classic', desc: 'Original recipe classic cola', price: 4.00 },
+          { id: 'coke-diet', name: 'Diet Coke', desc: 'Crisp zero-sugar classic', price: 4.00 },
+          { id: 'coke-zero', name: 'Coke Zero Sugar', desc: 'Real cola taste zero calories', price: 4.00 },
+          { id: 'sprite', name: 'Sprite Lemon-Lime', desc: 'Crisp refreshing lemon-lime', price: 4.00 },
+          { id: 'dr-pepper', name: 'Dr Pepper', desc: '23 signature authentic blend flavors', price: 4.00 },
+          { id: 'fanta-orange', name: 'Fanta Orange', desc: 'Bright bubbly citrus orange', price: 4.00 },
+          { id: 'ginger-ale', name: 'Seagram\'s Ginger Ale', desc: 'Smooth crisp ginger bubbles', price: 4.00 },
+          { id: 'mexican-coke', name: 'Mexican Coke (Glass Bottle)', desc: 'Pure cane sugar glass bottle', price: 5.00 }
+        ]
+      },
+      {
+        id: 'maison-perrier',
+        name: 'Maison Perrier Sparkling Mineral Water',
+        price: 6.00,
+        desc: 'French sparkling natural mineral water with crisp, refreshing effervescence.',
+        hasVariants: true,
+        variants: [
+          { id: 'perrier-original', name: 'Maison Perrier Original', desc: 'Crisp French mineral bubbles', price: 6.00 },
+          { id: 'perrier-lime', name: 'Maison Perrier Lime', desc: 'Zesty natural lime infusion', price: 6.00 },
+          { id: 'topo-chico', name: 'Topo Chico Mineral Water', desc: 'Iconic Mexican sparkling water glass bottle', price: 6.00 }
+        ]
+      },
+      {
+        id: 'redbull',
+        name: 'Red Bull Energy Selection',
+        price: 6.00,
+        desc: 'Vitalizes body and mind served chilled over ice.',
+        hasVariants: true,
+        variants: [
+          { id: 'redbull-original', name: 'Red Bull Original', desc: 'Classic 8.4oz energy can', price: 6.00 },
+          { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree', desc: 'Zero sugar energy formula', price: 6.00 },
+          { id: 'redbull-yellow', name: 'Red Bull Yellow Edition', desc: 'Tropical fruits blend', price: 6.00 },
+          { id: 'redbull-red', name: 'Red Bull Red Edition', desc: 'Watermelon chill blend', price: 6.00 }
+        ]
+      },
+      {
+        id: 'lounge-teas',
+        name: 'Artisan Hot Teas & Samovar Pots',
+        price: 8.00,
+        desc: 'Brewed to order in authentic glassware with raw honey & fresh mint.',
+        hasVariants: true,
+        variants: [
+          { id: 'tea-moroccan-mint', name: 'Moroccan Fresh Mint Tea', desc: 'Gunpowder green tea & fresh spearmint leaves', price: 8.00 },
+          { id: 'tea-jasmine-green', name: 'Russian Samovar Green Tea', desc: 'High-mountain floral jasmine green tea', price: 8.00 },
+          { id: 'tea-earl-grey', name: 'Imperial Earl Grey', desc: 'Rich black tea with Italian bergamot', price: 8.00 },
+          { id: 'turkish-coffee', name: 'Traditional Turkish Coffee', desc: 'Cardamom infused, slow-brewed hot sand style', price: 9.00 }
+        ]
+      },
+      {
+        id: 'iced-teas-juices',
+        name: 'Chilled Iced Teas & Fresh Juices',
+        price: 5.00,
+        desc: 'Chilled refreshing fruit infusions & botanical iced teas.',
+        hasVariants: true,
+        variants: [
+          { id: 'az-green-tea', name: 'Arizona Ginseng Green Tea', desc: 'Classic green tea with organic honey', price: 4.00 },
+          { id: 'peach-iced-tea', name: 'Sweet Georgia Peach Iced Tea', desc: 'Slow brewed black tea & peach nectar', price: 5.00 },
+          { id: 'pomegranate-juice', name: 'POM Pure Pomegranate', desc: 'Tart antioxidant powerhouse', price: 6.00 },
+          { id: 'mango-nectar', name: 'Chilled Mango Nectar', desc: 'Smooth golden mango pulp', price: 5.00 }
+        ]
+      },
+      {
+        id: 'still-waters',
+        name: 'Artisan Still Spring Water',
+        price: 3.00,
+        desc: 'Chilled artisan mountain spring water.',
+        hasVariants: true,
+        variants: [
+          { id: 'bottled-water', name: 'Artisan Spring Water (Bottle)', desc: 'Chilled 500ml artisan bottle', price: 3.00 },
+          { id: 'house-water', name: 'Iced Filtered Carafe Table Water', desc: 'Chilled purified carafe with lemon slice', price: 2.00 }
+        ]
+      }
+    ];
+
+    function stageDrinkItem(drinkId, drinkName, price) {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      const existing = activeStagedDrinks.find(d => d.id === drinkId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        activeStagedDrinks.push({
+          id: drinkId,
+          name: drinkName,
+          price: price,
+          qty: 1
+        });
+      }
+      updateFloatingBowlBar();
+      renderCustomerMenu();
+      showToast('🥤 Drink Staged', `${drinkName} ($${price.toFixed(0)}) added to tray.`);
+    }
+
+    function incrementStagedDrink(idx) {
+      if (activeStagedDrinks[idx]) {
+        activeStagedDrinks[idx].qty += 1;
+        updateFloatingBowlBar();
+        renderCustomerMenu();
+        if (activeSelectedBeverageGroup) {
+          openBeverageVariantModal(activeSelectedBeverageGroup.id);
+        }
+      }
+    }
+
+    function decrementStagedDrink(idx) {
+      if (activeStagedDrinks[idx]) {
+        activeStagedDrinks[idx].qty -= 1;
+        if (activeStagedDrinks[idx].qty <= 0) {
+          activeStagedDrinks.splice(idx, 1);
+        }
+        updateFloatingBowlBar();
+        renderCustomerMenu();
+        if (activeSelectedBeverageGroup) {
+          openBeverageVariantModal(activeSelectedBeverageGroup.id);
+        }
+      }
+    }
+
+    function removeStagedDrink(idx) {
+      if (activeStagedDrinks[idx]) {
+        activeStagedDrinks.splice(idx, 1);
+        updateFloatingBowlBar();
+        renderCustomerMenu();
+        if (activeSelectedBeverageGroup) {
+          openBeverageVariantModal(activeSelectedBeverageGroup.id);
+        }
+      }
+    }
+
+    function clearStagedDrinks() {
+      activeStagedDrinks = [];
+      updateFloatingBowlBar();
+      renderCustomerMenu();
+      if (activeSelectedBeverageGroup) {
+        openBeverageVariantModal(activeSelectedBeverageGroup.id);
+      }
+      showToast('🗑️ Tray Cleared', 'All staged drinks removed.');
+    }
+
+    function submitStagedDrinksOrder() {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      if (activeStagedDrinks.length === 0) {
+        showToast('⚠️ Empty Tray', 'Select drinks to add to your order first.');
+        return;
+      }
+
+      const member = CustomerStash.getCurrentVipMember();
+      const isApproved = member && member.canSelfOrder !== false;
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      let summaryNames = [];
+      activeStagedDrinks.forEach(d => {
+        for (let q = 0; q < d.qty; q++) {
+          CustomerStash.addItemToTab({
+            id: 'drink-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+            name: d.name,
+            type: 'drink',
+            price: d.price,
+            status: isApproved ? 'Serving' : 'Pending Server Verification',
+            time: timeStr
+          });
+        }
+        summaryNames.push(d.qty > 1 ? `${d.qty}x ${d.name}` : d.name);
+      });
+
+      const confirmedText = summaryNames.join(', ');
+      activeStagedDrinks = [];
+      closeBeverageVariantModal();
+      updateFloatingBowlBar();
+      renderCustomerMenu();
+      updateActiveBowlNotificationUI();
+      showOrderConfirmationModal('drink', 'Drink Confirmed', confirmedText, 'Your drink will be out momentarily!');
+    }
+
+    let activeSelectedBeverageGroup = null;
+    function openBeverageVariantModal(beverageId) {
+      const bev = EMPIRE_BEVERAGE_MENU.find(b => b.id === beverageId);
+      if (!bev) return;
+      activeSelectedBeverageGroup = bev;
+
+      const modal = document.getElementById('beverageVariantModal');
+      const title = document.getElementById('bevVariantModalTitle');
+      const desc = document.getElementById('bevVariantModalDesc');
+      const cont = document.getElementById('bevVariantsListContainer');
+
+      if (title) title.textContent = bev.name;
+      if (desc) desc.textContent = bev.desc;
+      if (cont) {
+        cont.innerHTML = (bev.variants || []).map(v => {
+          const staged = activeStagedDrinks.find(d => d.id === v.id);
+          const stagedQty = staged ? staged.qty : 0;
+          return `
+            <div class="p-2.5 bg-black/60 border ${stagedQty > 0 ? 'border-amber-400/60 bg-amber-400/[0.04]' : 'border-white/10 hover:border-white/20'} flex items-center justify-between text-xs transition">
+              <div class="min-w-0 flex-1 pr-2">
+                <div class="font-serif font-bold text-white text-sm truncate flex items-center gap-1.5">
+                  <span>${v.name}</span>
+                  <span class="font-mono text-amber-400 text-xs font-bold">· $${(v.price || bev.price).toFixed(0)}</span>
+                </div>
+                <div class="font-sans text-[11px] text-zinc-400 italic">${v.desc}</div>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                ${stagedQty > 0 ? `
+                  <button onclick="decrementStagedDrink(${activeStagedDrinks.findIndex(d => d.id === v.id)})" class="w-6 h-6 bg-black border border-white/20 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold">-</button>
+                  <span class="font-mono text-amber-400 font-bold px-1 text-xs">${stagedQty}</span>
+                  <button onclick="incrementStagedDrink(${activeStagedDrinks.findIndex(d => d.id === v.id)})" class="w-6 h-6 bg-black border border-white/20 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold">+</button>
+                ` : `
+                  <button onclick="stageDrinkItem('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${v.price || bev.price})" class="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-[10px] uppercase tracking-wider transition rounded-none">
+                    + ADD
+                  </button>
+                `}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeBeverageVariantModal() {
+      const modal = document.getElementById('beverageVariantModal');
+      if (modal) modal.classList.add('hidden');
+      activeSelectedBeverageGroup = null;
+    }
 
     const SHISHA_BRANDS = [
       { 
@@ -4875,14 +5143,22 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // 1. BEVERAGES: Direct 1-tap ordering for authenticated members
+      // 1. BEVERAGES: Tap to select flavor variant or stage into tray
       if (isDrink) {
+        const staged = activeStagedDrinks.find(d => d.id === item.id);
+        const stagedQty = staged ? staged.qty : 0;
+        const actionClick = item.hasVariants 
+          ? `openBeverageVariantModal('${item.id}')` 
+          : `stageDrinkItem('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price})`;
+
         const orderBtn = isVipLoggedIn ? `
-          <button onclick="event.stopPropagation(); orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2 py-0.5 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 select-none font-bold">+ ORDER</button>
+          <button onclick="event.stopPropagation(); ${actionClick}" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-0.5 border ${stagedQty > 0 ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black'} transition active:scale-95 select-none font-bold">
+            ${stagedQty > 0 ? `✓ STAGED (${stagedQty})` : (item.hasVariants ? '+ SELECT' : '+ ADD')}
+          </button>
         ` : '';
 
         return `
-          <div class="editorial-item mb-3 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})"` : ''}>
+          <div class="editorial-item mb-3.5 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="${actionClick}"` : ''}>
             <div class="item-top-row flex items-baseline justify-between w-full">
               <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
               <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
@@ -5139,17 +5415,8 @@
       } 
       // ──────────── TAB 2: BEVERAGES SPREAD ────────────
       else if (activePrimaryTab === 'drinks') {
-        const drinksList = [
-          { id: 'maison-perrier', name: 'Maison Perrier', icon: '🫧', price: 6.00, desc: 'French sparkling natural mineral water with crisp, refreshing effervescence.' },
-          { id: 'redbull', name: 'Red Bull Energy Drink', icon: '⚡', price: 6.00, desc: 'Original & Sugarfree served chilled.' },
-          { id: 'az-green-tea', name: 'Arizona Green Tea', icon: '🍃', price: 4.00, desc: 'Classic chilled green tea with ginseng and organic honey.' },
-          { id: 'coke-products', name: 'Coca-Cola Products', icon: '🥤', price: 4.00, desc: 'Coca-Cola, Diet Coke, Sprite, & Coke Zero.' },
-          { id: 'bottled-water', name: 'Bottled Artisan Spring Water', icon: '💧', price: 3.00, desc: 'Pure artisan chilled spring water.' },
-          { id: 'house-water', name: 'Iced Filtered Water', icon: '🧊', price: 2.00, desc: 'Chilled purified table water over ice.' }
-        ];
-        
         let drinksHtml = '';
-        drinksList.forEach(d => {
+        EMPIRE_BEVERAGE_MENU.forEach(d => {
           drinksHtml += createEditorialItemHtml(d, 'drink', pricing, inStockInventory);
         });
 
@@ -5158,6 +5425,8 @@
             ${drinksHtml}
           </div>
         `;
+
+        updateFloatingBowlBar();
       }
 
       if (prevScrollY > 0 && typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
@@ -5633,6 +5902,11 @@
     }
 
     function triggerStaffScreenEdgeGlow(glowColor = 'amber', duration = 3000) {
+      // ONLY trigger on Staff terminal / Presence view, NEVER on customer screens
+      const staffModal = document.getElementById('staffLoungePresenceModal');
+      const isStaffViewOpen = staffModal && !staffModal.classList.contains('hidden');
+      if (!isStaffViewOpen) return;
+
       const overlay = document.getElementById('staffEdgeGlowOverlay');
       if (overlay) {
         overlay.className = `edge-glow-${glowColor}`;
@@ -6185,15 +6459,77 @@
       const bar = document.getElementById('floatingActiveBowlBar');
       const badge = document.getElementById('dockBowlCountBadge');
       if (badge) {
-        if (isVipLoggedIn && activeFlavors.length > 0) {
+        const stagedCount = activePrimaryTab === 'drinks' 
+          ? activeStagedDrinks.reduce((s, d) => s + d.qty, 0)
+          : activeFlavors.length;
+
+        if (isVipLoggedIn && stagedCount > 0) {
           badge.classList.remove('hidden');
-          badge.textContent = `${activeFlavors.length}`;
+          badge.textContent = `${stagedCount}`;
         } else {
           badge.classList.add('hidden');
         }
       }
       if (!bar) return;
-      if (!isVipLoggedIn || activeFlavors.length === 0 || activePrimaryTab === 'drinks' || activeCustomerTab !== 'menu') {
+      if (!isVipLoggedIn || activeCustomerTab !== 'menu') {
+        bar.classList.add('hidden');
+        return;
+      }
+
+      // ───────────────── TAB 2: DRINKS STAGED BAR ─────────────────
+      if (activePrimaryTab === 'drinks') {
+        if (activeStagedDrinks.length === 0) {
+          bar.classList.add('hidden');
+          return;
+        }
+        bar.classList.remove('hidden');
+
+        const totalQty = activeStagedDrinks.reduce((s, d) => s + d.qty, 0);
+        const totalPrice = activeStagedDrinks.reduce((s, d) => s + (d.price * d.qty), 0);
+        const drinkChips = activeStagedDrinks.map((d, idx) => `
+          <span class="inline-flex items-center gap-1 py-0.5 px-1.5 bg-black/80 border border-amber-400/40 text-[10px] text-zinc-200 font-mono flex-shrink-0">
+            <span class="text-amber-400 font-bold">${d.qty}x</span>
+            <span class="truncate max-w-[95px]">${d.name}</span>
+            <button onclick="event.stopPropagation(); removeStagedDrink(${idx})" class="text-zinc-500 hover:text-red-400 ml-0.5">✕</button>
+          </span>
+        `).join('');
+
+        bar.innerHTML = `
+          <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none select-none">
+            <!-- Top Center Diamond Flueron -->
+            <div class="flex items-center justify-center gap-2 mb-1.5 opacity-80">
+              <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+              <span class="text-amber-400 text-[8px] tracking-widest select-none">◆</span>
+              <span class="w-10 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
+            </div>
+
+            <div class="flex items-center justify-between gap-2">
+              <div class="min-w-0 flex-1 pr-1">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="font-serif text-xs font-bold text-white truncate">🥤 Staged Drink Order</span>
+                  <span class="text-[10px] font-mono text-amber-400 font-bold">· $${totalPrice.toFixed(2)}</span>
+                </div>
+                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+                  ${drinkChips}
+                </div>
+              </div>
+
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                <button onclick="clearStagedDrinks()" class="text-[9px] font-mono px-1.5 py-1.5 bg-black/60 hover:bg-red-950/60 border border-white/15 hover:border-red-500/50 text-zinc-400 hover:text-red-300 transition rounded-none" title="Clear Staged Drinks">
+                  ✕
+                </button>
+                <button onclick="submitStagedDrinksOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
+                  ORDER (${totalQty}) · $${totalPrice.toFixed(0)}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // ───────────────── TAB 1: HOOKAH FORMULATION BAR ─────────────────
+      if (activeFlavors.length === 0) {
         bar.classList.add('hidden');
         return;
       }
