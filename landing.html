@@ -4,55 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Empire Hookah Lounge — Welcome</title>
+  
+  <!-- PWA & Mobile Web App Manifest -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#000000" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Playfair Display (Serif Masthead) & Plus Jakarta Sans (Modern Editorial) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,800;1,300&display=swap" rel="stylesheet" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
-
-    * {
+    /* ==========================================================================
+       1. GLOBAL RESET & BASE STYLES
+       ========================================================================== */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #000000;
-      color: #F4F4F5;
-      min-height: 100dvh;
+    html, body {
+      width: 100%;
       height: 100dvh;
+      min-height: 100dvh;
+      background-color: #000000;
+      color: #F4F4F5;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
       user-select: none;
       -webkit-user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .font-crest { font-family: 'Playfair Display', serif; }
-    .font-mono-nums { font-variant-numeric: tabular-nums; }
-
-    /* ========================================================================== */
-    /* EXACT MENU NOIR SKYLINE BACKGROUND                                        */
-    /* ========================================================================== */
+    /* ==========================================================================
+       2. NOIR SKYLINE BACKDROP (Exact Menu Match)
+       ========================================================================== */
     .menu-skyline-bg {
       position: fixed;
       inset: 0;
-      pointer-events: none;
       z-index: 0;
+      pointer-events: none;
       overflow: hidden;
     }
+
     .menu-skyline-img {
       width: 100%;
       height: 100%;
@@ -61,25 +58,22 @@
       opacity: 0.15;
       filter: contrast(1.1) brightness(0.85);
     }
+
     .menu-skyline-overlay {
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 50% 30%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 65%, #000000 95%),
-        linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 25%, rgba(0,0,0,0.65) 75%, #000000 100%);
+        radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.55) 65%, #000000 95%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, transparent 25%, rgba(0, 0, 0, 0.65) 75%, #000000 100%);
     }
 
-    @media (max-width: 640px) {
-      .menu-skyline-img {
-        opacity: 0.18;
-        object-position: center 35%;
-      }
-    }
-
-    /* Page Fade Transition Container with Generous Top/Bottom Clearance */
+    /* ==========================================================================
+       3. VIEWPORT CONTAINER & SMOOTH FADE TRANSITION
+       ========================================================================== */
     #landingContainer {
       position: fixed;
       inset: 0;
+      z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -88,14 +82,15 @@
       transition: opacity 0.5s ease;
       overflow: hidden;
     }
-    #landingContainer.fading {
+
+    #landingContainer.fading-out {
       opacity: 0;
       pointer-events: none;
     }
 
-    /* ========================================================================== */
-    /* CENTER BRAND MASTHEAD WITH 60FPS GPU FLOATING LOGO                         */
-    /* ========================================================================== */
+    /* ==========================================================================
+       4. CENTER BRAND MASTHEAD & 60FPS FLOATING CREST
+       ========================================================================== */
     .landing-center {
       position: relative;
       z-index: 10;
@@ -107,15 +102,10 @@
       text-align: center;
       margin: auto 0;
       padding: clamp(0.5rem, 2vh, 1.5rem) 0.5rem 0 0.5rem;
+      transition: transform 0.3s ease;
     }
 
-    @media (min-width: 768px) {
-      .landing-center {
-        transform: translateY(-160px);
-        padding-top: 0;
-      }
-    }
-
+    /* Floating Logo Container (GPU Hardware-Accelerated) */
     .landing-logo-wrap {
       width: clamp(6rem, 15vh, 9rem);
       height: clamp(6rem, 15vh, 9rem);
@@ -124,6 +114,7 @@
       transform: translate3d(0, 0, 0);
       animation: logo-float 6.5s ease-in-out infinite;
     }
+
     .landing-logo-img {
       width: 100%;
       height: 100%;
@@ -131,11 +122,13 @@
       mix-blend-mode: screen;
       filter: drop-shadow(0 4px 24px rgba(229, 169, 60, 0.35));
     }
+
     @keyframes logo-float {
       0%, 100% { transform: translate3d(0, 0px, 0); }
       50%      { transform: translate3d(0, -6px, 0); }
     }
 
+    /* Masthead Brand Titles (Matching Approved Menu Typography) */
     .menu-masthead {
       font-family: 'Playfair Display', serif;
       font-size: clamp(1.75rem, 4.2vh, 2.1rem);
@@ -143,6 +136,7 @@
       letter-spacing: 0.02em;
       color: #FFFFFF;
       margin-bottom: 0.2rem;
+      line-height: 1.15;
     }
 
     .menu-kicker {
@@ -155,9 +149,9 @@
       margin-bottom: 0.25rem;
     }
 
-    /* ========================================================================== */
-    /* FULLY TRANSPARENT EDITORIAL REGULATIONS & GOLD LINED BUTTON                */
-    /* ========================================================================== */
+    /* ==========================================================================
+       5. LOUNGE POLICIES (Fully Transparent Editorial Typography)
+       ========================================================================== */
     .landing-footer-hud {
       position: relative;
       z-index: 10;
@@ -169,13 +163,14 @@
       padding: 0 0.5rem;
     }
 
-    .reg-header-row {
+    .policy-header-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
     }
-    .reg-title-text {
+
+    .policy-title-text {
       font-family: 'Playfair Display', serif;
       font-size: clamp(0.7rem, 1.4vh, 0.78rem);
       font-weight: 600;
@@ -183,34 +178,50 @@
       text-transform: uppercase;
       color: #E2E8F0;
     }
-    .reg-divider-line {
+
+    .policy-divider-line {
       flex: 1;
       height: 1px;
       background: rgba(255, 255, 255, 0.15);
     }
 
-    .reg-item-row {
+    .policy-item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .policy-item-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       padding: 2px 0;
     }
-    .reg-badge-tag {
+
+    .policy-label-group {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .policy-badge-tag {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(0.68rem, 1.3vh, 0.74rem);
       font-weight: 800;
       color: #E5A93C;
       letter-spacing: 0.05em;
     }
-    .reg-name {
+
+    .policy-name {
       font-family: 'Playfair Display', serif;
       font-size: clamp(0.85rem, 1.8vh, 0.94rem);
       font-weight: 600;
       color: #FFFFFF;
       letter-spacing: 0.02em;
     }
-    .reg-law-link {
+
+    .policy-law-link {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(0.64rem, 1.3vh, 0.7rem);
       font-weight: 600;
@@ -220,11 +231,14 @@
       flex-shrink: 0;
       transition: color 0.15s ease;
     }
-    .reg-law-link:hover {
+
+    .policy-law-link:hover {
       color: #F5BA4C;
     }
 
-    /* Button: Line Above and Below with Gold Font & Soft Glow */
+    /* ==========================================================================
+       6. GOLD-LINED ENTER CTA BUTTON
+       ========================================================================== */
     .landing-enter-line-btn {
       position: relative;
       width: 100%;
@@ -247,8 +261,9 @@
       text-shadow: 0 0 12px rgba(229, 169, 60, 0.45);
       transition: all 0.25s ease;
       text-decoration: none;
-      margin-top: 2px;
+      margin-top: 4px;
     }
+
     .landing-enter-line-btn:hover {
       color: #FFFFFF;
       border-top-color: rgba(229, 169, 60, 0.85);
@@ -256,79 +271,107 @@
       text-shadow: 0 0 16px rgba(229, 169, 60, 0.8), 0 0 24px rgba(229, 169, 60, 0.4);
       letter-spacing: 0.32em;
     }
+
     .landing-enter-line-btn:active {
       transform: scale(0.985);
       opacity: 0.85;
+    }
+
+    /* ==========================================================================
+       7. DESKTOP VIEWPORT ELEVATION (-160px)
+       ========================================================================== */
+    @media (min-width: 768px) {
+      .landing-center {
+        transform: translateY(-160px);
+        padding-top: 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== PURE NOIR SKYLINE BACKDROP ==================== -->
+  <!-- Background: Charcoal Sketch Skyline with Vignette Overlay -->
   <div class="menu-skyline-bg" aria-hidden="true">
     <img src="images/skyline_sketch.jpg" alt="" class="menu-skyline-img" />
     <div class="menu-skyline-overlay"></div>
   </div>
 
+  <!-- Primary Interactive Landing Viewport -->
   <div id="landingContainer">
-    <!-- ==================== CENTER BRAND SPREAD WITH 60FPS FLOATING LOGO ==================== -->
+
+    <!-- Center Brand Masthead -->
     <main class="landing-center">
       <div class="landing-logo-wrap">
-        <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="landing-logo-img" />
+        <img src="logos/empire_clean.png" alt="Empire Hookah Lounge Crest" class="landing-logo-img" />
       </div>
       <h1 class="menu-masthead">Empire Hookah Lounge</h1>
       <p class="menu-kicker">EST. 2010 · PHOENIX, ARIZONA</p>
     </main>
 
-    <!-- ==================== FULLY TRANSPARENT REGULATIONS & GOLD LINED CTA ==================== -->
+    <!-- Lounge Policies & Enter CTA -->
     <footer class="landing-footer-hud">
-      <div class="reg-header-row">
-        <span class="reg-divider-line"></span>
-        <span class="reg-title-text">Lounge Policies</span>
-        <span class="reg-divider-line"></span>
+      <div class="policy-header-row">
+        <span class="policy-divider-line"></span>
+        <h2 class="policy-title-text">Lounge Policies</h2>
+        <span class="policy-divider-line"></span>
       </div>
 
-      <div class="space-y-2">
-        <!-- Rule 1: 21+ Age -->
-        <div class="reg-item-row">
-          <div class="flex items-baseline gap-2.5">
-            <span class="reg-badge-tag">21+</span>
-            <span class="reg-name">Age Requirement</span>
+      <div class="policy-item-list">
+        <!-- Policy 1: Age Requirement -->
+        <div class="policy-item-row">
+          <div class="policy-label-group">
+            <span class="policy-badge-tag">21+</span>
+            <span class="policy-name">Age Requirement</span>
           </div>
-          <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="reg-law-link" title="Federal Tobacco 21 Law">Law ↗</a>
+          <a 
+            href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="policy-law-link" 
+            title="Federal Tobacco 21 Law"
+          >
+            Law ↗
+          </a>
         </div>
 
-        <!-- Rule 2: 2 People per Pipe -->
-        <div class="reg-item-row">
-          <div class="flex items-baseline gap-2.5">
-            <span class="reg-badge-tag">2P</span>
-            <span class="reg-name">2 People per Pipe</span>
+        <!-- Policy 2: Pipe Capacity -->
+        <div class="policy-item-row">
+          <div class="policy-label-group">
+            <span class="policy-badge-tag">2P</span>
+            <span class="policy-name">2 People per Pipe</span>
           </div>
         </div>
 
-        <!-- Rule 3: Outside Beverages -->
-        <div class="reg-item-row">
-          <div class="flex items-baseline gap-2.5">
-            <span class="reg-badge-tag">NO</span>
-            <span class="reg-name">Outside Beverages</span>
+        <!-- Policy 3: Outside Beverages -->
+        <div class="policy-item-row">
+          <div class="policy-label-group">
+            <span class="policy-badge-tag">NO</span>
+            <span class="policy-name">Outside Beverages</span>
           </div>
         </div>
       </div>
 
-      <!-- Button with Top/Bottom Line, Gold Text & Soft Glow -->
-      <a href="index.html" onclick="navigateWithFade(event)" class="landing-enter-line-btn">
+      <!-- Action Button -->
+      <a href="index.html" onclick="enterMenuWithFade(event)" class="landing-enter-line-btn">
         <span>Enter Lounge Menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
       </a>
     </footer>
+
   </div>
 
+  <!-- Page Navigation Script -->
   <script>
-    function navigateWithFade(e) {
-      e.preventDefault();
+    /**
+     * Smoothly dissolves the landing view before navigating to the main menu spread.
+     */
+    function enterMenuWithFade(event) {
+      event.preventDefault();
       const container = document.getElementById('landingContainer');
       if (container) {
-        container.classList.add('fading');
+        container.classList.add('fading-out');
       }
       setTimeout(() => {
         window.location.href = 'index.html';
