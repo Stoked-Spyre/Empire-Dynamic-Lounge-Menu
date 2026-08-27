@@ -2270,156 +2270,131 @@
 
     </div>
 
-    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (NOIR LUXURY RECEIPT) ==================== -->
-    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-3 pb-24">
+    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (NOIR EDITORIAL SPREAD) ==================== -->
+    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-4 pb-28">
       
-      <!-- Obsidian Noir Sommelier Printed Receipt Card -->
-      <section class="sommelier-card-frame bg-[#08080C] border-2 border-amber-500/60 p-3.5 shadow-[0_20px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(229,169,60,0.22)] relative select-none">
+      <div class="w-full max-w-xl mx-auto bg-[#0B0B0E] border border-amber-500/30 p-5 shadow-2xl relative select-none">
         
-        <div class="sommelier-inner-frame p-4 space-y-4 relative overflow-hidden bg-gradient-to-b from-[#14141A] via-[#0A0A0E] to-[#060608] border border-amber-500/40">
-
-          <!-- Receipt Flueron & Header -->
-          <div class="text-center space-y-1.5 pt-0">
-            <div class="flex items-center justify-center gap-2.5 opacity-90">
-              <span class="w-14 h-[1.5px] bg-gradient-to-r from-transparent to-amber-400"></span>
-              <span class="text-amber-400 text-[10px] tracking-widest drop-shadow-[0_0_8px_rgba(229,169,60,0.8)]">◆</span>
-              <span class="w-14 h-[1.5px] bg-gradient-to-l from-transparent to-amber-400"></span>
-            </div>
-            
-            <div class="w-10 h-10 mx-auto my-1">
-              <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-full h-full object-contain mix-blend-screen drop-shadow-[0_2px_14px_rgba(229,169,60,0.5)]" />
-            </div>
-
-            <h2 class="font-serif text-xl font-bold tracking-[0.16em] uppercase text-white drop-shadow-[0_2px_8px_rgba(229,169,60,0.4)]">
-              Empire Hookah Lounge
-            </h2>
-            <p class="font-mono text-[9px] tracking-[0.26em] text-amber-300/90 uppercase font-semibold">EST. 2010 · PHOENIX, ARIZONA</p>
-
-            <!-- Table & Tab Meta Strip -->
-            <div class="flex items-center justify-between pt-2 border-t border-amber-500/30 text-xs font-mono text-zinc-200">
-              <span class="text-amber-400 font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]" id="tabViewSeatLabel">👑 Floating VIP Tab #409</span>
-              <button onclick="openSeatAssignModal()" class="text-amber-300 hover:text-white underline decoration-dotted font-semibold transition">
-                Change Seat ⇄
-              </button>
-            </div>
+        <!-- Header -->
+        <div class="text-center space-y-1.5 pb-3 border-b border-white/[0.08]">
+          <div class="flex items-center justify-center gap-2.5 opacity-80 mb-1">
+            <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
+            <span class="text-amber-400 text-[9px] tracking-widest">◆</span>
+            <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
           </div>
 
-          <!-- Perforated Tear Line -->
-          <div class="border-b-2 border-dashed border-amber-400/30 my-1"></div>
-
-          <!-- Section 1: Itemized Hookahs, Refills & Formulations -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-serif uppercase tracking-[0.2em] text-amber-300 font-bold pb-1.5 border-b border-amber-500/40">
-              <span>Formulations &amp; Orders</span>
-              <span>Price</span>
-            </div>
-            <div class="space-y-3 pt-1 text-xs" id="tabSessionItemsList">
-              <!-- Injected dynamically via JS with detailed flavor percentages & buzz ratings -->
-            </div>
+          <div class="w-11 h-11 mx-auto mb-1">
+            <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-full h-full object-contain mix-blend-screen drop-shadow-[0_2px_12px_rgba(229,169,60,0.4)]" />
           </div>
 
-          <!-- Section 2: Heat Rotation Master (Service Annotation) -->
-          <div class="py-2 px-3 bg-amber-950/30 border border-amber-500/40 flex items-center justify-between text-xs font-mono text-zinc-200">
-            <div class="flex items-center gap-2">
-              <span class="text-amber-400 text-sm">🔥</span>
-              <span class="font-medium">Coal Master Kaloud Lotus Rotations</span>
-            </div>
-            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px] drop-shadow-[0_0_6px_rgba(52,211,153,0.4)]">Included ✓</span>
-          </div>
+          <h2 class="font-serif text-xl font-bold tracking-[0.16em] uppercase text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+            Empire Hookah Lounge
+          </h2>
+          <p class="font-mono text-[9px] tracking-[0.24em] text-zinc-400 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
 
-          <!-- Section 3: VIP Loyalty Reward Redemptions -->
-          <div class="space-y-1.5 pt-1">
-            <div class="flex items-center justify-between text-[10px] font-serif uppercase tracking-[0.18em] text-zinc-200 font-bold">
-              <span>Apply VIP Stash Reward</span>
-              <span class="text-amber-400 font-mono font-bold" id="tabRewardsPointsAvailable">750 Pts</span>
-            </div>
-            <div class="space-y-1.5" id="tabRewardsRedeemOptions">
-              <!-- Injected via JS -->
-            </div>
-          </div>
-
-          <!-- Perforated Tear Line -->
-          <div class="border-b-2 border-dashed border-amber-400/30 my-1"></div>
-
-          <!-- Section 4: Receipt Financial Totals -->
-          <div class="space-y-1.5 text-xs font-sans">
-            <div class="flex items-baseline justify-between text-zinc-200 font-medium">
-              <span class="text-xs">Subtotal</span>
-              <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-400/40 relative -top-1"></span>
-              <span class="font-mono font-bold text-white text-sm" id="tabViewSubtotal">$0.00</span>
-            </div>
-
-            <div id="tabViewRewardDiscountRow" class="hidden flex items-baseline justify-between text-emerald-400 font-bold text-xs">
-              <span id="tabViewRewardDiscountLabel">🎁 VIP Reward Discount</span>
-              <span class="item-leader flex-grow mx-2 border-b border-dotted border-emerald-500/40 relative -top-1"></span>
-              <span class="font-mono font-bold text-sm" id="tabViewRewardDiscountAmt">-$0.00</span>
-            </div>
-
-            <div class="flex items-baseline justify-between text-zinc-300 text-xs">
-              <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
-              <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-400/30 relative -top-1"></span>
-              <span class="font-mono font-semibold text-zinc-200 text-sm" id="tabViewTaxAmt">$0.00</span>
-            </div>
-
-            <div class="flex items-baseline justify-between text-amber-300 font-semibold text-xs">
-              <span id="tabViewTipRowLabel">Gratuity / Tip</span>
-              <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-400/40 relative -top-1"></span>
-              <span class="font-mono font-bold text-amber-300 text-sm" id="tabViewTipRowAmt">$0.00</span>
-            </div>
-          </div>
-
-          <!-- Section 5: Interactive Tip Strip (with Skip / No Tip) -->
-          <div class="pt-2 border-t border-amber-500/30 space-y-2">
-            <div class="flex justify-between items-center text-[10px] font-mono text-zinc-300">
-              <span>Add Gratuity for Lounge Staff</span>
-              <span class="text-amber-400 font-bold" id="tabTipCalculatedDisplay">18% ($0.00)</span>
-            </div>
-            <div class="grid grid-cols-5 gap-1.5 text-center">
-              <button onclick="selectTabViewTip(0)" class="tab-tip-btn py-2 px-1 bg-[#121218] border border-amber-500/40 text-zinc-300 hover:text-white rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn0">
-                No Tip
-              </button>
-              <button onclick="selectTabViewTip(15)" class="tab-tip-btn py-2 px-1 bg-[#121218] border border-amber-500/40 text-zinc-200 hover:border-amber-300 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn15">
-                15%
-              </button>
-              <button onclick="selectTabViewTip(18)" class="tab-tip-btn py-2 px-1 bg-amber-400 border border-amber-400 text-black rounded-none text-[10px] font-serif font-bold transition shadow-[0_0_15px_rgba(229,169,60,0.5)]" id="tabTipBtn18">
-                18%
-              </button>
-              <button onclick="selectTabViewTip(20)" class="tab-tip-btn py-2 px-1 bg-[#121218] border border-amber-500/40 text-zinc-200 hover:border-amber-300 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn20">
-                20%
-              </button>
-              <button onclick="selectTabViewTip(25)" class="tab-tip-btn py-2 px-1 bg-[#121218] border border-amber-500/40 text-zinc-200 hover:border-amber-300 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn25">
-                25%
-              </button>
-            </div>
-          </div>
-
-          <!-- Section 6: Grand Total with Double Border -->
-          <div class="pt-2.5 border-t-2 border-amber-400 flex items-baseline justify-between">
-            <div>
-              <span class="font-serif text-sm font-bold tracking-widest uppercase text-white block drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">Grand Total</span>
-              <span class="text-[9px] font-mono text-zinc-400" id="tabViewGrandTotalSubnote">Includes tax &amp; gratuity</span>
-            </div>
-            <span class="font-serif text-2xl font-bold text-amber-300 drop-shadow-[0_2px_12px_rgba(229,169,60,0.6)] font-mono-nums" id="tabViewGrandTotal">$0.00</span>
-          </div>
-
-          <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
-          <div class="space-y-2 pt-2">
-            <!-- Option B: End Session & Pay Tab Button -->
-            <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-3 px-4 shadow-[0_4px_20px_rgba(229,169,60,0.4)] transition active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2 rounded-none">
-              <span>End Session &amp; Settle Tab</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-
-            <!-- Option C: Split Bill with Table / Group -->
-            <button onclick="openTabSplitModal()" class="w-full bg-black/60 hover:bg-white/5 border border-amber-500/50 hover:border-amber-400 text-white font-serif text-[11px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none shadow">
-              <span class="text-amber-400 text-xs">⇄</span>
-              <span>Split Bill with Table / Group</span>
+          <!-- Table & Tab Meta Strip -->
+          <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/[0.06] text-xs font-mono text-zinc-300">
+            <span class="text-amber-400 font-bold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</span>
+            <button onclick="openSeatAssignModal()" class="text-zinc-400 hover:text-white underline decoration-dotted transition">
+              Change Seat ⇄
             </button>
           </div>
-
         </div>
 
-      </section>
+        <!-- Section 1: Itemized Hookahs, Refills & Beverages -->
+        <div class="py-3 space-y-2">
+          <div class="flex items-center justify-between text-[10px] font-serif uppercase tracking-[0.2em] text-amber-400 font-bold pb-1.5 border-b border-white/[0.08]">
+            <span>Formulations &amp; Table Orders</span>
+            <span>Price</span>
+          </div>
+          <div class="space-y-3 pt-1 text-xs" id="tabSessionItemsList">
+            <!-- Injected dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Section 2: Heat Rotation Master -->
+        <div class="my-2 py-2 px-3 bg-black/40 border border-white/[0.08] flex items-center justify-between text-xs font-mono text-zinc-300">
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 text-sm">🔥</span>
+            <span>Coal Master Kaloud Lotus Rotations</span>
+          </div>
+          <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px]">Included ✓</span>
+        </div>
+
+        <!-- Perforated Divider -->
+        <div class="border-b border-dashed border-white/20 my-3"></div>
+
+        <!-- Section 3: Receipt Financial Totals -->
+        <div class="space-y-1.5 text-xs font-sans">
+          <div class="flex items-baseline justify-between text-zinc-300">
+            <span class="text-xs">Subtotal</span>
+            <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/20 relative -top-1"></span>
+            <span class="font-mono font-bold text-white text-sm" id="tabViewSubtotal">$0.00</span>
+          </div>
+
+          <div class="flex items-baseline justify-between text-zinc-400 text-xs">
+            <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
+            <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/15 relative -top-1"></span>
+            <span class="font-mono text-zinc-200 text-sm" id="tabViewTaxAmt">$0.00</span>
+          </div>
+
+          <div class="flex items-baseline justify-between text-amber-300 font-medium text-xs">
+            <span id="tabViewTipRowLabel">Gratuity / Tip</span>
+            <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-400/25 relative -top-1"></span>
+            <span class="font-mono font-bold text-amber-400 text-sm" id="tabViewTipRowAmt">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Section 4: Interactive Tip Strip (with No Tip / Skip) -->
+        <div class="pt-3 mt-3 border-t border-white/[0.08] space-y-2">
+          <div class="flex justify-between items-center text-[10px] font-mono text-zinc-400">
+            <span>Add Gratuity for Lounge Staff &amp; Heat Masters</span>
+            <span class="text-amber-400 font-bold" id="tabTipCalculatedDisplay">18% ($0.00)</span>
+          </div>
+          <div class="grid grid-cols-5 gap-1.5 text-center">
+            <button onclick="selectTabViewTip(0)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-400 hover:text-white rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn0">
+              No Tip
+            </button>
+            <button onclick="selectTabViewTip(15)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn15">
+              15%
+            </button>
+            <button onclick="selectTabViewTip(18)" class="tab-tip-btn py-2 px-1 bg-amber-400 border border-amber-400 text-black rounded-none text-[10px] font-serif font-bold transition shadow-[0_0_15px_rgba(229,169,60,0.5)]" id="tabTipBtn18">
+              18%
+            </button>
+            <button onclick="selectTabViewTip(20)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn20">
+              20%
+            </button>
+            <button onclick="selectTabViewTip(25)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn25">
+              25%
+            </button>
+          </div>
+        </div>
+
+        <!-- Section 5: Grand Total -->
+        <div class="pt-3 mt-3 border-t-2 border-amber-400 flex items-baseline justify-between">
+          <div>
+            <span class="font-serif text-sm font-bold tracking-widest uppercase text-white block">Grand Total</span>
+            <span class="text-[9px] font-mono text-zinc-500" id="tabViewGrandTotalSubnote">Includes tax &amp; gratuity</span>
+          </div>
+          <span class="font-serif text-2xl font-bold text-amber-400 drop-shadow-[0_2px_10px_rgba(229,169,60,0.4)] font-mono-nums" id="tabViewGrandTotal">$0.00</span>
+        </div>
+
+        <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
+        <div class="space-y-2 pt-3">
+          <!-- Option B: End Session & Pay Tab Button -->
+          <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-3.5 px-4 shadow-[0_4px_20px_rgba(229,169,60,0.4)] transition active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2 rounded-none">
+            <span>End Session &amp; Settle Tab</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+
+          <!-- Option C: Split Bill with Table / Group -->
+          <button onclick="openTabSplitModal()" class="w-full bg-black/60 hover:bg-white/5 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-serif text-[11px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none">
+            <span class="text-amber-400 text-xs">⇄</span>
+            <span>Split Bill with Table / Group</span>
+          </button>
+        </div>
+
+      </div>
 
     </div>
 
@@ -4755,7 +4730,7 @@
               <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
               <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
             </div>
-            ${(!isVipLoggedIn && item.desc) ? `
+            ${item.desc ? `
               <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
             ` : ''}
             <div class="item-meta mt-1.5 flex items-end justify-between gap-2">
@@ -4797,7 +4772,7 @@
             <span class="item-leader flex-grow mx-1.5 border-b border-dotted border-white/40 relative -top-1"></span>
             <span class="text-amber-400 font-mono text-xs font-semibold whitespace-nowrap flex-shrink-0">⚡ ${item.strength || 7}</span>
           </div>
-          ${(!isVipLoggedIn && item.desc) ? `
+          ${item.desc ? `
             <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           ` : ''}
           <div class="item-meta mt-1 flex items-center justify-between gap-2 text-[10px] text-zinc-400 font-mono">
@@ -5169,43 +5144,8 @@
         }
       }
 
-      // Rewards options (Styled matching the noir aesthetic)
-      const rewardsCont = document.getElementById('tabRewardsRedeemOptions');
-      if (rewardsCont) {
-        rewardsCont.innerHTML = '';
-        tiers.forEach(tier => {
-          const isEligible = member.points >= tier.pointsReq;
-          const isSelected = selectedAppliedReward && selectedAppliedReward.id === tier.id;
-          const btn = document.createElement('button');
-          btn.className = `w-full py-1.5 px-2 text-left flex items-center justify-between transition border ${isSelected ? 'bg-amber-400 text-black border-amber-400 font-bold' : isEligible ? 'bg-black/60 border-white/15 text-zinc-200 hover:border-amber-400' : 'bg-black/30 border-white/5 opacity-40 cursor-not-allowed text-zinc-500'}`;
-          if (isEligible) btn.onclick = () => toggleTabViewReward(tier);
-          btn.innerHTML = `
-            <div class="flex items-center gap-1.5 min-w-0">
-              <span class="text-xs">${tier.icon}</span>
-              <span class="font-serif text-[11px] truncate">${tier.label}</span>
-            </div>
-            <div class="flex items-center gap-1 flex-shrink-0">
-              <span class="font-mono text-[10px] ${isSelected ? 'text-black font-bold' : isEligible ? 'text-amber-400' : 'text-zinc-500'}">-${tier.pointsReq} Pts</span>
-              <span class="text-[8px] font-mono px-1 py-0.2 ${isSelected ? 'bg-black text-amber-400' : isEligible ? 'bg-amber-950 text-amber-300 border border-amber-800/40' : 'bg-black text-zinc-600'}">${isSelected ? 'APPLIED ✓' : isEligible ? 'REDEEM' : 'LOCKED'}</span>
-            </div>
-          `;
-          rewardsCont.appendChild(btn);
-        });
-      }
-
       updateTabViewFinancials();
       renderIcons();
-    }
-
-    function toggleTabViewReward(tier) {
-      if (selectedAppliedReward && selectedAppliedReward.id === tier.id) {
-        selectedAppliedReward = null;
-        showToast('ℹ️ Discount Removed', 'Regular tab price restored.');
-      } else {
-        selectedAppliedReward = tier;
-        showToast('🎁 Reward Applied', `Redeemed ${tier.label} (-$${tier.discount.toFixed(2)}).`);
-      }
-      renderMyTabView();
     }
 
     function selectTabViewTip(pct) {
@@ -5227,16 +5167,11 @@
       const activeTab = CustomerStash.getActiveTab();
       const rawSubtotal = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
       tabBalance = rawSubtotal;
-      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
-      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
-      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
-      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
-      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+      const taxAmt = rawSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = rawSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = rawSubtotal + taxAmt + tipAmt;
 
       const subEl = document.getElementById('tabViewSubtotal');
-      const discRow = document.getElementById('tabViewRewardDiscountRow');
-      const discLbl = document.getElementById('tabViewRewardDiscountLabel');
-      const discAmt = document.getElementById('tabViewRewardDiscountAmt');
       const taxLbl = document.getElementById('tabViewTaxLabel');
       const taxAmtEl = document.getElementById('tabViewTaxAmt');
       const tipRowAmt = document.getElementById('tabViewTipRowAmt');
@@ -5245,21 +5180,12 @@
       const payBtn = document.getElementById('tabPayFullBtn');
 
       if (subEl) subEl.textContent = `$${rawSubtotal.toFixed(2)}`;
-      if (discRow) {
-        if (discountAmt > 0) {
-          discRow.classList.remove('hidden');
-          if (discLbl) discLbl.textContent = `🎁 VIP Reward (${selectedAppliedReward.label})`;
-          if (discAmt) discAmt.textContent = `-$${discountAmt.toFixed(2)}`;
-        } else {
-          discRow.classList.add('hidden');
-        }
-      }
       if (taxLbl) taxLbl.textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
       if (taxAmtEl) taxAmtEl.textContent = `$${taxAmt.toFixed(2)}`;
       if (tipRowAmt) tipRowAmt.textContent = currentSelectedTipPct === 0 ? '$0.00 (No Tip)' : `$${tipAmt.toFixed(2)} (${currentSelectedTipPct}%)`;
       if (tipDisplay) tipDisplay.textContent = currentSelectedTipPct === 0 ? 'No Tip Selected' : `${currentSelectedTipPct}% ($${tipAmt.toFixed(2)})`;
       if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)}`;
-      if (payBtn) payBtn.innerHTML = `<span>End Session &amp; Settle Tab ($${grandTotal.toFixed(2)})</span><svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+      if (payBtn) payBtn.innerHTML = `<span>End Session &amp; Settle Tab ($${grandTotal.toFixed(2)})</span><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
     }
 
     // ==================== OPTION B: SQUARE ITEMIZED ORDER PAYLOAD BUILDER ====================
@@ -5334,11 +5260,9 @@
 
       const taxConfig = CustomerStash.getTaxConfig();
       const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
-      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
-      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
-      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
-      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
-      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+      const taxAmt = rawSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = rawSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = rawSubtotal + taxAmt + tipAmt;
 
       // Build Option B full itemized Square Order Payload
       const squarePayload = buildSquareItemizedOrderPayload(items, tipAmt);
@@ -5346,9 +5270,8 @@
 
       const member = CustomerStash.getCurrentVipMember();
       const pointsEarned = Math.round(rawSubtotal * 10);
-      let pointsCost = selectedAppliedReward ? selectedAppliedReward.pointsReq : 0;
 
-      member.points = Math.max(0, member.points - pointsCost + pointsEarned);
+      member.points = (member.points || 0) + pointsEarned;
       member.totalSpent = (member.totalSpent || 0) + rawSubtotal;
 
       const members = CustomerStash.getVipMembers();
@@ -5417,11 +5340,9 @@
       const items = activeTab.items || [];
       const taxConfig = CustomerStash.getTaxConfig();
       const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
-      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
-      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
-      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
-      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
-      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+      const taxAmt = rawSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = rawSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = rawSubtotal + taxAmt + tipAmt;
 
       if (tabSplitMode === 'even') {
         const perPerson = grandTotal / tabSplitPayersCount;
