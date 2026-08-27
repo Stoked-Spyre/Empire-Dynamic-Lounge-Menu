@@ -2360,17 +2360,79 @@
 
   <!-- ==================== ACTIVE BOWL FLOATING NOTIFIER BAR ==================== -->
   <div id="floatingActiveBowlBar" class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-xl px-3.5 z-40 hidden select-none">
-    <div class="sommelier-card-frame p-2.5 flex items-center justify-between shadow-2xl bg-black/95 border border-white/[0.14]">
-      <div class="flex items-center gap-2 truncate pr-2 cursor-pointer" onclick="switchCustomerTab('lab')">
-        <span class="text-amber-400 text-xs flex-shrink-0">◆</span>
-        <div class="truncate">
-          <span class="text-[8px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-semibold">Active Bowl Formulation</span>
-          <span class="font-serif text-xs text-white truncate block" id="floatingBowlSummary">Pinkman (50%) · Cane Mint (50%)</span>
+    <!-- Populated via updateFloatingBowlBar() in JS -->
+  </div>
+
+  <!-- ==================== ACTIVE BOWL STUDIO / MIX SHEET MODAL ==================== -->
+  <div id="activeBowlStudioModal" class="fixed inset-0 z-50 hidden flex flex-col justify-end">
+    <!-- Backdrop Overlay -->
+    <div class="fixed inset-0 bg-black/85 backdrop-blur-[4px] transition-opacity duration-300" onclick="closeBowlStudioModal()"></div>
+
+    <!-- Slide-Up Studio Card Container -->
+    <div class="relative w-full max-w-lg mx-auto sommelier-card-frame max-h-[85vh] overflow-y-auto no-scrollbar p-3.5 z-10 bg-[#0D0D11] border-t border-x border-amber-500/40 rounded-t-2xl shadow-2xl">
+      <div class="w-10 h-1 bg-white/20 rounded-full mx-auto mb-2 cursor-pointer" onclick="closeBowlStudioModal()"></div>
+
+      <div class="sommelier-inner-frame px-4 pt-2 pb-3 space-y-3 relative overflow-hidden">
+        <!-- Top Row: Title + Buzz Level + Reset + Close -->
+        <div class="flex justify-between items-center pb-1.5 border-b border-white/[0.08]">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="text-amber-400 text-xs">◆</span>
+            <h3 class="font-serif text-sm font-bold text-white tracking-wider uppercase truncate" id="studioBowlTitle">
+              YOUR BOWL
+            </h3>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <div class="flex items-center gap-1 font-mono text-[10px] bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.08]">
+              <span id="studioBuzzIcon">⚡</span>
+              <span id="studioBuzzLevel" class="font-bold text-white">7.0</span>
+              <span id="studioBuzzCategory" class="text-[9px] font-sans font-bold uppercase text-amber-400 ml-0.5">BOLD</span>
+            </div>
+            <button onclick="clearBowl(); closeBowlStudioModal();" class="text-[9px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 transition font-semibold">
+              RESET [✕]
+            </button>
+            <button onclick="closeBowlStudioModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-1.5 py-0.5">
+              ✕
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <button onclick="switchCustomerTab('lab')" class="text-[9px] font-serif uppercase tracking-widest px-2 py-1 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white transition">TUNE</button>
-        <button onclick="submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 bg-amber-400 text-black font-bold hover:brightness-110 transition active:scale-95">ORDER</button>
+
+        <!-- Continuous Spectrum Slider -->
+        <div class="pt-1 pb-0.5">
+          <div class="spectrum-drag-area relative w-full h-6 flex items-center select-none" id="studioSpectrumDraggableArea" style="touch-action: none;">
+            <div id="studioSpectrumRibbon" class="w-full h-2 rounded-full overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="box-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
+            <div id="studioSpectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+          </div>
+          <div class="flex justify-between items-center text-[9px] text-zinc-400 font-mono mt-1 px-0.5">
+            <span class="text-amber-400/90 font-medium">Drag splitters to fine-tune flavor %</span>
+            <span class="text-zinc-400 font-mono" id="studioFlavorCountText">3 of 4 Flavors</span>
+          </div>
+        </div>
+
+        <!-- Active Flavor Pills (1-2 Rows Auto-Fitting Grid) -->
+        <div class="grid grid-cols-2 gap-1.5 my-1" id="studioFlavorSlotsContainer">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Order Action Bar -->
+        <div class="pt-2 mt-1 border-t border-white/[0.08] flex items-center justify-between">
+          <div class="flex items-baseline gap-1.5 flex-wrap min-w-0 flex-1 pr-2">
+            <span class="text-base font-serif font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" id="studioFinalPriceDisplay">$28</span>
+            <span class="text-[10px] text-zinc-400 font-mono" id="studioTaxDisplay">+ $2.41 tax</span>
+            <button onclick="toggleStudioBowlOrderType()" id="studioOrderTypeToggle" class="text-[10px] text-amber-400 hover:text-amber-300 font-mono underline decoration-dotted transition" title="Change order mode">
+              Refill (-$10)
+            </button>
+          </div>
+          <button onclick="submitStudioBowlOrder()" id="studioSubmitOrderBtn" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none flex-shrink-0">
+            Order Refill
+          </button>
+        </div>
+
+        <!-- Dismiss note -->
+        <div class="pt-1 text-center">
+          <span class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.24em] cursor-pointer hover:text-zinc-300 transition" onclick="closeBowlStudioModal()">
+            [ TAP OUTSIDE TO RETURN TO MENU ]
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -4752,140 +4814,8 @@
           });
         }
 
-        // ────── AUTHENTICATED ACTIVE BOWL BENCH (INTEGRATED AT TOP) ──────
-        let activeBowlSectionHtml = '';
-        if (isVipLoggedIn) {
-          const distinctInventory = CustomerStash.getInventory();
-          let cum = 0;
-          const gradParts = [];
-          let totalStrength = 0;
-
-          activeFlavors.forEach(f => {
-            const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-            const col = getItemProfileColor(item);
-            const start = cum;
-            cum += f.percent;
-            gradParts.push(`${col} ${start}% ${cum}%`);
-            totalStrength += ((item.strength || 7) * (f.percent / 100));
-          });
-
-          const gradPartsStr = gradParts.length > 0 ? gradParts.join(', ') : '#E5A93C 0% 100%';
-          const buzzVal = parseFloat(totalStrength.toFixed(1));
-          const buzzInfo = getBuzzInfo(buzzVal);
-
-          const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
-          const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
-          const refillPrice = origPrice - 10.00;
-
-          const activeTab = CustomerStash.getActiveTab();
-          const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
-          const hasExistingHookahs = existingHookahs.length > 0;
-          const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
-          const finalPrice = isRefill ? refillPrice : origPrice;
-          const estTax = (finalPrice * (taxConfig.primaryRate / 100));
-
-          let activeFlavorsHtml = '';
-          if (activeFlavors.length === 0) {
-            activeFlavorsHtml = `
-              <div class="py-2 px-3 text-center">
-                <span class="text-[11px] text-zinc-300 font-serif italic block">Your bowl is currently blank.</span>
-                <span class="text-[9px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to pack your bowl</span>
-              </div>
-            `;
-          } else {
-            activeFlavors.forEach((f, idx) => {
-              const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-              const col = getItemProfileColor(item);
-
-              activeFlavorsHtml += `
-                <div class="flex items-center justify-between gap-1 py-0.5 px-2 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none min-w-0 flex-1">
-                  <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                    <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 5px ${col}80;"></span>
-                    <span class="font-serif text-[11px] font-semibold text-white tracking-wide truncate">${item.name}</span>
-                  </div>
-                  <div class="flex items-center gap-1 flex-shrink-0">
-                    <span class="text-[9px] text-amber-400 font-mono font-bold flavor-percent-text">${f.percent}%</span>
-                    ${!activeMixName ? `
-                      <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 text-[10px] p-0.5 transition leading-none" title="Remove flavor">✕</button>
-                    ` : ''}
-                  </div>
-                </div>
-              `;
-            });
-          }
-
-          activeBowlSectionHtml = `
-            <section class="menu-bowl-bench mb-2.5 p-2.5 bg-black/40 backdrop-blur-md border border-white/[0.12] transition-all select-none">
-              <!-- Top Row: Title + Buzz Level + Reset -->
-              <div class="flex justify-between items-center pb-1.5 border-b border-white/[0.08]">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-amber-400 text-[9px]">◆</span>
-                  <span class="font-serif text-xs font-bold text-white tracking-wider uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                    ${activeMixName ? `👑 ${activeMixName}` : 'YOUR BOWL'}
-                  </span>
-                </div>
-                <div class="flex items-center gap-2">
-                  ${activeFlavors.length > 0 ? `
-                    <div class="flex items-center gap-1 font-mono text-[10px] bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.08]">
-                      <span>${buzzInfo.icon}</span>
-                      <span id="benchBuzzLevelDisplay" class="font-bold text-white">${buzzInfo.level}</span>
-                      <span class="text-[9px] font-sans font-bold uppercase ${buzzInfo.textColor} ml-0.5">${buzzInfo.category}</span>
-                    </div>
-                    <button onclick="clearBowl()" class="text-[9px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 transition font-semibold">
-                      RESET [✕]
-                    </button>
-                  ` : ''}
-                </div>
-              </div>
-
-              ${activeFlavors.length === 0 ? `
-                <div class="py-2 px-2 text-center">
-                  <span class="text-[11px] text-zinc-300 font-serif italic block">Your bowl is currently blank.</span>
-                  <span class="text-[9px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to pack your bowl</span>
-                </div>
-              ` : `
-                <!-- Spectrum Slider -->
-                <div class="pt-1 pb-0.5">
-                  <div class="spectrum-drag-area relative w-full h-5 flex items-center select-none" id="spectrumDraggableArea" style="touch-action: none;">
-                    <div id="spectrumRibbon" class="w-full h-1.5 rounded-full overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
-                    <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
-                  </div>
-                  <div class="flex justify-between items-center text-[9px] text-zinc-400 font-mono mt-0.5 px-0.5">
-                    <span class="text-zinc-400">Drag splitters to adjust %</span>
-                    <span class="text-zinc-400 font-mono">${activeFlavors.length} of 4 Flavors</span>
-                  </div>
-                </div>
-
-                <!-- Active Flavor Pills (Max 2 Rows Auto-Fitting Grid) -->
-                <div class="grid ${activeFlavors.length <= 2 ? (activeFlavors.length === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2'} gap-1.5 my-1" id="flavorSlotsContainer">
-                  ${activeFlavorsHtml}
-                </div>
-
-                <!-- Order Action Bar (Micro & Elegant) -->
-                <div class="pt-1.5 mt-1 border-t border-white/[0.08] flex items-center justify-between">
-                  <div class="flex items-baseline gap-1.5 flex-wrap min-w-0 flex-1 pr-2">
-                    <span class="text-sm font-serif font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">$${finalPrice.toFixed(0)}</span>
-                    <span class="text-[9px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
-                    ${hasExistingHookahs ? `
-                      <button onclick="setBowlOrderType('${isRefill ? 'new' : 'refill'}')" class="text-[9px] text-amber-400 hover:text-amber-300 font-mono underline decoration-dotted transition" title="Change order mode">
-                        ${isRefill ? 'Refill (-$10)' : 'New Pipe'}
-                      </button>
-                    ` : `
-                      <span class="text-[8px] uppercase tracking-wider text-amber-400/80 font-mono font-medium">[ORIGINAL]</span>
-                    `}
-                  </div>
-                  <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-[11px] py-1 px-3 shadow transition active:scale-95 uppercase tracking-wider select-none flex-shrink-0">
-                    ${isRefill ? 'Order Refill' : 'Order Hookah'}
-                  </button>
-                </div>
-              `}
-            </section>
-          `;
-        }
-
-        // Assemble 2-Column Container
+        // Assemble Pure 2-Column Container (Full Height & Atmospheric)
         spreadCont.innerHTML = `
-          ${activeBowlSectionHtml}
           <div class="menu-2col-layout">
             <aside class="menu-stations-rail">
               ${stationsRailHtml}
@@ -4902,22 +4832,7 @@
           </div>
         `;
 
-        if (isVipLoggedIn && activeFlavors.length > 1) {
-          const handlesCont = document.getElementById('spectrumHandlesContainer');
-          if (handlesCont) {
-            let handleCum = 0;
-            for (let i = 0; i < activeFlavors.length - 1; i++) {
-              handleCum += activeFlavors[i].percent;
-              const thumb = document.createElement('div');
-              thumb.className = 'spectrum-drag-thumb';
-              thumb.style.left = `${handleCum}%`;
-              thumb.onmousedown = (e) => window.handleCustomerStartSpectrumDrag(e, i);
-              thumb.ontouchstart = (e) => window.handleCustomerStartSpectrumDrag(e, i);
-              handlesCont.appendChild(thumb);
-            }
-          }
-          setupCustomerSpectrumDragListeners();
-        }
+        updateFloatingBowlBar();
       } 
       // ──────────── TAB 2: BEVERAGES SPREAD ────────────
       else if (activePrimaryTab === 'drinks') {
@@ -5491,21 +5406,255 @@
       });
     }
 
-    function clearBowl() {
-      activeFlavors = [];
-      activeMixName = null;
-      if (activeCustomerTab === 'menu') {
-        renderCustomerMenu();
-      } else {
-        renderMixLab();
+    function getContinuousGradientString(flavors, inventory) {
+      if (!flavors || flavors.length === 0) return '#E5A93C 0% 100%';
+      if (flavors.length === 1) {
+        const item = inventory.find(i => i.id === flavors[0].id) || STOKED_MASTER_INVENTORY[0];
+        const col = getItemProfileColor(item);
+        return `linear-gradient(90deg, ${col} 0%, ${col} 100%)`;
       }
-      updateActiveBowlNotificationUI();
-      showToast('🗑️ Bowl Cleared', 'Bowl is now blank.');
+      
+      const stops = [];
+      let cum = 0;
+      flavors.forEach((f, idx) => {
+        const item = inventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+        const col = getItemProfileColor(item);
+        if (idx === 0) {
+          stops.push(`${col} 0%`);
+          cum += f.percent;
+        } else if (idx === flavors.length - 1) {
+          stops.push(`${col} 100%`);
+        } else {
+          const mid = cum + (f.percent / 2);
+          stops.push(`${col} ${Math.round(mid)}%`);
+          cum += f.percent;
+        }
+      });
+      return `linear-gradient(90deg, ${stops.join(', ')})`;
     }
 
-    let activeCustomerDragHandleIndex = null;
-    function setupCustomerSpectrumDragListeners() {
-      const container = document.getElementById('spectrumDraggableArea');
+    function updateFloatingBowlBar() {
+      const bar = document.getElementById('floatingActiveBowlBar');
+      const badge = document.getElementById('dockBowlCountBadge');
+      if (badge) {
+        if (isVipLoggedIn && activeFlavors.length > 0) {
+          badge.classList.remove('hidden');
+          badge.textContent = `${activeFlavors.length}`;
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+      if (!bar) return;
+      if (!isVipLoggedIn || activeFlavors.length === 0 || activePrimaryTab === 'drinks' || activeCustomerTab !== 'menu') {
+        bar.classList.add('hidden');
+        return;
+      }
+      bar.classList.remove('hidden');
+
+      const pricing = CustomerStash.getLoungePricing();
+      const distinctInventory = CustomerStash.getInventory();
+      const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
+      const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+      const refillPrice = origPrice - 10.00;
+
+      const activeTab = CustomerStash.getActiveTab();
+      const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+      const hasExistingHookahs = existingHookahs.length > 0;
+      const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
+      const finalPrice = isRefill ? refillPrice : origPrice;
+
+      let totalStrength = 0;
+      let dotsHtml = '';
+      activeFlavors.forEach(f => {
+        const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+        const col = getItemProfileColor(item);
+        totalStrength += ((item.strength || 7) * (f.percent / 100));
+        dotsHtml += `<span class="w-2 h-2 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black" style="background: ${col}; box-shadow: 0 0 6px ${col}90;"></span>`;
+      });
+      const buzzVal = parseFloat(totalStrength.toFixed(1));
+      const buzzInfo = getBuzzInfo(buzzVal);
+
+      const titleText = activeMixName ? `👑 ${activeMixName}` : `${activeFlavors.length} Flavors in Bowl`;
+
+      bar.innerHTML = `
+        <div class="sommelier-card-frame p-2.5 flex items-center justify-between shadow-[0_12px_35px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/40 rounded-xl cursor-pointer hover:border-amber-400 transition" onclick="openBowlStudioModal()">
+          <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+            <div class="flex items-center flex-shrink-0 pl-1">
+              ${dotsHtml}
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-serif text-xs font-bold text-white truncate">${titleText}</span>
+                <span class="text-[9px] font-mono text-amber-400 font-bold">· $${finalPrice.toFixed(0)}</span>
+              </div>
+              <div class="flex items-center gap-1 text-[9px] font-mono text-zinc-400">
+                <span>${buzzInfo.icon}</span>
+                <span class="text-white font-bold">${buzzInfo.level}</span>
+                <span class="${buzzInfo.textColor} uppercase font-semibold">${buzzInfo.category}</span>
+                <span class="text-zinc-600">|</span>
+                <span class="text-zinc-400">Tap to tune</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition">
+              TUNE
+            </button>
+            <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95">
+              ${isRefill ? 'REFILL $28' : 'ORDER $35'}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function openBowlStudioModal() {
+      const modal = document.getElementById('activeBowlStudioModal');
+      if (!modal) return;
+      renderStudioModalContent();
+      modal.classList.remove('hidden');
+    }
+
+    function closeBowlStudioModal() {
+      const modal = document.getElementById('activeBowlStudioModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function toggleStudioBowlOrderType() {
+      activeBowlOrderType = activeBowlOrderType === 'refill' ? 'new' : 'refill';
+      renderStudioModalContent();
+      updateFloatingBowlBar();
+    }
+
+    function submitStudioBowlOrder() {
+      closeBowlStudioModal();
+      submitActiveBowlOrder();
+    }
+
+    function removeFlavorFromStudio(idx) {
+      removeFlavor(idx);
+      if (activeFlavors.length === 0) {
+        closeBowlStudioModal();
+      } else {
+        renderStudioModalContent();
+      }
+    }
+
+    function renderStudioModalContent() {
+      const modal = document.getElementById('activeBowlStudioModal');
+      if (!modal) return;
+
+      const pricing = CustomerStash.getLoungePricing();
+      const distinctInventory = CustomerStash.getInventory();
+      const taxConfig = CustomerStash.getTaxConfig();
+
+      let totalStrength = 0;
+      activeFlavors.forEach(f => {
+        const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+        totalStrength += ((item.strength || 7) * (f.percent / 100));
+      });
+
+      const buzzVal = parseFloat(totalStrength.toFixed(1));
+      const buzzInfo = getBuzzInfo(buzzVal);
+
+      const titleEl = document.getElementById('studioBowlTitle');
+      if (titleEl) titleEl.textContent = activeMixName ? `👑 ${activeMixName}` : 'YOUR BOWL';
+
+      const buzzIconEl = document.getElementById('studioBuzzIcon');
+      if (buzzIconEl) buzzIconEl.textContent = buzzInfo.icon;
+
+      const buzzLevelEl = document.getElementById('studioBuzzLevel');
+      if (buzzLevelEl) buzzLevelEl.textContent = buzzInfo.level;
+
+      const buzzCatEl = document.getElementById('studioBuzzCategory');
+      if (buzzCatEl) {
+        buzzCatEl.textContent = buzzInfo.category;
+        buzzCatEl.className = `text-[9px] font-sans font-bold uppercase ${buzzInfo.textColor} ml-0.5`;
+      }
+
+      const countEl = document.getElementById('studioFlavorCountText');
+      if (countEl) countEl.textContent = `${activeFlavors.length} of 4 Flavors`;
+
+      const ribbon = document.getElementById('studioSpectrumRibbon');
+      if (ribbon) {
+        ribbon.style.background = getContinuousGradientString(activeFlavors, distinctInventory);
+      }
+
+      const handlesCont = document.getElementById('studioSpectrumHandlesContainer');
+      if (handlesCont) {
+        handlesCont.innerHTML = '';
+        if (activeFlavors.length > 1) {
+          let handleCum = 0;
+          for (let i = 0; i < activeFlavors.length - 1; i++) {
+            handleCum += activeFlavors[i].percent;
+            const thumb = document.createElement('div');
+            thumb.className = 'spectrum-drag-thumb';
+            thumb.style.left = `${handleCum}%`;
+            thumb.onmousedown = (e) => window.handleStudioStartSpectrumDrag(e, i);
+            thumb.ontouchstart = (e) => window.handleStudioStartSpectrumDrag(e, i);
+            handlesCont.appendChild(thumb);
+          }
+        }
+      }
+
+      // Render Active Pills
+      const slotsCont = document.getElementById('studioFlavorSlotsContainer');
+      if (slotsCont) {
+        slotsCont.className = `grid ${activeFlavors.length <= 2 ? (activeFlavors.length === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2'} gap-1.5 my-1`;
+        let pillsHtml = '';
+        activeFlavors.forEach((f, idx) => {
+          const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+          const col = getItemProfileColor(item);
+          pillsHtml += `
+            <div class="flex items-center justify-between gap-1 py-1 px-2.5 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none min-w-0">
+              <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 6px ${col}80;"></span>
+                <span class="font-serif text-xs font-semibold text-white tracking-wide truncate">${item.name}</span>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0">
+                <span class="text-[10px] text-amber-400 font-mono font-bold studio-flavor-percent-text">${f.percent}%</span>
+                <button onclick="removeFlavorFromStudio(${idx})" class="text-zinc-500 hover:text-red-400 text-xs p-0.5 transition leading-none" title="Remove flavor">✕</button>
+              </div>
+            </div>
+          `;
+        });
+        slotsCont.innerHTML = pillsHtml;
+      }
+
+      // Pricing & Mode
+      const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
+      const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+      const refillPrice = origPrice - 10.00;
+
+      const activeTab = CustomerStash.getActiveTab();
+      const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+      const hasExistingHookahs = existingHookahs.length > 0;
+      const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
+      const finalPrice = isRefill ? refillPrice : origPrice;
+      const estTax = (finalPrice * (taxConfig.primaryRate / 100));
+
+      const priceEl = document.getElementById('studioFinalPriceDisplay');
+      if (priceEl) priceEl.textContent = `$${finalPrice.toFixed(0)}`;
+
+      const taxEl = document.getElementById('studioTaxDisplay');
+      if (taxEl) taxEl.textContent = `+ $${estTax.toFixed(2)} tax`;
+
+      const toggleEl = document.getElementById('studioOrderTypeToggle');
+      if (toggleEl) {
+        toggleEl.textContent = isRefill ? 'Refill (-$10)' : 'New Pipe';
+      }
+
+      const submitBtn = document.getElementById('studioSubmitOrderBtn');
+      if (submitBtn) {
+        submitBtn.textContent = isRefill ? 'Order Refill' : 'Order Hookah';
+      }
+
+      setupStudioSpectrumDragListeners();
+    }
+
+    let activeStudioDragHandleIndex = null;
+    function setupStudioSpectrumDragListeners() {
+      const container = document.getElementById('studioSpectrumDraggableArea');
       if (!container) return;
 
       function getClientX(e) {
@@ -5514,34 +5663,29 @@
         return e.clientX;
       }
 
-      function updateSpectrumVisuals() {
-        // 1. Update Ribbon gradient in real-time
-        const ribbon = document.getElementById('spectrumRibbon');
+      function updateStudioVisuals() {
+        const ribbon = document.getElementById('studioSpectrumRibbon');
+        const distinctInventory = CustomerStash.getInventory();
         if (ribbon) {
-          const distinctInventory = CustomerStash.getInventory();
-          let cum = 0;
-          const gradParts = [];
-          let totalStrength = 0;
-
-          activeFlavors.forEach(f => {
-            const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-            const col = getItemProfileColor(item);
-            const start = cum;
-            cum += f.percent;
-            gradParts.push(`${col} ${start}% ${cum}%`);
-            totalStrength += ((item.strength || 7) * (f.percent / 100));
-          });
-
-          ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
-
-          // 2. Update buzz level readout
-          const buzzVal = parseFloat(totalStrength.toFixed(1));
-          const buzzEl = document.getElementById('benchBuzzLevelDisplay');
-          if (buzzEl) buzzEl.textContent = `${buzzVal}`;
+          ribbon.style.background = getContinuousGradientString(activeFlavors, distinctInventory);
         }
 
-        // 3. Update Handle positions in real-time
-        const handlesCont = document.getElementById('spectrumHandlesContainer');
+        let totalStrength = 0;
+        activeFlavors.forEach(f => {
+          const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+          totalStrength += ((item.strength || 7) * (f.percent / 100));
+        });
+        const buzzVal = parseFloat(totalStrength.toFixed(1));
+        const buzzInfo = getBuzzInfo(buzzVal);
+        const buzzLevelEl = document.getElementById('studioBuzzLevel');
+        if (buzzLevelEl) buzzLevelEl.textContent = `${buzzVal}`;
+        const buzzCatEl = document.getElementById('studioBuzzCategory');
+        if (buzzCatEl) {
+          buzzCatEl.textContent = buzzInfo.category;
+          buzzCatEl.className = `text-[9px] font-sans font-bold uppercase ${buzzInfo.textColor} ml-0.5`;
+        }
+
+        const handlesCont = document.getElementById('studioSpectrumHandlesContainer');
         if (handlesCont) {
           const thumbs = handlesCont.querySelectorAll('.spectrum-drag-thumb');
           let handleCum = 0;
@@ -5553,21 +5697,24 @@
           }
         }
 
-        // 4. Update Flavor row percentage text in real-time
-        const slotsCont = document.getElementById('flavorSlotsContainer');
+        const slotsCont = document.getElementById('studioFlavorSlotsContainer');
         if (slotsCont) {
-          const pctSpans = slotsCont.querySelectorAll('.flavor-percent-text');
+          const pctSpans = slotsCont.querySelectorAll('.studio-flavor-percent-text');
           activeFlavors.forEach((f, idx) => {
             if (pctSpans[idx]) pctSpans[idx].textContent = `${f.percent}%`;
           });
         }
+
+        updateFloatingBowlBar();
       }
 
       function handleDragMove(e) {
-        if (activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
+        if (activeStudioDragHandleIndex === null || activeFlavors.length <= 1) return;
         if (e.cancelable) e.preventDefault();
         if (activeMixName) {
           activeMixName = null;
+          const titleEl = document.getElementById('studioBowlTitle');
+          if (titleEl) titleEl.textContent = 'YOUR BOWL';
         }
 
         const rect = container.getBoundingClientRect();
@@ -5576,22 +5723,22 @@
 
         let cum = 0;
         const cumPcts = activeFlavors.map(p => { cum += p.percent; return cum; });
-        const minBound = (activeCustomerDragHandleIndex === 0) ? 10 : (cumPcts[activeCustomerDragHandleIndex - 1] + 10);
-        const maxBound = (activeCustomerDragHandleIndex === activeFlavors.length - 2) ? 90 : (cumPcts[activeCustomerDragHandleIndex + 1] - 10);
+        const minBound = (activeStudioDragHandleIndex === 0) ? 10 : (cumPcts[activeStudioDragHandleIndex - 1] + 10);
+        const maxBound = (activeStudioDragHandleIndex === activeFlavors.length - 2) ? 90 : (cumPcts[activeStudioDragHandleIndex + 1] - 10);
         const clampedPct = Math.max(minBound, Math.min(maxBound, rawPct));
-        const oldCum = cumPcts[activeCustomerDragHandleIndex];
+        const oldCum = cumPcts[activeStudioDragHandleIndex];
         const delta = clampedPct - oldCum;
 
         if (delta !== 0) {
-          activeFlavors[activeCustomerDragHandleIndex].percent += delta;
-          activeFlavors[activeCustomerDragHandleIndex + 1].percent -= delta;
-          updateSpectrumVisuals();
+          activeFlavors[activeStudioDragHandleIndex].percent += delta;
+          activeFlavors[activeStudioDragHandleIndex + 1].percent -= delta;
+          updateStudioVisuals();
         }
       }
 
       function handleDragEnd() {
-        if (activeCustomerDragHandleIndex !== null) {
-          activeCustomerDragHandleIndex = null;
+        if (activeStudioDragHandleIndex !== null) {
+          activeStudioDragHandleIndex = null;
         }
         window.removeEventListener('mousemove', handleDragMove);
         window.removeEventListener('touchmove', handleDragMove);
@@ -5600,10 +5747,10 @@
         window.removeEventListener('touchcancel', handleDragEnd);
       }
 
-      window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
+      window.handleStudioStartSpectrumDrag = function(e, handleIdx) {
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
-        activeCustomerDragHandleIndex = handleIdx;
+        activeStudioDragHandleIndex = handleIdx;
         window.addEventListener('mousemove', handleDragMove);
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('mouseup', handleDragEnd);
@@ -5624,8 +5771,21 @@
           const diff = Math.abs(clickPct - cum);
           if (diff < minDiff) { minDiff = diff; closestIdx = i; }
         }
-        window.handleCustomerStartSpectrumDrag(e, closestIdx);
+        window.handleStudioStartSpectrumDrag(e, closestIdx);
       };
+    }
+
+    function clearBowl() {
+      activeFlavors = [];
+      activeMixName = null;
+      if (activeCustomerTab === 'menu') {
+        renderCustomerMenu();
+      } else {
+        renderMixLab();
+      }
+      updateActiveBowlNotificationUI();
+      updateFloatingBowlBar();
+      showToast('🗑️ Bowl Cleared', 'Bowl is now blank.');
     }
 
     function getBuzzInfo(buzzRating) {
