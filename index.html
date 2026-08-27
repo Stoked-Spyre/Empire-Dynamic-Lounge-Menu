@@ -4322,9 +4322,9 @@
           let activeFlavorsHtml = '';
           if (activeFlavors.length === 0) {
             activeFlavorsHtml = `
-              <div class="p-3 text-center border border-dashed border-white/20 bg-black/60">
+              <div class="py-3 px-4 text-center border border-dashed border-white/10 bg-black/20">
                 <span class="text-xs text-zinc-300 font-serif italic block">Your bowl formulation is currently blank.</span>
-                <span class="text-[10px] text-amber-400 font-mono font-semibold">Tap [+ ADD] on any flavor or blend in the menu below to formulate</span>
+                <span class="text-[10px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to formulate</span>
               </div>
             `;
           } else {
@@ -4335,25 +4335,21 @@
               const dotColor = getProfileDotColor(primaryProfile);
 
               activeFlavorsHtml += `
-                <div class="bg-black border border-white/[0.14] p-2.5 flex items-center justify-between gap-2 select-none">
-                  <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                    <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
-                    <div class="truncate">
-                      <div class="flex items-center gap-2">
-                        <span class="font-serif text-sm font-bold text-white truncate">${item.name}</span>
-                        <span class="text-[9px] bg-zinc-900 border border-white/[0.08] text-zinc-300 px-1.5 font-mono font-bold">${item.brand}</span>
-                      </div>
-                      <span class="text-[10px] text-zinc-400 font-mono">⚡ Strength ${item.strength || 7}/10</span>
-                    </div>
+                <div class="py-1.5 px-2 flex items-center justify-between gap-2 select-none hover:bg-white/[0.02] transition">
+                  <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
+                    <span class="font-serif text-[13px] font-bold text-white truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">${item.name}</span>
+                    <span class="text-[9px] text-zinc-400 font-mono uppercase bg-white/[0.04] px-1 py-0.2 border border-white/[0.06]">${item.brand}</span>
+                    <span class="text-[9px] text-amber-400/80 font-mono">⚡${item.strength || 7}</span>
                   </div>
-                  <div class="flex items-center gap-3">
-                    <div class="text-right">
-                      <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
-                      <span class="text-[10px] text-zinc-400 block font-mono">${grams}g</span>
-                    </div>
-                    <button onclick="removeFlavor(${idx})" class="text-zinc-400 hover:text-red-400 p-1 flex-shrink-0 transition">
-                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                    </button>
+                  <div class="flex items-center gap-2.5 flex-shrink-0">
+                    <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
+                    <span class="text-[10px] text-zinc-400 font-mono">(${grams}g)</span>
+                    ${!activeMixName ? `
+                      <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-0.5 transition" title="Remove flavor">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                      </button>
+                    ` : ''}
                   </div>
                 </div>
               `;
@@ -4361,77 +4357,71 @@
           }
 
           activeBowlSectionHtml = `
-            <section class="sommelier-card-frame p-2.5 mb-4 select-none">
-              <div class="sommelier-inner-frame p-3.5 space-y-2.5">
-                <div class="flex justify-between items-center border-b border-white/[0.08] pb-2">
-                  <div class="flex items-center gap-2">
-                    <span class="text-amber-400 text-[10px]">◆</span>
-                    <span class="font-serif text-sm font-bold text-white tracking-wide uppercase">
-                      ${activeMixName ? `👑 ${activeMixName}` : (activeFlavors.length > 0 ? 'Active Bowl Formulation' : 'Active Bowl Bench')}
-                    </span>
-                  </div>
+            <section class="menu-bowl-bench mb-5 p-3.5 bg-black/40 backdrop-blur-md border border-white/[0.12] transition-all select-none">
+              <!-- Top Row: Title + Buzz Level + Reset -->
+              <div class="flex justify-between items-center pb-2 border-b border-white/[0.08]">
+                <div class="flex items-center gap-2">
+                  <span class="text-amber-400 text-[10px]">◆</span>
+                  <span class="font-serif text-sm font-bold text-white tracking-wider uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                    ${activeMixName ? `👑 ${activeMixName}` : (activeFlavors.length > 0 ? 'Active Formulation' : 'Active Bowl Bench')}
+                  </span>
+                </div>
+                <div class="flex items-center gap-3">
                   ${activeFlavors.length > 0 ? `
-                    <button onclick="clearBowl()" class="text-[10px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 font-semibold">
+                    <div class="flex items-center gap-1.5 font-mono text-xs bg-white/[0.04] px-2 py-0.5 border border-white/[0.08]">
+                      <span>${buzzInfo.icon}</span>
+                      <span class="font-bold text-white text-xs">${buzzInfo.level}</span>
+                      <span class="text-[10px] text-zinc-400">/10</span>
+                      <span class="text-[9px] font-sans font-bold uppercase ${buzzInfo.textColor} ml-0.5">${buzzInfo.category}</span>
+                    </div>
+                    <button onclick="clearBowl()" class="text-[10px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 transition font-semibold">
                       RESET [✕]
                     </button>
                   ` : ''}
                 </div>
+              </div>
 
-                <!-- BUZZ READOUT -->
-                <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-black/80 border border-white/[0.1] text-xs">
-                  <div class="flex items-center gap-2">
-                    <span class="text-[10px] uppercase font-bold text-zinc-300 tracking-wider">Buzz Rating:</span>
-                    <div class="flex items-center gap-1.5 font-mono">
-                      <span>${buzzInfo.icon}</span>
-                      <span class="font-bold text-white text-xs">${buzzInfo.level}</span>
-                      <span class="text-[11px] text-zinc-400">/10</span>
-                      <span class="text-[10px] font-sans font-bold uppercase ${buzzInfo.textColor}">${buzzInfo.category}</span>
-                    </div>
+              ${activeFlavors.length === 0 ? `
+                <div class="py-3 px-2 text-center">
+                  <span class="text-xs text-zinc-300 font-serif italic block">Your bowl formulation is currently blank.</span>
+                  <span class="text-[10px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to formulate</span>
+                </div>
+              ` : `
+                <!-- Spectrum Slider -->
+                <div class="pt-2.5 pb-1">
+                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''} h-2 rounded-sm overflow-hidden" id="spectrumDraggableArea">
+                    <div id="spectrumRibbon" class="spectrum-track w-full h-full bg-zinc-800" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
+                    <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
                   </div>
-                  <div class="text-[11px] text-zinc-300 font-mono">
-                    ${activeFlavors.length > 0 ? `<span class="text-amber-400 font-bold">${activeFlavors.length} of 3 Flavors</span> · Standard 22g` : `<span class="text-zinc-400 italic">Select flavors from the menu below</span>`}
+                  <div class="flex justify-between items-center text-[10px] text-zinc-400 font-mono mt-1 px-0.5">
+                    ${activeMixName ? `
+                      <span class="text-amber-300 font-serif italic font-medium flex items-center gap-1">
+                        <span class="text-[9px]">👑</span> Curated House Recipe (Fixed Ratios)
+                      </span>
+                    ` : `
+                      <span class="text-zinc-400">Drag gold splitters to adjust ratios</span>
+                    `}
+                    <span class="text-zinc-400 font-mono">${activeFlavors.length} of 3 Flavors · Standard 22g</span>
                   </div>
                 </div>
 
-                <!-- SPECTRUM RATIO SLIDER -->
-                ${activeFlavors.length > 0 ? `
-                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''}" id="spectrumDraggableArea">
-                    <div id="spectrumRibbon" class="spectrum-track bg-zinc-900" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
-                    <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
-                  </div>
-                  <div class="flex justify-between text-[10px] text-zinc-400 font-mono px-0.5">
-                    ${activeMixName ? `
-                      <span class="text-amber-300 font-serif italic font-medium flex items-center gap-1">
-                        <span class="text-[9px]">👑</span> Curated House Blend (Fixed Ratios)
-                      </span>
-                    ` : `
-                      <span>Drag gold thumb to adjust ratios</span>
-                    `}
-                    <span class="text-amber-400 font-bold">Standard 22g Pack</span>
-                  </div>
-                ` : ''}
-
-                <!-- ACTIVE FLAVOR ROWS -->
-                <div class="space-y-1.5" id="flavorSlotsContainer">
+                <!-- Active Flavor Rows (Discrete & Editorial) -->
+                <div class="divide-y divide-white/[0.05] my-1.5" id="flavorSlotsContainer">
                   ${activeFlavorsHtml}
                 </div>
 
-                <!-- ORDER ACTION BAR -->
-                ${activeFlavors.length > 0 ? `
-                  <div class="pt-2 border-t border-white/[0.1] flex items-center justify-between">
-                    <div>
-                      <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block">${roundCount === 1 ? '[FIRST BOWL]' : '[REFILL -$10]'}</span>
-                      <div class="flex items-baseline gap-1">
-                        <span class="text-lg font-serif font-bold text-amber-400">$${finalPrice.toFixed(0)}</span>
-                        <span class="text-[10px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
-                      </div>
-                    </div>
-                    <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-2 px-4 shadow-lg transition active:scale-95 uppercase tracking-wider select-none">
-                      <span>Order This Bowl Now</span>
-                    </button>
+                <!-- Order Action Bar (Discrete & Elegant) -->
+                <div class="pt-2 mt-1 border-t border-white/[0.08] flex items-center justify-between">
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-base font-serif font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">$${finalPrice.toFixed(0)}</span>
+                    <span class="text-[10px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
+                    <span class="text-[9px] uppercase tracking-wider text-amber-400 font-mono font-semibold ml-1">${roundCount === 1 ? '[FIRST BOWL]' : '[REFILL -$10]'}</span>
                   </div>
-                ` : ''}
-              </div>
+                  <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none">
+                    Order Bowl
+                  </button>
+                </div>
+              `}
             </section>
           `;
         }
