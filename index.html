@@ -458,13 +458,13 @@
     }
     .selector-mode-btn {
       font-family: 'Playfair Display', serif;
-      font-size: 0.70rem;
-      letter-spacing: 0.05em;
+      font-size: 0.62rem;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #A1A1AA;
       background: none;
       border: none;
-      padding: 3px 2px;
+      padding: 2px 1px;
       cursor: pointer;
       transition: color 0.15s ease;
       position: relative;
@@ -4507,20 +4507,20 @@
       // 1. BEVERAGES: Direct 1-tap ordering for authenticated members
       if (isDrink) {
         const orderBtn = isVipLoggedIn ? `
-          <button onclick="event.stopPropagation(); orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none font-bold">+ ORDER</button>
+          <button onclick="event.stopPropagation(); orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2 py-0.5 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 select-none font-bold">+ ORDER</button>
         ` : '';
 
         return `
-          <div class="editorial-item mb-4 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})"` : ''}>
+          <div class="editorial-item mb-3 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})"` : ''}>
             <div class="item-top-row flex items-baseline justify-between w-full">
-              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition">${item.name}</span>
-              <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
-              <div class="flex items-center">
-                <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">$${priceStr}</span>
-                ${orderBtn}
-              </div>
+              <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
+              <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
             </div>
-            <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
+            <div class="flex items-center justify-between gap-2 mt-0.5">
+              <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
+              ${orderBtn}
+            </div>
           </div>
         `;
       }
@@ -4533,7 +4533,7 @@
           activeFlavors.length === (item.flavors || []).length
         );
         const addBtn = isVipLoggedIn ? `
-          <button onclick="event.stopPropagation(); loadHouseMixIntoBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
+          <button onclick="event.stopPropagation(); loadHouseMixIntoBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-0.5 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 select-none flex-shrink-0 font-bold">
             ${inBowl ? '✓ IN BOWL' : '+ ADD'}
           </button>
         ` : '';
@@ -4545,21 +4545,19 @@
             onpointercancel="onFlavorPointerUp()" 
             onpointerleave="onFlavorPointerUp()" 
             onclick="onFlavorClick('${item.id}', '${type}')" 
-            class="editorial-item mb-4 cursor-pointer select-none group">
+            class="editorial-item mb-3 cursor-pointer select-none group">
             <div class="item-top-row flex items-baseline justify-between w-full">
-              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition">${item.name}</span>
-              <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
-              <div class="flex items-center">
-                <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">$${priceStr}</span>
-                ${addBtn}
-              </div>
+              <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate">${item.name}</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
+              <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
             </div>
-            <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
-            ${metaLine ? `
-              <div class="item-meta mt-1 text-[11px] text-zinc-400 font-mono">
-                <span>${metaLine}</span>
-              </div>
+            ${(!isVipLoggedIn && item.desc) ? `
+              <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
             ` : ''}
+            <div class="item-meta mt-1 flex items-center justify-between gap-2 text-[10px] text-zinc-400 font-mono">
+              <span class="truncate">${metaLine || ''}</span>
+              ${addBtn}
+            </div>
           </div>
         `;
       }
@@ -4567,7 +4565,7 @@
       // 3. SINGLE FLAVORS: Tap to add into active bowl mix or touch-and-hold for specs modal
       const inBowl = activeFlavors.some(f => f.id === item.id);
       const addBtn = isVipLoggedIn ? `
-        <button onclick="event.stopPropagation(); addFlavorToActiveBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
+        <button onclick="event.stopPropagation(); addFlavorToActiveBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-0.5 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 select-none flex-shrink-0 font-bold">
           ${inBowl ? '✓ IN BOWL' : '+ ADD'}
         </button>
       ` : '';
@@ -4581,24 +4579,22 @@
           onpointercancel="onFlavorPointerUp()" 
           onpointerleave="onFlavorPointerUp()" 
           onclick="onFlavorClick('${item.id}', '${type}')" 
-          class="editorial-item mb-4 cursor-pointer select-none group">
+          class="editorial-item mb-3 cursor-pointer select-none group">
           <div class="item-top-row flex items-baseline justify-between w-full">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 min-w-0 flex-1 pr-1">
               <span class="w-2 h-2 rounded-full inline-block flex-shrink-0" style="background: ${dotColor}; box-shadow: 0 0 6px ${dotColor}80;"></span>
-              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition">${item.name}</span>
+              <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate">${item.name}</span>
             </div>
-            <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
-            <div class="flex items-center">
-              <span class="text-amber-400 font-mono text-xs font-semibold mr-1.5">⚡ ${item.strength || 7}</span>
-              ${addBtn}
-            </div>
+            <span class="item-leader flex-grow mx-1.5 border-b border-dotted border-white/40 relative -top-1"></span>
+            <span class="text-amber-400 font-mono text-xs font-semibold whitespace-nowrap flex-shrink-0">⚡ ${item.strength || 7}</span>
           </div>
-          <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc || (item.profiles ? item.profiles.join(' · ') : 'Craft Leaf')}</div>
-          ${metaLine ? `
-            <div class="item-meta mt-1 text-[11px] text-zinc-400 font-mono">
-              <span>${metaLine}</span>
-            </div>
+          ${(!isVipLoggedIn && item.desc) ? `
+            <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           ` : ''}
+          <div class="item-meta mt-1 flex items-center justify-between gap-2 text-[10px] text-zinc-400 font-mono">
+            <span class="truncate">${metaLine || (item.profiles ? item.profiles.join(' · ') : 'Craft Leaf')}</span>
+            ${addBtn}
+          </div>
         </div>
       `;
     }
@@ -4664,11 +4660,11 @@
         const modeToggleHtml = `
           <div class="selector-mode-toggle">
             <button class="selector-mode-btn ${selectorMode === 'brands' ? 'active' : ''}" onclick="setSelectorMode('brands')">
-              BRANDS
+              BRAND
             </button>
-            <span class="text-zinc-600 font-mono text-[9px] px-0.5">/</span>
+            <span class="text-zinc-600 font-mono text-[9px] px-0.5">|</span>
             <button class="selector-mode-btn ${selectorMode === 'profiles' ? 'active' : ''}" onclick="setSelectorMode('profiles')">
-              NOTES
+              PROFILE
             </button>
           </div>
         `;
