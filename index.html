@@ -4254,14 +4254,22 @@
       if (refillEl) refillEl.textContent = `${(pricing.refillPrice || 25.00).toFixed(0)}`;
       if (tanEl) tanEl.textContent = `${(pricing.tangiersPrice || 38.00).toFixed(0)}`;
 
-      // 2. Render Primary Navigation Tabs (Public QR Menu only - hidden for VIP members who have bottom dock)
+      // 2. Render Primary Navigation Tabs & Logo (Logo & Nav track visible on Public QR Menu only - hidden entirely when signed in to maximize menu space)
       const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
       const navTrack = document.getElementById('menuNavTrack');
-      if (headerSpread) headerSpread.classList.remove('hidden');
-      if (isVipLoggedIn) {
-        if (navTrack) navTrack.classList.add('hidden');
-      } else {
-        if (navTrack) {
+      
+      if (headerSpread) {
+        if (isVipLoggedIn) {
+          headerSpread.classList.add('hidden');
+        } else {
+          headerSpread.classList.remove('hidden');
+        }
+      }
+
+      if (navTrack) {
+        if (isVipLoggedIn) {
+          navTrack.classList.add('hidden');
+        } else {
           navTrack.classList.remove('hidden');
           navTrack.innerHTML = `
             <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
