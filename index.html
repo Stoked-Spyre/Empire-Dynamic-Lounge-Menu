@@ -5172,14 +5172,14 @@
           const vQty = vStaged ? vStaged.qty : 0;
           const vPrice = v.price || item.price;
           return `
-            <div class="py-2.5 px-3 bg-[#181820] hover:bg-[#23232D] ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/variant' : ''} flex items-center justify-between text-xs transition" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)"` : ''}>
+            <div class="py-1 px-1.5 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/variant' : ''} flex items-center justify-between text-xs transition" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)"` : ''}>
               <div class="min-w-0 flex-1 pr-2">
                 <div class="flex items-baseline gap-1.5 flex-wrap">
                   <span class="text-amber-400 font-bold">•</span>
                   <span class="font-serif font-bold text-white text-[13px] tracking-wide ${isVipLoggedIn ? 'group-hover/variant:text-amber-300' : ''} ${vQty > 0 ? 'text-amber-300 font-bold' : ''}">${v.name}</span>
-                  <span class="font-mono text-amber-300 font-bold text-xs">· $${vPrice.toFixed(0)}</span>
+                  <span class="font-mono text-white font-bold text-xs">· $${vPrice.toFixed(0)}</span>
                 </div>
-                <div class="font-sans text-xs text-zinc-300 font-normal italic pl-3 mt-0.5">${v.desc}</div>
+                <div class="font-sans text-xs text-zinc-200 font-normal italic pl-3 mt-0.5">${v.desc}</div>
               </div>
               ${isVipLoggedIn ? `
                 <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
@@ -5197,7 +5197,7 @@
         }).join('');
 
         return `
-          <div class="editorial-item mb-3.5 select-none opacity-100 border ${isOpen ? 'border-amber-500/40 bg-black/40 p-2' : 'border-transparent'} transition">
+          <div class="editorial-item mb-3.5 select-none opacity-100">
             <div class="cursor-pointer group" onclick="toggleBeverageAccordion('${item.id}')">
               <div class="item-top-row flex items-baseline justify-between w-full">
                 <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate flex items-center gap-1.5">
@@ -5215,9 +5215,9 @@
               </div>
             </div>
 
-            <!-- Inline Accordion Dropdown Content (Bright, High Contrast & High Legibility) -->
+            <!-- Inline Accordion Dropdown Content (Border-Free, Bright Typography) -->
             ${isOpen ? `
-              <div class="mt-2 border border-amber-500/30 bg-[#16161C] shadow-lg rounded-none divide-y divide-white/10 overflow-hidden">
+              <div class="mt-1.5 pl-2.5 space-y-1">
                 ${variantsHtml}
               </div>
             ` : ''}
