@@ -831,24 +831,26 @@
     .spectrum-drag-thumb {
       position: absolute;
       top: 50%;
-      width: 22px;
+      width: 24px;
       height: 28px;
       transform: translate(-50%, -50%);
       background: #0D1117;
       border: 2px solid #E5A93C;
-      border-radius: 7px;
+      border-radius: 6px;
       cursor: ew-resize;
       pointer-events: auto;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 10px rgba(229, 169, 60, 0.6);
-      transition: transform 0.1s ease, border-color 0.1s ease;
-      z-index: 25;
+      transition: none;
+      z-index: 30;
       touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .spectrum-drag-thumb:hover, .spectrum-drag-thumb:active {
-      transform: translate(-50%, -50%) scale(1.18);
+      transform: translate(-50%, -50%) scale(1.15);
       border-color: #FFFFFF;
       background: #000000;
       box-shadow: 0 0 16px rgba(229, 169, 60, 0.9);
@@ -859,6 +861,7 @@
       height: 12px;
       border-left: 1.5px solid #E5A93C;
       border-right: 1.5px solid #E5A93C;
+      pointer-events: none;
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -3359,11 +3362,16 @@
       renderCustomerMenu();
     }
 
+    let lastDrinkOrderTimestamp = 0;
     function orderDrinkItem(drinkId, drinkName, price) {
       if (!isVipLoggedIn) {
         openVipLoginModal();
         return;
       }
+      const now = Date.now();
+      if (now - lastDrinkOrderTimestamp < 450) return; // Prevent double dispatch on mobile tap
+      lastDrinkOrderTimestamp = now;
+
       CustomerStash.addItemToTab({
         id: 'drink-' + Date.now(),
         name: drinkName,
@@ -4138,7 +4146,7 @@
       // 1. BEVERAGES: Direct 1-tap ordering for authenticated members
       if (isDrink) {
         const orderBtn = isVipLoggedIn ? `
-          <button onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none font-bold">+ ORDER</button>
+          <button onclick="event.stopPropagation(); orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none font-bold">+ ORDER</button>
         ` : '';
 
         return `
@@ -4423,7 +4431,7 @@
                     <span class="text-[9px] text-amber-400/80 font-mono">⚡${item.strength || 7}</span>
                   </div>
                   <div class="flex items-center gap-2.5 flex-shrink-0">
-                    <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
+                    <span class="flavor-percent-text text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
                     ${!activeMixName ? `
                       <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-0.5 transition" title="Remove flavor">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
@@ -4449,7 +4457,7 @@
                   ${activeFlavors.length > 0 ? `
                     <div class="flex items-center gap-1.5 font-mono text-xs bg-white/[0.04] px-2 py-0.5 border border-white/[0.08]">
                       <span>${buzzInfo.icon}</span>
-                      <span class="font-bold text-white text-xs">${buzzInfo.level}</span>
+                      <span id="benchBuzzLevelDisplay" class="font-bold text-white text-xs">${buzzInfo.level}</span>
                       <span class="text-[10px] text-zinc-400">/10</span>
                       <span class="text-[9px] font-sans font-bold uppercase ${buzzInfo.textColor} ml-0.5">${buzzInfo.category}</span>
                     </div>
@@ -4467,12 +4475,12 @@
                 </div>
               ` : `
                 <!-- Spectrum Slider -->
-                <div class="pt-2 pb-1">
-                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''} h-2 rounded-sm overflow-hidden" id="spectrumDraggableArea">
-                    <div id="spectrumRibbon" class="spectrum-track w-full h-full bg-zinc-800" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
+                <div class="pt-1.5 pb-1">
+                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''} relative w-full h-7 flex items-center select-none" id="spectrumDraggableArea" style="touch-action: none;">
+                    <div id="spectrumRibbon" class="w-full h-2 rounded-full overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
                     <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
                   </div>
-                  <div class="flex justify-between items-center text-[10px] text-zinc-400 font-mono mt-1 px-0.5">
+                  <div class="flex justify-between items-center text-[10px] text-zinc-400 font-mono mt-0.5 px-0.5">
                     ${activeMixName ? `
                       <span class="text-amber-300 font-serif italic font-medium flex items-center gap-1">
                         <span class="text-[9px]">👑</span> Curated House Recipe (Fixed Ratios)
@@ -5125,15 +5133,70 @@
     function setupCustomerSpectrumDragListeners() {
       const container = document.getElementById('spectrumDraggableArea');
       if (!container) return;
-      function getClientX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
+
+      function getClientX(e) {
+        if (e.touches && e.touches.length > 0) return e.touches[0].clientX;
+        if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0].clientX;
+        return e.clientX;
+      }
+
+      function updateSpectrumVisuals() {
+        // 1. Update Ribbon gradient in real-time
+        const ribbon = document.getElementById('spectrumRibbon');
+        if (ribbon) {
+          const distinctInventory = CustomerStash.getInventory();
+          let cum = 0;
+          const gradParts = [];
+          let totalStrength = 0;
+
+          activeFlavors.forEach(f => {
+            const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+            const col = getItemProfileColor(item);
+            const start = cum;
+            cum += f.percent;
+            gradParts.push(`${col} ${start}% ${cum}%`);
+            totalStrength += ((item.strength || 7) * (f.percent / 100));
+          });
+
+          ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+          // 2. Update buzz level readout
+          const buzzVal = parseFloat(totalStrength.toFixed(1));
+          const buzzEl = document.getElementById('benchBuzzLevelDisplay');
+          if (buzzEl) buzzEl.textContent = `${buzzVal}`;
+        }
+
+        // 3. Update Handle positions in real-time
+        const handlesCont = document.getElementById('spectrumHandlesContainer');
+        if (handlesCont) {
+          const thumbs = handlesCont.querySelectorAll('.spectrum-drag-thumb');
+          let handleCum = 0;
+          for (let i = 0; i < activeFlavors.length - 1; i++) {
+            handleCum += activeFlavors[i].percent;
+            if (thumbs[i]) {
+              thumbs[i].style.left = `${handleCum}%`;
+            }
+          }
+        }
+
+        // 4. Update Flavor row percentage text in real-time
+        const slotsCont = document.getElementById('flavorSlotsContainer');
+        if (slotsCont) {
+          const pctSpans = slotsCont.querySelectorAll('.flavor-percent-text');
+          activeFlavors.forEach((f, idx) => {
+            if (pctSpans[idx]) pctSpans[idx].textContent = `${f.percent}%`;
+          });
+        }
+      }
+
       function handleDragMove(e) {
         if (activeMixName || activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
         if (e.cancelable) e.preventDefault();
-        const ribbon = document.getElementById('spectrumRibbon');
-        if (!ribbon) return;
-        const rect = ribbon.getBoundingClientRect();
+
+        const rect = container.getBoundingClientRect();
         const clientX = getClientX(e);
         const rawPct = Math.round(((clientX - rect.left) / rect.width) * 100);
+
         let cum = 0;
         const cumPcts = activeFlavors.map(p => { cum += p.percent; return cum; });
         const minBound = (activeCustomerDragHandleIndex === 0) ? 10 : (cumPcts[activeCustomerDragHandleIndex - 1] + 10);
@@ -5141,39 +5204,42 @@
         const clampedPct = Math.max(minBound, Math.min(maxBound, rawPct));
         const oldCum = cumPcts[activeCustomerDragHandleIndex];
         const delta = clampedPct - oldCum;
+
         if (delta !== 0) {
           activeFlavors[activeCustomerDragHandleIndex].percent += delta;
           activeFlavors[activeCustomerDragHandleIndex + 1].percent -= delta;
-          if (activeCustomerTab === 'menu') {
-            renderCustomerMenu();
-          } else {
-            renderMixLab();
-          }
+          updateSpectrumVisuals();
         }
       }
+
       function handleDragEnd() {
-        activeCustomerDragHandleIndex = null;
+        if (activeCustomerDragHandleIndex !== null) {
+          activeCustomerDragHandleIndex = null;
+        }
         window.removeEventListener('mousemove', handleDragMove);
         window.removeEventListener('touchmove', handleDragMove);
         window.removeEventListener('mouseup', handleDragEnd);
         window.removeEventListener('touchend', handleDragEnd);
+        window.removeEventListener('touchcancel', handleDragEnd);
       }
+
       window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
         if (activeMixName) return;
-        e.preventDefault(); e.stopPropagation();
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
         activeCustomerDragHandleIndex = handleIdx;
         window.addEventListener('mousemove', handleDragMove);
         window.addEventListener('touchmove', handleDragMove, { passive: false });
         window.addEventListener('mouseup', handleDragEnd);
         window.addEventListener('touchend', handleDragEnd);
+        window.addEventListener('touchcancel', handleDragEnd);
       };
-      container.onmousedown = (e) => {
+
+      container.onpointerdown = (e) => {
         if (activeMixName) return;
         if (e.target.classList.contains('spectrum-drag-thumb')) return;
         if (activeFlavors.length <= 1) return;
-        const ribbon = document.getElementById('spectrumRibbon');
-        if (!ribbon) return;
-        const rect = ribbon.getBoundingClientRect();
+        const rect = container.getBoundingClientRect();
         const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
         let cum = 0;
         let closestIdx = 0;
