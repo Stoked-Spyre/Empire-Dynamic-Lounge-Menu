@@ -771,6 +771,64 @@
       display: none !important;
     }
 
+    .landing-logo-float {
+      animation: logo-float 4.8s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-7px); }
+    }
+
+    .enter-silver-btn {
+      position: relative;
+      width: 100%;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 45%, #cbd5e1 75%, #94a3b8 100%);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      color: #09090b;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .enter-silver-btn:hover {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 45%, #e2e8f0 75%, #cbd5e1 100%);
+      box-shadow: 0 6px 28px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 1);
+      transform: translateY(-1px);
+    }
+    .enter-silver-btn:active {
+      transform: scale(0.985);
+    }
+    .enter-silver-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 45%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.7) 50%, transparent);
+      transform: translate3d(-140%, 0, 0) skewX(-20deg);
+      animation: silver-sweep 3.6s cubic-bezier(.66, 0, .16, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes silver-sweep {
+      0%   { transform: translate3d(-140%, 0, 0) skewX(-20deg); }
+      40%  { transform: translate3d(360%, 0, 0) skewX(-20deg); }
+      100% { transform: translate3d(360%, 0, 0) skewX(-20deg); }
+    }
+
     /* Ambient Dynamic Sky with Smooth Theme Transitions */
     .cinematic-sky {
       position: absolute;
@@ -2234,22 +2292,16 @@
       </button>
     </header>
 
-    <!-- Center Brand Spread (Exact Menu Spread Hierarchy) -->
+    <!-- Center Brand Spread with Floating Logo -->
     <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-4 relative z-10">
-      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-20 h-20 object-contain mb-2 mix-blend-screen drop-shadow-[0_4px_20px_rgba(229,169,60,0.3)]" />
+      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-20 h-20 object-contain mb-2 mix-blend-screen drop-shadow-[0_4px_20px_rgba(229,169,60,0.3)] landing-logo-float" />
       <h1 class="font-crest text-3xl sm:text-4xl font-bold tracking-wide text-white mb-1 drop-shadow-md">Empire Hookah Lounge</h1>
-      <p class="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] text-slate-300 uppercase mb-5">EST. 2010 · PHOENIX, ARIZONA</p>
-
-      <!-- Category Nav Tabs (Craft Shisha / Beverages) -->
-      <div class="flex items-center justify-center gap-9 border-b border-white/10 pb-3 w-full max-w-xs">
-        <span class="font-crest text-xs font-semibold tracking-[0.24em] text-[#E5A93C] uppercase relative after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-3 after:h-[1.5px] after:bg-[#E5A93C]">Craft Shisha</span>
-        <span class="font-crest text-xs font-semibold tracking-[0.24em] text-slate-400 uppercase">Beverages</span>
-      </div>
+      <p class="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] text-slate-300 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
     </main>
 
-    <!-- Noir House Regulations Placard & Enter CTA -->
+    <!-- Transparent Noir House Regulations Placard & Silver Animated CTA -->
     <footer class="w-[calc(100%-24px)] max-w-sm mb-6 relative z-10">
-      <div class="bg-black/65 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-2xl space-y-2.5">
+      <div class="bg-transparent border border-white/10 rounded-2xl p-4 backdrop-blur-md space-y-2.5">
         <div class="flex items-center justify-center gap-2.5 mb-0.5">
           <span class="flex-1 h-px bg-white/10"></span>
           <span class="font-crest text-[11px] font-semibold tracking-[0.26em] text-slate-300 uppercase">House Regulations</span>
@@ -2257,7 +2309,8 @@
         </div>
 
         <div class="space-y-1.5 text-xs text-zinc-300">
-          <div class="flex items-center gap-2.5 p-2 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+          <!-- Rule 1: 21+ Age -->
+          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
             <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">21+</span>
             <div class="flex flex-col flex-1 min-w-0">
               <span class="text-[11px] font-semibold text-white">Age Requirement</span>
@@ -2266,16 +2319,26 @@
             <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-[10px] text-[#E5A93C] hover:text-[#F5BA4C] underline ml-1 shrink-0 font-semibold" title="Federal Tobacco 21 Law">Law ↗</a>
           </div>
 
-          <div class="flex items-center gap-2.5 p-2 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+          <!-- Rule 2: 2 Guests Max -->
+          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
             <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">2P</span>
             <div class="flex flex-col flex-1 min-w-0">
               <span class="text-[11px] font-semibold text-white">Pipe Capacity</span>
               <span id="entryPipeLimitDisplay" class="text-[10px] text-slate-400 italic font-light truncate">Maximum 2 guests per handcrafted hookah pipe</span>
             </div>
           </div>
+
+          <!-- Rule 3: No Outside Drinks -->
+          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
+            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">NB</span>
+            <div class="flex flex-col flex-1 min-w-0">
+              <span class="text-[11px] font-semibold text-white">Outside Beverages</span>
+              <span class="text-[10px] text-slate-400 italic font-light truncate">No outside beverages or containers permitted</span>
+            </div>
+          </div>
         </div>
 
-        <button onclick="enterLounge()" class="w-full py-3 bg-[#E5A93C] hover:bg-[#F5BA4C] border border-white/20 rounded-xl text-black font-extrabold text-xs tracking-[0.2em] uppercase shadow-lg transition-all flex items-center justify-center gap-1.5 active:scale-[0.985]">
+        <button onclick="enterLounge()" class="enter-silver-btn">
           <span>Enter Lounge Menu</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>

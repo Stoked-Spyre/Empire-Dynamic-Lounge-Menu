@@ -112,7 +112,7 @@
     }
 
     /* ========================================================================== */
-    /* CENTER BRAND MASTHEAD (Exact Menu Spread Hierarchy)                        */
+    /* CENTER BRAND MASTHEAD WITH FLOATING LEVITATION                             */
     /* ========================================================================== */
     .landing-center {
       position: relative;
@@ -135,6 +135,12 @@
       margin: 0 auto 0.4rem auto;
       mix-blend-mode: screen;
       filter: drop-shadow(0 4px 20px rgba(229, 169, 60, 0.28));
+      animation: logo-float 4.8s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes logo-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-7px); }
     }
 
     .landing-masthead {
@@ -154,52 +160,10 @@
       text-transform: uppercase;
       font-weight: 600;
       color: #E2E8F0;
-      margin-bottom: 1.25rem;
-    }
-
-    /* Category Nav Tabs (Matching Menu Screenshot) */
-    .landing-nav-track {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2.25rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 0.75rem;
-      width: 100%;
-      max-width: 20rem;
-    }
-    .landing-nav-tab {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: #94A3B8;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.15s ease;
-      position: relative;
-    }
-    .landing-nav-tab.active {
-      color: #E5A93C;
-      text-shadow: 0 0 12px rgba(229, 169, 60, 0.35);
-    }
-    .landing-nav-tab.active::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -0.75rem;
-      height: 1.5px;
-      background: #E5A93C;
-      box-shadow: 0 0 8px #E5A93C;
-    }
-    .landing-nav-tab:hover {
-      color: #FFFFFF;
     }
 
     /* ========================================================================== */
-    /* NOIR SPEAKEASY ENTRANCE PLACARD & GILDED CTA                               */
+    /* TRANSPARENT NOIR HOUSE REGULATIONS & SILVER ANIMATED BUTTON               */
     /* ========================================================================== */
     .landing-footer-hud {
       position: relative;
@@ -209,27 +173,26 @@
       margin-bottom: max(18px, env(safe-area-inset-bottom, 18px));
     }
 
-    .noir-card {
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    .transparent-card {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       padding: 14px 16px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .noir-card-header {
+    .card-header-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
       margin-bottom: 2px;
     }
-    .noir-card-title {
+    .card-title-text {
       font-family: 'Playfair Display', serif;
       font-size: 0.72rem;
       font-weight: 600;
@@ -237,20 +200,24 @@
       text-transform: uppercase;
       color: #E2E8F0;
     }
-    .noir-card-line {
+    .card-divider-line {
       flex: 1;
       height: 1px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .policy-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 7px 10px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 12px;
+      transition: background 0.15s ease;
+    }
+    .policy-row:hover {
+      background: rgba(255, 255, 255, 0.04);
     }
     .policy-badge {
       width: 26px;
@@ -304,75 +271,90 @@
       color: #F5BA4C;
     }
 
-    .enter-btn {
+    /* Silver Metallic Shimmer Animated Button */
+    .enter-silver-btn {
+      position: relative;
       width: 100%;
-      padding: 12px 18px;
-      background: #E5A93C;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 45%, #cbd5e1 75%, #94a3b8 100%);
+      border: 1px solid rgba(255, 255, 255, 0.7);
       border-radius: 12px;
-      color: #000000;
+      color: #09090b;
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 0.75rem;
       font-weight: 800;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       cursor: pointer;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.9);
       transition: all 0.2s ease;
-      box-shadow: 0 4px 18px rgba(229, 169, 60, 0.35);
       text-decoration: none;
     }
-    .enter-btn:hover {
-      background: #F5BA4C;
-      box-shadow: 0 6px 24px rgba(229, 169, 60, 0.55);
+    .enter-silver-btn:hover {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 45%, #e2e8f0 75%, #cbd5e1 100%);
+      box-shadow: 0 6px 28px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 1);
       transform: translateY(-1px);
     }
-    .enter-btn:active {
+    .enter-silver-btn:active {
       transform: scale(0.985);
+    }
+    .enter-silver-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 45%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.7) 50%, transparent);
+      transform: translate3d(-140%, 0, 0) skewX(-20deg);
+      animation: silver-sweep 3.6s cubic-bezier(.66, 0, .16, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes silver-sweep {
+      0%   { transform: translate3d(-140%, 0, 0) skewX(-20deg); }
+      40%  { transform: translate3d(360%, 0, 0) skewX(-20deg); }
+      100% { transform: translate3d(360%, 0, 0) skewX(-20deg); }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==================== PURE NOIR SKYLINE BACKDROP (EXACT MENU MATCH) ==================== -->
+  <!-- ==================== PURE NOIR SKYLINE BACKDROP ==================== -->
   <div class="menu-skyline-bg" aria-hidden="true">
     <img src="images/skyline_sketch.jpg" alt="" class="menu-skyline-img" />
     <div class="menu-skyline-overlay"></div>
   </div>
 
-  <!-- ==================== TOP VIP BADGE (MATCHING SCREENSHOT) ==================== -->
+  <!-- ==================== TOP VIP BADGE ==================== -->
   <header class="landing-header">
     <a href="index.html" class="vip-badge-btn">
       <span>👑 VIP</span>
     </a>
   </header>
 
-  <!-- ==================== CENTER BRAND SPREAD (MATCHING SCREENSHOT) ==================== -->
+  <!-- ==================== CENTER BRAND SPREAD WITH FLOATING LOGO ==================== -->
   <main class="landing-center">
     <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="landing-logo" />
     <h1 class="landing-masthead">Empire Hookah Lounge</h1>
     <p class="landing-kicker">EST. 2010 · PHOENIX, ARIZONA</p>
-
-    <!-- Category Tabs (Craft Shisha / Beverages) -->
-    <nav class="landing-nav-track" aria-label="Menu Navigation">
-      <a href="index.html" class="landing-nav-tab active">Craft Shisha</a>
-      <a href="index.html" class="landing-nav-tab">Beverages</a>
-    </nav>
   </main>
 
-  <!-- ==================== NOIR HOUSE REGULATIONS PLACARD & ENTER CTA ==================== -->
+  <!-- ==================== TRANSPARENT HOUSE REGULATIONS & SILVER CTA ==================== -->
   <footer class="landing-footer-hud">
-    <div class="noir-card">
-      <div class="noir-card-header">
-        <span class="noir-card-line"></span>
-        <span class="noir-card-title">House Regulations</span>
-        <span class="noir-card-line"></span>
+    <div class="transparent-card">
+      <div class="card-header-row">
+        <span class="card-divider-line"></span>
+        <span class="card-title-text">House Regulations</span>
+        <span class="card-divider-line"></span>
       </div>
 
       <div class="space-y-1.5">
+        <!-- Rule 1: 21+ Age -->
         <div class="policy-row">
           <div class="policy-badge">21+</div>
           <div class="policy-text">
@@ -382,6 +364,7 @@
           <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="policy-link" title="Federal Tobacco 21 Law">Law ↗</a>
         </div>
 
+        <!-- Rule 2: 2 Guests Max -->
         <div class="policy-row">
           <div class="policy-badge">2P</div>
           <div class="policy-text">
@@ -389,9 +372,18 @@
             <span class="policy-sub">Maximum 2 guests per handcrafted hookah pipe</span>
           </div>
         </div>
+
+        <!-- Rule 3: No Outside Drinks -->
+        <div class="policy-row">
+          <div class="policy-badge">NB</div>
+          <div class="policy-text">
+            <span class="policy-heading">Outside Beverages</span>
+            <span class="policy-sub">No outside beverages or containers permitted</span>
+          </div>
+        </div>
       </div>
 
-      <a href="index.html" class="enter-btn">
+      <a href="index.html" class="enter-silver-btn">
         <span>Enter Lounge Menu</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
       </a>
