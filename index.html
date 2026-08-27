@@ -3833,29 +3833,36 @@
         return;
       }
 
-      activeFlavors.push({
-        id: item.id,
-        name: item.name,
-        brand: item.brand,
-        percent: 0
-      });
-      activeMixName = null;
+      const prevCount = activeFlavors.length;
+      if (prevCount === 0) {
+        activeFlavors.push({
+          id: item.id,
+          name: item.name,
+          brand: item.brand,
+          percent: 100
+        });
+      } else {
+        // Proportionally scale existing flavor ratios so signature blends maintain their balance
+        const newShare = prevCount === 1 ? 50 : (prevCount === 2 ? 25 : 20);
+        const scaleFactor = (100 - newShare) / 100;
+        
+        let allocated = 0;
+        activeFlavors.forEach(f => {
+          f.percent = Math.round(f.percent * scaleFactor);
+          allocated += f.percent;
+        });
+        
+        const finalNewPct = 100 - allocated;
+        activeFlavors.push({
+          id: item.id,
+          name: item.name,
+          brand: item.brand,
+          percent: finalNewPct
+        });
 
-      const count = activeFlavors.length;
-      if (count === 1) {
-        activeFlavors[0].percent = 100;
-      } else if (count === 2) {
-        activeFlavors[0].percent = 50;
-        activeFlavors[1].percent = 50;
-      } else if (count === 3) {
-        activeFlavors[0].percent = 40;
-        activeFlavors[1].percent = 30;
-        activeFlavors[2].percent = 30;
-      } else if (count === 4) {
-        activeFlavors[0].percent = 25;
-        activeFlavors[1].percent = 25;
-        activeFlavors[2].percent = 25;
-        activeFlavors[3].percent = 25;
+        if (activeMixName && !activeMixName.includes('(Custom)')) {
+          activeMixName = `${activeMixName} (Custom)`;
+        }
       }
 
       if (activeCustomerTab === 'menu') {
@@ -3865,7 +3872,7 @@
       }
       updateActiveBowlNotificationUI();
       closeMenuItemDetailModal();
-      showToast('✦ Added to Bowl', `${item.name} (${activeFlavors[activeFlavors.length-1].percent}%) added to your formulation.`);
+      showToast('✦ Added to Formulation', `${item.name} (${activeFlavors[activeFlavors.length-1].percent}%) added to your formulation.`);
     }
 
     function addFlavorToActiveBowl(flavorId) {
