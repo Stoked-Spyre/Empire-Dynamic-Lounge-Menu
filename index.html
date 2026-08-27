@@ -2270,30 +2270,30 @@
 
     </div>
 
-    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (NOIR EDITORIAL SPREAD) ==================== -->
-    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-4 pb-28">
+    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (OPEN NOIR SPREAD) ==================== -->
+    <div id="customer-view-tab" class="customer-panel menu-spread hidden flex flex-col gap-3 pb-28 pt-2">
       
-      <div class="w-full max-w-xl mx-auto bg-[#0B0B0E] border border-amber-500/30 p-5 shadow-2xl relative select-none">
+      <div class="w-full max-w-2xl mx-auto space-y-3 relative select-none">
         
-        <!-- Header -->
-        <div class="text-center space-y-1.5 pb-3 border-b border-white/[0.08]">
+        <!-- Header (Identical to Menu Masthead) -->
+        <div class="text-center space-y-1 pt-2 pb-2">
           <div class="flex items-center justify-center gap-2.5 opacity-80 mb-1">
             <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
             <span class="text-amber-400 text-[9px] tracking-widest">◆</span>
             <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
           </div>
 
-          <div class="w-11 h-11 mx-auto mb-1">
+          <div class="w-10 h-10 mx-auto mb-0.5">
             <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-full h-full object-contain mix-blend-screen drop-shadow-[0_2px_12px_rgba(229,169,60,0.4)]" />
           </div>
 
-          <h2 class="font-serif text-xl font-bold tracking-[0.16em] uppercase text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+          <h1 class="font-serif text-xl font-bold tracking-[0.16em] uppercase text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
             Empire Hookah Lounge
-          </h2>
+          </h1>
           <p class="font-mono text-[9px] tracking-[0.24em] text-zinc-400 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
 
           <!-- Table & Tab Meta Strip -->
-          <div class="flex items-center justify-between pt-2.5 mt-2 border-t border-white/[0.06] text-xs font-mono text-zinc-300">
+          <div class="flex items-center justify-between pt-2 border-t border-white/[0.08] text-xs font-mono text-zinc-300">
             <span class="text-amber-400 font-bold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</span>
             <button onclick="openSeatAssignModal()" class="text-zinc-400 hover:text-white underline decoration-dotted transition">
               Change Seat ⇄
@@ -2302,8 +2302,8 @@
         </div>
 
         <!-- Section 1: Itemized Hookahs, Refills & Beverages -->
-        <div class="py-3 space-y-2">
-          <div class="flex items-center justify-between text-[10px] font-serif uppercase tracking-[0.2em] text-amber-400 font-bold pb-1.5 border-b border-white/[0.08]">
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-[11px] font-serif uppercase tracking-[0.2em] text-amber-400 font-bold pb-1.5 border-b border-white/[0.08]">
             <span>Formulations &amp; Table Orders</span>
             <span>Price</span>
           </div>
@@ -2313,7 +2313,7 @@
         </div>
 
         <!-- Section 2: Heat Rotation Master -->
-        <div class="my-2 py-2 px-3 bg-black/40 border border-white/[0.08] flex items-center justify-between text-xs font-mono text-zinc-300">
+        <div class="py-2 px-3 bg-black/40 border border-white/[0.08] flex items-center justify-between text-xs font-mono text-zinc-300">
           <div class="flex items-center gap-2">
             <span class="text-amber-400 text-sm">🔥</span>
             <span>Coal Master Kaloud Lotus Rotations</span>
@@ -2321,8 +2321,8 @@
           <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px]">Included ✓</span>
         </div>
 
-        <!-- Perforated Divider -->
-        <div class="border-b border-dashed border-white/20 my-3"></div>
+        <!-- Thin Divider -->
+        <div class="border-b border-dotted border-white/20 my-2"></div>
 
         <!-- Section 3: Receipt Financial Totals -->
         <div class="space-y-1.5 text-xs font-sans">
@@ -2346,7 +2346,7 @@
         </div>
 
         <!-- Section 4: Interactive Tip Strip (with No Tip / Skip) -->
-        <div class="pt-3 mt-3 border-t border-white/[0.08] space-y-2">
+        <div class="pt-2 border-t border-white/[0.08] space-y-2">
           <div class="flex justify-between items-center text-[10px] font-mono text-zinc-400">
             <span>Add Gratuity for Lounge Staff &amp; Heat Masters</span>
             <span class="text-amber-400 font-bold" id="tabTipCalculatedDisplay">18% ($0.00)</span>
@@ -2371,7 +2371,7 @@
         </div>
 
         <!-- Section 5: Grand Total -->
-        <div class="pt-3 mt-3 border-t-2 border-amber-400 flex items-baseline justify-between">
+        <div class="pt-2 border-t border-amber-400/60 flex items-baseline justify-between">
           <div>
             <span class="font-serif text-sm font-bold tracking-widest uppercase text-white block">Grand Total</span>
             <span class="text-[9px] font-mono text-zinc-500" id="tabViewGrandTotalSubnote">Includes tax &amp; gratuity</span>
@@ -2380,7 +2380,7 @@
         </div>
 
         <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
-        <div class="space-y-2 pt-3">
+        <div class="space-y-2 pt-2">
           <!-- Option B: End Session & Pay Tab Button -->
           <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-3.5 px-4 shadow-[0_4px_20px_rgba(229,169,60,0.4)] transition active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2 rounded-none">
             <span>End Session &amp; Settle Tab</span>
@@ -5850,10 +5850,21 @@
       const buzzVal = parseFloat(totalStrength.toFixed(1));
       const buzzInfo = getBuzzInfo(buzzVal);
 
+      const isFixedHouseMix = !!activeMixName && !activeMixName.includes('(Custom)') && EMPIRE_HOUSE_MIXES.some(m => m.name === activeMixName);
       const titleText = activeMixName ? `👑 ${activeMixName}` : `${activeFlavors.length} Flavors in Bowl`;
+      const subtitleText = isFixedHouseMix 
+        ? `<span class="text-amber-400/90 font-mono font-medium">Empire Signature Recipe</span>` 
+        : `<span class="text-zinc-400">Tap to tune</span>`;
+
+      const tuneBtn = isFixedHouseMix ? '' : `
+        <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition rounded-none">
+          TUNE
+        </button>
+      `;
+      const barClickAction = isFixedHouseMix ? 'submitActiveBowlOrder()' : 'openBowlStudioModal()';
 
       bar.innerHTML = `
-        <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none cursor-pointer hover:border-amber-400 transition select-none" onclick="openBowlStudioModal()">
+        <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none cursor-pointer hover:border-amber-400 transition select-none" onclick="${barClickAction}">
           <!-- Top Center Diamond Flueron -->
           <div class="flex items-center justify-center gap-2 mb-1.5 opacity-80">
             <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
@@ -5876,14 +5887,12 @@
                   <span class="text-white font-bold">${buzzInfo.level}</span>
                   <span class="${buzzInfo.textColor} uppercase font-semibold">${buzzInfo.category}</span>
                   <span class="text-zinc-600">|</span>
-                  <span class="text-zinc-400">Tap to tune</span>
+                  ${subtitleText}
                 </div>
               </div>
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition rounded-none">
-                TUNE
-              </button>
+              ${tuneBtn}
               <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
                 ${isRefill ? 'REFILL $28' : 'ORDER $35'}
               </button>
