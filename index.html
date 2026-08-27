@@ -2339,10 +2339,10 @@
 
   <!-- ==================== FLOATING BOTTOM LUXURY NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
   <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-6 py-2 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
-    <button onclick="setPrimaryMenuTab('shisha'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-shisha">
-      <span class="text-amber-400 text-[10px]" id="dockShishaDiamond">◆</span>
+    <button onclick="setPrimaryMenuTab('hookah'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-hookah">
+      <span class="text-amber-400 text-[10px]" id="dockHookahDiamond">◆</span>
       <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
-        CRAFT SHISHA
+        HOOKAH
         <span id="dockBowlCountBadge" class="hidden bg-amber-400 text-black text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-full">0</span>
       </span>
     </button>
@@ -3500,11 +3500,11 @@
       document.querySelectorAll('.customer-panel').forEach(p => p.classList.add('hidden'));
 
       // Update bottom dock luxury tabs
-      const tabs = ['shisha', 'drinks', 'tab'];
+      const tabs = ['hookah', 'drinks', 'tab'];
       tabs.forEach(t => {
         const btn = document.getElementById(`dock-tab-${t}`);
         const diamond = document.getElementById(`dock${t.charAt(0).toUpperCase() + t.slice(1)}Diamond`);
-        const isActive = (t === 'shisha' && activePrimaryTab === 'shisha' && tabId === 'menu') ||
+        const isActive = (t === 'hookah' && (activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') && tabId === 'menu') ||
                          (t === 'drinks' && activePrimaryTab === 'drinks' && tabId === 'menu') ||
                          (t === 'tab' && tabId === 'tab');
         if (btn) {
@@ -3821,7 +3821,7 @@
     }
 
     // ==================== EDITORIAL 2-COLUMN LOUNGE BROWSER ENGINE ====================
-    let activePrimaryTab = 'shisha'; // 'shisha' | 'drinks'
+    let activePrimaryTab = 'hookah'; // 'hookah' | 'drinks'
     let selectorMode = 'brands'; // 'brands' | 'profiles'
     let activeBrandStation = 'signatures'; 
     let activeProfileStation = 'mints';
@@ -3975,9 +3975,12 @@
     let selectedFlavorId = null;
 
     function setPrimaryMenuTab(tabId) {
-      activePrimaryTab = tabId;
+      activePrimaryTab = (tabId === 'shisha') ? 'hookah' : tabId;
       selectedFlavorId = null;
       renderCustomerMenu();
+      if (activeCustomerTab !== 'menu') {
+        switchCustomerTab('menu');
+      }
     }
 
     function setSelectorMode(mode) {
@@ -4046,7 +4049,8 @@
 
     function createEditorialItemHtml(item, type, pricing, inventory) {
       const isDrink = type === 'drink';
-      const priceVal = isDrink ? item.price : 0;
+      const isTangiers = item.brand === 'Tangiers';
+      const priceVal = isDrink ? item.price : (isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00));
       const priceStr = (priceVal || 0).toFixed(0);
       const isSelected = selectedFlavorId === item.id;
 
@@ -4145,7 +4149,7 @@
             </div>
             <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
             <div class="flex items-center">
-              <span class="text-amber-400 font-mono text-xs font-semibold mr-1">⚡ ${item.strength || 7}</span>
+              <span class="text-amber-400 font-mono text-xs font-semibold mr-1.5">⚡ ${item.strength || 7}</span>
               ${addBtn}
             </div>
           </div>
@@ -4178,8 +4182,8 @@
       const navTrack = document.getElementById('menuNavTrack');
       if (navTrack) {
         navTrack.innerHTML = `
-          <button class="menu-nav-tab ${activePrimaryTab === 'shisha' ? 'active' : ''}" onclick="setPrimaryMenuTab('shisha')">
-            Craft Shisha
+          <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
+            Hookah
           </button>
           <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
             Beverages
@@ -4192,8 +4196,8 @@
       if (!spreadCont) return;
       spreadCont.innerHTML = '';
 
-      // ──────────── TAB 1: 2-COLUMN SHISHA BROWSER ────────────
-      if (activePrimaryTab === 'shisha') {
+      // ──────────── TAB 1: 2-COLUMN HOOKAH BROWSER ────────────
+      if (activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') {
         
         // Render Mode Toggle (Brand on left, Profile on right)
         const modeToggleHtml = `
