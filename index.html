@@ -918,14 +918,16 @@
       position: fixed;
       inset: 0;
       z-index: 99999;
-      overflow: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background: #000000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: max(48px, calc(env(safe-area-inset-top, 24px) + 24px)) 1.25rem max(24px, env(safe-area-inset-bottom, 20px)) 1.25rem;
+      padding: max(24px, env(safe-area-inset-top, 24px)) 1.25rem max(20px, env(safe-area-inset-bottom, 20px)) 1.25rem;
       transition: opacity 0.5s ease;
+      box-sizing: border-box;
     }
     .cinematic-stage.entering {
       opacity: 0;
@@ -2541,7 +2543,7 @@
   <!-- ========================================================================== -->
   <!-- ⛔ [OFF-LIMITS] CINEMATIC OBSIDIAN ENTRY SCREEN HTML — DO NOT TOUCH / EDIT ⛔ -->
   <!-- ========================================================================== -->
-  <div id="cinematicEntryStage" class="cinematic-stage hidden-stage" style="display: none;" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
+  <div id="cinematicEntryStage" class="cinematic-stage" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
 
     <!-- Pure Noir Menu Skyline Background (Exact Menu Match) -->
     <div class="menu-skyline-bg" aria-hidden="true">
@@ -2550,13 +2552,13 @@
     </div>
 
     <!-- Center Brand Spread with 60FPS Floating Logo -->
-    <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-2 pt-4 landing-center-desktop-offset relative z-10">
+    <div class="w-full max-w-xl flex flex-col items-center text-center my-auto px-2 pt-2 landing-center-desktop-offset relative z-10">
       <div class="landing-logo-wrap">
         <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="landing-logo-img" />
       </div>
       <h1 class="menu-masthead">Empire Hookah Lounge</h1>
       <p class="menu-kicker">EST. 2010 · PHOENIX, ARIZONA</p>
-    </main>
+    </div>
 
     <!-- Fully Transparent Noir House Regulations & Gold Lined CTA -->
     <footer class="w-full max-w-sm px-2 mb-2 relative z-10 space-y-3">
@@ -6607,16 +6609,14 @@
       switchCustomerTab('menu');
       renderIcons();
 
-      // Ensure cinematic stage is hidden on boot so menu is directly viewable
-      const stage = document.getElementById('cinematicEntryStage');
-      if (stage) {
-        stage.classList.add('hidden-stage');
-        stage.style.display = 'none';
-      }
-
       // Auto restore persistent session if member was logged in
       const savedSession = CustomerStash.getSavedSession();
       if (savedSession && savedSession.memberId) {
+        const stage = document.getElementById('cinematicEntryStage');
+        if (stage) {
+          stage.classList.add('hidden-stage');
+          stage.style.display = 'none';
+        }
         const members = CustomerStash.getVipMembers();
         const match = members.find(m => m.id === savedSession.memberId) || {
           id: savedSession.memberId,
@@ -6645,13 +6645,14 @@
         renderCustomerMenu();
         renderIcons();
       } else {
-        // Guest mode: ensure public menu is directly active and rendered
+        // Guest mode: landing page is always presented and guest clicks "Enter Lounge Menu"
         isVipLoggedIn = false;
         document.getElementById('headerGuestView')?.classList.remove('hidden');
         document.getElementById('headerGuestRightView')?.classList.remove('hidden');
         document.getElementById('headerVipView')?.classList.add('hidden');
         document.getElementById('headerVipRightView')?.classList.add('hidden');
         document.getElementById('vipBottomDock')?.classList.add('hidden');
+        openWelcomeLoungeModal();
         renderCustomerMenu();
         renderIcons();
       }
