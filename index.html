@@ -1965,7 +1965,6 @@
         <span class="text-amber-400 text-xs select-none">◆</span>
         <div class="truncate">
           <span class="font-serif font-bold text-white text-xs block tracking-wide truncate" id="vipMemberNameDisplay">Alex M.</span>
-          <span class="text-[9px] font-sans text-amber-400/90 uppercase tracking-widest block -mt-0.5" id="vipTierDisplay">GOLD VIP</span>
         </div>
       </div>
     </div>
@@ -1991,9 +1990,6 @@
         <button onclick="switchCustomerTab('rewards')" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400/40 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="View VIP Stash">
           <span class="text-amber-400 text-[10px]">👑</span>
           <span id="headerVipPointsBadge" class="font-mono text-[11px]">750</span>
-        </button>
-        <button onclick="requestCoalService()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-red-500/40 text-red-400 px-2 py-1 text-xs transition active:scale-95" title="Request Coal Service">
-          <i data-lucide="flame" class="w-3 h-3 text-red-400"></i>
         </button>
         <button onclick="vipLogout()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-white/30 text-zinc-400 hover:text-white px-2 py-1 text-xs font-serif tracking-widest uppercase transition active:scale-95" title="Log Out">
           <span class="text-[10px]">EXIT</span>
@@ -4596,6 +4592,11 @@
     }
 
     function renderCustomerMenu() {
+      const prevScrollY = (typeof window !== 'undefined' && typeof window.scrollY === 'number') 
+        ? window.scrollY 
+        : ((typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.scrollTop === 'number') 
+          ? document.documentElement.scrollTop 
+          : 0);
       const pricing = CustomerStash.getLoungePricing();
       const inventory = CustomerStash.getInventory();
       const taxConfig = CustomerStash.getTaxConfig();
@@ -4815,7 +4816,7 @@
                 <div class="flex items-center gap-2">
                   <span class="text-amber-400 text-[10px]">◆</span>
                   <span class="font-serif text-sm font-bold text-white tracking-wider uppercase drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                    ${activeMixName ? `👑 ${activeMixName}` : (activeFlavors.length > 0 ? 'Active Formulation' : 'Active Bowl Bench')}
+                    ${activeMixName ? `👑 ${activeMixName}` : 'Your Bowl'}
                   </span>
                 </div>
                 <div class="flex items-center gap-3">
@@ -4835,8 +4836,8 @@
 
               ${activeFlavors.length === 0 ? `
                 <div class="py-3 px-2 text-center">
-                  <span class="text-xs text-zinc-300 font-serif italic block">Your bowl formulation is currently blank.</span>
-                  <span class="text-[10px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to formulate</span>
+                  <span class="text-xs text-zinc-300 font-serif italic block">Your bowl is currently blank.</span>
+                  <span class="text-[10px] text-amber-400 font-mono font-medium mt-0.5 block">Tap [+ ADD] on any flavor or blend in the menu below to pack your bowl</span>
                 </div>
               ` : `
                 <!-- Spectrum Slider -->
@@ -4941,6 +4942,16 @@
             ${drinksHtml}
           </div>
         `;
+      }
+
+      if (prevScrollY > 0 && typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+        if (typeof requestAnimationFrame === 'function') {
+          requestAnimationFrame(() => {
+            window.scrollTo({ top: prevScrollY, behavior: 'instant' });
+          });
+        } else {
+          window.scrollTo(0, prevScrollY);
+        }
       }
 
       renderIcons();
