@@ -4628,151 +4628,8 @@
       submitUnifiedTableOrder();
     }
 
-    const SHISHA_BRANDS = [
-      { 
-        id: 'signatures', 
-        name: 'Signatures', 
-        sub: 'House Mixes', 
-        origin: 'Empire Mixology', 
-        strength: '7.6', 
-        cut: 'Master Craft Blends', 
-        priceTier: 'orig',
-        notes: 'Master house craft ratios formulated by our lounge sommeliers.' 
-      },
-      { 
-        id: 'MustHave', 
-        name: 'MustHave', 
-        sub: 'Moscow', 
-        origin: 'Moscow, Russia', 
-        strength: '7.0', 
-        cut: 'Burley Dark Leaf', 
-        priceTier: 'orig',
-        notes: 'Smooth toasted molasses base, high heat tolerance, rich berry & cream extracts.' 
-      },
-      { 
-        id: 'Tangiers', 
-        name: 'Tangiers', 
-        sub: 'Noir Reserve', 
-        origin: 'San Diego, USA', 
-        strength: '9.0', 
-        cut: 'Unwashed Noir Leaf', 
-        priceTier: 'noir',
-        notes: 'Heavy nicotine buzz, dense clay pack required, iconic unwashed tobacco notes.' 
-      },
-      { 
-        id: 'Darkside', 
-        name: 'Darkside', 
-        sub: 'Burley Dark', 
-        origin: 'Russia', 
-        strength: '8.5', 
-        cut: 'Dark Burley & Virginia', 
-        priceTier: 'orig',
-        notes: 'Sub-zero Siberian freezes, robust tropical extracts, intense cloud density.' 
-      },
-      { 
-        id: 'BlackBurn', 
-        name: 'BlackBurn', 
-        sub: 'Black Leaf', 
-        origin: 'Russia', 
-        strength: '8.0', 
-        cut: 'Toasted Black Leaf', 
-        priceTier: 'orig',
-        notes: 'Artisan tea infusions, exotic botanicals, clean crisp heat endurance.' 
-      },
-      { 
-        id: 'Al Fakher', 
-        name: 'Al Fakher', 
-        sub: 'Ajman UAE', 
-        origin: 'Ajman, UAE', 
-        strength: '3.0', 
-        cut: 'Heritage Golden Blonde', 
-        priceTier: 'orig',
-        notes: 'Classic Middle Eastern golden Virginia leaf, sweet apple & licorice anise.' 
-      },
-      { 
-        id: 'Starbuzz', 
-        name: 'Starbuzz', 
-        sub: 'California', 
-        origin: 'California, USA', 
-        strength: '2.5', 
-        cut: 'Golden Blonde Leaf', 
-        priceTier: 'orig',
-        notes: 'Sweet candied fruits, smooth billowing clouds, ultra-mild relaxed session.' 
-      },
-      { 
-        id: 'Adalya', 
-        name: 'Adalya', 
-        sub: 'Turkey', 
-        origin: 'Izmir, Turkey', 
-        strength: '3.0', 
-        cut: 'Turkish Blonde Leaf', 
-        priceTier: 'orig',
-        notes: 'Fruity menthol cooling, light session profile, smooth throat feel.' 
-      }
-    ];
-
-    const SHISHA_PROFILES = [
-      { 
-        id: 'mints', 
-        name: 'Mints & Ice', 
-        sub: 'Sub-Zero Freeze', 
-        match: ['mint', 'ice', 'cooling', 'extreme ice'], 
-        origin: 'Spearmint & Siberian Chill', 
-        cut: 'Arctic Cooling Profiles', 
-        notes: 'Pure peppermint, crisp wintergreen & Siberian sub-zero botanical extracts.', 
-        strength: '6.0 - 9.0' 
-      },
-      { 
-        id: 'berries', 
-        name: 'Berries', 
-        sub: 'Ruby & Sweet', 
-        match: ['berries', 'berry', 'sweet', 'blueberry', 'strawberry', 'raspberry'], 
-        origin: 'Forest Berry Orchards', 
-        cut: 'Ruby Berry Medleys', 
-        notes: 'Sweet raspberry coulis, wild forest berries, and sweet ruby strawberry preserves.', 
-        strength: '2.0 - 7.0' 
-      },
-      { 
-        id: 'citrus', 
-        name: 'Citrus', 
-        sub: 'Zest & Orchard', 
-        match: ['citrus', 'orange', 'grapefruit', 'beverage'], 
-        origin: 'Mediterranean Citrus', 
-        cut: 'Sparkling & Zest Profiles', 
-        notes: 'Valencia orange soda, pink grapefruit zest, and refreshing effervescent citrus.', 
-        strength: '7.0 - 8.0' 
-      },
-      { 
-        id: 'tropical', 
-        name: 'Tropical', 
-        sub: 'Mango & Passion', 
-        match: ['tropical', 'mango', 'passion'], 
-        origin: 'Exotic Tropical Groves', 
-        cut: 'Exotic Stone Fruit Profiles', 
-        notes: 'Alphonso mango passionfruit, sweet honeydew melon, and lush tropical botanicals.', 
-        strength: '3.0 - 8.0' 
-      },
-      { 
-        id: 'spiced', 
-        name: 'Warm Spices', 
-        sub: 'Kashmir & Anise', 
-        match: ['warm spices', 'spice', 'kashmir', 'anise', 'floral', 'orchard fruit'], 
-        origin: 'Indian & Levantine Spices', 
-        cut: 'Warm Botanical Aromatics', 
-        notes: 'Aromatic Kashmiri spices, Double Apple licorice anise, and spiced orchard peach.', 
-        strength: '3.0 - 9.0' 
-      },
-      { 
-        id: 'creams', 
-        name: 'Creams & Teas', 
-        sub: 'Rice & Green Tea', 
-        match: ['dessert', 'creamy', 'cream', 'tea', 'herbal'], 
-        origin: 'Pastry & Tea Cellar', 
-        cut: 'Confection & Infusions', 
-        notes: 'Creamy vanilla rice pudding, toasted pastry, and cold-steeped jasmine green tea.', 
-        strength: '7.0 - 8.0' 
-      }
-    ];
+    const SHISHA_BRANDS = [];
+    const SHISHA_PROFILES = [];
 
     let selectedFlavorId = null;
 
@@ -5063,21 +4920,29 @@
 
         // ────── MODE A: BROWSE BY BRAND ──────
         if (selectorMode === 'brands') {
-          const activeStation = SHISHA_BRANDS.find(s => s.id === activeBrandStation) || SHISHA_BRANDS[0];
+          const activeStation = SHISHA_BRANDS.find(s => s.id === activeBrandStation) || SHISHA_BRANDS[0] || { id: 'all', name: 'All Brands', origin: 'Craft Houses' };
           const isSignatures = activeStation.id === 'signatures';
           
           headerTitle = activeStation.name;
           headerSub = activeStation.origin;
 
-          SHISHA_BRANDS.forEach(st => {
-            const isActive = st.id === activeBrandStation;
+          if (SHISHA_BRANDS.length === 0) {
             stationsRailHtml += `
-              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setBrandStation('${st.id}')">
-                <span class="menu-station-label text-zinc-100">${st.name}</span>
-                ${(!isVipLoggedIn && st.sub) ? `<span class="menu-station-sub">${st.sub}</span>` : ''}
-              </button>
+              <div class="py-6 px-1 text-center text-[10px] text-zinc-500 italic">
+                No active brands in catalog.
+              </div>
             `;
-          });
+          } else {
+            SHISHA_BRANDS.forEach(st => {
+              const isActive = st.id === activeBrandStation;
+              stationsRailHtml += `
+                <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setBrandStation('${st.id}')">
+                  <span class="menu-station-label text-zinc-100">${st.name}</span>
+                  ${(!isVipLoggedIn && st.sub) ? `<span class="menu-station-sub">${st.sub}</span>` : ''}
+                </button>
+              `;
+            });
+          }
 
           if (isSignatures) {
             displayedItems = EMPIRE_HOUSE_MIXES;
@@ -5099,25 +4964,33 @@
         } 
         // ────── MODE B: BROWSE BY TASTING PROFILE ──────
         else {
-          const activeProfile = SHISHA_PROFILES.find(p => p.id === activeProfileStation) || SHISHA_PROFILES[0];
+          const activeProfile = SHISHA_PROFILES.find(p => p.id === activeProfileStation) || SHISHA_PROFILES[0] || { id: 'all', name: 'All Profiles', origin: 'Tasting Notes' };
           headerTitle = activeProfile.name;
           headerSub = activeProfile.origin || activeProfile.notes;
 
-          SHISHA_PROFILES.forEach(prof => {
-            const isActive = prof.id === activeProfileStation;
+          if (SHISHA_PROFILES.length === 0) {
             stationsRailHtml += `
-              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${prof.id}')">
-                <span class="menu-station-label text-zinc-100">${prof.name}</span>
-                ${(!isVipLoggedIn && prof.sub) ? `<span class="menu-station-sub">${prof.sub}</span>` : ''}
-              </button>
+              <div class="py-6 px-1 text-center text-[10px] text-zinc-500 italic">
+                No active profiles in catalog.
+              </div>
             `;
-          });
+          } else {
+            SHISHA_PROFILES.forEach(prof => {
+              const isActive = prof.id === activeProfileStation;
+              stationsRailHtml += `
+                <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${prof.id}')">
+                  <span class="menu-station-label text-zinc-100">${prof.name}</span>
+                  ${(!isVipLoggedIn && prof.sub) ? `<span class="menu-station-sub">${prof.sub}</span>` : ''}
+                </button>
+              `;
+            });
+          }
 
           displayedItems = inStockInventory.filter(item => {
             const profiles = (item.profiles || []).map(p => p.toLowerCase());
             return (activeProfile.match || [activeProfile.id]).some(kw => profiles.some(p => p === kw || p.includes(kw)));
           });
-          if (displayedItems.length === 0) {
+          if (displayedItems.length === 0 && inStockInventory.length > 0) {
             displayedItems = inStockInventory.slice(0, 8);
           }
           if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
