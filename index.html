@@ -2541,7 +2541,7 @@
   <!-- ========================================================================== -->
   <!-- ⛔ [OFF-LIMITS] CINEMATIC OBSIDIAN ENTRY SCREEN HTML — DO NOT TOUCH / EDIT ⛔ -->
   <!-- ========================================================================== -->
-  <div id="cinematicEntryStage" class="cinematic-stage" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
+  <div id="cinematicEntryStage" class="cinematic-stage hidden-stage" style="display: none;" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
 
     <!-- Pure Noir Menu Skyline Background (Exact Menu Match) -->
     <div class="menu-skyline-bg" aria-hidden="true">
@@ -6607,14 +6607,16 @@
       switchCustomerTab('menu');
       renderIcons();
 
+      // Ensure cinematic stage is hidden on boot so menu is directly viewable
+      const stage = document.getElementById('cinematicEntryStage');
+      if (stage) {
+        stage.classList.add('hidden-stage');
+        stage.style.display = 'none';
+      }
+
       // Auto restore persistent session if member was logged in
       const savedSession = CustomerStash.getSavedSession();
       if (savedSession && savedSession.memberId) {
-        const stage = document.getElementById('cinematicEntryStage');
-        if (stage) {
-          stage.classList.add('hidden-stage');
-          stage.style.display = 'none';
-        }
         const members = CustomerStash.getVipMembers();
         const match = members.find(m => m.id === savedSession.memberId) || {
           id: savedSession.memberId,
@@ -6643,8 +6645,15 @@
         renderCustomerMenu();
         renderIcons();
       } else {
-        // Show Noir landing screen on page load if not logged in
-        openWelcomeLoungeModal();
+        // Guest mode: ensure public menu is directly active and rendered
+        isVipLoggedIn = false;
+        document.getElementById('headerGuestView')?.classList.remove('hidden');
+        document.getElementById('headerGuestRightView')?.classList.remove('hidden');
+        document.getElementById('headerVipView')?.classList.add('hidden');
+        document.getElementById('headerVipRightView')?.classList.add('hidden');
+        document.getElementById('vipBottomDock')?.classList.add('hidden');
+        renderCustomerMenu();
+        renderIcons();
       }
     });
   </script>
