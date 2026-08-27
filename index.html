@@ -2513,37 +2513,27 @@
             <p class="text-xs text-zinc-400 italic font-sans mt-0.5">Lounge Identification &amp; Self-Ordering</p>
           </div>
 
-          <!-- Wi-Fi Verification Check Card -->
-          <div class="p-2.5 border border-white/[0.08] transition-all bg-black/40 text-xs" id="wifiCheckStatusCard">
-            <!-- Injected dynamically based on wifi status -->
+          <!-- Wi-Fi Connection Note -->
+          <div class="py-1 text-center border-b border-white/[0.08]">
+            <p class="text-[11px] font-sans text-zinc-400 italic">Make sure you are connected to Empire Wi-Fi to sign in.</p>
           </div>
 
-          <!-- VIP Member Phone Lookup Form -->
+          <!-- VIP Member Email & Password Login Form -->
           <div class="space-y-3" id="vipLoginFormSection">
             <div>
-              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-1">VIP Phone / Member ID</label>
-              <input type="tel" id="vipPhoneInput" placeholder="480-555-0409" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none transition" />
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-1">Email / Member Account</label>
+              <input type="text" id="vipEmailInput" placeholder="test" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-2 text-sm text-white font-sans placeholder:text-zinc-600 outline-none transition" />
             </div>
 
-            <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-black font-serif font-bold tracking-wider py-2.5 text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition uppercase">
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-1">Password</label>
+              <input type="password" id="vipPasswordInput" placeholder="test" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none transition" />
+            </div>
+
+            <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-black font-serif font-bold tracking-wider py-2.5 text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition uppercase mt-2">
               <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
-              <span>Authenticate &amp; Unlock</span>
+              <span>Sign In &amp; Unlock</span>
             </button>
-
-            <!-- Quick VIP Demo Accounts for instant 1-tap testing -->
-            <div class="pt-1 border-t border-white/[0.08]">
-              <span class="text-[9px] text-zinc-500 block uppercase tracking-[0.2em] text-center mb-1.5 font-medium">Quick VIP Profile Select:</span>
-              <div class="grid grid-cols-2 gap-2 text-left text-xs">
-                <button onclick="quickVipLogin('vip-409')" class="p-2 bg-black/60 border border-white/10 hover:border-amber-400/60 text-zinc-300 hover:text-white transition">
-                  <span class="font-serif font-bold block text-amber-400">Alex M.</span>
-                  <span class="text-[9px] text-zinc-500 font-mono">Gold VIP • 750 Pts</span>
-                </button>
-                <button onclick="quickVipLogin('vip-310')" class="p-2 bg-black/60 border border-white/10 hover:border-amber-400/60 text-zinc-300 hover:text-white transition">
-                  <span class="font-serif font-bold block text-amber-400">Marcus S.</span>
-                  <span class="text-[9px] text-zinc-500 font-mono">Platinum • 1200 Pts</span>
-                </button>
-              </div>
-            </div>
           </div>
 
           <!-- Quiet Dismissal Line -->
@@ -3213,24 +3203,37 @@
     }
 
     function attemptVipLogin() {
-      if (!isConnectedToLoungeWifi) {
-        showToast('⚠️ Wi-Fi Required', 'Connect to Empire-VIP-WiFi to unlock self-ordering.');
-        return;
-      }
-      const phone = document.getElementById('vipPhoneInput')?.value.trim();
-      const members = CustomerStash.getVipMembers();
-      const match = members.find(m => m.phone.replace(/\D/g, '') === (phone ? phone.replace(/\D/g, '') : '')) || members[0];
-      loginAsVipMember(match);
-    }
+      const email = document.getElementById('vipEmailInput')?.value.trim().toLowerCase();
+      const password = document.getElementById('vipPasswordInput')?.value.trim();
 
-    function quickVipLogin(memberId) {
-      if (!isConnectedToLoungeWifi) {
-        showToast('⚠️ Wi-Fi Required', 'Connect to Empire-VIP-WiFi to unlock self-ordering.');
+      if (!email || !password) {
+        showToast('⚠️ Required', 'Please enter your email and password.');
         return;
       }
+
+      // Authenticate with test account (email: test, password: test)
+      if ((email === 'test' || email === 'test@empire.com' || email === 'test@empirelounge.com') && password === 'test') {
+        const testMember = {
+          id: 'vip-test',
+          name: 'Test Account',
+          tier: 'VIP Member',
+          points: 1000,
+          email: 'test',
+          phone: '480-555-0100'
+        };
+        loginAsVipMember(testMember);
+        return;
+      }
+
+      // Check registered VIP members
       const members = CustomerStash.getVipMembers();
-      const match = members.find(m => m.id === memberId) || members[0];
-      loginAsVipMember(match);
+      const match = members.find(m => (m.email && m.email.toLowerCase() === email) || m.id.toLowerCase() === email || m.name.toLowerCase() === email);
+      if (match && password === 'test') {
+        loginAsVipMember(match);
+        return;
+      }
+
+      showToast('⚠️ Invalid Login', 'Incorrect email or password. Use test / test.');
     }
 
     function loginAsVipMember(member) {
