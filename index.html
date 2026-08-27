@@ -3392,8 +3392,8 @@
         return;
       }
 
-      if (activeFlavors.length >= 3) {
-        showToast('⚠️ Bowl Full', 'Max 3 flavors per bowl. Tune ratios in Mix Lab.');
+      if (activeFlavors.length >= 4) {
+        showToast('⚠️ Bowl Full', 'Max 4 flavors per bowl. Tune ratios with splitters.');
         return;
       }
 
@@ -3415,6 +3415,11 @@
         activeFlavors[0].percent = 40;
         activeFlavors[1].percent = 30;
         activeFlavors[2].percent = 30;
+      } else if (count === 4) {
+        activeFlavors[0].percent = 25;
+        activeFlavors[1].percent = 25;
+        activeFlavors[2].percent = 25;
+        activeFlavors[3].percent = 25;
       }
 
       if (activeCustomerTab === 'menu') {
@@ -4407,7 +4412,6 @@
           } else {
             activeFlavors.forEach((f, idx) => {
               const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-              const grams = ((22 * f.percent) / 100).toFixed(1);
               const col = getItemProfileColor(item);
 
               activeFlavorsHtml += `
@@ -4420,7 +4424,6 @@
                   </div>
                   <div class="flex items-center gap-2.5 flex-shrink-0">
                     <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
-                    <span class="text-[10px] text-zinc-400 font-mono">(${grams}g)</span>
                     ${!activeMixName ? `
                       <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-0.5 transition" title="Remove flavor">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
@@ -4477,7 +4480,7 @@
                     ` : `
                       <span class="text-zinc-400">Drag gold splitters to adjust ratios</span>
                     `}
-                    <span class="text-zinc-400 font-mono">${activeFlavors.length} of 3 Flavors · Standard 22g</span>
+                    <span class="text-zinc-400 font-mono">${activeFlavors.length} of 4 Flavors</span>
                   </div>
                 </div>
 
