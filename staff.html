@@ -27,7 +27,7 @@
     .stoked-card {
       background: #090D14;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
+      border-radius: 20px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .stoked-card:hover {
@@ -47,7 +47,7 @@
       background: #0D121B;
     }
 
-    /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
+    /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS (Widescreen Tablet Scaled) */
     .floorplan-canvas {
       position: relative;
       width: 100%;
@@ -57,12 +57,23 @@
         radial-gradient(circle at 50% 50%, rgba(229, 169, 60, 0.04) 0%, transparent 75%),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 28px 28px, 28px 28px;
+      background-size: 100% 100%, 32px 32px, 32px 32px;
       border: 1.5px solid rgba(255, 255, 255, 0.09);
       border-radius: 24px;
       overflow: hidden;
       user-select: none;
-      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85);
+      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9);
+    }
+
+    @media (min-width: 768px) {
+      .floorplan-canvas {
+        height: 600px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .floorplan-canvas {
+        height: 660px;
+      }
     }
 
     /* PHYSICAL SEAT / TABLE NODES */
@@ -73,7 +84,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      border-radius: 14px;
+      border-radius: 16px;
       background: #0B0F17;
       border: 1.5px solid rgba(255, 255, 255, 0.12);
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
@@ -81,13 +92,13 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
     }
     .diagram-seat-node:hover {
-      transform: scale(1.05);
+      transform: scale(1.06);
       z-index: 25;
       border-color: #E5A93C;
-      box-shadow: 0 0 20px rgba(229, 169, 60, 0.4);
+      box-shadow: 0 0 22px rgba(229, 169, 60, 0.45);
     }
     .diagram-seat-node:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
     .diagram-seat-node.occupied {
@@ -123,9 +134,9 @@
       justify-content: center;
       background: rgba(15, 23, 42, 0.5);
       border: 1px dashed rgba(148, 163, 184, 0.25);
-      border-radius: 12px;
+      border-radius: 14px;
       color: #64748B;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -173,7 +184,7 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-12 select-none">
+<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 select-none">
 
   <!-- Screen Edge Glow Alert Overlay -->
   <div id="staffScreenGlowOverlay" class="staff-screen-glow-overlay"></div>
@@ -187,8 +198,8 @@
     </div>
   </div>
 
-  <!-- ==================== 1. TOP SERVER APP BAR ==================== -->
-  <header class="w-full max-w-7xl bg-[#06090E]/95 border-b border-white/10 sticky top-0 z-40 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
+  <!-- ==================== 1. TOP SERVER APP BAR (Full Widescreen Stretch) ==================== -->
+  <header class="w-full bg-[#06090E]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
     
     <!-- Left: Station Brand & Live Status -->
     <div class="flex items-center gap-3">
@@ -200,18 +211,18 @@
           <h1 class="font-crest font-bold text-sm tracking-wider text-white">EMPIRE STAFF PORTAL</h1>
           <span class="px-2 py-0.5 bg-emerald-500/15 text-emerald-300 font-mono text-[9px] font-bold rounded-full border border-emerald-500/30">● LIVE POS</span>
         </div>
-        <span class="text-[10px] text-zinc-400 font-mono">OPENTABLE SEATING CHART &amp; LIVE TIMERS</span>
+        <span class="hidden sm:inline-block text-[10px] text-zinc-400 font-mono">OPENTABLE SEATING CHART &amp; LIVE TIMERS</span>
       </div>
     </div>
 
-    <!-- Center: Operational Stats Strip -->
+    <!-- Center: Operational Stats Strip (Tablet / Desktop) -->
     <div class="hidden md:flex items-center gap-2 font-mono text-xs">
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-white/5 text-zinc-300">
         <span class="text-zinc-400">Active:</span>
         <strong id="statActiveTablesCount" class="text-emerald-400">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-red-500/20 text-red-300">
-        <span>🔥 Coals Due:</span>
+        <span>🔥 Coals:</span>
         <strong id="statCoalsDueCount" class="text-red-400 font-bold">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-amber-500/20 text-amber-300">
@@ -226,25 +237,43 @@
 
     <!-- Right: Audio Alert Toggle & Simulator -->
     <div class="flex items-center gap-2">
-      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-3 py-1.5 bg-zinc-900/90 border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
+      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-zinc-900/90 border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
         <span id="serverAudioIcon">🔔</span>
-        <span id="serverAudioLabel">AUDIO: ON</span>
+        <span id="serverAudioLabel" class="hidden sm:inline">AUDIO: ON</span>
       </button>
 
-      <button onclick="simulateActionAlert()" class="px-3 py-1.5 bg-amber-500/20 border border-amber-400/50 rounded-xl text-amber-300 hover:bg-amber-400 hover:text-black font-mono text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Simulate an incoming alert with screen edge glow">
-        <span>⚡ TEST ALERT</span>
+      <button onclick="simulateActionAlert()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500/20 border border-amber-400/50 rounded-xl text-amber-300 hover:bg-amber-400 hover:text-black font-mono text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Simulate an incoming alert with screen edge glow">
+        <span>⚡ TEST</span>
       </button>
     </div>
 
   </header>
 
-  <!-- ==================== 2. MAIN HYBRID ACTION DECK ==================== -->
-  <main class="w-full max-w-7xl px-4 pt-3 flex-1 flex flex-col gap-4">
+  <!-- ==================== MOBILE SEGMENTED VIEW SWITCHER (Mobile Only < md) ==================== -->
+  <div class="md:hidden w-full px-3 pt-2.5">
+    <div class="grid grid-cols-3 gap-1 bg-[#080C12] p-1 rounded-2xl border border-white/10 text-xs font-mono">
+      <button onclick="setMobileActiveTab('map')" id="mobTabBtn-map" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1">
+        <i data-lucide="map" class="w-3.5 h-3.5"></i>
+        <span>Floor Map</span>
+      </button>
+      <button onclick="setMobileActiveTab('alerts')" id="mobTabBtn-alerts" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1">
+        <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+        <span>Alerts (<span id="mobAlertCount">0</span>)</span>
+      </button>
+      <button onclick="setMobileActiveTab('grid')" id="mobTabBtn-grid" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1">
+        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+        <span>Pods</span>
+      </button>
+    </div>
+  </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start flex-1">
+  <!-- ==================== 2. MAIN WIDESCREEN HYBRID DECK ==================== -->
+  <main class="w-full px-3 md:px-5 lg:px-6 pt-3 flex-1 flex flex-col gap-4">
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start flex-1">
       
-      <!-- ==================== LEFT COLUMN: SLIM UNIVERSAL ACTION DOCK (4 COLS) ==================== -->
-      <aside class="lg:col-span-4 flex flex-col gap-2.5">
+      <!-- ==================== LEFT COLUMN: SLIM UNIVERSAL ACTION DOCK (4 COLS on Tablet, 3 COLS on XL) ==================== -->
+      <aside id="staffActionDockColumn" class="md:col-span-5 lg:col-span-4 xl:col-span-3 flex flex-col gap-2.5">
         
         <!-- Header -->
         <div class="p-3 bg-[#080C12] border border-white/10 rounded-2xl flex justify-between items-center shadow-lg">
@@ -258,47 +287,47 @@
         </div>
 
         <!-- Slim Action Rows Stream -->
-        <div class="space-y-1.5 max-h-[75vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
+        <div class="space-y-1.5 max-h-[78vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
           <!-- Populated dynamically via renderActionRequiredStream() -->
         </div>
 
       </aside>
 
-      <!-- ==================== RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER (8 COLS) ==================== -->
-      <section class="lg:col-span-8 flex flex-col gap-3">
+      <!-- ==================== RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER ==================== -->
+      <section id="staffFloorplanColumn" class="md:col-span-7 lg:col-span-8 xl:col-span-9 flex flex-col gap-3">
         
         <!-- Top Controller Strip: View Toggle + Zone Pills -->
         <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#080C12] border border-white/10 rounded-2xl shadow-lg">
           
-          <!-- View Mode Toggle (OpenTable Visual Map vs List Matrix) -->
-          <div class="flex items-center gap-1 bg-black/80 p-1 border border-white/10 rounded-xl">
-            <button onclick="setDeckViewMode('map')" id="viewModeMapBtn" class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition">
+          <!-- View Mode Toggle (Tablet/Desktop) -->
+          <div class="hidden md:flex items-center gap-1 bg-black/80 p-1 border border-white/10 rounded-xl">
+            <button onclick="setDeckViewMode('map')" id="viewModeMapBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition">
               <i data-lucide="map" class="w-3.5 h-3.5"></i>
               <span>Floor Map</span>
             </button>
-            <button onclick="setDeckViewMode('grid')" id="viewModeGridBtn" class="px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition">
+            <button onclick="setDeckViewMode('grid')" id="viewModeGridBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition">
               <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
               <span>Pods Grid</span>
             </button>
           </div>
 
           <!-- Zone Filter Pills -->
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="zoneFilterPills">
-            <button onclick="setZoneFilter('all')" id="zonePill-all" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold">ALL ZONES</button>
-            <button onclick="setZoneFilter('vip')" id="zonePill-vip" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-400 border-white/10 hover:text-white">VIP BOOTHS</button>
-            <button onclick="setZoneFilter('indoor')" id="zonePill-indoor" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-400 border-white/10 hover:text-white">INDOOR FLOOR</button>
-            <button onclick="setZoneFilter('bar')" id="zonePill-bar" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-400 border-white/10 hover:text-white">MAIN BAR</button>
-            <button onclick="setZoneFilter('patio')" id="zonePill-patio" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-400 border-white/10 hover:text-white">PATIO</button>
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="zoneFilterPills">
+            <button onclick="setZoneFilter('all')" id="zonePill-all" class="px-3 py-1 text-xs font-mono rounded-xl border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold flex-shrink-0">ALL ZONES</button>
+            <button onclick="setZoneFilter('vip')" id="zonePill-vip" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">VIP BOOTHS</button>
+            <button onclick="setZoneFilter('indoor')" id="zonePill-indoor" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">INDOOR FLOOR</button>
+            <button onclick="setZoneFilter('bar')" id="zonePill-bar" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">MAIN BAR</button>
+            <button onclick="setZoneFilter('patio')" id="zonePill-patio" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">PATIO</button>
           </div>
 
         </div>
 
-        <!-- VIEW A: OPENTABLE INTERACTIVE ARCHITECTURAL CANVAS -->
-        <div id="floorplanCanvasContainer" class="stoked-card p-3 shadow-2xl">
+        <!-- VIEW A: OPENTABLE INTERACTIVE ARCHITECTURAL CANVAS (Widescreen Stretch) -->
+        <div id="floorplanCanvasContainer" class="stoked-card p-3 md:p-4 shadow-2xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
             <span class="text-zinc-300 flex items-center gap-1.5">
               <i data-lucide="crosshair" class="w-3.5 h-3.5 text-amber-400"></i>
-              Click any physical table or booth on the layout to view summary &amp; active tab
+              Click any physical table or booth to view summary &amp; active tab
             </span>
             <span class="text-[11px] text-amber-400/80">● Real-Time Physical Seating</span>
           </div>
@@ -310,7 +339,7 @@
 
         <!-- VIEW B: ALTERNATIVE PODS GRID -->
         <div id="tablesDeckGridContainer" class="hidden">
-          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" id="tablesDeckGrid">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5" id="tablesDeckGrid">
             <!-- Populated dynamically via renderTablesDeckGrid() -->
           </div>
         </div>
@@ -322,8 +351,8 @@
   </main>
 
   <!-- ==================== 3. TABLE SUMMARY DETAIL MODAL (POP-UP) ==================== -->
-  <div id="tableDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="w-full max-w-2xl bg-[#090D14] border border-amber-500/30 rounded-3xl shadow-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
+  <div id="tableDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 md:p-6">
+    <div class="w-full max-w-2xl bg-[#090D14] border border-amber-500/30 rounded-3xl shadow-2xl p-4 md:p-6 space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
       
       <!-- Modal Header -->
       <div class="flex justify-between items-start pb-3 border-b border-white/10">
@@ -386,7 +415,7 @@
       </div>
 
       <!-- Order Dispatch Actions -->
-      <div class="grid grid-cols-2 gap-2.5 pt-1">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
         <!-- 1. Open Mix Lab for Custom Shisha Bowl Order Taking -->
         <button onclick="openMixLabForTable()" class="py-3 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 uppercase shadow-lg transition active:scale-95">
           <i data-lucide="flask-conical" class="w-4 h-4"></i>
@@ -423,8 +452,8 @@
   </div>
 
   <!-- ==================== 4. INTEGRATED SOMMELIER MIX LAB MODAL ==================== -->
-  <div id="mixLabOrderModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
-    <div class="w-full max-w-4xl bg-[#080C12] border border-amber-400/40 rounded-3xl shadow-2xl p-5 space-y-4 max-h-[95vh] overflow-y-auto no-scrollbar">
+  <div id="mixLabOrderModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 md:p-6">
+    <div class="w-full max-w-4xl bg-[#080C12] border border-amber-400/40 rounded-3xl shadow-2xl p-4 md:p-6 space-y-4 max-h-[95vh] overflow-y-auto no-scrollbar">
       
       <!-- Mix Lab Header -->
       <div class="flex justify-between items-center pb-3 border-b border-white/10">
@@ -507,7 +536,7 @@
   </div>
 
   <!-- ==================== 5. QUICK DRINK SELECTOR MODAL ==================== -->
-  <div id="drinkOrderModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div id="drinkOrderModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 md:p-6">
     <div class="w-full max-w-lg bg-[#090D14] border border-white/20 rounded-3xl shadow-2xl p-5 space-y-3.5">
       <div class="flex justify-between items-center pb-2.5 border-b border-white/10">
         <div>
@@ -531,34 +560,35 @@
     let selectedActiveTableId = null;
     let activeZoneFilter = 'all';
     let activeDeckViewMode = 'map'; // 'map' or 'grid'
+    let activeMobileTab = 'map'; // 'map', 'alerts', or 'grid'
     let staffScreenGlowTimer = null;
 
-    // Physical Seating Coordinates for OpenTable Canvas
+    // Physical Seating Coordinates for OpenTable Canvas (Spacious Proportional Positions)
     const PHYSICAL_FLOORPLAN_PRESET = [
       // Landmarks
-      { id: 'infra-bar', name: 'MAIN BAR', zone: 'bar', x: 5, y: 5, w: 220, h: 36, shape: 'rect', isInfra: true, icon: 'wine' },
-      { id: 'infra-dj', name: 'DJ STAGE', zone: 'indoor', x: 74, y: 5, w: 100, h: 42, shape: 'rect', isInfra: true, icon: 'music' },
-      { id: 'infra-host', name: 'ENTRANCE', zone: 'indoor', x: 5, y: 82, w: 100, h: 36, shape: 'rect', isInfra: true, icon: 'log-in' },
-      { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 62, y: 76, w: 160, h: 36, shape: 'rect', isInfra: true, icon: 'sun' },
+      { id: 'infra-bar', name: 'MAIN BAR COUNTER', zone: 'bar', x: 4, y: 4, w: 260, h: 42, shape: 'rect', isInfra: true, icon: 'wine' },
+      { id: 'infra-dj', name: 'DJ STAGE', zone: 'indoor', x: 74, y: 4, w: 120, h: 46, shape: 'rect', isInfra: true, icon: 'music' },
+      { id: 'infra-host', name: 'ENTRANCE / HOST', zone: 'indoor', x: 4, y: 84, w: 130, h: 40, shape: 'rect', isInfra: true, icon: 'log-in' },
+      { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 60, y: 78, w: 200, h: 42, shape: 'rect', isInfra: true, icon: 'sun' },
 
       // VIP Velvet Booths
-      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 22, w: 96, h: 62, shape: 'rect' },
-      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 48, w: 96, h: 62, shape: 'rect' },
+      { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 22, w: 110, h: 72, shape: 'rect' },
+      { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 48, w: 110, h: 72, shape: 'rect' },
 
       // Bar Stools
-      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', capacity: 1, x: 7, y: 18, w: 42, h: 42, shape: 'circle' },
-      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', capacity: 1, x: 19, y: 18, w: 42, h: 42, shape: 'circle' },
-      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', capacity: 1, x: 31, y: 18, w: 42, h: 42, shape: 'circle' },
+      { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', capacity: 1, x: 6, y: 18, w: 46, h: 46, shape: 'circle' },
+      { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', capacity: 1, x: 19, y: 18, w: 46, h: 46, shape: 'circle' },
+      { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', capacity: 1, x: 32, y: 18, w: 46, h: 46, shape: 'circle' },
 
       // Indoor Dining & Lounge Tables
-      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top Cozy)', zone: 'indoor', capacity: 2, x: 8, y: 40, w: 52, h: 52, shape: 'circle' },
-      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 40, w: 60, h: 60, shape: 'rect' },
-      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top Table)', zone: 'indoor', capacity: 4, x: 46, y: 40, w: 60, h: 60, shape: 'rect' },
-      { id: 'tbl-4', name: 'T4', label: 'Table 4 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 64, w: 60, h: 60, shape: 'rect' },
+      { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top Cozy)', zone: 'indoor', capacity: 2, x: 8, y: 40, w: 58, h: 58, shape: 'circle' },
+      { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 40, w: 68, h: 68, shape: 'rect' },
+      { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top Table)', zone: 'indoor', capacity: 4, x: 46, y: 40, w: 68, h: 68, shape: 'rect' },
+      { id: 'tbl-4', name: 'T4', label: 'Table 4 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 64, w: 68, h: 68, shape: 'rect' },
 
       // Patio Tables
-      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', capacity: 4, x: 64, y: 62, w: 56, h: 56, shape: 'circle' },
-      { id: 'patio-2', name: 'P2', label: 'Patio Table 2 (4-Top)', zone: 'patio', capacity: 4, x: 82, y: 62, w: 56, h: 56, shape: 'circle' }
+      { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', capacity: 4, x: 63, y: 60, w: 64, h: 64, shape: 'circle' },
+      { id: 'patio-2', name: 'P2', label: 'Patio Table 2 (4-Top)', zone: 'patio', capacity: 4, x: 82, y: 60, w: 64, h: 64, shape: 'circle' }
     ];
 
     // Live Incoming Kitchen / Bar Orders Queue
@@ -578,7 +608,7 @@
         guest: 'Alex M. (VIP)',
         seatedTime: Date.now() - (48 * 60 * 1000),
         lastServiceCheck: Date.now() - (2 * 60 * 1000),
-        lastCoalRotation: Date.now() - (27 * 60 * 1000), // OVERDUE (Coals Due!)
+        lastCoalRotation: Date.now() - (27 * 60 * 1000),
         tabItems: [
           { id: 'item-1', name: 'Hookah #1 — Pink Cane Sensation (MustHave 70% / Tangiers 30%)', price: 38.00, type: 'hookah' },
           { id: 'item-2', name: 'Red Bull Original (x2)', price: 12.00, type: 'drink' },
@@ -593,7 +623,7 @@
         status: 'occupied',
         guest: 'Elena R. (VIP)',
         seatedTime: Date.now() - (12 * 60 * 1000),
-        lastServiceCheck: Date.now() - (6 * 60 * 1000), // OVERDUE (Service Due!)
+        lastServiceCheck: Date.now() - (6 * 60 * 1000),
         lastCoalRotation: Date.now() - (12 * 60 * 1000),
         tabItems: [
           { id: 'item-4', name: 'Hookah #1 — Siberian Midnight Tea', price: 35.00, type: 'hookah' }
@@ -807,6 +837,45 @@
       }, 4000);
     }
 
+    function setMobileActiveTab(tab) {
+      activeMobileTab = tab;
+      const dockCol = document.getElementById('staffActionDockColumn');
+      const floorCol = document.getElementById('staffFloorplanColumn');
+      const mapContainer = document.getElementById('floorplanCanvasContainer');
+      const gridContainer = document.getElementById('tablesDeckGridContainer');
+
+      ['map', 'alerts', 'grid'].forEach(t => {
+        const btn = document.getElementById(`mobTabBtn-${t}`);
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1';
+          } else {
+            btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1';
+          }
+        }
+      });
+
+      // Show/hide based on mobile tab
+      if (window.innerWidth < 768) {
+        if (tab === 'alerts') {
+          dockCol.classList.remove('hidden');
+          floorCol.classList.add('hidden');
+        } else if (tab === 'map') {
+          dockCol.classList.add('hidden');
+          floorCol.classList.remove('hidden');
+          mapContainer.classList.remove('hidden');
+          gridContainer.classList.add('hidden');
+          renderOpenTableFloorplan();
+        } else if (tab === 'grid') {
+          dockCol.classList.add('hidden');
+          floorCol.classList.remove('hidden');
+          gridContainer.classList.remove('hidden');
+          mapContainer.classList.add('hidden');
+          renderTablesDeckGrid();
+        }
+      }
+    }
+
     function setDeckViewMode(mode) {
       activeDeckViewMode = mode;
       const mapBtn = document.getElementById('viewModeMapBtn');
@@ -815,14 +884,14 @@
       const gridContainer = document.getElementById('tablesDeckGridContainer');
 
       if (mode === 'map') {
-        mapBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
-        gridBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
+        if (mapBtn) mapBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
+        if (gridBtn) gridBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
         mapContainer.classList.remove('hidden');
         gridContainer.classList.add('hidden');
         renderOpenTableFloorplan();
       } else {
-        gridBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
-        mapBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
+        if (gridBtn) gridBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
+        if (mapBtn) mapBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
         gridContainer.classList.remove('hidden');
         mapContainer.classList.add('hidden');
         renderTablesDeckGrid();
@@ -835,9 +904,9 @@
         const pill = document.getElementById(`zonePill-${z}`);
         if (pill) {
           if (z === zone) {
-            pill.className = 'px-2.5 py-1 text-xs font-mono rounded-lg border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold';
+            pill.className = 'px-3 py-1 text-xs font-mono rounded-xl border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold flex-shrink-0';
           } else {
-            pill.className = 'px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-400 border-white/10 hover:text-white';
+            pill.className = 'px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0';
           }
         }
       });
@@ -873,6 +942,7 @@
       const elService = document.getElementById('statServiceDueCount');
       const elOrders = document.getElementById('statOrdersDueCount');
       const elTickerCount = document.getElementById('actionTickerCount');
+      const mobAlertCount = document.getElementById('mobAlertCount');
 
       if (elActive) elActive.textContent = activeCount;
       if (elCoals) elCoals.textContent = coalsDueCount;
@@ -881,6 +951,7 @@
       
       const totalPending = coalsDueCount + serviceDueCount + liveIncomingOrders.length;
       if (elTickerCount) elTickerCount.textContent = `${totalPending} PENDING`;
+      if (mobAlertCount) mobAlertCount.textContent = totalPending;
     }
 
     // ==================== SLIM UNIVERSAL ALERT ROWS ====================
@@ -989,8 +1060,8 @@
           <div class="alert-row p-2.5 ${borderGlow} flex items-center justify-between gap-2 shadow-md">
             
             <!-- Left: Table & Details (Click opens table modal) -->
-            <div onclick="openTableDetailModal('${item.tableId}')" class="flex items-center gap-2 cursor-pointer flex-1 min-w-0">
-              <span class="text-sm select-none">${item.icon}</span>
+            <div onclick="openTableDetailModal('${item.tableId}')" class="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
+              <span class="text-base select-none flex-shrink-0">${item.icon}</span>
               <div class="truncate">
                 <div class="flex items-center gap-1.5 truncate">
                   <span class="font-mono text-xs font-extrabold text-white">${item.tableName}</span>
@@ -1001,7 +1072,7 @@
             </div>
 
             <!-- Right: 1-Tap Fast Action Button -->
-            <button onclick="${item.actionHandler}" class="px-2.5 py-1 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[9px] uppercase tracking-wider rounded-lg transition active:scale-95 flex-shrink-0 shadow">
+            <button onclick="${item.actionHandler}" class="px-3 py-1 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[10px] uppercase tracking-wider rounded-xl transition active:scale-95 flex-shrink-0 shadow">
               ${item.actionLabel}
             </button>
 
@@ -1064,24 +1135,24 @@
 
         const isOccupied = table.status === 'occupied';
         let nodeClass = 'diagram-seat-node';
-        let statusDot = '<span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span>';
+        let statusDot = '<span class="w-2 h-2 rounded-full bg-zinc-600"></span>';
         let timerSnippet = '';
 
         if (isOccupied) {
           nodeClass += ' occupied';
-          statusDot = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>';
+          statusDot = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>';
 
           const seatedMins = Math.floor((now - table.seatedTime) / (60 * 1000));
-          timerSnippet = `<span class="text-[8px] font-mono text-zinc-400 mt-0.5">⏱️ ${seatedMins}m</span>`;
+          timerSnippet = `<span class="text-[9px] font-mono text-zinc-300 font-bold mt-0.5">⏱️ ${seatedMins}m</span>`;
 
           if (table.lastCoalRotation && (now - table.lastCoalRotation) >= (25 * 60 * 1000)) {
             nodeClass += ' coals-due';
-            statusDot = '<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>';
-            timerSnippet = `<span class="text-[8px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">🔥 COALS</span>`;
+            statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>';
+            timerSnippet = `<span class="text-[9px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">🔥 COALS</span>`;
           } else if (table.lastServiceCheck && (now - table.lastServiceCheck) >= (5 * 60 * 1000)) {
             nodeClass += ' service-due';
-            statusDot = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>';
-            timerSnippet = `<span class="text-[8px] font-mono font-bold text-amber-400 mt-0.5">⭐ SERVICE</span>`;
+            statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>';
+            timerSnippet = `<span class="text-[9px] font-mono font-bold text-amber-400 mt-0.5">⭐ SERVICE</span>`;
           }
         }
 
@@ -1093,9 +1164,9 @@
                style="left: ${item.x}%; top: ${item.y}%; width: ${item.w}px; height: ${item.h}px;"
                title="${table.name}: ${table.label} (${isOccupied ? table.guest : 'Available'})">
             
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1.5">
               ${statusDot}
-              <span class="font-mono text-xs font-bold text-white">${item.name}</span>
+              <span class="font-mono text-xs md:text-sm font-extrabold text-white">${item.name}</span>
             </div>
             
             ${timerSnippet}
@@ -1122,7 +1193,7 @@
       filtered.forEach(t => {
         const isOccupied = t.status === 'occupied';
         let cardClass = 'stoked-card';
-        let statusBadge = '<span class="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-[9px] font-mono rounded-full uppercase">AVAILABLE</span>';
+        let statusBadge = '<span class="px-2.5 py-0.5 bg-zinc-800 text-zinc-400 text-[9px] font-mono rounded-full uppercase">AVAILABLE</span>';
         let tabTotal = 0;
 
         let seatedStr = '—';
@@ -1133,7 +1204,7 @@
 
         if (isOccupied) {
           cardClass += ' border-emerald-500/30 bg-[#08120E]';
-          statusBadge = '<span class="px-2 py-0.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-mono font-bold rounded-full uppercase">ACTIVE</span>';
+          statusBadge = '<span class="px-2.5 py-0.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-mono font-bold rounded-full uppercase">ACTIVE</span>';
           tabTotal = t.tabItems.reduce((sum, it) => sum + (it.price || 0), 0);
 
           const seatedMins = Math.floor((now - t.seatedTime) / (60 * 1000));
@@ -1440,7 +1511,6 @@
         type: 'hookah'
       });
 
-      // Add to Live Action Dock
       liveIncomingOrders.unshift({
         id: `ord-${Date.now()}`,
         tableId: table.id,
@@ -1507,7 +1577,6 @@
         type: 'drink'
       });
 
-      // Add to Live Action Dock
       liveIncomingOrders.unshift({
         id: `ord-${Date.now()}`,
         tableId: table.id,
@@ -1567,12 +1636,25 @@
       renderDeckOverview();
     }
 
+    // Resize listener for responsive tablet/mobile mode
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        document.getElementById('staffActionDockColumn')?.classList.remove('hidden');
+        document.getElementById('staffFloorplanColumn')?.classList.remove('hidden');
+      } else {
+        setMobileActiveTab(activeMobileTab);
+      }
+    });
+
     setInterval(() => {
       renderDeckOverview();
     }, 2000);
 
     window.addEventListener('DOMContentLoaded', () => {
       renderDeckOverview();
+      if (window.innerWidth < 768) {
+        setMobileActiveTab('map');
+      }
       if (typeof lucide !== 'undefined' && lucide.createIcons) {
         lucide.createIcons();
       }
