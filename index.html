@@ -1984,6 +1984,10 @@
       </div>
 
       <div id="headerVipRightView" class="hidden flex items-center gap-1.5 pointer-events-auto">
+        <button onclick="openStaffLoungePresenceModal()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="Live Lounge Presence & Wi-Fi Board">
+          <span class="text-[10px]">📶</span>
+          <span class="font-mono text-[10px]">STAFF</span>
+        </button>
         <button onclick="switchCustomerTab('rewards')" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400/40 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="View VIP Stash">
           <span class="text-amber-400 text-[10px]">👑</span>
           <span id="headerVipPointsBadge" class="font-mono text-[11px]">750</span>
@@ -2001,6 +2005,23 @@
 
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
   <main class="w-full max-w-2xl px-3.5 pt-0 flex flex-col gap-3">
+
+    <!-- High-Priority Staff Wi-Fi Disconnect Alert Banner (Hidden by default) -->
+    <div id="staffWifiAlertBanner" class="hidden mb-2 p-2.5 bg-red-950/90 border border-red-500 text-white shadow-2xl backdrop-blur-md select-none animate-pulse">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-start gap-2.5">
+          <span class="text-base">🚨</span>
+          <div>
+            <div class="font-serif font-bold text-xs uppercase tracking-wider text-red-200" id="staffWifiAlertTitle">GUEST DISCONNECTED WITH OPEN TAB</div>
+            <div class="text-[11px] font-sans text-red-100 mt-0.5" id="staffWifiAlertDesc">Alex Vance (Table 4) disconnected from Empire Wi-Fi with an open tab of $48.00.</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <button onclick="dispatchSmsTabReminder()" class="text-[9px] font-serif uppercase tracking-widest bg-amber-400 text-black px-2 py-1 font-bold hover:brightness-110 transition">SEND SMS</button>
+          <button onclick="dismissStaffWifiAlert()" class="text-[10px] text-zinc-400 hover:text-white px-1">✕</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ==================== VIEW 1: EDITORIAL COCKTAIL SPREAD ==================== -->
     <div id="customer-view-menu" class="customer-panel menu-spread">
@@ -2531,15 +2552,25 @@
           <!-- Title & Subtitle -->
           <div class="text-center pt-0">
             <h3 class="font-serif text-2xl text-white font-bold tracking-wide">Member Portal</h3>
-            <p class="text-xs text-zinc-400 italic font-sans mt-0.5">Lounge Identification &amp; Self-Ordering</p>
+            <p class="text-xs text-zinc-400 italic font-sans mt-0.5">Lounge Identification &amp; Loyalty Rewards</p>
+          </div>
+
+          <!-- Dual Tab Switcher: SIGN IN vs REGISTER -->
+          <div class="grid grid-cols-2 gap-1 bg-black/60 p-1 border border-white/10 select-none">
+            <button onclick="switchVipAuthModalTab('signin')" id="vipAuthTabSignIn" class="py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow">
+              Sign In
+            </button>
+            <button onclick="switchVipAuthModalTab('register')" id="vipAuthTabRegister" class="py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white">
+              Register
+            </button>
           </div>
 
           <!-- Wi-Fi Connection Note -->
           <div class="py-1 text-center border-b border-white/[0.08]">
-            <p class="text-[11px] font-sans text-zinc-400 italic">Make sure you are connected to Empire Wi-Fi to sign in.</p>
+            <p class="text-[11px] font-sans text-zinc-400 italic">Make sure you are connected to Empire Wi-Fi to authenticate.</p>
           </div>
 
-          <!-- VIP Member Email & Password Login Form -->
+          <!-- 1. VIP Member Sign In Section -->
           <div class="space-y-3" id="vipLoginFormSection">
             <div>
               <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-1">Email / Member Account</label>
@@ -2558,6 +2589,37 @@
             </button>
           </div>
 
+          <!-- 2. VIP Member Register Section (Hidden by Default) -->
+          <div class="space-y-2.5 hidden" id="vipRegisterFormSection">
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-0.5">Full Name</label>
+              <input type="text" id="vipRegNameInput" placeholder="e.g. Alex Vance" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-1.5 text-xs text-white font-sans placeholder:text-zinc-600 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-0.5">Mobile Phone (For Tab &amp; SMS Alerts)</label>
+              <input type="tel" id="vipRegPhoneInput" placeholder="e.g. 480-555-0199" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-1.5 text-xs text-white font-mono placeholder:text-zinc-600 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-0.5">Email / Username</label>
+              <input type="text" id="vipRegEmailInput" placeholder="e.g. alex@example.com" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-1.5 text-xs text-white font-sans placeholder:text-zinc-600 outline-none transition" />
+            </div>
+
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-0.5">Password</label>
+              <input type="password" id="vipRegPasswordInput" placeholder="Create password" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-1.5 text-xs text-white font-mono placeholder:text-zinc-600 outline-none transition" />
+            </div>
+
+            <div class="p-2 bg-amber-400/10 border border-amber-400/30 text-[10px] text-amber-300 font-sans">
+              🎁 <strong>VIP Welcome Gift:</strong> 100 Points (Redeemable for 1 Free Beverage or $6 Credit) automatically credited!
+            </div>
+
+            <button onclick="attemptVipRegister()" id="vipRegisterSubmitBtn" class="w-full bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.18em] py-2.5 text-xs flex items-center justify-center gap-1.5 transition uppercase mt-2 shadow select-none">
+              <span>REGISTER &amp; CLAIM REWARD</span>
+            </button>
+          </div>
+
           <!-- Quiet Dismissal Line -->
           <div class="pt-1 text-center flex justify-center items-center">
             <p class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.24em] cursor-pointer hover:text-zinc-300 transition select-none text-center" onclick="closeVipLoginModal()">
@@ -2568,6 +2630,38 @@
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- ==================== STAFF LIVE LOUNGE PRESENCE & WI-FI BOARD MODAL ==================== -->
+  <div id="staffLoungePresenceModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="sommelier-card-frame w-full max-w-xl p-3 shadow-2xl">
+      <div class="sommelier-inner-frame p-4 space-y-3 relative overflow-hidden">
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400 text-sm">📶</span>
+            <div>
+              <h3 class="font-serif text-base font-bold text-white tracking-wide">Live Lounge Presence &amp; Wi-Fi Board</h3>
+              <p class="text-[10px] text-zinc-400 font-sans">Active Guests · Wi-Fi Sessions · Smoking Status · Owner Self-Order Approval</p>
+            </div>
+          </div>
+          <button onclick="closeStaffLoungePresenceModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-2 py-1">✕</button>
+        </div>
+
+        <!-- Live Presence List -->
+        <div class="space-y-2 max-h-80 overflow-y-auto no-scrollbar pr-1" id="staffLoungePresenceList">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+        <!-- Footer Dismiss -->
+        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+          <span>📶 Verified Network: <strong class="text-emerald-400">Empire-VIP-WiFi</strong></span>
+          <button onclick="closeStaffLoungePresenceModal()" class="text-amber-400 hover:text-white font-serif uppercase tracking-wider text-xs">
+            [ CLOSE BOARD ]
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2881,6 +2975,7 @@
     ];
 
     const DEFAULT_REWARD_TIERS = [
+      { id: 'tier-100', pointsReq: 100, label: 'Free Artisan Beverage (-$6.00)', discount: 6.00, icon: '🍹', desc: '1 Complimentary Chilled Beverage or Red Bull ($6 Value)' },
       { id: 'tier-250', pointsReq: 250, label: 'Free Ice Tip ($5.00 Off)', discount: 5.00, icon: '❄️', desc: 'Complimentary Frozen Ice Tip' },
       { id: 'tier-500', pointsReq: 500, label: 'Free Samovar Teapot ($14.00 Off)', discount: 14.00, icon: '🫖', desc: 'Complimentary Samovar Teapot or Sand Coffee' },
       { id: 'tier-750', pointsReq: 750, label: '50% Off Refill (-$12.50)', discount: 12.50, icon: '🏺', desc: '50% off shisha repack / refill' },
@@ -2895,6 +2990,7 @@
         phone: '480-555-0409', 
         points: 750, 
         tier: 'Gold VIP', 
+        canSelfOrder: true,
         totalSpent: 750.00, 
         preferredBuzz: 7.6, 
         favoriteMix: 'Pink Cane Sensation',
@@ -3161,6 +3257,33 @@
         this.saveActiveTab(tab);
         return tab;
       }
+
+      static saveSession(member) {
+        if (!member) return;
+        const sessionData = {
+          memberId: member.id,
+          name: member.name,
+          phone: member.phone,
+          tier: member.tier,
+          canSelfOrder: member.canSelfOrder !== false,
+          loginTime: Date.now()
+        };
+        localStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
+        sessionStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
+      }
+
+      static getSavedSession() {
+        const raw = sessionStorage.getItem('empire_vip_session') || localStorage.getItem('empire_vip_session');
+        if (raw) {
+          try { return JSON.parse(raw); } catch (e) {}
+        }
+        return null;
+      }
+
+      static clearSession() {
+        localStorage.removeItem('empire_vip_session');
+        sessionStorage.removeItem('empire_vip_session');
+      }
     }
 
     let currentVipTabId = 'VIP-409';
@@ -3243,6 +3366,27 @@
       renderIcons();
     }
 
+    let vipAuthCurrentTab = 'signin';
+    function switchVipAuthModalTab(tab) {
+      vipAuthCurrentTab = tab;
+      const tabSignIn = document.getElementById('vipAuthTabSignIn');
+      const tabReg = document.getElementById('vipAuthTabRegister');
+      const formSignIn = document.getElementById('vipLoginFormSection');
+      const formReg = document.getElementById('vipRegisterFormSection');
+
+      if (tab === 'signin') {
+        if (tabSignIn) { tabSignIn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow'; }
+        if (tabReg) { tabReg.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white'; }
+        if (formSignIn) formSignIn.classList.remove('hidden');
+        if (formReg) formReg.classList.add('hidden');
+      } else {
+        if (tabSignIn) { tabSignIn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white'; }
+        if (tabReg) { tabReg.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow'; }
+        if (formSignIn) formSignIn.classList.add('hidden');
+        if (formReg) formReg.classList.remove('hidden');
+      }
+    }
+
     function toggleLoungeWifiSimulation() {
       isConnectedToLoungeWifi = !isConnectedToLoungeWifi;
       const wifiText = document.getElementById('headerWifiStatusText');
@@ -3250,10 +3394,52 @@
         wifiText.textContent = isConnectedToLoungeWifi ? '📶 Empire Wi-Fi' : '⚠️ No Lounge Wi-Fi';
       }
       checkLoungeWifiStatus();
+      checkWifiTabDisconnectStatus();
       showToast(
         isConnectedToLoungeWifi ? '📶 Wi-Fi Connected' : '⚠️ Wi-Fi Disconnected',
         isConnectedToLoungeWifi ? 'Connected to Empire-VIP-WiFi.' : 'Device is off-network.'
       );
+    }
+
+    function attemptVipRegister() {
+      const name = document.getElementById('vipRegNameInput')?.value.trim();
+      const phone = document.getElementById('vipRegPhoneInput')?.value.trim();
+      const email = document.getElementById('vipRegEmailInput')?.value.trim();
+      const password = document.getElementById('vipRegPasswordInput')?.value.trim();
+
+      if (!name || !phone || !email || !password) {
+        showToast('⚠️ Required', 'Please complete all fields to register.');
+        return;
+      }
+
+      const members = CustomerStash.getVipMembers();
+      const existing = members.find(m => (m.email && m.email.toLowerCase() === email.toLowerCase()) || (m.phone && m.phone === phone));
+      if (existing) {
+        showToast('✦ Existing Member', 'An account with this email or phone already exists. Please sign in.');
+        switchVipAuthModalTab('signin');
+        return;
+      }
+
+      const newId = 'vip-' + Math.floor(1000 + Math.random() * 9000);
+      const newMember = {
+        id: newId,
+        name: name,
+        phone: phone,
+        email: email,
+        password: password,
+        tier: 'VIP Member',
+        points: 100, // 100 Welcome Points (Free Beverage)
+        canSelfOrder: false, // Starts as server-assisted until Owner approves
+        totalSpent: 0.00,
+        preferredBuzz: 7.0,
+        favoriteMix: 'Custom Blend',
+        smokeHistory: []
+      };
+
+      members.push(newMember);
+      CustomerStash.saveVipMembers(members);
+      loginAsVipMember(newMember);
+      showToast('🎁 Welcome Bonus Added', '100 Welcome Points (1 Free Beverage) added to your VIP account!');
     }
 
     function attemptVipLogin() {
@@ -3272,6 +3458,7 @@
           name: 'Test Account',
           tier: 'VIP Member',
           points: 1000,
+          canSelfOrder: true,
           email: 'test',
           phone: '480-555-0100'
         };
@@ -3282,12 +3469,12 @@
       // Check registered VIP members
       const members = CustomerStash.getVipMembers();
       const match = members.find(m => (m.email && m.email.toLowerCase() === email) || m.id.toLowerCase() === email || m.name.toLowerCase() === email);
-      if (match && password === 'test') {
+      if (match && (password === 'test' || password === match.password || !match.password)) {
         loginAsVipMember(match);
         return;
       }
 
-      showToast('⚠️ Invalid Login', 'Incorrect email or password. Use test / test.');
+      showToast('⚠️ Invalid Login', 'Incorrect email or password. (Use test / test or Register).');
     }
 
     function loginAsVipMember(member) {
@@ -3300,6 +3487,8 @@
 
         isVipLoggedIn = true;
         currentVipTabId = member.id.toUpperCase();
+        CustomerStash.saveSession(member);
+        requestPhoneNotificationPermission();
         
         // Update UI for VIP state
         document.getElementById('headerGuestView').classList.add('hidden');
@@ -3323,9 +3512,153 @@
 
         updateVipPointsHeader();
         renderCustomerMenu();
-        showToast('👑 VIP Authenticated', `Welcome, ${member.name}! Direct lounge ordering unlocked.`);
+        const selfOrderMsg = member.canSelfOrder !== false ? 'Self-ordering active.' : 'Server-assisted mode.';
+        showToast('👑 VIP Authenticated', `Welcome, ${member.name}! ${selfOrderMsg}`);
         renderIcons();
       }, 120);
+    }
+
+    function requestPhoneNotificationPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    }
+
+    function sendPhoneTabAlert(title, body) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          new Notification(title, {
+            body: body,
+            icon: 'logos/empire_clean.png',
+            badge: 'logos/empire_clean.png'
+          });
+        } catch (e) {}
+      }
+      const member = CustomerStash.getCurrentVipMember();
+      const phone = member ? (member.phone || '480-555-0100') : 'Lounge Guest';
+      console.log(`📱 [SMS DISPATCH to ${phone}]: ${title} — ${body}`);
+    }
+
+    function checkWifiTabDisconnectStatus() {
+      if (!isConnectedToLoungeWifi) {
+        const activeTab = CustomerStash.getActiveTab();
+        const hasUnpaid = activeTab && activeTab.items && activeTab.items.length > 0;
+        if (hasUnpaid) {
+          const total = activeTab.items.reduce((s, i) => s + (i.price || 0), 0);
+          const member = CustomerStash.getCurrentVipMember();
+          const banner = document.getElementById('staffWifiAlertBanner');
+          const titleEl = document.getElementById('staffWifiAlertTitle');
+          const descEl = document.getElementById('staffWifiAlertDesc');
+          if (banner) {
+            if (titleEl) titleEl.textContent = `GUEST DISCONNECTED WITH OPEN TAB ($${total.toFixed(0)})`;
+            if (descEl) descEl.textContent = `${member.name} (${currentAssignedSeat}) disconnected from Empire Wi-Fi with an open tab of $${total.toFixed(2)}.`;
+            banner.classList.remove('hidden');
+          }
+          sendPhoneTabAlert('Empire Lounge Tab Alert', `You disconnected from lounge Wi-Fi with an open tab of $${total.toFixed(2)} at ${currentAssignedSeat}. Please settle your tab.`);
+        }
+      } else {
+        dismissStaffWifiAlert();
+      }
+    }
+
+    function dismissStaffWifiAlert() {
+      const banner = document.getElementById('staffWifiAlertBanner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    function dispatchSmsTabReminder() {
+      const activeTab = CustomerStash.getActiveTab();
+      const total = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
+      const member = CustomerStash.getCurrentVipMember();
+      sendPhoneTabAlert('Empire Lounge SMS Alert', `Reminder: You have an open tab of $${total.toFixed(2)} at ${currentAssignedSeat}.`);
+      showToast('📱 SMS Reminder Sent', `Text tab reminder sent to ${member.phone || member.name}.`);
+    }
+
+    // Staff Live Lounge Presence Board
+    function openStaffLoungePresenceModal() {
+      renderStaffLoungePresenceList();
+      document.getElementById('staffLoungePresenceModal').classList.remove('hidden');
+      renderIcons();
+    }
+
+    function closeStaffLoungePresenceModal() {
+      document.getElementById('staffLoungePresenceModal').classList.add('hidden');
+    }
+
+    function renderStaffLoungePresenceList() {
+      const cont = document.getElementById('staffLoungePresenceList');
+      if (!cont) return;
+      const members = CustomerStash.getVipMembers();
+      const activeTab = CustomerStash.getActiveTab();
+      const currentMember = CustomerStash.getCurrentVipMember();
+
+      let html = '';
+      members.slice(0, 6).forEach(m => {
+        const isCurrent = isVipLoggedIn && currentMember && m.id === currentMember.id;
+        const isConnected = isCurrent ? isConnectedToLoungeWifi : true;
+        const tabTotal = isCurrent ? (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0) : (m.totalSpent ? 38 : 0);
+        const smokingMix = isCurrent ? (activeMixName || (activeFlavors.length > 0 ? activeFlavors.map(f => f.name).join(' + ') : 'Pink Cane Sensation')) : (m.favoriteMix || 'House Blend');
+        const canOrder = m.canSelfOrder !== false;
+
+        html += `
+          <div class="p-2.5 bg-black/60 border ${isCurrent ? 'border-amber-400/50 bg-amber-400/[0.02]' : 'border-white/10'} text-xs space-y-1.5 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-300 font-bold font-serif flex items-center justify-center text-xs">
+                  ${m.name.charAt(0)}
+                </span>
+                <div>
+                  <div class="font-serif font-bold text-white flex items-center gap-1.5">
+                    <span>${m.name}</span>
+                    <span class="text-[9px] font-sans px-1 py-0.2 uppercase border ${isCurrent ? 'border-amber-400 text-amber-300' : 'border-zinc-700 text-zinc-400'}">${m.tier || 'VIP'}</span>
+                  </div>
+                  <div class="text-[10px] text-zinc-400 font-mono">${m.phone || '480-555-0100'} · ${isCurrent ? currentAssignedSeat : 'Table 3'}</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="font-mono font-bold ${tabTotal > 0 ? 'text-amber-400' : 'text-zinc-500'} text-xs">
+                  ${tabTotal > 0 ? `$${tabTotal.toFixed(2)} Active Tab` : '$0.00 Tab'}
+                </div>
+                <div class="flex items-center justify-end gap-1 mt-0.5">
+                  <span class="w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}"></span>
+                  <span class="text-[9px] font-mono ${isConnected ? 'text-emerald-400' : 'text-red-400'}">${isConnected ? 'Wi-Fi Active' : 'Off-Network'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Smoking & Owner Toggle Row -->
+            <div class="pt-1.5 border-t border-white/[0.06] flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1 text-[10px] text-zinc-300 truncate">
+                <span>💨</span>
+                <span class="truncate italic font-serif">Smoking: <strong>${smokingMix}</strong></span>
+              </div>
+              <button onclick="toggleMemberSelfOrderApproval('${m.id}')" class="px-2 py-0.5 text-[9px] font-serif uppercase tracking-wider border font-bold transition ${canOrder ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300 hover:bg-emerald-900' : 'bg-amber-950/80 border-amber-500 text-amber-300 hover:bg-amber-900'}">
+                ${canOrder ? '✓ Self-Order: APPROVED' : '✕ Server Required'}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      cont.innerHTML = html;
+    }
+
+    function toggleMemberSelfOrderApproval(memberId) {
+      const members = CustomerStash.getVipMembers();
+      const target = members.find(m => m.id === memberId);
+      if (target) {
+        target.canSelfOrder = target.canSelfOrder === false ? true : false;
+        CustomerStash.saveVipMembers(members);
+        const currentMember = CustomerStash.getCurrentVipMember();
+        if (currentMember && currentMember.id === memberId) {
+          CustomerStash.saveSession(target);
+        }
+        renderStaffLoungePresenceList();
+        showToast(
+          target.canSelfOrder ? '👑 Self-Order Approved' : '🛡️ Server-Assisted Set',
+          `${target.name} self-ordering is now ${target.canSelfOrder ? 'APPROVED' : 'SERVER-ASSISTED'}.`
+        );
+      }
     }
 
     function orderItemFromModal(itemId, itemType) {
@@ -3333,6 +3666,7 @@
         openVipLoginModal();
         return;
       }
+      const member = CustomerStash.getCurrentVipMember();
       const inventory = CustomerStash.getInventory();
       const pricing = CustomerStash.getLoungePricing();
       let itemName = '';
@@ -3348,17 +3682,22 @@
         price = item && item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
       }
 
+      const isApproved = member && member.canSelfOrder !== false;
       CustomerStash.addItemToTab({
         id: 'order-' + Date.now(),
         name: itemName,
         type: 'shisha',
         price: price,
-        status: 'Preparing',
+        status: isApproved ? 'Preparing' : 'Pending Server Verification',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
 
       closeMenuItemDetailModal();
-      showToast('🔥 Order Sent to Lounge', `${itemName} ($${price.toFixed(0)}) has been dispatched to your table.`);
+      if (isApproved) {
+        showToast('🔥 Order Sent to Lounge', `${itemName} ($${price.toFixed(0)}) has been dispatched to staff.`);
+      } else {
+        showToast('🛎️ Sent to Table Server', `${itemName} recipe sent to your server for table verification.`);
+      }
       renderCustomerMenu();
     }
 
@@ -3372,17 +3711,24 @@
       if (now - lastDrinkOrderTimestamp < 450) return; // Prevent double dispatch on mobile tap
       lastDrinkOrderTimestamp = now;
 
+      const member = CustomerStash.getCurrentVipMember();
+      const isApproved = member && member.canSelfOrder !== false;
+
       CustomerStash.addItemToTab({
         id: 'drink-' + Date.now(),
         name: drinkName,
         type: 'drink',
         price: price,
-        status: 'Serving',
+        status: isApproved ? 'Serving' : 'Pending Server Verification',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
       updateActiveBowlNotificationUI();
       renderCustomerMenu();
-      showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
+      if (isApproved) {
+        showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
+      } else {
+        showToast('🛎️ Sent to Table Server', `${drinkName} requested via table server.`);
+      }
     }
 
     function addFlavorToActiveBowl(flavorId) {
@@ -3498,6 +3844,9 @@
         ? `Refill / Repack (Hookah #${hookahNum}) - ${flavorSummary}`
         : `Hookah #${hookahNum} - ${flavorSummary}`;
 
+      const member = CustomerStash.getCurrentVipMember();
+      const isApproved = member && member.canSelfOrder !== false;
+
       CustomerStash.addItemToTab({
         id: 'order-' + Date.now(),
         name: orderName,
@@ -3505,13 +3854,17 @@
         orderType: isRefill ? 'refill' : 'new',
         pipeNumber: hookahNum,
         price: price,
-        status: 'Preparing',
+        status: isApproved ? 'Preparing' : 'Pending Server Verification',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
 
       clearBowl();
       updateActiveBowlNotificationUI();
-      showToast('🔥 Order Dispatched', `${orderName} ($${price.toFixed(0)}) sent to your table!`);
+      if (isApproved) {
+        showToast('🔥 Order Dispatched', `${orderName} ($${price.toFixed(0)}) sent to your table!`);
+      } else {
+        showToast('🛎️ Sent to Table Server', `${orderName} sent to your server for table verification.`);
+      }
       switchCustomerTab('tab');
     }
 
@@ -3541,6 +3894,16 @@
     }
 
     function vipLogout() {
+      const activeTab = CustomerStash.getActiveTab();
+      const hasUnpaid = activeTab && activeTab.items && activeTab.items.length > 0;
+      if (hasUnpaid) {
+        const total = activeTab.items.reduce((s, i) => s + (i.price || 0), 0);
+        showToast('⚠️ Open Tab Active', `You have an active open tab ($${total.toFixed(2)}). Settle your tab via Square or your server before logging out.`);
+        sendPhoneTabAlert('Empire Lounge: Open Tab Active', `You have an open tab of $${total.toFixed(2)} at ${currentAssignedSeat}. Please settle your tab before leaving.`);
+        return; // BLOCK LOGOUT
+      }
+
+      CustomerStash.clearSession();
       isVipLoggedIn = false;
       document.getElementById('headerGuestView').classList.remove('hidden');
       if (document.getElementById('headerGuestRightView')) document.getElementById('headerGuestRightView').classList.remove('hidden');
@@ -3553,14 +3916,8 @@
       const floatingBar = document.getElementById('floatingActiveBowlBar');
       if (floatingBar) floatingBar.classList.add('hidden');
 
-      const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
-      if (headerSpread) headerSpread.classList.remove('hidden');
-      const navTrack = document.getElementById('menuNavTrack');
-      if (navTrack) navTrack.classList.remove('hidden');
-
-      switchCustomerTab('menu');
       renderCustomerMenu();
-      showToast('🔒 Logged Out', 'Returned to Public QR Menu mode.');
+      showToast('👋 Signed Out', 'Returned to Public QR Menu mode.');
       renderIcons();
     }
 
@@ -6035,6 +6392,17 @@
     // ⛔ [END OF OFF-LIMITS CINEMATIC JS] ⛔
     // ==========================================================================
 
+    window.addEventListener('beforeunload', (e) => {
+      if (isVipLoggedIn) {
+        const activeTab = CustomerStash.getActiveTab();
+        if (activeTab && activeTab.items && activeTab.items.length > 0) {
+          e.preventDefault();
+          e.returnValue = 'You have an active open tab at Empire Hookah Lounge.';
+          return e.returnValue;
+        }
+      }
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
       initAtmosphereEngine();
       initCinematicFireworksEngine();
@@ -6047,8 +6415,25 @@
       switchCustomerTab('menu');
       renderIcons();
 
-      // Show Noir landing screen on page load
-      openWelcomeLoungeModal();
+      // Auto restore persistent session if member was logged in
+      const savedSession = CustomerStash.getSavedSession();
+      if (savedSession && savedSession.memberId) {
+        const members = CustomerStash.getVipMembers();
+        const match = members.find(m => m.id === savedSession.memberId) || {
+          id: savedSession.memberId,
+          name: savedSession.name || 'VIP Member',
+          phone: savedSession.phone || '480-555-0100',
+          tier: savedSession.tier || 'VIP Member',
+          canSelfOrder: savedSession.canSelfOrder !== false,
+          points: 750
+        };
+        loginAsVipMember(match);
+      }
+
+      // Show Noir landing screen on page load if not logged in
+      if (!savedSession || !savedSession.memberId) {
+        openWelcomeLoungeModal();
+      }
     });
   </script>
 </body>
