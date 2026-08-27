@@ -2339,21 +2339,21 @@
 
   <!-- ==================== FLOATING BOTTOM LUXURY NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
   <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-6 py-2 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
-    <button onclick="switchCustomerTab('menu')" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-menu">
-      <span class="text-amber-400 text-[10px]" id="dockMenuDiamond">◆</span>
-      <span class="font-serif text-[11px] font-bold tracking-widest uppercase">MENU</span>
-    </button>
-    <button onclick="switchCustomerTab('lab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn relative" id="dock-tab-lab">
-      <span class="text-zinc-600 text-[10px]" id="dockLabDiamond">◆</span>
+    <button onclick="setPrimaryMenuTab('shisha'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-shisha">
+      <span class="text-amber-400 text-[10px]" id="dockShishaDiamond">◆</span>
       <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
-        MIX LAB
+        CRAFT SHISHA
         <span id="dockBowlCountBadge" class="hidden bg-amber-400 text-black text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-full">0</span>
       </span>
+    </button>
+    <button onclick="setPrimaryMenuTab('drinks'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-drinks">
+      <span class="text-zinc-600 text-[10px]" id="dockDrinksDiamond">◆</span>
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase">BEVERAGES</span>
     </button>
     <button onclick="switchCustomerTab('tab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
       <span class="text-zinc-600 text-[10px]" id="dockTabDiamond">◆</span>
       <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
-        TAB
+        MY TAB
         <span id="dockTabTotalBadge" class="text-amber-400/90 text-[10px] font-mono font-normal"></span>
       </span>
     </button>
@@ -3500,12 +3500,15 @@
       document.querySelectorAll('.customer-panel').forEach(p => p.classList.add('hidden'));
 
       // Update bottom dock luxury tabs
-      const tabs = ['menu', 'lab', 'tab'];
+      const tabs = ['shisha', 'drinks', 'tab'];
       tabs.forEach(t => {
         const btn = document.getElementById(`dock-tab-${t}`);
         const diamond = document.getElementById(`dock${t.charAt(0).toUpperCase() + t.slice(1)}Diamond`);
+        const isActive = (t === 'shisha' && activePrimaryTab === 'shisha' && tabId === 'menu') ||
+                         (t === 'drinks' && activePrimaryTab === 'drinks' && tabId === 'menu') ||
+                         (t === 'tab' && tabId === 'tab');
         if (btn) {
-          if (t === tabId) {
+          if (isActive) {
             btn.classList.add('text-white');
             btn.classList.remove('text-zinc-400');
           } else {
@@ -3514,7 +3517,7 @@
           }
         }
         if (diamond) {
-          if (t === tabId) {
+          if (isActive) {
             diamond.className = 'text-amber-400 text-[10px]';
           } else {
             diamond.className = 'text-zinc-600 text-[10px]';
@@ -3522,7 +3525,7 @@
         }
       });
 
-      const activePanel = document.getElementById(`customer-view-${tabId}`);
+      const activePanel = document.getElementById(tabId === 'tab' ? 'customer-view-tab' : 'customer-view-menu');
       if (activePanel) activePanel.classList.remove('hidden');
 
       // Keep atmospheric skyline background visible for ambient lounge feel
@@ -3532,7 +3535,6 @@
       }
 
       if (tabId === 'menu') renderCustomerMenu();
-      if (tabId === 'lab') renderMixLab();
       if (tabId === 'tab') renderMyTabView();
       
       updateActiveBowlNotificationUI();
@@ -4061,10 +4063,10 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // If it's a drink, render with bright white name & price, crisp light description, and direct order when authenticated
+      // 1. BEVERAGES: Direct 1-tap ordering for authenticated members
       if (isDrink) {
         const orderBtn = isVipLoggedIn ? `
-          <button onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2 py-0.5 border border-amber-500/50 text-amber-400 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none">+ ORDER</button>
+          <button onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none font-bold">+ ORDER</button>
         ` : '';
 
         return `
@@ -4077,12 +4079,57 @@
                 ${orderBtn}
               </div>
             </div>
-            <div class="font-sans text-[0.80rem] text-zinc-400 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
+            <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           </div>
         `;
       }
 
-      // Shisha & House Mix items: Tap to select, Touch-and-Hold for Apothecary specs modal
+      // 2. SIGNATURE HOUSE MIXES: Tap to load blend or touch-and-hold for specs modal
+      if (type === 'house') {
+        const inBowl = activeMixName === item.name;
+        const addBtn = isVipLoggedIn ? `
+          <button onclick="event.stopPropagation(); loadHouseMixIntoBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
+            ${inBowl ? '✓ LOADED' : 'LOAD BLEND'}
+          </button>
+        ` : '';
+
+        return `
+          <div 
+            onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
+            onpointerup="onFlavorPointerUp()" 
+            onpointercancel="onFlavorPointerUp()" 
+            onpointerleave="onFlavorPointerUp()" 
+            onclick="onFlavorClick('${item.id}', '${type}')" 
+            class="editorial-item mb-4 cursor-pointer select-none group">
+            <div class="item-top-row flex items-baseline justify-between w-full">
+              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition">${item.name}</span>
+              <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
+              <div class="flex items-center">
+                <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">$${priceStr}</span>
+                ${addBtn}
+              </div>
+            </div>
+            <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
+            ${metaLine ? `
+              <div class="item-meta mt-1 text-[11px] text-zinc-400 font-mono">
+                <span>${metaLine}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // 3. SINGLE FLAVORS: Tap to add into active bowl mix or touch-and-hold for specs modal
+      const inBowl = activeFlavors.some(f => f.id === item.id);
+      const addBtn = isVipLoggedIn ? `
+        <button onclick="event.stopPropagation(); addFlavorToActiveBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
+          ${inBowl ? '✓ IN BOWL' : '+ ADD'}
+        </button>
+      ` : '';
+
+      const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+      const dotColor = getProfileDotColor(primaryProfile);
+
       return `
         <div 
           onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
@@ -4090,13 +4137,21 @@
           onpointercancel="onFlavorPointerUp()" 
           onpointerleave="onFlavorPointerUp()" 
           onclick="onFlavorClick('${item.id}', '${type}')" 
-          class="editorial-item ${isSelected ? 'active-flavor' : ''}">
-          <div class="item-top-row">
-            <span class="item-name">${item.name}</span>
+          class="editorial-item mb-4 cursor-pointer select-none group">
+          <div class="item-top-row flex items-baseline justify-between w-full">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full inline-block flex-shrink-0" style="background: ${dotColor};"></span>
+              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition">${item.name}</span>
+            </div>
+            <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
+            <div class="flex items-center">
+              <span class="text-amber-400 font-mono text-xs font-semibold mr-1">⚡ ${item.strength || 7}</span>
+              ${addBtn}
+            </div>
           </div>
-          <div class="item-desc">${item.desc}</div>
+          <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc || (item.profiles ? item.profiles.join(' · ') : 'Craft Leaf')}</div>
           ${metaLine ? `
-            <div class="item-meta">
+            <div class="item-meta mt-1 text-[11px] text-zinc-400 font-mono">
               <span>${metaLine}</span>
             </div>
           ` : ''}
@@ -4157,7 +4212,6 @@
         let itemsHtml = '';
         let headerTitle = '';
         let headerSub = '';
-        let summaryBarHtml = '';
         let displayedItems = [];
 
         // ────── MODE A: BROWSE BY BRAND ──────
@@ -4236,8 +4290,147 @@
           }
         }
 
+        // ────── AUTHENTICATED ACTIVE BOWL BENCH (INTEGRATED AT TOP) ──────
+        let activeBowlSectionHtml = '';
+        if (isVipLoggedIn) {
+          const distinctInventory = CustomerStash.getInventory();
+          let cum = 0;
+          const gradParts = [];
+          let totalStrength = 0;
+
+          activeFlavors.forEach(f => {
+            const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+            const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+            const col = getProfileDotColor(primaryProfile);
+            const start = cum;
+            cum += f.percent;
+            gradParts.push(`${col} ${start}% ${cum}%`);
+            totalStrength += ((item.strength || 7) * (f.percent / 100));
+          });
+
+          const gradPartsStr = gradParts.length > 0 ? gradParts.join(', ') : '#E5A93C 0% 100%';
+          const buzzVal = parseFloat(totalStrength.toFixed(1));
+          const buzzInfo = getBuzzInfo(buzzVal);
+
+          const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
+          const basePrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+          const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
+          const estTax = (finalPrice * (taxConfig.primaryRate / 100));
+
+          let activeFlavorsHtml = '';
+          if (activeFlavors.length === 0) {
+            activeFlavorsHtml = `
+              <div class="p-3 text-center border border-dashed border-white/20 bg-black/60">
+                <span class="text-xs text-zinc-300 font-serif italic block">Your bowl formulation is currently blank.</span>
+                <span class="text-[10px] text-amber-400 font-mono font-semibold">Tap [+ ADD] on any flavor or blend in the menu below to formulate</span>
+              </div>
+            `;
+          } else {
+            activeFlavors.forEach((f, idx) => {
+              const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+              const grams = ((22 * f.percent) / 100).toFixed(1);
+              const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+              const dotColor = getProfileDotColor(primaryProfile);
+
+              activeFlavorsHtml += `
+                <div class="bg-black border border-white/[0.14] p-2.5 flex items-center justify-between gap-2 select-none">
+                  <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                    <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
+                    <div class="truncate">
+                      <div class="flex items-center gap-2">
+                        <span class="font-serif text-sm font-bold text-white truncate">${item.name}</span>
+                        <span class="text-[9px] bg-zinc-900 border border-white/[0.08] text-zinc-300 px-1.5 font-mono font-bold">${item.brand}</span>
+                      </div>
+                      <span class="text-[10px] text-zinc-400 font-mono">⚡ Strength ${item.strength || 7}/10</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div class="text-right">
+                      <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
+                      <span class="text-[10px] text-zinc-400 block font-mono">${grams}g</span>
+                    </div>
+                    <button onclick="removeFlavor(${idx})" class="text-zinc-400 hover:text-red-400 p-1 flex-shrink-0 transition">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                </div>
+              `;
+            });
+          }
+
+          activeBowlSectionHtml = `
+            <section class="sommelier-card-frame p-2.5 mb-4 select-none">
+              <div class="sommelier-inner-frame p-3.5 space-y-2.5">
+                <div class="flex justify-between items-center border-b border-white/[0.08] pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-amber-400 text-[10px]">◆</span>
+                    <span class="font-serif text-sm font-bold text-white tracking-wide uppercase">
+                      ${activeMixName ? `👑 ${activeMixName}` : (activeFlavors.length > 0 ? 'Active Bowl Formulation' : 'Active Bowl Bench')}
+                    </span>
+                  </div>
+                  ${activeFlavors.length > 0 ? `
+                    <button onclick="clearBowl()" class="text-[10px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 font-semibold">
+                      RESET [✕]
+                    </button>
+                  ` : ''}
+                </div>
+
+                <!-- BUZZ READOUT -->
+                <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-black/80 border border-white/[0.1] text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] uppercase font-bold text-zinc-300 tracking-wider">Buzz Rating:</span>
+                    <div class="flex items-center gap-1.5 font-mono">
+                      <span>${buzzInfo.icon}</span>
+                      <span class="font-bold text-white text-xs">${buzzInfo.level}</span>
+                      <span class="text-[11px] text-zinc-400">/10</span>
+                      <span class="text-[10px] font-sans font-bold uppercase ${buzzInfo.textColor}">${buzzInfo.category}</span>
+                    </div>
+                  </div>
+                  <div class="text-[11px] text-zinc-300 font-mono">
+                    ${activeFlavors.length > 0 ? `<span class="text-amber-400 font-bold">${activeFlavors.length} of 3 Flavors</span> · Standard 22g` : `<span class="text-zinc-400 italic">Select flavors from the menu below</span>`}
+                  </div>
+                </div>
+
+                <!-- SPECTRUM RATIO SLIDER -->
+                ${activeFlavors.length > 0 ? `
+                  <div class="spectrum-drag-area" id="spectrumDraggableArea">
+                    <div id="spectrumRibbon" class="spectrum-track bg-zinc-900" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
+                    <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+                  </div>
+                  <div class="flex justify-between text-[10px] text-zinc-400 font-mono px-0.5">
+                    <span>Drag gold thumb to adjust ratios</span>
+                    <span class="text-amber-400 font-bold">Standard 22g Pack</span>
+                  </div>
+                ` : ''}
+
+                <!-- ACTIVE FLAVOR ROWS -->
+                <div class="space-y-1.5" id="flavorSlotsContainer">
+                  ${activeFlavorsHtml}
+                </div>
+
+                <!-- ORDER ACTION BAR -->
+                ${activeFlavors.length > 0 ? `
+                  <div class="pt-2 border-t border-white/[0.1] flex items-center justify-between">
+                    <div>
+                      <span class="text-[9px] uppercase tracking-wider text-zinc-400 font-bold block">${roundCount === 1 ? '[FIRST BOWL]' : '[REFILL -$10]'}</span>
+                      <div class="flex items-baseline gap-1">
+                        <span class="text-lg font-serif font-bold text-amber-400">$${finalPrice.toFixed(0)}</span>
+                        <span class="text-[10px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
+                      </div>
+                    </div>
+                    <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-2 px-4 shadow-lg transition active:scale-95 uppercase tracking-wider select-none">
+                      <span>Order This Bowl Now</span>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            </section>
+          `;
+        }
+
         // Assemble 2-Column Container
         spreadCont.innerHTML = `
+          ${activeBowlSectionHtml}
           <div class="menu-2col-layout">
             <aside class="menu-stations-rail">
               ${stationsRailHtml}
@@ -4245,7 +4438,7 @@
             <section class="menu-items-pane">
               <div class="menu-items-header">
                 <h2 class="text-xs font-serif tracking-[0.2em] uppercase text-white font-semibold">${headerTitle}</h2>
-                <span class="text-[10px] font-sans text-zinc-300 uppercase tracking-wider font-medium">Tap to select · Hold for specs</span>
+                <span class="text-[10px] font-sans text-zinc-300 uppercase tracking-wider font-medium">${isVipLoggedIn ? 'Tap + to Add to Bowl' : 'Tap to select · Hold for specs'}</span>
               </div>
               <div class="menu-items-list">
                 ${itemsHtml}
@@ -4253,6 +4446,23 @@
             </section>
           </div>
         `;
+
+        if (isVipLoggedIn && activeFlavors.length > 1) {
+          const handlesCont = document.getElementById('spectrumHandlesContainer');
+          if (handlesCont) {
+            let handleCum = 0;
+            for (let i = 0; i < activeFlavors.length - 1; i++) {
+              handleCum += activeFlavors[i].percent;
+              const thumb = document.createElement('div');
+              thumb.className = 'spectrum-drag-thumb';
+              thumb.style.left = `${handleCum}%`;
+              thumb.onmousedown = (e) => window.handleCustomerStartSpectrumDrag(e, i);
+              thumb.ontouchstart = (e) => window.handleCustomerStartSpectrumDrag(e, i);
+              handlesCont.appendChild(thumb);
+            }
+          }
+          setupCustomerSpectrumDragListeners();
+        }
       } 
       // ──────────── TAB 2: BEVERAGES SPREAD ────────────
       else if (activePrimaryTab === 'drinks') {
@@ -4817,7 +5027,11 @@
         if (delta !== 0) {
           activeFlavors[activeCustomerDragHandleIndex].percent += delta;
           activeFlavors[activeCustomerDragHandleIndex + 1].percent -= delta;
-          renderMixLab();
+          if (activeCustomerTab === 'menu') {
+            renderCustomerMenu();
+          } else {
+            renderMixLab();
+          }
         }
       }
       function handleDragEnd() {
