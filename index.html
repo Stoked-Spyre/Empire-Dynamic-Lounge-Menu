@@ -42,7 +42,7 @@
   </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
     
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -52,22 +52,493 @@
       user-select: none;
       -webkit-user-select: none;
     }
-    .font-crest { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-crest { font-family: 'Playfair Display', serif; }
+    .font-typewriter { font-family: 'Playfair Display', serif; }
     .font-mono-nums { font-variant-numeric: tabular-nums; }
     
-    .lounge-menu-card {
-      background: transparent;
-      border-radius: 1rem;
-      transition: all 0.15s ease;
+    /* ========================================================================== */
+    /* EDITORIAL COCKTAIL SPREAD                                                  */
+    /* ========================================================================== */
+    .menu-spread {
+      position: relative;
+      z-index: 10;
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
-    .lounge-menu-card:hover {
-      background: rgba(255, 255, 255, 0.04);
+    .menu-skyline-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .menu-skyline-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      opacity: 0.15;
+      filter: contrast(1.1) brightness(0.85);
+    }
+    .menu-skyline-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 65%, #000000 95%),
+                  linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 25%, rgba(0,0,0,0.65) 75%, #000000 100%);
     }
 
-    .obsidian-card {
-      background: transparent;
-      border-radius: 1rem;
+    @media (max-width: 640px) {
+      .menu-skyline-img {
+        opacity: 0.18;
+        object-position: center 35%;
+      }
     }
+
+    .menu-header {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0.5rem;
+    }
+    .menu-header-logo {
+      width: 4.75rem;
+      height: 4.75rem;
+      object-fit: contain;
+      margin: 0 auto 0.4rem auto;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 4px 20px rgba(229, 169, 60, 0.28));
+    }
+    .menu-nav {
+      position: relative;
+      z-index: 1;
+    }
+    .menu-2col-layout {
+      position: relative;
+      z-index: 1;
+    }
+    .menu-kicker {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #E2E8F0;
+      margin-bottom: 0.25rem;
+    }
+    .menu-masthead {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #FFFFFF;
+      margin-bottom: 0.2rem;
+    }
+    .menu-rates {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: #E2E8F0;
+      margin-bottom: 0.25rem;
+    }
+    
+    .menu-sector {
+      margin-bottom: 3.5rem;
+    }
+    .sector-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .sector-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+    .sector-subtitle {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: #CBD5E1;
+      font-style: italic;
+    }
+    
+    .editorial-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.35rem;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .editorial-item:active {
+      opacity: 0.7;
+      transform: scale(0.985);
+    }
+    .editorial-item:hover {
+      opacity: 0.95;
+    }
+    .item-top-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+      transition: color 0.15s ease;
+    }
+    .editorial-item:hover .item-name {
+      color: #FFFFFF;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
+    }
+    .editorial-item.active-flavor .item-name {
+      color: #FFFFFF;
+      font-weight: 700;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.45);
+    }
+    .item-leader {
+      flex-grow: 1;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+      margin: 0 10px;
+      position: relative;
+      top: -4px;
+    }
+    .item-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+    .item-desc {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.82rem;
+      color: #94A3B8;
+      font-style: italic;
+      font-weight: 300;
+      margin-top: 0.25rem;
+      line-height: 1.45;
+      transition: color 0.15s ease;
+    }
+    .editorial-item:hover .item-desc {
+      color: #CBD5E1;
+    }
+    .editorial-item.active-flavor .item-desc {
+      color: #CBD5E1;
+    }
+    .item-meta {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.7rem;
+      color: #71717A;
+      font-weight: 500;
+      margin-top: 0.3rem;
+      letter-spacing: 0.03em;
+      display: flex;
+      justify-content: space-between;
+      transition: color 0.15s ease;
+    }
+    .editorial-item.active-flavor .item-meta {
+      color: #F59E0B;
+    }
+    .item-out-of-stock {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .item-out-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.72rem;
+      color: #EF4444;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+    
+    .menu-footer {
+      text-align: center;
+      padding: 2rem 0 4rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.76rem;
+      color: #FFFFFF;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.6;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* MENU SECTION NAVIGATION — feels like page tabs on a printed wine list */
+    .menu-nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.5rem 0 0.5rem 0;
+      margin-bottom: 0.75rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .menu-nav::-webkit-scrollbar { display: none; }
+    .menu-nav-tab {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #A1A1AA;
+      background: none;
+      border: none;
+      padding: 0.4rem 0;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .menu-nav-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: transparent;
+      transition: background 0.2s;
+    }
+    .menu-nav-tab:hover {
+      color: #FFFFFF;
+    }
+    .menu-nav-tab.active {
+      color: #F59E0B;
+    }
+    .menu-nav-tab.active::after {
+      background: #F59E0B;
+    }
+
+    /* 2-COLUMN EDITORIAL LOUNGE BROWSER */
+    .menu-2col-layout {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      margin-top: 0.25rem;
+    }
+    .menu-stations-rail {
+      width: 120px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 8px;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .selector-mode-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 4px 6px 4px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .selector-mode-btn {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #A1A1AA;
+      background: none;
+      border: none;
+      padding: 2px 2px;
+      cursor: pointer;
+      transition: color 0.15s ease;
+      position: relative;
+    }
+    .selector-mode-btn:hover {
+      color: #FFFFFF;
+    }
+    .selector-mode-btn.active {
+      color: #F59E0B;
+      font-weight: 700;
+    }
+    .menu-station-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 6px 4px;
+      background: transparent;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .menu-station-btn:hover {
+      opacity: 0.95;
+    }
+    .menu-station-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.94rem;
+      font-weight: 500;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+      transition: color 0.15s ease;
+    }
+    .menu-station-btn:hover .menu-station-label {
+      color: #FFFFFF;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .menu-station-btn.active .menu-station-label {
+      color: #FFFFFF;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+    }
+    .menu-station-sub {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.64rem;
+      font-style: italic;
+      color: #CBD5E1;
+      letter-spacing: 0.02em;
+      transition: color 0.15s ease;
+    }
+    .menu-station-btn.active .menu-station-sub {
+      color: #F59E0B;
+    }
+
+    .menu-items-pane {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 14px, black calc(100% - 20px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14px, black calc(100% - 20px), transparent 100%);
+    }
+
+    /* MOBILE ZERO-PAGE-SCROLL LAYOUT — Screen never scrolls; strictly the selector / flavor list scrolls */
+    @media (max-width: 640px) {
+      body {
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+        padding-bottom: 0 !important;
+      }
+      main {
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        padding-bottom: 0 !important;
+      }
+      #customer-view-menu.menu-spread {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 0 0.5rem;
+      }
+      .menu-header {
+        flex-shrink: 0;
+        margin-bottom: 0.2rem;
+        padding-top: 0.25rem;
+      }
+      .menu-masthead {
+        font-size: 1.65rem;
+        margin-bottom: 0.1rem;
+      }
+      .menu-kicker {
+        font-size: 0.56rem;
+        margin-bottom: 0.15rem;
+      }
+      .menu-nav {
+        flex-shrink: 0;
+        margin-bottom: 0.25rem;
+        padding: 0.15rem 0;
+        gap: 1.5rem;
+      }
+      #menuSpreadContainer {
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .menu-2col-layout {
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        display: flex;
+        overflow: hidden;
+        gap: 0.75rem;
+        margin-top: 0;
+      }
+      .menu-stations-rail {
+        width: 95px;
+        flex-shrink: 0;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 4px;
+        padding-bottom: 3.5rem;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
+      }
+      .menu-stations-rail::-webkit-scrollbar { display: none; }
+      .menu-items-pane {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-right: 2px;
+        padding-top: 4px;
+        padding-bottom: 4.5rem;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 24px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 24px), transparent 100%);
+      }
+      .menu-items-pane::-webkit-scrollbar { display: none; }
+      .menu-station-label {
+        font-size: 0.88rem;
+      }
+      .menu-station-sub {
+        font-size: 0.6rem;
+      }
+      .item-name {
+        font-size: 1.04rem;
+      }
+      .item-desc {
+        font-size: 0.8rem;
+      }
+      .menu-footer {
+        display: none;
+      }
+    }
+    .menu-brand-summary-bar:hover {
+      border-color: rgba(229, 169, 60, 0.25);
+    }
+
+    /* BORDERLESS & FULLY TRANSPARENT UTILITIES */
+    .obsidian-card {
+      position: relative;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: none;
+      border-radius: 0.75rem;
+      box-shadow: none;
+    }
+
+    .slate-pill {
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+
 
     /* STOKED VERTICAL RULER STATION DIAL (LEFT COLUMN) */
     .v-ruler-sidebar {
@@ -244,10 +715,9 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* ============================================================
-       EMPIRE HOOKAH LOUNGE — CINEMATIC OBSIDIAN ENTRY SCREEN
-       (Ultra-Optimized 60FPS GPU Pipeline)
-       ============================================================ */
+    /* ========================================================================== */
+    /* ⛔ [OFF-LIMITS] CINEMATIC OBSIDIAN ENTRY SCREEN CSS — DO NOT TOUCH / EDIT ⛔ */
+    /* ========================================================================== */
     :root {
       --entry-ink:        #000000;
       --entry-surface:    #05070a;
@@ -812,20 +1282,21 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 5px 12px;
+      padding: 5px 13px;
       border-radius: 9999px;
-      background: rgba(10, 10, 16, 0.65);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      background: rgba(10, 12, 18, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(229, 169, 60, 0.35);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(229, 169, 60, 0.12);
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .theme-bar-pill:hover {
-      background: rgba(20, 20, 30, 0.85);
-      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(18, 22, 32, 0.9);
+      border-color: rgba(229, 169, 60, 0.6);
       transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 16px rgba(229, 169, 60, 0.25);
     }
     .theme-pill-dot {
       width: 6px;
@@ -1039,10 +1510,10 @@
       100% { transform: translate3d(480%, 0, 0) skewX(-12deg); }
     }
 
-    /* Brand titles below emblem - always centered and non-wrapping */
+    /* Brand titles below emblem - Regal Playfair Serif & Golden Tagline */
     .brand-titles {
       position: absolute;
-      top: calc(100% + 12px);
+      top: calc(100% + 14px);
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
@@ -1054,70 +1525,175 @@
       pointer-events: none;
       width: max-content;
     }
+    .landing-masthead {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.25rem, 4.2vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #FFFFFF;
+      margin: 0;
+      line-height: 1.15;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.4), 0 2px 10px rgba(0, 0, 0, 0.9);
+      white-space: nowrap;
+    }
+    .landing-kicker {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #E5A93C;
+      margin-top: 0.3rem;
+      text-shadow: 0 0 10px rgba(229, 169, 60, 0.45), 0 2px 8px rgba(0, 0, 0, 0.9);
+      white-space: nowrap;
+    }
 
-    /* Transparent Bottom Policy & Enter HUD */
+    /* Art Deco Speakeasy Entrance Placard */
     .entry-hud {
       position: absolute;
       left: 50%;
       bottom: max(16px, env(safe-area-inset-bottom, 16px));
       transform: translateX(-50%);
       width: calc(100% - 24px);
-      max-width: 390px;
+      max-width: 375px;
       z-index: 20;
     }
     .hud-glass-card {
-      background: transparent;
-      border: none;
-      border-radius: 20px;
-      padding: 0;
-      box-shadow: none;
+      background: rgba(8, 10, 15, 0.75);
+      border: 1px solid rgba(229, 169, 60, 0.35);
+      border-radius: 18px;
+      padding: 12px 14px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 20px rgba(229, 169, 60, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
-    .hud-policy-pill {
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 9px 12px;
+    .hud-card-header {
       display: flex;
       align-items: center;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1px;
+    }
+    .hud-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #E5A93C;
+      text-shadow: 0 0 10px rgba(229, 169, 60, 0.3);
+    }
+    .hud-deco-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(229, 169, 60, 0.4), transparent);
+    }
+    .hud-policies-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .hud-policy-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 9px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      transition: border-color 0.2s ease;
+    }
+    .hud-policy-row:hover {
+      border-color: rgba(229, 169, 60, 0.3);
+    }
+    .hud-badge-gold {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: rgba(229, 169, 60, 0.12);
+      border: 1px solid rgba(229, 169, 60, 0.5);
+      color: #E5A93C;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(229, 169, 60, 0.2);
+    }
+    .hud-policy-text {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+    .hud-policy-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+    }
+    .hud-policy-sub {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.62rem;
+      color: #94A3B8;
+      font-style: italic;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hud-law-link {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: #E5A93C;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      margin-left: 2px;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+    .hud-law-link:hover {
+      color: #FBBF24;
     }
 
+    /* Luxury Gilded Enter Lounge Button */
     .enter-lounge-btn {
       position: relative;
       width: 100%;
-      padding: 13px 20px;
-      background: rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 14px;
-      color: #FFFFFF;
-      font-family: inherit;
-      font-size: 11px;
+      padding: 11px 18px;
+      background: linear-gradient(135deg, #E5A93C 0%, #D4973B 50%, #B87C28 100%);
+      border: 1px solid rgba(255, 235, 180, 0.45);
+      border-radius: 12px;
+      color: #000000;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.24em;
-      text-indent: 0.24em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       cursor: pointer;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s ease;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 18px rgba(229, 169, 60, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
     }
     .enter-lounge-btn:hover, .enter-lounge-btn:focus-visible {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.5);
-      color: #FFFFFF;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, #F5BA4C 0%, #E5A93C 50%, #C88C38 100%);
+      box-shadow: 0 6px 24px rgba(229, 169, 60, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transform: translateY(-1px);
       outline: none;
     }
     .enter-lounge-btn:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
     }
     .enter-lounge-btn::after {
       content: "";
@@ -1126,7 +1702,7 @@
       bottom: 0;
       left: 0;
       width: 35%;
-      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.25) 50%, transparent);
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.4) 50%, transparent);
       transform: translate3d(-140%, 0, 0) skewX(-14deg);
       animation: btn-sweep 4.8s var(--entry-sheen-ease) infinite;
       pointer-events: none;
@@ -1164,16 +1740,19 @@
       pointer-events: none;
       z-index: 10;
     }
+    /* ========================================================================== */
+    /* ⛔ [END OF OFF-LIMITS CINEMATIC CSS] ⛔                                    */
+    /* ========================================================================== */
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
   <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
-  <header class="w-full max-w-lg bg-black/95 border-b border-zinc-900 sticky top-0 z-40 px-3.5 py-2.5 flex items-center justify-between">
+  <header class="w-full max-w-lg bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
     
     <!-- Left: Spacer / VIP Profile Info (Balanced 80px) -->
     <div class="w-20 flex items-center justify-start">
-      <div id="headerVipView" class="hidden flex items-center gap-1.5">
+      <div id="headerVipView" class="hidden flex items-center gap-1.5 pointer-events-auto">
         <div class="w-7 h-7 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs">
           <span id="vipAvatarLetter">A</span>
         </div>
@@ -1183,22 +1762,21 @@
       </div>
     </div>
 
-    <!-- Center: Official Empire Hookah Lounge Emblem (Tap to Open Welcome/Rules) -->
+    <!-- Center: (Clean / Uncluttered) -->
     <div class="flex items-center justify-center">
-      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-10 h-10 object-contain cursor-pointer filter drop-shadow-[0_0_10px_rgba(255,255,255,0.35)] active:scale-95 transition" onclick="openWelcomeLoungeModal()" title="Empire Hookah Lounge — Tap to view Story &amp; Rules" />
     </div>
 
     <!-- Right: VIP Log In Button (Public Guest View) OR VIP Actions (Logged In View) (Balanced 80px) -->
     <div class="w-20 flex items-center justify-end">
       <!-- Public Guest Mode: VIP Log In Button on Right -->
-      <div id="headerGuestView" class="flex items-center justify-end">
-        <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-2.5 py-1.5 rounded-xl text-xs flex items-center gap-1 shadow-md shadow-amber-500/20 transition active:scale-95">
+      <div id="headerGuestView" class="flex items-center justify-end pointer-events-auto">
+        <button onclick="openVipLoginModal()" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold px-2.5 py-1 rounded-xl text-[11px] flex items-center gap-1 shadow-md shadow-amber-500/20 transition active:scale-95">
           <i data-lucide="lock" class="w-3 h-3"></i>
-          <span>VIP Login</span>
+          <span>VIP</span>
         </button>
       </div>
 
-      <div id="headerVipRightView" class="hidden flex items-center gap-1">
+      <div id="headerVipRightView" class="hidden flex items-center gap-1 pointer-events-auto">
         <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-1.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-0.5 transition active:scale-95" title="View VIP Stash">
           <i data-lucide="award" class="w-3 h-3 text-amber-400"></i>
           <span id="headerVipPointsBadge">750</span>
@@ -1237,81 +1815,33 @@
   </nav>
 
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
-  <main class="w-full max-w-lg px-3.5 pt-1.5 flex flex-col gap-3">
+  <main class="w-full max-w-lg px-3.5 pt-0 flex flex-col gap-3">
 
-    <!-- ==================== VIEW 1: LOUNGE MENU (DEFAULT VIEW) ==================== -->
-    <div id="customer-view-menu" class="customer-panel flex flex-col gap-2.5">
+    <!-- ==================== VIEW 1: EDITORIAL COCKTAIL SPREAD ==================== -->
+    <div id="customer-view-menu" class="customer-panel menu-spread">
       
-      <!-- 1. Menu Sub-Tabs Switcher (House Blends is Default Subtab) -->
-      <div class="grid grid-cols-3 gap-1 p-1 bg-transparent rounded-xl text-xs">
-        <button onclick="switchMenuSubTab('house')" id="menu-subtab-house" class="menu-sub-btn py-1.5 rounded-lg bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition">
-          <span>👑 House Blends</span>
-        </button>
-        <button onclick="switchMenuSubTab('flavors')" id="menu-subtab-flavors" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium text-xs flex items-center justify-center gap-1 transition">
-          <span>🍃 Single Flavors</span>
-        </button>
-        <button onclick="switchMenuSubTab('drinks')" id="menu-subtab-drinks" class="menu-sub-btn py-1.5 rounded-lg text-zinc-400 hover:text-white font-medium text-xs flex items-center justify-center gap-1 transition">
-          <span>☕ Drinks &amp; Tea</span>
-        </button>
+      <!-- Generated Grayscale Hand-Drawn Charcoal & Copperplate Etching Skyline Illustration -->
+      <div class="menu-skyline-bg" aria-hidden="true">
+        <img src="images/skyline_sketch.jpg" alt="" class="menu-skyline-img" />
+        <div class="menu-skyline-overlay"></div>
       </div>
 
-      <!-- 2. Sub-Tab 1: House Mixes -->
-      <div id="menu-view-house" class="menu-sub-panel space-y-2.5">
-        <!-- Injected via JS -->
+      <!-- Menu Header with clean transparent logo, name, and atmosphere -->
+      <div class="menu-header">
+        <div class="text-center pt-2 pb-1">
+          <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="menu-header-logo" />
+          <h1 class="menu-masthead">Empire Hookah Lounge</h1>
+          <p class="menu-kicker">EST. 2010 · PHOENIX, ARIZONA</p>
+        </div>
       </div>
 
-      <!-- 3. Sub-Tab 2: Master Flavors with Dual-Pivot Explorer (By Profile vs By Brand) -->
-      <div id="menu-view-flavors" class="menu-sub-panel hidden space-y-2.5">
-        
-        <!-- Flavor Explorer Pivot Header -->
-        <div class="flex items-center justify-between px-1 pt-0.5">
-          <span class="text-xs font-bold uppercase tracking-wider text-zinc-400" id="flavorCatalogHeading">Flavor Catalog</span>
-          
-          <!-- Top Right Pivot Switcher: By Profile vs By Brand -->
-          <div class="flex items-center p-0.5 bg-zinc-900/90 rounded-xl border border-zinc-800 text-xs">
-            <button onclick="setFlavorPivotMode('profile')" id="flavorPivotBtn-profile" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition">
-              By Profile
-            </button>
-            <button onclick="setFlavorPivotMode('brand')" id="flavorPivotBtn-brand" class="px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition">
-              By Brand
-            </button>
-          </div>
-        </div>
+      <!-- Menu Navigation — feels like turning to a different section of the same printed menu -->
+      <nav class="menu-nav" id="menuNavTrack">
+        <!-- Rendered by JS -->
+      </nav>
 
-        <!-- Ambient Lounge Pricing Rates Strip (Shown exclusively on Single Flavors) -->
-        <div class="flex items-center justify-center gap-4 text-xs py-1.5 px-2 text-zinc-300 font-medium tracking-tight bg-zinc-950/60 border border-zinc-850/80 rounded-xl">
-          <span>Orig <strong class="text-zinc-100 font-semibold tabular-nums" id="menuPriceOriginal">$35.00</strong></span>
-          <span class="text-zinc-700">·</span>
-          <span>Refill <strong class="text-emerald-400 font-semibold tabular-nums" id="menuPriceRefill">$25.00</strong></span>
-          <span class="text-zinc-700">·</span>
-          <span>Noir <strong class="text-amber-400 font-semibold tabular-nums" id="menuPriceTangiers">$38.00</strong></span>
-        </div>
-
-        <!-- Filter Navigation Strip -->
-        <div class="bg-transparent">
-          <div class="flex gap-4 overflow-x-auto no-scrollbar py-1 px-1 text-xs whitespace-nowrap border-b border-zinc-800/60" id="flavorFilterStrip">
-            <!-- Populated via JS based on pivot mode: Profile or Brand -->
-          </div>
-        </div>
-
-        <!-- Flavors List Container -->
-        <div class="space-y-2.5" id="menuFlavorsContainer">
-          <!-- Injected via JS -->
-        </div>
-
-        <!-- Product Tier Disclaimer Note -->
-        <div class="pt-3 pb-1 border-t border-zinc-900">
-          <p class="text-[11px] text-zinc-500 text-center italic leading-relaxed">
-            *Disclaimer, any bowl containing a different tier of product is charged at that higher tier.
-          </p>
-        </div>
-
-      </div>
-
-      <!-- 4. Sub-Tab 3: Drinks & Tea Bar -->
-      <div id="menu-view-drinks" class="menu-sub-panel hidden space-y-2.5">
-        <!-- Injected via JS -->
-      </div>
+      <!-- The Spread (rendered by JS) -->
+      <div id="menuSpreadContainer"></div>
 
     </div>
 
@@ -1645,341 +2175,117 @@
     </button>
   </nav>
 
-  <!-- ==================== BOTTOM SHEET MODAL FOR MENU ITEM / BLEND DETAILS ==================== -->
-  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col justify-end">
+  <!-- ==================== 1800s APOTHECARY SOMMELIER COMPENDIUM MODAL ==================== -->
+  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/75 backdrop-blur-[2px] z-50 hidden flex flex-col justify-end">
     <div class="fixed inset-0" onclick="closeMenuItemDetailModal()"></div>
-    <div class="relative w-full max-w-lg mx-auto bg-zinc-950 border-t border-zinc-800 rounded-t-3xl p-5 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] max-h-[85vh] overflow-y-auto no-scrollbar space-y-3.5 z-10">
+    <div class="relative w-full max-w-lg mx-auto bg-[#080808] border-t border-white/[0.12] rounded-t-3xl p-6 shadow-[0_-20px_60px_rgba(0,0,0,0.95)] max-h-[85vh] overflow-y-auto no-scrollbar space-y-4 z-10">
       
-      <!-- Drag handle -->
-      <div class="w-10 h-1 bg-zinc-700 rounded-full mx-auto -mt-1 mb-1 cursor-pointer" onclick="closeMenuItemDetailModal()"></div>
+      <!-- Drag handle / close notch -->
+      <div class="w-10 h-1 bg-zinc-800 rounded-full mx-auto -mt-2 mb-3 cursor-pointer" onclick="closeMenuItemDetailModal()"></div>
 
-      <div class="flex justify-between items-start">
-        <div class="space-y-0.5">
-          <div class="flex items-center gap-1.5">
-            <span class="text-[10px] bg-amber-950 text-brand-gold font-bold px-2 py-0.5 rounded font-mono" id="detailModalBadge">👑 House Blend</span>
-            <h3 class="font-bold text-sm text-white" id="detailModalTitle">Pink Cane Sensation</h3>
-          </div>
-          <p class="text-xs text-zinc-400" id="detailModalTagline">Lounge Signature Blend</p>
-        </div>
-
-        <div class="text-right">
-          <span class="text-sm font-extrabold font-mono text-brand-gold" id="detailModalPrice">$35.00</span>
-          <span class="text-[10px] text-zinc-500 block">22g Pack</span>
-        </div>
+      <!-- Kicker & Strength Pill -->
+      <div class="flex justify-between items-center text-[10px] font-sans tracking-[0.2em] text-zinc-400 uppercase">
+        <span id="detailModalTagline">MustHave · Russia 🇷🇺</span>
+        <span class="text-amber-400 font-mono font-bold text-xs" id="detailModalBuzzPill">⚡ 7/10 · BOLD</span>
       </div>
 
-      <!-- Sommelier Buzz & Strength Row -->
-      <div class="flex items-center justify-between p-2 bg-black/80 rounded-xl border border-zinc-850 text-xs">
-        <span class="text-zinc-400 font-bold uppercase text-[10px] tracking-wider">Sommelier Buzz Profile:</span>
-        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold border" id="detailModalBuzzPill">
-          <span>⚡ 7.6/10 • BOLD</span>
-        </span>
+      <!-- Title & Price Block with Editorial Dotted Leader -->
+      <div class="flex items-baseline justify-between pt-0.5">
+        <h3 class="font-serif text-2xl text-white font-semibold tracking-wide" id="detailModalTitle">Frosty</h3>
+        <span class="flex-grow mx-3 border-b border-dotted border-white/20 relative -top-1"></span>
+        <span class="text-2xl font-serif text-white font-bold" id="detailModalPrice">$35</span>
       </div>
 
-      <!-- Visual Gradient Ratio Track -->
-      <div class="h-2 rounded-full overflow-hidden w-full border border-zinc-800" id="detailModalGradientTrack"></div>
-
-      <!-- Bowl Composition Section -->
-      <div class="space-y-1.5 bg-black/60 p-3 rounded-2xl border border-zinc-850 text-xs">
-        <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider" id="detailModalCompositionHeading">Bowl Composition Breakdown (22g Pack):</span>
-        <div class="space-y-1.5" id="detailModalCompositionList">
-          <!-- Injected via JS -->
-        </div>
+      <!-- Tasting Notes / Botanical Palate -->
+      <div class="py-2.5 border-y border-white/[0.06] space-y-1">
+        <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block">Tasting Profile &amp; Botanicals</span>
+        <p class="text-sm text-zinc-200 italic font-sans leading-relaxed" id="detailModalDesc">Sub-Zero Siberian Chill</p>
+        <div class="flex items-center gap-1.5 flex-wrap pt-1 font-sans text-xs text-zinc-300" id="detailModalProfilesTags"></div>
       </div>
 
-      <!-- Tasting Notes / Profiles -->
-      <div class="space-y-1">
-        <span class="text-[10px] uppercase font-bold text-zinc-400 block tracking-wider">Tasting Notes &amp; Palate:</span>
-        <p class="text-xs text-zinc-300 italic" id="detailModalDesc">Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.</p>
-        <div class="flex items-center gap-1 flex-wrap pt-1" id="detailModalProfilesTags">
-          <!-- Injected via JS -->
-        </div>
-      </div>
+      <!-- Formulation Composition Track & Specs -->
+      <div class="space-y-2 pt-1" id="detailModalCompositionList"></div>
 
-      <!-- Action Button -->
-      <div class="pt-1" id="detailModalActionContainer">
-        <!-- Injected via JS based on VIP logged in vs Guest mode -->
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ==================== CINEMATIC OBSIDIAN ENTRY SCREEN ==================== -->
-  <div id="cinematicEntryStage" class="cinematic-stage" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
-
-    <!-- Top Atmospheric Season & Day/Night Controller Bar -->
-    <div id="themePreviewBar" class="theme-preview-toolbar">
-      <div class="theme-bar-pill" onclick="toggleThemeController()">
-        <span class="theme-pill-dot"></span>
-        <span id="themeBarLabel" class="theme-pill-text">Atmosphere: Auto</span>
-        <svg class="theme-pill-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-      
-      <div id="themeDropdownPanel" class="theme-dropdown-panel hidden space-y-2">
-        <!-- Season Row -->
-        <div class="space-y-1">
-          <div class="theme-group-label">SEASONS OF THE YEAR</div>
-          <div class="grid grid-cols-5 gap-1">
-            <button type="button" onclick="setSeason('auto')" class="theme-btn active" data-season="auto"><span>🗓️</span><span class="btn-lbl">Auto</span></button>
-            <button type="button" onclick="setSeason('winter')" class="theme-btn" data-season="winter"><span>❄️</span><span class="btn-lbl">Winter</span></button>
-            <button type="button" onclick="setSeason('spring')" class="theme-btn" data-season="spring"><span>🦋</span><span class="btn-lbl">Spring</span></button>
-            <button type="button" onclick="setSeason('summer')" class="theme-btn" data-season="summer"><span>🎆</span><span class="btn-lbl">Summer</span></button>
-            <button type="button" onclick="setSeason('fall')" class="theme-btn" data-season="fall"><span>🍂</span><span class="btn-lbl">Fall</span></button>
-          </div>
-        </div>
-
-        <!-- Time of Day Row -->
-        <div class="space-y-1 pt-1.5 border-t border-white/10">
-          <div class="theme-group-label">TIME OF DAY & DIURNAL CYCLE</div>
-          <div class="grid grid-cols-5 gap-1">
-            <button type="button" onclick="setTimeOfDay('night')" class="theme-btn active" data-time="night"><span>🌙</span><span class="btn-lbl">Night</span></button>
-            <button type="button" onclick="setTimeOfDay('sunrise')" class="theme-btn" data-time="sunrise"><span>🌅</span><span class="btn-lbl">Sunrise</span></button>
-            <button type="button" onclick="setTimeOfDay('day')" class="theme-btn" data-time="day"><span>☀️</span><span class="btn-lbl">Day</span></button>
-            <button type="button" onclick="setTimeOfDay('sunset')" class="theme-btn" data-time="sunset"><span>🌇</span><span class="btn-lbl">Sunset</span></button>
-            <button type="button" onclick="setTimeOfDay('cycle30m')" class="theme-btn" data-time="cycle30m"><span>⏱️</span><span class="btn-lbl">30m Cycle</span></button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 1 · Ambient Dynamic Sky -->
-    <div class="cinematic-sky" aria-hidden="true"></div>
-
-    <!-- 2 · Starfield (3 drifting layers) & Occasional Shooting Stars -->
-    <div class="cinematic-stars" aria-hidden="true"><i></i><i></i><i></i></div>
-    <div class="shooting-star-container" aria-hidden="true">
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-      <div class="shooting-star"></div>
-    </div>
-
-    <!-- 2b · Seasonal Particle FX Layers -->
-    <!-- Winter Snow Flurries & Bottom Snowdrifts -->
-    <div class="snow-container" aria-hidden="true">
-      <div class="snowflake" style="left:4%; width:3px; height:3px; animation-duration:5.5s; animation-delay:0s;"></div>
-      <div class="snowflake" style="left:12%; width:4px; height:4px; animation-duration:7s; animation-delay:1.5s;"></div>
-      <div class="snowflake" style="left:20%; width:2.5px; height:2.5px; animation-duration:4.8s; animation-delay:0.7s;"></div>
-      <div class="snowflake" style="left:32%; width:5px; height:5px; animation-duration:6.2s; animation-delay:2.2s;"></div>
-      <div class="snowflake" style="left:44%; width:3px; height:3px; animation-duration:5s; animation-delay:0.3s;"></div>
-      <div class="snowflake" style="left:56%; width:4px; height:4px; animation-duration:6.8s; animation-delay:1.8s;"></div>
-      <div class="snowflake" style="left:66%; width:2.5px; height:2.5px; animation-duration:4.5s; animation-delay:3s;"></div>
-      <div class="snowflake" style="left:76%; width:4.5px; height:4.5px; animation-duration:5.8s; animation-delay:0.9s;"></div>
-      <div class="snowflake" style="left:86%; width:3px; height:3px; animation-duration:6.5s; animation-delay:2.5s;"></div>
-      <div class="snowflake" style="left:94%; width:4px; height:4px; animation-duration:5.2s; animation-delay:1.2s;"></div>
-      
-      <!-- Layered Frosted Snowdrifts along bottom of page -->
-      <div class="winter-snowdrifts">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="gSnowDune" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
-              <stop offset="35%" stop-color="#cbeaf8" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#081826" stop-opacity="0.95"/>
-            </linearGradient>
-          </defs>
-          <path fill="url(#gSnowDune)" d="M-50,120 V70 Q220,35 460,60 T980,45 T1490,65 V120 Z" opacity="0.65"/>
-          <path fill="url(#gSnowDune)" d="M-50,120 V82 Q340,50 700,75 T1490,60 V120 Z"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- Spring Glowing Butterflies & Cascading Lotus/Cherry Blossom Petals -->
-    <div class="butterfly-container" aria-hidden="true">
-      <div class="butterfly" style="left:15%; animation-duration:11s; animation-delay:0s;">
-        <svg viewBox="0 0 24 24" fill="#ffd700"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
-      </div>
-      <div class="butterfly" style="left:72%; animation-duration:13s; animation-delay:3.5s;">
-        <svg viewBox="0 0 24 24" fill="#7fffd4"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
-      </div>
-      <div class="butterfly" style="left:42%; animation-duration:15s; animation-delay:7s;">
-        <svg viewBox="0 0 24 24" fill="#ffb6c1"><path d="M12 4c-1.5-2-4-2.5-6-1-2.5 1.8-2 6 2 9 1.5 1.2 3.5 1.8 4 4 0.5-2.2 2.5-2.8 4-4 4-3 4.5-7.2 2-9-2-1.5-4.5-1-6 1z"/></svg>
-      </div>
-
-      <!-- Cascading falling petals -->
-      <div class="spring-petal" style="left:8%; animation-duration:7s; animation-delay:0s;"></div>
-      <div class="spring-petal" style="left:24%; animation-duration:9s; animation-delay:1.5s; transform:scale(0.85);"></div>
-      <div class="spring-petal" style="left:38%; animation-duration:8s; animation-delay:4s;"></div>
-      <div class="spring-petal" style="left:52%; animation-duration:10s; animation-delay:2.5s; transform:scale(1.15);"></div>
-      <div class="spring-petal" style="left:68%; animation-duration:7.5s; animation-delay:5s;"></div>
-      <div class="spring-petal" style="left:82%; animation-duration:8.5s; animation-delay:1s; transform:scale(0.9);"></div>
-      <div class="spring-petal" style="left:92%; animation-duration:9.5s; animation-delay:3s;"></div>
-    </div>
-
-    <!-- Autumn Tumbling Amber Leaves -->
-    <div class="autumn-leaves-container" aria-hidden="true">
-      <div class="autumn-leaf" style="left:12%; animation-duration:6.5s; animation-delay:0s;"></div>
-      <div class="autumn-leaf" style="left:32%; animation-duration:8s; animation-delay:2s; transform:scale(0.8);"></div>
-      <div class="autumn-leaf" style="left:54%; animation-duration:7s; animation-delay:1s; transform:scale(1.1);"></div>
-      <div class="autumn-leaf" style="left:76%; animation-duration:7.5s; animation-delay:3.5s;"></div>
-      <div class="autumn-leaf" style="left:90%; animation-duration:8.5s; animation-delay:1.8s; transform:scale(0.9);"></div>
-    </div>
-
-    <!-- 3 · Summer Seasonal FX (Volumetric Day Sunbeams & Night Celebratory Fireworks) -->
-    <!-- 3a · Summer Daytime Volumetric Sunbeams -->
-    <div class="summer-sunbeams" aria-hidden="true">
-      <div class="sunbeam sunbeam-1"></div>
-      <div class="sunbeam sunbeam-2"></div>
-      <div class="sunbeam sunbeam-3"></div>
-      <div class="sunbeam sunbeam-4"></div>
-      <div class="sunbeam sunbeam-5"></div>
-      <div class="sunbeam sunbeam-6"></div>
-      <!-- Shimmering golden sun motes -->
-      <div class="sun-mote" style="left:20%; top:28%; animation-duration:4.5s;"></div>
-      <div class="sun-mote" style="left:38%; top:18%; animation-duration:5.8s; animation-delay:1s;"></div>
-      <div class="sun-mote" style="left:58%; top:32%; animation-duration:4.8s; animation-delay:0.5s;"></div>
-      <div class="sun-mote" style="left:76%; top:22%; animation-duration:6.2s; animation-delay:2s;"></div>
-      <div class="sun-mote" style="left:88%; top:35%; animation-duration:5.2s; animation-delay:1.5s;"></div>
-    </div>
-
-    <!-- 3b · Summer Night Celebratory Fireworks Canvas Engine -->
-    <canvas id="cinematicFireworksCanvas" class="cinematic-fireworks-canvas" aria-hidden="true"></canvas>
-
-    <!-- 3c · Distant Dense Metropolis Silhouette (Continuous, Zero-Gap) -->
-    <svg class="cinematic-skyline skyline--back" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs>
-        <!-- Dynamic Gradient stops driven by CSS variables -->
-        <linearGradient id="gBack" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"  stop-color="var(--g-back-1)"/>
-          <stop offset="45%" stop-color="var(--g-back-2)"/>
-          <stop offset="100%" stop-color="var(--g-back-3)"/>
-        </linearGradient>
-      </defs>
-      
-      <!-- Continuous High-Rise Wall with Integrated Spires -->
-      <path fill="url(#gBack)" d="
-        M-100,380 V220 h30 v-30 h24 v30 h28 V150 h22 v-20 h10 v20 h22 v230 h26 V180 h28 v-35 h14 v35 h24 v200 h30 V120 h22 v-18 h8 v18 h22 v260 h28 V160 h30 v-25 h12 v25 h26 v220 h32 V190 h26 v-30 h16 v30 h24 v220 h28 V130 h18 v-15 h8 v-20 h4 l2,-45 2,45 h4 v20 h8 v15 h18 v270 h30 V175 h26 v-28 h12 v28 h24 v230 h34 V140 h28 v-35 h16 v35 h26 v240 h30 V110 h16 v-25 h8 v-30 h4 l2,-25 2,25 h4 v30 h8 v25 h16 v290 h32 V165 h28 v-30 h14 v30 h26 v245 h34 V125 h20 v-22 h8 v-25 h4 l2,-35 2,35 h4 v25 h8 v22 h20 v275 h30 V180 h26 v-25 h14 v25 h24 v225 h32 V135 h22 v-20 h10 v-30 h4 l2,-40 2,40 h4 v30 h10 v20 h22 v265 h30 V190 h28 v-32 h12 v32 h26 v220 h34 V150 h24 v-25 h12 v25 h26 v235 h32 V120 h20 v-18 h8 v18 h20 v260 h30 V170 h26 v-28 h14 v28 h24 v235 h32 V140 h26 v-30 h12 v30 h24 v240 h30 V185 h28 v-25 h12 v25 h26 v220 h34 V130 h22 v-20 h8 v20 h22 v250 h32 V175 h28 v-30 h14 v30 h24 v235 h160 V380 Z"/>
-    </svg>
-
-    <!-- 3b · Mid Dense Skyscraper Skyline (Seamless High-Rise Silhouette) -->
-    <svg class="cinematic-skyline skyline--mid" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs>
-        <!-- Dynamic Gradient stops driven by CSS variables -->
-        <linearGradient id="gMid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"  stop-color="var(--g-mid-1)"/>
-          <stop offset="55%" stop-color="var(--g-mid-2)"/>
-          <stop offset="100%" stop-color="var(--g-mid-3)"/>
-        </linearGradient>
-      </defs>
-
-      <!-- Mid Skyline Continuous Solid Path with Setbacks and Spires -->
-      <path fill="url(#gMid)" d="
-        M-100,380 V240 h40 v-35 h32 v35 h36 V180 h28 v-30 h16 v30 h26 v200 h34 V150 h12 l5,-45 5,45 h12 v230 h38 V210 h34 v-30 h22 v30 h30 v170 h44 V160 h28 v-28 h12 v28 h26 v220 h40 V190 h34 v-35 h20 v35 h32 v190 h42 V130 h18 v-25 h10 v-20 h6 l3,-35 3,35 h6 v20 h10 v25 h18 v250 h40 V170 h36 v-35 h18 v35 h32 v210 h44 V145 h22 v-25 h8 v-30 h4 l2,-40 2,40 h4 v30 h8 v25 h22 v235 h42 V185 h32 v-30 h16 v30 h28 v195 h40 V135 h20 v-22 h8 v-25 h4 l2,-35 2,35 h4 v25 h8 v22 h20 v245 h42 V195 h34 v-32 h18 v32 h30 v185 h44 V155 h26 v-28 h12 v28 h28 v225 h42 V205 h36 v-35 h20 v35 h34 v175 h40 V170 h28 v-25 h14 v25 h26 v210 h160 V380 Z"/>
-    </svg>
-
-    <!-- 3c · Foreground Cityscape — Dense Street-Wall, Moonlit 3D Facets & 3 Crisp Pinpoint LEDs -->
-    <svg class="cinematic-skyline skyline--front" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-      <defs>
-        <!-- Dynamic Gradient stops driven by CSS variables -->
-        <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"  stop-color="var(--g-front-1)"/>
-          <stop offset="45%" stop-color="var(--g-front-2)"/>
-          <stop offset="100%" stop-color="var(--g-front-3)"/>
-        </linearGradient>
-      </defs>
-
-      <!-- Fully Integrated Foreground Buildings with Continuous Rooflines, Setbacks and Spires -->
-      <path fill="url(#gFront)" d="
-        M-40,400 V230 H80 V400 Z
-        M-30,230 v-10 h20 v10 Z M52,230 v-14 h16 v14 Z
-        M110,400 V170 h18 v-20 h22 v-14 h21 v-42 h4 v42 h23 v14 h22 v20 h18 V400 Z
-        M280,400 V240 L370,224 V400 Z
-        M400,400 V150 h24 v-26 h20 v-16 h19 v-40 h4 v40 h21 v16 h20 v26 h24 V400 Z
-        M580,400 V210 h20 v-20 h54 v20 h20 V400 Z
-        M680,400 V180 h22 v-22 h18 v-14 h16 v-44 h4 v44 h18 v14 h18 v22 h22 V400 Z
-        M850,400 V215 h18 v-18 h48 v18 h18 V400 Z
-        M980,400 V155 h22 v-26 h31 v-48 h4 v48 h33 v26 h22 V400 Z
-        M1130,400 V235 L1230,220 V400 Z
-        M1260,400 V175 h18 v-22 h94 v22 h18 V400 Z
-        M1420,400 V230 H1540 V400 Z"/>
-
-      <!-- Continuous street wall -->
-      <rect fill="url(#gFront)" x="-80" y="370" width="1720" height="30"/>
-
-      <!-- Dynamic Moonlit / Sunlit 3D side faces -->
-      <path fill="var(--face-fill)" d="
-        M64,230 H80 V400 H64 Z
-        M220,170 h18 V400 h-18 Z
-        M498,150 h18 V400 h-18 Z
-        M654,210 h18 V400 h-18 Z
-        M764,180 h18 V400 h-18 Z
-        M916,215 h18 V400 h-18 Z
-        M1070,155 h22 V400 h-22 Z
-        M1372,175 h18 V400 h-18 Z"/>
-
-      <!-- Just 3 Crisp, Tiny Pinpoint Red Aviation LEDs on Main Spires (Zero Blobs) -->
-      <circle class="beacon" cx="463" cy="68" r="2"/>
-      <circle class="beacon beacon--alt" cx="736" cy="100" r="2.2"/>
-      <circle class="beacon" cx="1031" cy="81" r="2"/>
-    </svg>
-
-    <!-- 4 · Horizon Fog Strata -->
-    <div class="fog fog--far" aria-hidden="true"></div>
-    <div class="fog fog--near" aria-hidden="true"></div>
-
-    <!-- 5 · Smoke Atmosphere -->
-    <div class="smoke-field" aria-hidden="true">
-      <div class="plume"></div>
-      <div class="plume"></div>
-      <div class="plume"></div>
-      <div class="plume"></div>
-    </div>
-
-    <!-- 6 · Emblem Crest (Scaled Mobile-First with Pop Glow) -->
-    <div class="emblem-anchor">
-      <div class="emblem-halo" aria-hidden="true"></div>
-      <div class="emblem-core">
-        <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" />
-        <div class="emblem-sheen" aria-hidden="true"></div>
-      </div>
-      <div class="brand-titles">
-        <div class="text-[12px] font-extrabold tracking-[0.28em] text-white uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] whitespace-nowrap">EMPIRE HOOKAH LOUNGE</div>
-        <div class="text-[9px] font-semibold tracking-[0.22em] text-white/55 uppercase mt-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] whitespace-nowrap">EST. 2010 • PHOENIX, AZ</div>
-      </div>
-    </div>
-
-    <!-- Ground fog -->
-    <div class="fog fog--ground" aria-hidden="true"></div>
-
-    <!-- 7 · Integrated Obsidian Glass Policies & Action Button -->
-    <div class="entry-hud">
-      <div class="hud-glass-card space-y-2">
-        <!-- Policies Grid -->
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between text-[9px] font-bold tracking-widest text-white/50 uppercase px-1 pb-0.5">
-            <span>Lounge House Policies</span>
-            <span class="text-white/40">Bespoke Lounge</span>
-          </div>
-
-          <div class="grid grid-cols-1 gap-1.5 text-xs text-zinc-300">
-            <div class="hud-policy-pill justify-between">
-              <div class="flex items-center gap-2.5">
-                <span class="w-6 h-6 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-black text-white shrink-0">21+</span>
-                <span id="entryAgeReqDisplay" class="text-[11px] font-medium text-zinc-100">Minimum 21+ of age with valid ID</span>
-              </div>
-              <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-[10px] text-amber-400 hover:text-amber-300 underline ml-2 shrink-0 font-medium" title="Federal Tobacco 21 Law">Law ↗</a>
-            </div>
-
-            <div class="hud-policy-pill">
-              <div class="flex items-center gap-2.5">
-                <span class="w-6 h-6 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-[10px] font-black text-white shrink-0">2P</span>
-                <span id="entryPipeLimitDisplay" class="text-[11px] font-medium text-zinc-100">Maximum 2 guests per hookah pipe</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Enter Lounge Menu Action Button -->
-        <button onclick="enterLounge()" class="enter-lounge-btn" type="button">
-          <span>Enter Lounge Menu</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      <!-- Dismiss Button -->
+      <div class="pt-2 text-center">
+        <button onclick="closeMenuItemDetailModal()" class="text-[11px] font-sans text-zinc-400 hover:text-white py-1.5 tracking-wider uppercase">
+          Tap outside or swipe down to close
         </button>
       </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================== -->
+  <!-- ⛔ [OFF-LIMITS] CINEMATIC OBSIDIAN ENTRY SCREEN HTML — DO NOT TOUCH / EDIT ⛔ -->
+  <!-- ========================================================================== -->
+  <div id="cinematicEntryStage" class="cinematic-stage" role="dialog" aria-label="Empire Hookah Lounge Entry Screen">
+
+    <!-- Pure Noir Menu Skyline Background (Exact Menu Match) -->
+    <div class="menu-skyline-bg" aria-hidden="true">
+      <img src="images/skyline_sketch.jpg" alt="" class="menu-skyline-img" />
+      <div class="menu-skyline-overlay"></div>
     </div>
 
-    <!-- 8 · Vignette Overlay -->
-    <div class="cinematic-vignette" aria-hidden="true"></div>
+    <!-- Top VIP Access Header (Matching Screenshot) -->
+    <header class="w-full max-w-2xl flex items-center justify-end p-5 relative z-10">
+      <button onclick="openVipModal(); enterLounge();" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E5A93C] text-black text-[11px] font-extrabold tracking-wider uppercase shadow-lg hover:bg-[#F5BA4C] transition-all">
+        <span>👑 VIP</span>
+      </button>
+    </header>
+
+    <!-- Center Brand Spread (Exact Menu Spread Hierarchy) -->
+    <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-4 relative z-10">
+      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-20 h-20 object-contain mb-2 mix-blend-screen drop-shadow-[0_4px_20px_rgba(229,169,60,0.3)]" />
+      <h1 class="font-crest text-3xl sm:text-4xl font-bold tracking-wide text-white mb-1 drop-shadow-md">Empire Hookah Lounge</h1>
+      <p class="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] text-slate-300 uppercase mb-5">EST. 2010 · PHOENIX, ARIZONA</p>
+
+      <!-- Category Nav Tabs (Craft Shisha / Beverages) -->
+      <div class="flex items-center justify-center gap-9 border-b border-white/10 pb-3 w-full max-w-xs">
+        <span class="font-crest text-xs font-semibold tracking-[0.24em] text-[#E5A93C] uppercase relative after:content-[''] after:absolute after:left-0 after:right-0 after:-bottom-3 after:h-[1.5px] after:bg-[#E5A93C]">Craft Shisha</span>
+        <span class="font-crest text-xs font-semibold tracking-[0.24em] text-slate-400 uppercase">Beverages</span>
+      </div>
+    </main>
+
+    <!-- Noir House Regulations Placard & Enter CTA -->
+    <footer class="w-[calc(100%-24px)] max-w-sm mb-6 relative z-10">
+      <div class="bg-black/65 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-2xl space-y-2.5">
+        <div class="flex items-center justify-center gap-2.5 mb-0.5">
+          <span class="flex-1 h-px bg-white/10"></span>
+          <span class="font-crest text-[11px] font-semibold tracking-[0.26em] text-slate-300 uppercase">House Regulations</span>
+          <span class="flex-1 h-px bg-white/10"></span>
+        </div>
+
+        <div class="space-y-1.5 text-xs text-zinc-300">
+          <div class="flex items-center gap-2.5 p-2 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">21+</span>
+            <div class="flex flex-col flex-1 min-w-0">
+              <span class="text-[11px] font-semibold text-white">Age Requirement</span>
+              <span id="entryAgeReqDisplay" class="text-[10px] text-slate-400 italic font-light truncate">Minimum 21+ of age with valid physical ID</span>
+            </div>
+            <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-[10px] text-[#E5A93C] hover:text-[#F5BA4C] underline ml-1 shrink-0 font-semibold" title="Federal Tobacco 21 Law">Law ↗</a>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2 bg-white/[0.03] border border-white/[0.06] rounded-xl">
+            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">2P</span>
+            <div class="flex flex-col flex-1 min-w-0">
+              <span class="text-[11px] font-semibold text-white">Pipe Capacity</span>
+              <span id="entryPipeLimitDisplay" class="text-[10px] text-slate-400 italic font-light truncate">Maximum 2 guests per handcrafted hookah pipe</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="enterLounge()" class="w-full py-3 bg-[#E5A93C] hover:bg-[#F5BA4C] border border-white/20 rounded-xl text-black font-extrabold text-xs tracking-[0.2em] uppercase shadow-lg transition-all flex items-center justify-center gap-1.5 active:scale-[0.985]">
+          <span>Enter Lounge Menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </footer>
 
   </div>
+  <!-- ========================================================================== -->
+  <!-- ⛔ [END OF OFF-LIMITS CINEMATIC HTML] ⛔                                   -->
+  <!-- ========================================================================== -->
 
   <!-- ==================== VIP LOGIN & WI-FI VERIFICATION MODAL ==================== -->
   <div id="vipLoginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -2801,7 +3107,33 @@
       renderIcons();
     }
 
-    // ==================== BOTTOM SHEET MODAL FOR BOWL COMPOSITION & FLAVORS ====================
+    // ==================== 1800s APOTHECARY SOMMELIER COMPENDIUM MODAL ====================
+    function getBrandCountryFlag(brandName) {
+      if (!brandName) return '🌍';
+      const b = brandName.toLowerCase();
+      if (b.includes('musthave') || b.includes('darkside') || b.includes('blackburn') || b.includes('chabacco') || b.includes('overdose') || b.includes('element')) return '🇷🇺';
+      if (b.includes('tangiers') || b.includes('starbuzz') || b.includes('trifecta') || b.includes('eternal')) return '🇺🇸';
+      if (b.includes('fakher')) return '🇦🇪';
+      if (b.includes('adalya')) return '🇹🇷';
+      if (b.includes('nameless') || b.includes('holster')) return '🇩🇪';
+      return '🌍';
+    }
+
+    function getBrandLogoUrl(brandName) {
+      if (!brandName) return '';
+      const b = brandName.toLowerCase();
+      if (b.includes('musthave')) return 'logos/musthave_clean.png';
+      if (b.includes('tangiers')) return 'logos/tangiers_clean.png';
+      if (b.includes('darkside')) return 'logos/darkside_clean.png';
+      if (b.includes('blackburn') || b.includes('black burn')) return 'logos/black_burn_clean.png';
+      if (b.includes('fakher')) return 'logos/al_fakher_clean.png';
+      if (b.includes('starbuzz')) return 'logos/starbuzz_clean.png';
+      if (b.includes('adalya')) return 'logos/adalya_clean.png';
+      if (b.includes('eternal')) return 'logos/eternal_smoke_clean.png';
+      if (b.includes('deus')) return 'logos/deus_clean.png';
+      return '';
+    }
+
     function openMenuItemDetailModal(itemId, itemType) {
       const inventory = CustomerStash.getInventory();
       const pricing = CustomerStash.getLoungePricing();
@@ -2809,16 +3141,13 @@
       if (!modal) return;
 
       const titleEl = document.getElementById('detailModalTitle');
-      const badgeEl = document.getElementById('detailModalBadge');
       const taglineEl = document.getElementById('detailModalTagline');
       const priceEl = document.getElementById('detailModalPrice');
       const buzzPill = document.getElementById('detailModalBuzzPill');
       const trackEl = document.getElementById('detailModalGradientTrack');
-      const headingEl = document.getElementById('detailModalCompositionHeading');
       const listEl = document.getElementById('detailModalCompositionList');
       const descEl = document.getElementById('detailModalDesc');
       const tagsEl = document.getElementById('detailModalProfilesTags');
-      const actionEl = document.getElementById('detailModalActionContainer');
 
       if (itemType === 'house') {
         const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === itemId) || EMPIRE_HOUSE_MIXES[0];
@@ -2830,25 +3159,22 @@
         mix.flavors.forEach((fId, fIdx) => {
           const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
           const pct = mix.ratios[fIdx] || 50;
-          const grams = ((22 * pct) / 100).toFixed(1);
           totalStrength += ((item.strength || 7) * (pct / 100));
           const start = cumPct;
           cumPct += pct;
           ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
-          recipeList.push({ item, pct, grams });
+          recipeList.push({ item, pct });
         });
 
         const buzzVal = parseFloat(totalStrength.toFixed(1));
         const buzz = getBuzzInfo(buzzVal);
 
         if (titleEl) titleEl.textContent = mix.name;
-        if (badgeEl) badgeEl.textContent = mix.badge || '👑 House Blend';
-        if (taglineEl) taglineEl.textContent = mix.tagline;
-        if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+        if (taglineEl) taglineEl.textContent = mix.tagline || 'Empire Lounge Signature Formulation';
+        if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(0)}`;
 
         if (buzzPill) {
-          buzzPill.className = 'flex items-center gap-1.5 text-xs';
-          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-semibold text-zinc-100">${buzz.icon} ${buzz.level}/10</span><span class="text-zinc-500">·</span><span class="font-medium uppercase text-xs ${buzz.textColor}">${buzz.category}</span>`;
+          buzzPill.innerHTML = `⚡ ${buzz.level}/10 · ${buzz.category}`;
         }
 
         if (trackEl) {
@@ -2856,44 +3182,27 @@
           trackEl.style.background = `linear-gradient(90deg, ${ribbonGradients.join(', ')})`;
         }
 
-        if (headingEl) headingEl.textContent = 'Bowl Composition Breakdown (22g Pack):';
         if (listEl) {
-          listEl.innerHTML = recipeList.map(r => `
-            <div class="flex justify-between items-center text-xs p-2 bg-zinc-950/80 rounded-xl border border-zinc-800/80">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
-                <span class="font-semibold text-zinc-100">${r.item.name}</span>
-                <span class="text-[11px] text-zinc-500">· ${r.item.brand}</span>
-                <span class="text-[11px] text-zinc-500">· ${r.item.countryFlag || '🌍'}</span>
+          listEl.innerHTML = recipeList.map(r => {
+            const flag = r.item.countryFlag || getBrandCountryFlag(r.item.brand);
+            const logoUrl = getBrandLogoUrl(r.item.brand);
+            const logoImg = logoUrl ? `<img src="${logoUrl}" alt="${r.item.brand}" class="h-3.5 w-auto max-w-[45px] object-contain inline-block opacity-85" />` : '';
+            return `
+              <div class="flex justify-between items-baseline py-1.5 border-b border-white/[0.04]">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
+                  <span class="font-serif text-[0.98rem] text-white">${r.item.name}</span>
+                  <span class="text-zinc-400 text-xs font-sans">(${r.item.brand})</span>
+                </div>
+                <span class="font-mono text-xs text-amber-400 font-bold">${r.pct}%</span>
               </div>
-              <span class="font-semibold text-zinc-100 tabular-nums">${r.pct}% <span class="text-zinc-500 font-normal">(${r.grams}g)</span></span>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
 
         if (descEl) descEl.textContent = mix.desc;
         if (tagsEl) {
-          tagsEl.innerHTML = `
-            <span class="text-xs text-amber-400 font-medium">22g Pack</span>
-            <span class="text-zinc-600">·</span>
-            <span class="text-xs text-zinc-300">Russian Craft Clay Bowl</span>
-            <span class="text-zinc-600">·</span>
-            <span class="text-xs text-zinc-300">Kaloud Lotus HMD</span>
-          `;
-        }
-
-        if (actionEl) {
-          actionEl.innerHTML = isVipLoggedIn ? `
-            <button onclick="closeMenuItemDetailModal(); loadHouseMixAndGoToLab('${mix.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
-              <i data-lucide="flask-conical" class="w-4 h-4"></i>
-              <span>Order Mix / Open in Mix Lab →</span>
-            </button>
-          ` : `
-            <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-amber-300 font-semibold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
-              <i data-lucide="lock" class="w-4 h-4"></i>
-              <span>Log In on Lounge Wi-Fi to Self-Order</span>
-            </button>
-          `;
+          tagsEl.innerHTML = '';
         }
 
       } else {
@@ -2901,15 +3210,17 @@
         const item = inventory.find(i => i.id === itemId) || STOKED_MASTER_INVENTORY[0];
         const isOut = item.stock === 'out_of_stock';
         const buzz = getBuzzInfo(item.strength || 7);
+        const itemPrice = item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+        const flag = item.countryFlag || getBrandCountryFlag(item.brand);
+        const logoUrl = getBrandLogoUrl(item.brand);
+        const logoHtml = logoUrl ? `<img src="${logoUrl}" alt="${item.brand}" class="h-5 w-auto max-w-[70px] object-contain filter drop-shadow brightness-110" />` : '';
 
         if (titleEl) titleEl.textContent = item.name;
-        if (badgeEl) badgeEl.textContent = `${item.brand} · ${item.countryFlag || '🌍'} ${item.region || 'Craft'}`;
-        if (taglineEl) taglineEl.textContent = `${item.category === 'tangiers' ? 'Tangiers Noir Dark Leaf' : item.category === 'russian' ? 'Russian Dark Leaf Craft' : 'Blonde Leaf Craft'}`;
-        if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
+        if (taglineEl) taglineEl.textContent = `${item.brand} · ${flag} ${item.region || 'Craft Lineage'}`;
+        if (priceEl) priceEl.textContent = `$${itemPrice.toFixed(0)}`;
 
         if (buzzPill) {
-          buzzPill.className = 'flex items-center gap-1.5 text-xs';
-          buzzPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span><span class="font-semibold text-zinc-100">${buzz.icon} Str ${item.strength || 7}/10</span><span class="text-zinc-500">·</span><span class="font-medium uppercase text-xs ${buzz.textColor}">${buzz.category}</span>`;
+          buzzPill.innerHTML = `⚡ ${item.strength || 7}/10 · ${buzz.category}`;
         }
 
         if (trackEl) {
@@ -2917,21 +3228,27 @@
           trackEl.style.background = item.color || '#E5A93C';
         }
 
-        if (headingEl) headingEl.textContent = 'Flavor Origin & Profile Notes:';
         if (listEl) {
           listEl.innerHTML = `
-            <div class="p-2.5 bg-black/40 rounded-xl border border-zinc-850 space-y-1.5 text-xs">
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Brand:</span>
-                <span class="font-bold text-white">${item.brand}</span>
+            <div class="space-y-2 py-1 text-xs">
+              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
+                <span class="text-zinc-400 font-sans">Craft House</span>
+                <div class="flex items-center gap-2">
+                  ${logoHtml}
+                  <span class="text-white font-serif text-sm font-medium">${item.brand}</span>
+                </div>
               </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Origin Region:</span>
-                <span class="font-bold text-brand-gold">${item.countryFlag || '🌍'} ${item.region || 'Craft'}</span>
+              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
+                <span class="text-zinc-400 font-sans">Origin &amp; Region</span>
+                <span class="text-white font-sans font-medium">${flag} ${item.region || 'Craft Cellar'}</span>
               </div>
-              <div class="flex justify-between">
-                <span class="text-zinc-400">Availability:</span>
-                <span class="font-bold ${isOut ? 'text-red-400' : 'text-emerald-400'}">${isOut ? 'Out of Stock ✕' : 'In Stock & Fresh ✓'}</span>
+              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
+                <span class="text-zinc-400 font-sans">Leaf Classification</span>
+                <span class="text-zinc-200 font-sans">${getFlavorCutLabel(item)}</span>
+              </div>
+              <div class="flex justify-between items-center py-1.5">
+                <span class="text-zinc-400 font-sans">Cellar Availability</span>
+                <span class="${isOut ? 'text-red-400' : 'text-emerald-400'} font-sans font-medium">${isOut ? '86\'d (Resting)' : 'Cellar Fresh ✓'}</span>
               </div>
             </div>
           `;
@@ -2939,32 +3256,7 @@
 
         if (descEl) descEl.textContent = item.desc;
         if (tagsEl) {
-          tagsEl.innerHTML = (item.profiles || []).map(p => `<span class="text-[11px] text-zinc-300">#${p}</span>`).join(' <span class="text-zinc-600">•</span> ');
-        }
-
-        if (actionEl) {
-          if (isOut) {
-            actionEl.innerHTML = `
-              <button class="w-full bg-zinc-900 text-zinc-600 font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 cursor-not-allowed" disabled>
-                <i data-lucide="slash" class="w-4 h-4"></i>
-                <span>Currently Out of Stock</span>
-              </button>
-            `;
-          } else if (isVipLoggedIn) {
-            actionEl.innerHTML = `
-              <button onclick="closeMenuItemDetailModal(); addSingleFlavorAndGoToLab('${item.id}')" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
-                <i data-lucide="plus" class="w-4 h-4"></i>
-                <span>+ Add to Mix Lab Bowl</span>
-              </button>
-            `;
-          } else {
-            actionEl.innerHTML = `
-              <button onclick="closeMenuItemDetailModal(); openVipLoginModal()" class="w-full bg-amber-950 hover:bg-amber-900 border border-amber-500/40 text-brand-gold font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
-                <i data-lucide="lock" class="w-4 h-4"></i>
-                <span>Log In on Lounge Wi-Fi to Order</span>
-              </button>
-            `;
-          }
+          tagsEl.innerHTML = (item.profiles || []).map(p => `<span class="text-[11px] text-zinc-300 font-sans">#${p}</span>`).join(' <span class="text-zinc-600">·</span> ');
         }
       }
 
@@ -2977,327 +3269,455 @@
       if (modal) modal.classList.add('hidden');
     }
 
-    let activeFlavorPivotMode = 'profile'; // 'profile' or 'brand'
-    let selectedFlavorProfileFilter = 'all';
-    let selectedFlavorBrandFilter = 'all';
+    // ==================== EDITORIAL 2-COLUMN LOUNGE BROWSER ENGINE ====================
+    let activePrimaryTab = 'shisha'; // 'shisha' | 'drinks'
+    let selectorMode = 'brands'; // 'brands' | 'profiles'
+    let activeBrandStation = 'signatures'; 
+    let activeProfileStation = 'mints';
 
-    const FLAVOR_PROFILES_LIST = [
-      { id: 'all', label: 'All Notes' },
-      { id: 'Mints', label: '🍃 Mint & Ice' },
-      { id: 'Berries', label: '🍓 Fruit & Berry' },
-      { id: 'Citrus', label: '🍋 Citrus & Zest' },
-      { id: 'Dessert', label: '🍰 Dessert & Cream' },
-      { id: 'Warm Spices', label: '🪵 Spices & Floral' },
-      { id: 'Tea', label: '🫖 Tea & Herbal' }
+    const SHISHA_BRANDS = [
+      { 
+        id: 'signatures', 
+        name: 'Signatures', 
+        sub: 'House Mixes', 
+        origin: 'Empire Mixology', 
+        strength: '7.6', 
+        cut: 'Master Craft Blends', 
+        priceTier: 'orig',
+        notes: 'Master house craft ratios formulated by our lounge sommeliers.' 
+      },
+      { 
+        id: 'MustHave', 
+        name: 'MustHave', 
+        sub: 'Moscow', 
+        origin: 'Moscow, Russia', 
+        strength: '7.0', 
+        cut: 'Burley Dark Leaf', 
+        priceTier: 'orig',
+        notes: 'Smooth toasted molasses base, high heat tolerance, rich berry & cream extracts.' 
+      },
+      { 
+        id: 'Tangiers', 
+        name: 'Tangiers', 
+        sub: 'Noir Reserve', 
+        origin: 'San Diego, USA', 
+        strength: '9.0', 
+        cut: 'Unwashed Noir Leaf', 
+        priceTier: 'noir',
+        notes: 'Heavy nicotine buzz, dense clay pack required, iconic unwashed tobacco notes.' 
+      },
+      { 
+        id: 'Darkside', 
+        name: 'Darkside', 
+        sub: 'Burley Dark', 
+        origin: 'Russia', 
+        strength: '8.5', 
+        cut: 'Dark Burley & Virginia', 
+        priceTier: 'orig',
+        notes: 'Sub-zero Siberian freezes, robust tropical extracts, intense cloud density.' 
+      },
+      { 
+        id: 'BlackBurn', 
+        name: 'BlackBurn', 
+        sub: 'Black Leaf', 
+        origin: 'Russia', 
+        strength: '8.0', 
+        cut: 'Toasted Black Leaf', 
+        priceTier: 'orig',
+        notes: 'Artisan tea infusions, exotic botanicals, clean crisp heat endurance.' 
+      },
+      { 
+        id: 'Al Fakher', 
+        name: 'Al Fakher', 
+        sub: 'Ajman UAE', 
+        origin: 'Ajman, UAE', 
+        strength: '3.0', 
+        cut: 'Heritage Golden Blonde', 
+        priceTier: 'orig',
+        notes: 'Classic Middle Eastern golden Virginia leaf, sweet apple & licorice anise.' 
+      },
+      { 
+        id: 'Starbuzz', 
+        name: 'Starbuzz', 
+        sub: 'California', 
+        origin: 'California, USA', 
+        strength: '2.5', 
+        cut: 'Golden Blonde Leaf', 
+        priceTier: 'orig',
+        notes: 'Sweet candied fruits, smooth billowing clouds, ultra-mild relaxed session.' 
+      },
+      { 
+        id: 'Adalya', 
+        name: 'Adalya', 
+        sub: 'Turkey', 
+        origin: 'Izmir, Turkey', 
+        strength: '3.0', 
+        cut: 'Turkish Blonde Leaf', 
+        priceTier: 'orig',
+        notes: 'Fruity menthol cooling, light session profile, smooth throat feel.' 
+      }
     ];
 
-    const FLAVOR_BRANDS_LIST = [
-      { id: 'all', label: 'All Brands' },
-      { id: 'MustHave', label: 'MustHave 🇷🇺' },
-      { id: 'Tangiers', label: 'Tangiers 🇺🇸' },
-      { id: 'Darkside', label: 'Darkside 🇷🇺' },
-      { id: 'BlackBurn', label: 'BlackBurn 🇷🇺' },
-      { id: 'Al Fakher', label: 'Al Fakher 🇦🇪' },
-      { id: 'Starbuzz', label: 'Starbuzz 🇺🇸' },
-      { id: 'Adalya', label: 'Adalya 🇹🇷' }
+    const SHISHA_PROFILES = [
+      { 
+        id: 'mints', 
+        name: 'Mints & Ice', 
+        sub: 'Sub-Zero Freeze', 
+        match: ['mint', 'ice', 'cooling', 'extreme ice'], 
+        origin: 'Spearmint & Siberian Chill', 
+        cut: 'Arctic Cooling Profiles', 
+        notes: 'Pure peppermint, crisp wintergreen & Siberian sub-zero botanical extracts.', 
+        strength: '6.0 - 9.0' 
+      },
+      { 
+        id: 'berries', 
+        name: 'Berries', 
+        sub: 'Ruby & Sweet', 
+        match: ['berries', 'berry', 'sweet', 'blueberry', 'strawberry', 'raspberry'], 
+        origin: 'Forest Berry Orchards', 
+        cut: 'Ruby Berry Medleys', 
+        notes: 'Sweet raspberry coulis, wild forest berries, and sweet ruby strawberry preserves.', 
+        strength: '2.0 - 7.0' 
+      },
+      { 
+        id: 'citrus', 
+        name: 'Citrus', 
+        sub: 'Zest & Orchard', 
+        match: ['citrus', 'orange', 'grapefruit', 'beverage'], 
+        origin: 'Mediterranean Citrus', 
+        cut: 'Sparkling & Zest Profiles', 
+        notes: 'Valencia orange soda, pink grapefruit zest, and refreshing effervescent citrus.', 
+        strength: '7.0 - 8.0' 
+      },
+      { 
+        id: 'tropical', 
+        name: 'Tropical', 
+        sub: 'Mango & Passion', 
+        match: ['tropical', 'mango', 'passion'], 
+        origin: 'Exotic Tropical Groves', 
+        cut: 'Exotic Stone Fruit Profiles', 
+        notes: 'Alphonso mango passionfruit, sweet honeydew melon, and lush tropical botanicals.', 
+        strength: '3.0 - 8.0' 
+      },
+      { 
+        id: 'spiced', 
+        name: 'Warm Spices', 
+        sub: 'Kashmir & Anise', 
+        match: ['warm spices', 'spice', 'kashmir', 'anise', 'floral', 'orchard fruit'], 
+        origin: 'Indian & Levantine Spices', 
+        cut: 'Warm Botanical Aromatics', 
+        notes: 'Aromatic Kashmiri spices, Double Apple licorice anise, and spiced orchard peach.', 
+        strength: '3.0 - 9.0' 
+      },
+      { 
+        id: 'creams', 
+        name: 'Creams & Teas', 
+        sub: 'Rice & Green Tea', 
+        match: ['dessert', 'creamy', 'cream', 'tea', 'herbal'], 
+        origin: 'Pastry & Tea Cellar', 
+        cut: 'Confection & Infusions', 
+        notes: 'Creamy vanilla rice pudding, toasted pastry, and cold-steeped jasmine green tea.', 
+        strength: '7.0 - 8.0' 
+      }
     ];
 
-    const BRAND_METADATA = {
-      'MustHave': { subtitle: 'Russian Dark Leaf Craft', origin: 'Moscow, Russia 🇷🇺', leafType: 'Burley Toasted Dark Leaf' },
-      'Tangiers': { subtitle: 'Noir Dark Leaf Original', origin: 'San Diego, USA 🇺🇸', leafType: 'Unwashed Dark Leaf' },
-      'Darkside': { subtitle: 'Burley & Virginia Blend', origin: 'Russia 🇷🇺', leafType: 'Dark Leaf Blend' },
-      'BlackBurn': { subtitle: 'Toasted Burley Craft', origin: 'Russia 🇷🇺', leafType: 'Toasted Burley' },
-      'Al Fakher': { subtitle: 'Classic Golden Blonde', origin: 'Ajman, UAE 🇦🇪', leafType: 'French Virginia Blonde' },
-      'Starbuzz': { subtitle: 'Blonde Cut Classic', origin: 'California, USA 🇺🇸', leafType: 'Golden Virginia' },
-      'Adalya': { subtitle: 'Turkish Blonde Craft', origin: 'Izmir, Turkey 🇹🇷', leafType: 'Virginia Blonde' }
-    };
+    let selectedFlavorId = null;
 
-    function setFlavorPivotMode(mode) {
-      activeFlavorPivotMode = mode;
-      const profBtn = document.getElementById('flavorPivotBtn-profile');
-      const brandBtn = document.getElementById('flavorPivotBtn-brand');
-      const heading = document.getElementById('flavorCatalogHeading');
+    function setPrimaryMenuTab(tabId) {
+      activePrimaryTab = tabId;
+      selectedFlavorId = null;
+      renderCustomerMenu();
+    }
 
-      if (profBtn && brandBtn) {
-        if (mode === 'profile') {
-          profBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition';
-          brandBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition';
-          if (heading) heading.textContent = 'Flavor Notes & Profiles';
-        } else {
-          brandBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/10 text-white transition';
-          profBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition';
-          if (heading) heading.textContent = 'Tobacco Houses & Brands';
+    function setSelectorMode(mode) {
+      selectorMode = mode;
+      selectedFlavorId = null;
+      renderCustomerMenu();
+    }
+
+    function setBrandStation(stationId) {
+      activeBrandStation = stationId;
+      selectedFlavorId = null;
+      renderCustomerMenu();
+    }
+
+    function setProfileStation(stationId) {
+      activeProfileStation = stationId;
+      selectedFlavorId = null;
+      renderCustomerMenu();
+    }
+
+    let holdTimer = null;
+    let isHoldFired = false;
+
+    function onFlavorPointerDown(itemId, type) {
+      isHoldFired = false;
+      clearTimeout(holdTimer);
+      holdTimer = setTimeout(() => {
+        isHoldFired = true;
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          try { navigator.vibrate(20); } catch(e) {}
         }
+        openMenuItemDetailModal(itemId, type);
+      }, 450);
+    }
+
+    function onFlavorPointerUp() {
+      clearTimeout(holdTimer);
+    }
+
+    function onFlavorClick(itemId, type) {
+      if (isHoldFired) {
+        isHoldFired = false;
+        return;
       }
-      renderFlavorFilterStrip();
+      selectFlavorItem(itemId, type);
+    }
+
+    function selectFlavorItem(itemId, itemType) {
+      selectedFlavorId = itemId;
       renderCustomerMenu();
     }
 
-    function filterFlavorsByProfile(profileId) {
-      selectedFlavorProfileFilter = profileId;
-      renderFlavorFilterStrip();
-      renderCustomerMenu();
+    function getBoldnessCategory(strength) {
+      const s = parseFloat(strength) || 7;
+      if (s <= 4) return 'MILD';
+      if (s <= 7) return 'MEDIUM';
+      return 'BOLD';
     }
 
-    function filterFlavorsByBrand(brandId) {
-      selectedFlavorBrandFilter = brandId;
-      renderFlavorFilterStrip();
-      renderCustomerMenu();
+    function getFlavorCutLabel(item) {
+      if (!item) return 'Craft Leaf';
+      if (item.brand === 'Tangiers') return 'Unwashed Noir Leaf';
+      if (item.category === 'blonde') return 'Golden Blonde Leaf';
+      return 'Burley Dark Leaf';
     }
 
-    function renderFlavorFilterStrip() {
-      const strip = document.getElementById('flavorFilterStrip');
-      if (!strip) return;
-      strip.innerHTML = '';
+    function createEditorialItemHtml(item, type, pricing, inventory) {
+      const isDrink = type === 'drink';
+      const priceVal = isDrink ? item.price : 0;
+      const priceStr = (priceVal || 0).toFixed(0);
+      const isSelected = selectedFlavorId === item.id;
 
-      if (activeFlavorPivotMode === 'profile') {
-        FLAVOR_PROFILES_LIST.forEach(item => {
-          const isSelected = selectedFlavorProfileFilter === item.id;
-          const btn = document.createElement('button');
-          btn.onclick = () => filterFlavorsByProfile(item.id);
-          if (isSelected) {
-            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-1 flex-shrink-0';
-            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
-          } else {
-            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-1';
-            btn.innerHTML = `<span>${item.label}</span>`;
-          }
-          strip.appendChild(btn);
-        });
-      } else {
-        FLAVOR_BRANDS_LIST.forEach(item => {
-          const isSelected = selectedFlavorBrandFilter === item.id;
-          const btn = document.createElement('button');
-          btn.onclick = () => filterFlavorsByBrand(item.id);
-          if (isSelected) {
-            btn.className = 'text-zinc-100 font-semibold text-xs flex items-center gap-1.5 border-b border-amber-400 pb-1 flex-shrink-0';
-            btn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span><span>${item.label}</span>`;
-          } else {
-            btn.className = 'text-zinc-400 hover:text-zinc-200 text-xs flex-shrink-0 transition pb-1';
-            btn.innerHTML = `<span>${item.label}</span>`;
-          }
-          strip.appendChild(btn);
-        });
+      let metaLine = '';
+      if (type === 'house') {
+        metaLine = (item.flavors || []).map((fId, fIdx) => {
+          const sub = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+          const pct = item.ratios ? item.ratios[fIdx] || 50 : 50;
+          return `${sub.brand} ${sub.name} ${pct}%`;
+        }).join(' · ');
+      } else if (type === 'flavor') {
+        const brandBadge = item.brand ? `${item.brand}` : '';
+        const profiles = item.profiles ? item.profiles.join(' · ') : '';
+        metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
+
+      // If it's a drink, render with dotted leader and price
+      if (isDrink) {
+        const drinkClick = isVipLoggedIn ? `addDrinkToTab('${item.name}', ${item.price}, '${item.icon}')` : `openVipLoginModal()`;
+        return `
+          <div onclick="${drinkClick}" class="editorial-item mb-5">
+            <div class="item-top-row">
+              <span class="item-name">${item.name}</span>
+              <span class="item-leader"></span>
+              <span class="item-price">$${priceStr}</span>
+            </div>
+            <div class="item-desc">${item.desc}</div>
+          </div>
+        `;
+      }
+
+      // Shisha & House Mix items: Tap to select, Touch-and-Hold for Apothecary specs modal
+      return `
+        <div 
+          onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
+          onpointerup="onFlavorPointerUp()" 
+          onpointercancel="onFlavorPointerUp()" 
+          onpointerleave="onFlavorPointerUp()" 
+          onclick="onFlavorClick('${item.id}', '${type}')" 
+          class="editorial-item ${isSelected ? 'active-flavor' : ''}">
+          <div class="item-top-row">
+            <span class="item-name">${item.name}</span>
+          </div>
+          <div class="item-desc">${item.desc}</div>
+          ${metaLine ? `
+            <div class="item-meta">
+              <span>${metaLine}</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
     }
 
     function renderCustomerMenu() {
-      const rules = CustomerStash.getLoungeRules();
       const pricing = CustomerStash.getLoungePricing();
       const inventory = CustomerStash.getInventory();
+      
+      // In-stock items only for the active menu list
+      const inStockInventory = inventory.filter(i => i.stock !== 'out_of_stock');
 
-      // 1. Lounge Pricing Rates Strip
+      // 1. Lounge Pricing Rates Strip Update
       const origEl = document.getElementById('menuPriceOriginal');
       const refillEl = document.getElementById('menuPriceRefill');
       const tanEl = document.getElementById('menuPriceTangiers');
+      if (origEl) origEl.textContent = `${(pricing.originalPrice || 35.00).toFixed(0)}`;
+      if (refillEl) refillEl.textContent = `${(pricing.refillPrice || 25.00).toFixed(0)}`;
+      if (tanEl) tanEl.textContent = `${(pricing.tangiersPrice || 38.00).toFixed(0)}`;
 
-      if (origEl) origEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(2)}`;
-      if (refillEl) refillEl.textContent = `$${(pricing.refillPrice || 25.00).toFixed(2)}`;
-      if (tanEl) tanEl.textContent = `$${(pricing.tangiersPrice || 38.00).toFixed(2)}`;
-
-      // 2. Render Sub-Tab 1: House Mixes (Black cards with glowing gold border & white watermarks)
-      const houseCont = document.getElementById('menu-view-house');
-      if (houseCont) {
-        houseCont.innerHTML = '';
-        EMPIRE_HOUSE_MIXES.forEach(mix => {
-          let totalStrength = 0;
-          mix.flavors.forEach((fId, fIdx) => {
-            const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
-            const pct = mix.ratios[fIdx] || 50;
-            totalStrength += ((item.strength || 7) * (pct / 100));
-          });
-
-          const buzzVal = parseFloat(totalStrength.toFixed(1));
-          const buzz = getBuzzInfo(buzzVal);
-
-          const card = document.createElement('div');
-          card.className = 'relative overflow-hidden group rounded-2xl lounge-menu-card p-3.5 cursor-pointer active:scale-[0.99] select-none';
-          card.onclick = () => openMenuItemDetailModal(mix.id, 'house');
-
-          card.innerHTML = `
-            <!-- Empire Lounge Watermark along Bottom-Middle (Clear of right price column) -->
-            <div class="absolute right-24 bottom-1 max-w-[90px] max-h-12 pointer-events-none flex items-end justify-end overflow-hidden">
-              ${getBrandLogoWatermarkHtml('empire')}
-            </div>
-
-            <div class="relative z-10 flex items-start justify-between gap-3">
-              <!-- Left Side: Title, Micro Badge & Flavor Spheres -->
-              <div class="min-w-0 flex-1 space-y-1.5">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-amber-300 transition">${mix.name}</h3>
-                  <i data-lucide="info" class="w-3 h-3 text-zinc-500 group-hover:text-amber-400 transition flex-shrink-0"></i>
-                  ${mix.badge ? `<span class="text-[10px] text-zinc-300 font-semibold tracking-wider uppercase flex items-center gap-1"><span class="text-amber-400 text-xs leading-none">•</span> ${mix.badge}</span>` : ''}
-                </div>
-                
-                <!-- Clean Flavor Profile Spheres Directly Below Title -->
-                <div class="flex items-center gap-2 pt-0.5 flex-wrap">
-                  ${mix.flavors.map((fId, fIdx) => {
-                    const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
-                    const pct = mix.ratios[fIdx] || 50;
-                    return `
-                      <div class="flex items-center gap-1" title="${item.name} (${pct}%)">
-                        <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${item.color || '#E5A93C'}; box-shadow: 0 0 5px ${item.color || '#E5A93C'}99;"></span>
-                        <span class="text-[11px] text-zinc-300 font-medium">${item.name}</span>
-                        <span class="text-[10px] text-zinc-500 font-mono">${pct}%</span>
-                      </div>
-                    `;
-                  }).join('<span class="text-zinc-700 text-xs">·</span>')}
-                </div>
-              </div>
-
-              <!-- Right Side: Buzz Top Right, Price Bottom Right (Pure Black Un-Obscured Area) -->
-              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[46px]">
-                <!-- Top Right: Buzz Rating -->
-                <div class="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
-                  <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
-                  <span class="text-zinc-200 font-semibold">${buzz.level}</span>
-                  <span class="text-[11px] text-zinc-500 uppercase tracking-wide">· ${buzz.category}</span>
-                </div>
-
-                <!-- Bottom Right: Price -->
-                <span class="text-sm font-semibold text-zinc-100 tabular-nums">
-                  $${(pricing.originalPrice || 35.00).toFixed(2)}
-                </span>
-              </div>
-            </div>
-          `;
-          houseCont.appendChild(card);
-        });
+      // 2. Render Primary Navigation Tabs (Pure Typographic — No Icons)
+      const navTrack = document.getElementById('menuNavTrack');
+      if (navTrack) {
+        navTrack.innerHTML = `
+          <button class="menu-nav-tab ${activePrimaryTab === 'shisha' ? 'active' : ''}" onclick="setPrimaryMenuTab('shisha')">
+            Craft Shisha
+          </button>
+          <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
+            Beverages
+          </button>
+        `;
       }
 
-      // 3. Render Sub-Tab 2: Master Flavors (Dual-Pivot Explorer: By Profile vs By Brand)
-      renderFlavorFilterStrip();
-      const flavorsCont = document.getElementById('menuFlavorsContainer');
-      if (flavorsCont) {
-        flavorsCont.innerHTML = '';
+      // 3. Render Content Spread
+      const spreadCont = document.getElementById('menuSpreadContainer');
+      if (!spreadCont) return;
+      spreadCont.innerHTML = '';
+
+      // ──────────── TAB 1: 2-COLUMN SHISHA BROWSER ────────────
+      if (activePrimaryTab === 'shisha') {
         
-        const createFlavorCard = (item) => {
-          const isOut = item.stock === 'out_of_stock';
-          const buzz = getBuzzInfo(item.strength || 7);
-          const card = document.createElement('div');
-          card.className = `relative overflow-hidden group rounded-2xl lounge-menu-card p-3.5 cursor-pointer active:scale-[0.99] select-none ${isOut ? 'opacity-50 pointer-events-none' : ''}`;
-          card.onclick = () => openMenuItemDetailModal(item.id, 'flavor');
+        // Render Mode Toggle (Brand on left, Profile on right)
+        const modeToggleHtml = `
+          <div class="selector-mode-toggle">
+            <button class="selector-mode-btn ${selectorMode === 'brands' ? 'active' : ''}" onclick="setSelectorMode('brands')">
+              BRAND
+            </button>
+            <span class="text-zinc-700 font-mono text-[10px]">/</span>
+            <button class="selector-mode-btn ${selectorMode === 'profiles' ? 'active' : ''}" onclick="setSelectorMode('profiles')">
+              PROFILE
+            </button>
+          </div>
+        `;
 
-          card.innerHTML = `
-            <!-- Brand Logo Watermark along Bottom-Middle (Clear of right price column) -->
-            <div class="absolute right-24 bottom-1 max-w-[90px] max-h-14 pointer-events-none flex items-end justify-end overflow-hidden">
-              ${getBrandLogoWatermarkHtml(item.brand)}
-            </div>
+        let stationsRailHtml = modeToggleHtml;
+        let itemsHtml = '';
+        let headerTitle = '';
+        let headerSub = '';
+        let summaryBarHtml = '';
+        let displayedItems = [];
 
-            <div class="relative z-10 flex items-start justify-between gap-3">
-              <!-- Left Side: Clean & Uncluttered -->
-              <div class="min-w-0 flex-1 space-y-1">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full flex-shrink-0 mt-0.5" style="background: ${item.color || '#E5A93C'}; box-shadow: 0 0 5px ${item.color || '#E5A93C'}99;"></span>
-                  <h3 class="text-sm font-semibold text-zinc-100 tracking-tight group-hover:text-amber-300 transition ${isOut ? 'line-through text-zinc-500' : ''}">${item.name}</h3>
-                  <i data-lucide="info" class="w-3 h-3 text-zinc-600 group-hover:text-amber-400 transition flex-shrink-0"></i>
-                  <span class="text-xs text-zinc-500 font-medium">· ${item.brand}</span>
-                  <span class="text-xs text-zinc-500">· ${item.countryFlag || '🌍'}</span>
-                </div>
-                <p class="text-xs text-zinc-400 leading-snug line-clamp-1">${item.desc}</p>
-                <p class="text-[11px] text-zinc-500 tracking-wide line-clamp-1">${(item.profiles || []).join(' · ')}</p>
-              </div>
+        // ────── MODE A: BROWSE BY BRAND ──────
+        if (selectorMode === 'brands') {
+          const activeStation = SHISHA_BRANDS.find(s => s.id === activeBrandStation) || SHISHA_BRANDS[0];
+          const isSignatures = activeStation.id === 'signatures';
+          
+          headerTitle = activeStation.name;
+          headerSub = activeStation.origin;
 
-              <!-- Right Side: Buzz Top Right, Price / Out Bottom Right -->
-              <div class="flex flex-col items-end justify-between self-stretch flex-shrink-0 text-right min-h-[50px]">
-                <!-- Top Right: Buzz Rating -->
-                <div class="flex items-center gap-1.5 text-xs text-zinc-400 font-medium">
-                  <span class="w-1.5 h-1.5 rounded-full" style="background: ${buzz.dotColor};"></span>
-                  <span class="text-zinc-200 font-semibold">${item.strength || 7}</span>
-                  <span class="text-[11px] text-zinc-500 uppercase tracking-wide">· ${buzz.category}</span>
-                </div>
-
-                <!-- Bottom Right: Price or Out -->
-                ${isOut ? `
-                  <span class="text-xs font-semibold text-red-400/90 uppercase tracking-wider">Out</span>
-                ` : `
-                  <span class="text-sm font-semibold text-zinc-100 tabular-nums">
-                    $${(item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00)).toFixed(2)}
-                  </span>
-                `}
-              </div>
-            </div>
-          `;
-          return card;
-        };
-
-        if (activeFlavorPivotMode === 'profile') {
-          let filtered = inventory;
-          if (selectedFlavorProfileFilter !== 'all') {
-            filtered = filtered.filter(item => item.profiles && item.profiles.some(p => p.toLowerCase().includes(selectedFlavorProfileFilter.toLowerCase())));
-          }
-
-          if (filtered.length === 0) {
-            flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found matching this tasting note.</div>`;
-          } else {
-            filtered.forEach(item => flavorsCont.appendChild(createFlavorCard(item)));
-          }
-        } else {
-          // Brand Mode: Group flavors by Brand Catalog
-          let brandsToRender = Object.keys(BRAND_METADATA);
-          if (selectedFlavorBrandFilter !== 'all') {
-            brandsToRender = brandsToRender.filter(b => b.toLowerCase() === selectedFlavorBrandFilter.toLowerCase());
-          }
-
-          let totalRendered = 0;
-          brandsToRender.forEach(brandName => {
-            const brandFlavors = inventory.filter(i => i.brand.toLowerCase() === brandName.toLowerCase());
-            if (brandFlavors.length > 0) {
-              totalRendered += brandFlavors.length;
-              const meta = BRAND_METADATA[brandName] || { subtitle: 'Premium Tobacco', origin: 'Craft', leafType: 'Dark Leaf' };
-              
-              // Brand Group Header (Bold, Clean & Highly Legible)
-              const brandSection = document.createElement('div');
-              brandSection.className = 'pt-2 space-y-2';
-              brandSection.innerHTML = `
-                <div class="flex items-center justify-between px-1 border-b border-zinc-800/80 pb-1.5">
-                  <span class="text-sm font-bold uppercase tracking-wider text-amber-400">${brandName}</span>
-                  <span class="text-xs text-zinc-400 font-mono">${meta.origin || ''}</span>
-                </div>
-                <div class="space-y-2 brand-items-list"></div>
-              `;
-              const itemsList = brandSection.querySelector('.brand-items-list');
-              brandFlavors.forEach(item => itemsList.appendChild(createFlavorCard(item)));
-              flavorsCont.appendChild(brandSection);
-            }
+          SHISHA_BRANDS.forEach(st => {
+            const isActive = st.id === activeBrandStation;
+            stationsRailHtml += `
+              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setBrandStation('${st.id}')">
+                <span class="menu-station-label text-zinc-100">${st.name}</span>
+                <span class="menu-station-sub">${st.sub}</span>
+              </button>
+            `;
           });
 
-          if (totalRendered === 0) {
-            flavorsCont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No flavors found for this brand.</div>`;
+          if (isSignatures) {
+            displayedItems = EMPIRE_HOUSE_MIXES;
+            if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
+              selectedFlavorId = displayedItems[0]?.id;
+            }
+            displayedItems.forEach(mix => {
+              itemsHtml += createEditorialItemHtml(mix, 'house', pricing, inStockInventory);
+            });
+          } else {
+            displayedItems = inStockInventory.filter(i => i.brand === activeStation.id);
+            if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
+              selectedFlavorId = displayedItems[0]?.id;
+            }
+            if (displayedItems.length > 0) {
+              displayedItems.forEach(item => {
+                itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
+              });
+            } else {
+              itemsHtml = `<p class="text-xs text-zinc-500 italic py-4">No active flavors currently in stock for this house.</p>`;
+            }
+          }
+        } 
+        // ────── MODE B: BROWSE BY PROFILE ──────
+        else if (selectorMode === 'profiles') {
+          const activeStation = SHISHA_PROFILES.find(p => p.id === activeProfileStation) || SHISHA_PROFILES[0];
+          
+          headerTitle = activeStation.name;
+          headerSub = activeStation.origin;
+
+          SHISHA_PROFILES.forEach(p => {
+            const isActive = p.id === activeProfileStation;
+            stationsRailHtml += `
+              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${p.id}')">
+                <span class="menu-station-label text-zinc-100">${p.name}</span>
+                <span class="menu-station-sub">${p.sub}</span>
+              </button>
+            `;
+          });
+
+          // Match only in-stock flavors and mixes for this profile
+          displayedItems = inStockInventory.filter(item => {
+            const profiles = (item.profiles || []).map(p => p.toLowerCase());
+            return activeStation.match.some(kw => profiles.some(p => p === kw || p.includes(kw)));
+          });
+
+          if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
+            selectedFlavorId = displayedItems[0]?.id;
+          }
+
+          if (displayedItems.length > 0) {
+            displayedItems.forEach(item => {
+              itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
+            });
+          } else {
+            itemsHtml = `<p class="text-xs text-zinc-500 italic py-4">No flavors currently matched in stock for this profile.</p>`;
           }
         }
-      }
 
-      // 4. Render Sub-Tab 3: Drinks & Samovar Bar
-      const drinksCont = document.getElementById('menu-view-drinks');
-      if (drinksCont) {
-        const drinksList = [
-          { id: 'samovar-pot', name: 'Russian Samovar Teapot', icon: '🫖', price: (pricing.samovarPrice || 14.00), desc: 'Traditional wood/charcoal brewed Samovar served with fresh mint sprigs, lemon wheels, and wild berry preserve. Serves 2–4.' },
-          { id: 'sand-coffee', name: 'Turkish Sand-Brewed Coffee', icon: '☕', price: (pricing.coffeePrice || 8.00), desc: 'Authentic finely ground Arabica slowly heated on quartz hot sand with crushed green cardamom & thick crema.' },
-          { id: 'moroccan-tea', name: 'Moroccan Royal Mint Tea', icon: '🌿', price: 7.00, desc: 'High-pour gunpowder green tea infused with fresh spearmint leaves and raw turbinado sugar.' },
-          { id: 'redbull', name: 'Red Bull Energy Drink', icon: '⚡', price: 6.00, desc: 'Regular, Sugar-Free, or Tropical Edition (chilled 12oz can).' },
-          { id: 'san-pell', name: 'San Pellegrino Sparkling Water', icon: '🧊', price: 6.00, desc: 'Italian sparkling mineral water with fresh lime wheels.' }
-        ];
-
-        drinksCont.innerHTML = `
-          <div class="space-y-2">
-            ${drinksList.map(d => `
-              <div onclick="${isVipLoggedIn ? `addDrinkToTab('${d.name}', ${d.price}, '${d.icon}')` : `openVipLoginModal()`}" class="rounded-2xl lounge-menu-card p-3.5 cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3 min-w-0 flex-1">
-                  <span class="text-2xl flex-shrink-0">${d.icon}</span>
-                  <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5">
-                      <h3 class="text-sm font-semibold text-zinc-100 tracking-tight">${d.name}</h3>
-                      <i data-lucide="info" class="w-3 h-3 text-zinc-600 flex-shrink-0"></i>
-                    </div>
-                    <p class="text-xs text-zinc-400 mt-0.5 line-clamp-1">${d.desc}</p>
-                  </div>
-                </div>
-                <div class="text-right flex-shrink-0">
-                  <span class="text-sm font-semibold text-zinc-100 tabular-nums">$${d.price.toFixed(2)}</span>
-                </div>
+        // Assemble 2-Column Container
+        spreadCont.innerHTML = `
+          <div class="menu-2col-layout">
+            <aside class="menu-stations-rail">
+              ${stationsRailHtml}
+            </aside>
+            <section class="menu-items-pane">
+              <div class="sticky top-0 z-20 bg-transparent pb-2 pt-0.5 border-b border-white/[0.08] mb-3 flex justify-between items-baseline">
+                <h2 class="text-xs font-serif tracking-[0.2em] uppercase text-white font-semibold">${headerTitle}</h2>
+                <span class="text-[10px] font-sans text-zinc-300 uppercase tracking-wider font-medium">Tap to select · Hold for specs</span>
               </div>
-            `).join('')}
+              <div class="menu-items-list">
+                ${itemsHtml}
+              </div>
+            </section>
+          </div>
+        `;
+      } 
+      // ──────────── TAB 2: BEVERAGES SPREAD ────────────
+      else if (activePrimaryTab === 'drinks') {
+        const drinksList = [
+          { id: 'maison-perrier', name: 'Maison Perrier', icon: '🫧', price: 6.00, desc: 'French sparkling natural mineral water with crisp, refreshing effervescence.' },
+          { id: 'redbull', name: 'Red Bull Energy Drink', icon: '⚡', price: 6.00, desc: 'Original & Sugarfree served chilled.' },
+          { id: 'az-green-tea', name: 'Arizona Green Tea', icon: '🍃', price: 4.00, desc: 'Classic chilled green tea with ginseng and organic honey.' },
+          { id: 'coke-products', name: 'Coca-Cola Products', icon: '🥤', price: 4.00, desc: 'Coca-Cola, Diet Coke, Sprite, & Coke Zero.' },
+          { id: 'bottled-water', name: 'Bottled Artisan Spring Water', icon: '💧', price: 3.00, desc: 'Pure artisan chilled spring water.' },
+          { id: 'house-water', name: 'Iced Filtered Water', icon: '🧊', price: 2.00, desc: 'Chilled purified table water over ice.' }
+        ];
+        
+        let drinksHtml = '';
+        drinksList.forEach(d => {
+          drinksHtml += createEditorialItemHtml(d, 'drink', pricing, inStockInventory);
+        });
+
+        spreadCont.innerHTML = `
+          <div class="pt-2 max-w-lg mx-auto space-y-4">
+            ${drinksHtml}
           </div>
         `;
       }
@@ -4298,9 +4718,9 @@
       }, 2600);
     }
 
-    // ============================================================
-    // DYNAMIC SEASONAL & DIURNAL ATMOSPHERE ENGINE
-    // ============================================================
+    // ==========================================================================
+    // ⛔ [OFF-LIMITS] CINEMATIC ATMOSPHERE & FIREWORKS ENGINE JS — DO NOT TOUCH ⛔
+    // ==========================================================================
     let activeSeason = 'auto'; // 'auto', 'winter', 'spring', 'summer', 'fall'
     let activeTimeOfDay = 'night'; // 'night', 'sunrise', 'day', 'sunset', 'cycle30m'
     let diurnalCycleTimer = null;
@@ -4617,6 +5037,13 @@
       if (!stage || stage.classList.contains('entering')) return;
 
       stage.classList.add('entering');
+      setTimeout(() => {
+        if (stage && stage.classList.contains('entering')) {
+          stage.classList.add('hidden-stage');
+          stage.classList.remove('entering');
+          document.dispatchEvent(new CustomEvent('empire:entered'));
+        }
+      }, 880);
     }
 
     function openWelcomeLoungeModal() {
@@ -4656,6 +5083,9 @@
         }
       });
     }
+    // ==========================================================================
+    // ⛔ [END OF OFF-LIMITS CINEMATIC JS] ⛔
+    // ==========================================================================
 
     window.addEventListener('DOMContentLoaded', () => {
       initAtmosphereEngine();
@@ -4669,7 +5099,7 @@
       switchCustomerTab('menu');
       renderIcons();
 
-      // Always show landing screen on page load — requires clicking Enter to proceed
+      // Show Noir landing screen on page load
       openWelcomeLoungeModal();
     });
   </script>

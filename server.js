@@ -48,7 +48,9 @@ server.listen(PORT, HOST, () => {
         console.log(`Network: http://${net.address}:${PORT}`);
       }
     }
-  console.log(`\nCustomer Menu: http://localhost:${PORT}`);
+  }
+  console.log(`\nLanding Page:  http://localhost:${PORT}/landing.html`);
+  console.log(`Customer Menu: http://localhost:${PORT}`);
   console.log(`Staff App:     http://localhost:${PORT}/staff.html`);
   console.log(`Owner Suite:   http://localhost:${PORT}/owner.html\n`);
 });
