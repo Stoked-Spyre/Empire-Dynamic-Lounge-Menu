@@ -2077,26 +2077,33 @@
         </div>
       </section>
 
-      <!-- 2. APOTHECARY FLAVOR STASH SELECTOR (CLEAN HIGH-CONTRAST SPREAD) -->
+      <!-- 2. APOTHECARY FLAVOR STASH SELECTOR (DUAL LEFT/RIGHT SPLIT LAYOUT) -->
       <section class="sommelier-card-frame p-2.5">
-        <div class="sommelier-inner-frame p-3.5 space-y-3">
+        <div class="sommelier-inner-frame p-3.5 space-y-2.5">
           
-          <div class="flex justify-between items-center px-0.5 border-b border-white/[0.08] pb-2">
+          <div class="flex justify-between items-center px-0.5 border-b border-white/[0.08] pb-1.5">
             <div class="flex items-center gap-2">
               <span class="text-amber-400 text-[10px]">◆</span>
-              <span class="font-serif text-sm uppercase tracking-wider text-white font-bold">Apothecary Stash Catalog</span>
+              <span class="font-serif text-sm uppercase tracking-wider text-white font-bold">Flavor Stash Selector</span>
             </div>
-            <span class="text-[11px] text-zinc-400 font-sans italic">Select category &amp; tap + to add</span>
+            <span class="text-[11px] text-zinc-400 font-sans italic">Select Station • Tap + to Add</span>
           </div>
 
-          <!-- Category Filter Tabs (Scrollable luxury pills) -->
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="mixLabCategoryTabs">
-            <!-- Populated via JS: House Mixes, All Flavors, MustHave, Tangiers, Darkside, etc. -->
-          </div>
+          <!-- Dual Split Layout: Stations on Left, Flavors on Right -->
+          <div class="flex gap-2.5 items-stretch min-h-[260px] max-h-[300px]">
+            
+            <!-- LEFT COLUMN: Vertical Station Dial / Categories -->
+            <aside class="w-32 flex-shrink-0 border-r border-white/[0.08] pr-2 overflow-y-auto no-scrollbar" id="brandStationDial">
+              <div class="flex flex-col gap-1" id="brandStationsTrack">
+                <!-- Populated via JS -->
+              </div>
+            </aside>
 
-          <!-- High-Contrast Flavor Items List -->
-          <div class="space-y-1.5 max-h-[280px] overflow-y-auto no-scrollbar pr-0.5" id="mixLabCatalogList">
-            <!-- Populated via JS -->
+            <!-- RIGHT COLUMN: High-Contrast Flavor List -->
+            <div class="flex-1 overflow-y-auto no-scrollbar pr-0.5 space-y-1.5" id="mixLabCatalogList">
+              <!-- Populated via JS -->
+            </div>
+
           </div>
 
         </div>
@@ -3518,10 +3525,10 @@
       const activePanel = document.getElementById(`customer-view-${tabId}`);
       if (activePanel) activePanel.classList.remove('hidden');
 
-      // Hide fixed skyline background when not in menu view so Mix Lab & Tab are crisp, solid obsidian
-      const skylineBg = document.querySelector('#customer-view-menu .menu-skyline-bg');
+      // Keep atmospheric skyline background visible for ambient lounge feel
+      const skylineBg = document.querySelector('.menu-skyline-bg');
       if (skylineBg) {
-        skylineBg.style.display = (tabId === 'menu') ? 'block' : 'none';
+        skylineBg.style.display = 'block';
       }
 
       if (tabId === 'menu') renderCustomerMenu();
@@ -4656,50 +4663,59 @@
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
       
-      const tabsContainer = document.getElementById('mixLabCategoryTabs');
-      if (!tabsContainer) return;
-      tabsContainer.innerHTML = '';
+      const stationsTrack = document.getElementById('brandStationsTrack');
+      if (!stationsTrack) return;
+      stationsTrack.innerHTML = '';
 
-      // 1. House Mixes Tab
-      const houseTab = document.createElement('button');
+      // 1. House Mixes Station
       const isHouseActive = selectedStationType === 'house_mixes';
-      houseTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isHouseActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
-      houseTab.innerHTML = `👑 House Mixes (${EMPIRE_HOUSE_MIXES.length})`;
-      houseTab.onclick = () => {
+      const houseBtn = document.createElement('button');
+      houseBtn.className = `w-full text-left px-2.5 py-2 rounded-sm text-xs font-serif transition flex items-center justify-between gap-1 select-none ${isHouseActive ? 'border-l-2 border-amber-400 bg-amber-400/10 text-white font-bold' : 'text-zinc-400 hover:text-white hover:bg-white/[0.03]'}`;
+      houseBtn.innerHTML = `
+        <span class="truncate text-amber-300">👑 House Mixes</span>
+        <span class="text-[9px] font-mono ${isHouseActive ? 'text-amber-400 font-bold' : 'text-zinc-500'}">${EMPIRE_HOUSE_MIXES.length}</span>
+      `;
+      houseBtn.onclick = () => {
         selectedStationType = 'house_mixes';
         initBrandStationDial();
         renderMixLabCatalog();
       };
-      tabsContainer.appendChild(houseTab);
+      stationsTrack.appendChild(houseBtn);
 
-      // 2. All Single Flavors Tab
-      const allTab = document.createElement('button');
+      // 2. All Single Flavors Station
       const isAllActive = selectedStationType === 'all';
       const allCount = inventory.filter(i => i.stock !== 'out_of_stock').length;
-      allTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isAllActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
-      allTab.innerHTML = `All Flavors (${allCount})`;
-      allTab.onclick = () => {
+      const allBtn = document.createElement('button');
+      allBtn.className = `w-full text-left px-2.5 py-2 rounded-sm text-xs font-serif transition flex items-center justify-between gap-1 select-none ${isAllActive ? 'border-l-2 border-amber-400 bg-amber-400/10 text-white font-bold' : 'text-zinc-400 hover:text-white hover:bg-white/[0.03]'}`;
+      allBtn.innerHTML = `
+        <span class="truncate">All Flavors</span>
+        <span class="text-[9px] font-mono ${isAllActive ? 'text-amber-400 font-bold' : 'text-zinc-500'}">${allCount}</span>
+      `;
+      allBtn.onclick = () => {
         selectedStationType = 'all';
         initBrandStationDial();
         renderMixLabCatalog();
       };
-      tabsContainer.appendChild(allTab);
+      stationsTrack.appendChild(allBtn);
 
-      // 3. Brand Tabs
+      // 3. Brand Stations
       distinctBrands.forEach(brandName => {
         const inStockCount = inventory.filter(i => i.brand === brandName && i.stock !== 'out_of_stock').length;
         if (inStockCount === 0) return;
 
-        const brandTab = document.createElement('button');
         const isActive = selectedStationType.toLowerCase() === brandName.toLowerCase();
-        brandTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
-        brandTab.innerHTML = `${brandName} (${inStockCount})`;
-        brandTab.onclick = () => {
+        const brandBtn = document.createElement('button');
+        brandBtn.className = `w-full text-left px-2.5 py-2 rounded-sm text-xs font-serif transition flex items-center justify-between gap-1 select-none ${isActive ? 'border-l-2 border-amber-400 bg-amber-400/10 text-white font-bold' : 'text-zinc-400 hover:text-white hover:bg-white/[0.03]'}`;
+        brandBtn.innerHTML = `
+          <span class="truncate">${brandName}</span>
+          <span class="text-[9px] font-mono ${isActive ? 'text-amber-400 font-bold' : 'text-zinc-500'}">${inStockCount}</span>
+        `;
+        brandBtn.onclick = () => {
           selectedStationType = brandName;
           initBrandStationDial();
           renderMixLabCatalog();
         };
-        tabsContainer.appendChild(brandTab);
+        stationsTrack.appendChild(brandBtn);
       });
 
       renderMixLabCatalog();
