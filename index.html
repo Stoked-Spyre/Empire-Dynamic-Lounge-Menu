@@ -3164,7 +3164,7 @@
     let currentAssignedSeat = 'Floating VIP Tab';
     let activeFlavors = [];
     let activeMixName = null;
-    let activeBowlOrderType = 'new'; // 'new' | 'refill'
+    let activeBowlOrderType = 'auto'; // 'auto' | 'new' | 'refill'
     let roundCount = 1;
     let tabBalance = 35.00;
     let currentSelectedTipPct = 18;
@@ -3472,11 +3472,12 @@
       const hasTangiers = activeFlavors.some(f => f.brand === 'Tangiers');
       const origPrice = hasTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
       const refillPrice = origPrice - 10.00;
-      const isRefill = activeBowlOrderType === 'refill';
-      const price = isRefill ? refillPrice : origPrice;
 
       const activeTab = CustomerStash.getActiveTab();
       const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+      const hasExistingHookahs = existingHookahs.length > 0;
+      const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
+      const price = isRefill ? refillPrice : origPrice;
       const hookahNum = isRefill ? (existingHookahs.length || 1) : (existingHookahs.length + 1);
       const flavorSummary = activeMixName || activeFlavors.map(f => `${f.name} ${f.percent}%`).join(' / ');
       
@@ -4387,13 +4388,13 @@
           const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
           const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
           const refillPrice = origPrice - 10.00;
-          const isRefill = activeBowlOrderType === 'refill';
-          const finalPrice = isRefill ? refillPrice : origPrice;
-          const estTax = (finalPrice * (taxConfig.primaryRate / 100));
 
           const activeTab = CustomerStash.getActiveTab();
           const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
           const hasExistingHookahs = existingHookahs.length > 0;
+          const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
+          const finalPrice = isRefill ? refillPrice : origPrice;
+          const estTax = (finalPrice * (taxConfig.primaryRate / 100));
 
           let activeFlavorsHtml = '';
           if (activeFlavors.length === 0) {
@@ -4410,7 +4411,7 @@
               const col = getItemProfileColor(item);
 
               activeFlavorsHtml += `
-                <div class="py-1.5 px-2 flex items-center justify-between gap-2 select-none hover:bg-white/[0.02] transition">
+                <div class="py-1 px-2 flex items-center justify-between gap-2 select-none hover:bg-white/[0.02] transition">
                   <div class="flex items-center gap-2 min-w-0 flex-1">
                     <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 6px ${col}80;"></span>
                     <span class="font-serif text-[13px] font-bold text-white truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">${item.name}</span>
@@ -4432,7 +4433,7 @@
           }
 
           activeBowlSectionHtml = `
-            <section class="menu-bowl-bench mb-5 p-3.5 bg-black/40 backdrop-blur-md border border-white/[0.12] transition-all select-none">
+            <section class="menu-bowl-bench mb-4 p-3 bg-black/40 backdrop-blur-md border border-white/[0.12] transition-all select-none">
               <!-- Top Row: Title + Buzz Level + Reset -->
               <div class="flex justify-between items-center pb-2 border-b border-white/[0.08]">
                 <div class="flex items-center gap-2">
@@ -4463,7 +4464,7 @@
                 </div>
               ` : `
                 <!-- Spectrum Slider -->
-                <div class="pt-2.5 pb-1">
+                <div class="pt-2 pb-1">
                   <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''} h-2 rounded-sm overflow-hidden" id="spectrumDraggableArea">
                     <div id="spectrumRibbon" class="spectrum-track w-full h-full bg-zinc-800" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
                     <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
@@ -4480,38 +4481,25 @@
                   </div>
                 </div>
 
-                <!-- Order Mode Toggle (New Hookah vs Refill) -->
-                <div class="grid grid-cols-2 gap-2 pt-1 pb-1">
-                  <button onclick="setBowlOrderType('new')" class="py-1.5 px-2 border text-center transition ${!isRefill ? 'bg-amber-400 text-black border-amber-400 font-bold shadow' : 'bg-black/40 border-white/[0.14] text-zinc-300 hover:border-amber-400/60'}">
-                    <div class="font-serif text-[11px] uppercase tracking-wider">🏺 New Hookah Pipe</div>
-                    <div class="text-[10px] font-mono opacity-90">$${origPrice.toFixed(0)}</div>
-                  </button>
-                  <button onclick="setBowlOrderType('refill')" class="py-1.5 px-2 border text-center transition ${isRefill ? 'bg-amber-400 text-black border-amber-400 font-bold shadow' : 'bg-black/40 border-white/[0.14] text-zinc-300 hover:border-amber-400/60'}">
-                    <div class="font-serif text-[11px] uppercase tracking-wider">🔄 Refill / Repack</div>
-                    <div class="text-[10px] font-mono opacity-90">$${refillPrice.toFixed(0)} <span class="text-[9px] opacity-75">(-$10)</span></div>
-                  </button>
-                </div>
-
-                ${isRefill && hasExistingHookahs ? `
-                  <div class="flex items-center justify-between py-1 px-2 bg-white/[0.03] border border-white/[0.08] text-[11px]">
-                    <span class="text-zinc-400 font-serif">Repack Existing Pipe:</span>
-                    <span class="font-bold text-amber-300 font-mono">Hookah #${existingHookahs.length}</span>
-                  </div>
-                ` : ''}
-
                 <!-- Active Flavor Rows (Discrete & Editorial) -->
-                <div class="divide-y divide-white/[0.05] my-1.5" id="flavorSlotsContainer">
+                <div class="divide-y divide-white/[0.05] my-1" id="flavorSlotsContainer">
                   ${activeFlavorsHtml}
                 </div>
 
                 <!-- Order Action Bar (Discrete & Elegant) -->
                 <div class="pt-2 mt-1 border-t border-white/[0.08] flex items-center justify-between">
-                  <div class="flex items-baseline gap-2">
+                  <div class="flex items-baseline gap-2 flex-wrap min-w-0 flex-1 pr-2">
                     <span class="text-base font-serif font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">$${finalPrice.toFixed(0)}</span>
                     <span class="text-[10px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
-                    <span class="text-[9px] uppercase tracking-wider text-amber-400 font-mono font-semibold ml-1">${isRefill ? '[REFILL -$10]' : '[NEW HOOKAH]'}</span>
+                    ${hasExistingHookahs ? `
+                      <button onclick="setBowlOrderType('${isRefill ? 'new' : 'refill'}')" class="text-[10px] text-amber-400 hover:text-amber-300 font-mono underline decoration-dotted transition" title="Change order mode">
+                        ${isRefill ? 'Refill (-$10) · [Switch to New Pipe]' : 'New Pipe · [Switch to Refill -$10]'}
+                      </button>
+                    ` : `
+                      <span class="text-[9px] uppercase tracking-wider text-amber-400/80 font-mono font-medium">[ORIGINAL HOOKAH]</span>
+                    `}
                   </div>
-                  <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none">
+                  <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none flex-shrink-0">
                     ${isRefill ? 'Order Refill' : 'Order Hookah'}
                   </button>
                 </div>
