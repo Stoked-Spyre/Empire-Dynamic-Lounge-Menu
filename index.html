@@ -1997,7 +1997,7 @@
       </div>
 
       <!-- Menu Header with clean transparent logo, name, and atmosphere -->
-      <div class="menu-header">
+      <div class="menu-header" id="menuHeaderSpread">
         <div class="text-center pt-2 pb-1">
           <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="menu-header-logo" />
           <h1 class="menu-masthead">Empire Hookah Lounge</h1>
@@ -3440,29 +3440,16 @@
 
     function updateActiveBowlNotificationUI() {
       const floatingBar = document.getElementById('floatingActiveBowlBar');
-      const floatingSummary = document.getElementById('floatingBowlSummary');
+      if (floatingBar) floatingBar.classList.add('hidden');
       const dockBadge = document.getElementById('dockBowlCountBadge');
       const dockTabTotal = document.getElementById('dockTabTotalBadge');
 
-      if (activeFlavors.length > 0 && isVipLoggedIn && activeCustomerTab === 'menu') {
-        if (floatingBar) floatingBar.classList.remove('hidden');
-        if (floatingSummary) {
-          const summaryStr = activeFlavors.map(f => `${f.name} (${f.percent}%)`).join(' · ');
-          floatingSummary.textContent = activeMixName ? `${activeMixName} (${summaryStr})` : summaryStr;
-        }
-        if (dockBadge) {
+      if (dockBadge) {
+        if (activeFlavors.length > 0 && isVipLoggedIn) {
           dockBadge.textContent = activeFlavors.length;
           dockBadge.classList.remove('hidden');
-        }
-      } else {
-        if (floatingBar) floatingBar.classList.add('hidden');
-        if (dockBadge) {
-          if (activeFlavors.length > 0 && isVipLoggedIn) {
-            dockBadge.textContent = activeFlavors.length;
-            dockBadge.classList.remove('hidden');
-          } else {
-            dockBadge.classList.add('hidden');
-          }
+        } else {
+          dockBadge.classList.add('hidden');
         }
       }
 
@@ -3488,6 +3475,11 @@
 
       const floatingBar = document.getElementById('floatingActiveBowlBar');
       if (floatingBar) floatingBar.classList.add('hidden');
+
+      const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
+      if (headerSpread) headerSpread.classList.remove('hidden');
+      const navTrack = document.getElementById('menuNavTrack');
+      if (navTrack) navTrack.classList.remove('hidden');
 
       switchCustomerTab('menu');
       renderCustomerMenu();
@@ -4179,17 +4171,25 @@
       if (refillEl) refillEl.textContent = `${(pricing.refillPrice || 25.00).toFixed(0)}`;
       if (tanEl) tanEl.textContent = `${(pricing.tangiersPrice || 38.00).toFixed(0)}`;
 
-      // 2. Render Primary Navigation Tabs (Pure Typographic — No Icons)
+      // 2. Render Primary Navigation Tabs (Public QR Menu only - hidden for VIP members who have bottom dock)
+      const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
       const navTrack = document.getElementById('menuNavTrack');
-      if (navTrack) {
-        navTrack.innerHTML = `
-          <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
-            Hookah
-          </button>
-          <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
-            Beverages
-          </button>
-        `;
+      if (isVipLoggedIn) {
+        if (headerSpread) headerSpread.classList.add('hidden');
+        if (navTrack) navTrack.classList.add('hidden');
+      } else {
+        if (headerSpread) headerSpread.classList.remove('hidden');
+        if (navTrack) {
+          navTrack.classList.remove('hidden');
+          navTrack.innerHTML = `
+            <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
+              Hookah
+            </button>
+            <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
+              Beverages
+            </button>
+          `;
+        }
       }
 
       // 3. Render Content Spread
@@ -4398,12 +4398,18 @@
 
                 <!-- SPECTRUM RATIO SLIDER -->
                 ${activeFlavors.length > 0 ? `
-                  <div class="spectrum-drag-area" id="spectrumDraggableArea">
+                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''}" id="spectrumDraggableArea">
                     <div id="spectrumRibbon" class="spectrum-track bg-zinc-900" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
                     <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
                   </div>
                   <div class="flex justify-between text-[10px] text-zinc-400 font-mono px-0.5">
-                    <span>Drag gold thumb to adjust ratios</span>
+                    ${activeMixName ? `
+                      <span class="text-amber-300 font-serif italic font-medium flex items-center gap-1">
+                        <span class="text-[9px]">👑</span> Curated House Blend (Fixed Ratios)
+                      </span>
+                    ` : `
+                      <span>Drag gold thumb to adjust ratios</span>
+                    `}
                     <span class="text-amber-400 font-bold">Standard 22g Pack</span>
                   </div>
                 ` : ''}
@@ -4452,7 +4458,7 @@
           </div>
         `;
 
-        if (isVipLoggedIn && activeFlavors.length > 1) {
+        if (isVipLoggedIn && activeFlavors.length > 1 && !activeMixName) {
           const handlesCont = document.getElementById('spectrumHandlesContainer');
           if (handlesCont) {
             let handleCum = 0;
@@ -5015,7 +5021,7 @@
       if (!container) return;
       function getClientX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
       function handleDragMove(e) {
-        if (activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
+        if (activeMixName || activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
         if (e.cancelable) e.preventDefault();
         const ribbon = document.getElementById('spectrumRibbon');
         if (!ribbon) return;
@@ -5047,6 +5053,7 @@
         window.removeEventListener('touchend', handleDragEnd);
       }
       window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
+        if (activeMixName) return;
         e.preventDefault(); e.stopPropagation();
         activeCustomerDragHandleIndex = handleIdx;
         window.addEventListener('mousemove', handleDragMove);
@@ -5055,9 +5062,11 @@
         window.addEventListener('touchend', handleDragEnd);
       };
       container.onmousedown = (e) => {
+        if (activeMixName) return;
         if (e.target.classList.contains('spectrum-drag-thumb')) return;
         if (activeFlavors.length <= 1) return;
         const ribbon = document.getElementById('spectrumRibbon');
+        if (!ribbon) return;
         const rect = ribbon.getBoundingClientRect();
         const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
         let cum = 0;
