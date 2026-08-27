@@ -323,6 +323,45 @@
       border-bottom: none;
     }
 
+    /* LUXURY NOIR RANGE SLIDER */
+    .noir-tip-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .noir-tip-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E5A93C;
+      border: 2px solid #000000;
+      box-shadow: 0 0 10px rgba(229, 169, 60, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .noir-tip-slider::-webkit-slider-thumb:hover,
+    .noir-tip-slider::-webkit-slider-thumb:active {
+      transform: scale(1.25);
+      box-shadow: 0 0 16px rgba(229, 169, 60, 0.95);
+    }
+    .noir-tip-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E5A93C;
+      border: 2px solid #000000;
+      box-shadow: 0 0 10px rgba(229, 169, 60, 0.7);
+      cursor: pointer;
+    }
+
     /* MENU SECTION NAVIGATION — feels like page tabs on a printed wine list */
     .menu-nav {
       display: flex;
@@ -2345,28 +2384,49 @@
           </div>
         </div>
 
-        <!-- Section 4: Interactive Tip Strip (with No Tip / Skip) -->
-        <div class="pt-2 border-t border-white/[0.08] space-y-2">
-          <div class="flex justify-between items-center text-[10px] font-mono text-zinc-400">
-            <span>Add Gratuity for Lounge Staff &amp; Heat Masters</span>
-            <span class="text-amber-400 font-bold" id="tabTipCalculatedDisplay">18% ($0.00)</span>
+        <!-- Section 4: Incremental Gratuity Slider with Discreet Custom Option -->
+        <div class="pt-2.5 border-t border-white/[0.08] space-y-2">
+          <div class="flex justify-between items-center text-[10px] font-mono text-zinc-300">
+            <span>Staff Gratuity</span>
+            <span class="text-amber-400 font-bold font-mono text-xs" id="tabTipCalculatedDisplay">18% ($0.00)</span>
           </div>
-          <div class="grid grid-cols-5 gap-1.5 text-center">
-            <button onclick="selectTabViewTip(0)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-400 hover:text-white rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn0">
-              No Tip
+
+          <!-- Luxury Gold Range Slider -->
+          <div class="space-y-1 pt-1">
+            <input 
+              type="range" 
+              min="0" 
+              max="30" 
+              step="1" 
+              value="18" 
+              id="tabTipRangeSlider" 
+              class="noir-tip-slider" 
+              oninput="onTabTipSliderChange(this.value)" 
+            />
+            <div class="flex justify-between text-[9px] font-mono text-zinc-500 px-0.5 select-none">
+              <span class="cursor-pointer hover:text-white" onclick="setTipViaPreset(0)">0%</span>
+              <span class="cursor-pointer hover:text-white" onclick="setTipViaPreset(15)">15%</span>
+              <span class="cursor-pointer hover:text-white text-amber-400/80 font-bold" onclick="setTipViaPreset(18)">18%</span>
+              <span class="cursor-pointer hover:text-white" onclick="setTipViaPreset(20)">20%</span>
+              <span class="cursor-pointer hover:text-white" onclick="setTipViaPreset(25)">25%</span>
+              <span class="cursor-pointer hover:text-white" onclick="setTipViaPreset(30)">30%</span>
+            </div>
+          </div>
+
+          <!-- Discreet Custom Tip Button & Collapsible Drawer -->
+          <div class="text-center pt-0.5">
+            <button onclick="toggleCustomTipDrawer()" class="text-[9px] font-mono tracking-wider text-zinc-400 hover:text-amber-300 underline decoration-dotted transition" id="tabCustomTipToggleBtn" type="button">
+              + Custom Tip
             </button>
-            <button onclick="selectTabViewTip(15)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn15">
-              15%
-            </button>
-            <button onclick="selectTabViewTip(18)" class="tab-tip-btn py-2 px-1 bg-amber-400 border border-amber-400 text-black rounded-none text-[10px] font-serif font-bold transition shadow-[0_0_15px_rgba(229,169,60,0.5)]" id="tabTipBtn18">
-              18%
-            </button>
-            <button onclick="selectTabViewTip(20)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn20">
-              20%
-            </button>
-            <button onclick="selectTabViewTip(25)" class="tab-tip-btn py-2 px-1 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[10px] font-serif font-bold transition shadow" id="tabTipBtn25">
-              25%
-            </button>
+            <div id="tabCustomTipDrawer" class="hidden mt-2 flex items-center justify-center gap-2 max-w-xs mx-auto">
+              <div class="relative flex-1">
+                <span class="absolute left-2.5 top-1.5 text-zinc-500 font-mono text-xs">$</span>
+                <input type="number" id="tabCustomTipInput" placeholder="0.00" step="0.50" min="0" class="w-full bg-black/80 border border-white/20 text-white font-mono text-xs pl-6 pr-2 py-1.5 focus:border-amber-400 outline-none rounded-none" />
+              </div>
+              <button onclick="applyCustomDollarTip()" class="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-[10px] uppercase tracking-wider transition rounded-none" type="button">
+                Apply
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2381,14 +2441,14 @@
 
         <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
         <div class="space-y-2 pt-2">
-          <!-- Option B: End Session & Pay Tab Button -->
-          <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="w-full bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-3.5 px-4 shadow-[0_4px_20px_rgba(229,169,60,0.4)] transition active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2 rounded-none">
+          <!-- Option B: End Session & Pay Tab Button (Styled matching landing-enter-line-btn) -->
+          <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="landing-enter-line-btn" type="button">
             <span>End Session &amp; Settle Tab</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </button>
 
           <!-- Option C: Split Bill with Table / Group -->
-          <button onclick="openTabSplitModal()" class="w-full bg-black/60 hover:bg-white/5 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-serif text-[11px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none">
+          <button onclick="openTabSplitModal()" class="w-full bg-black/40 hover:bg-white/5 border border-white/10 hover:border-amber-400 text-zinc-400 hover:text-white font-serif text-[10px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none" type="button">
             <span class="text-amber-400 text-xs">⇄</span>
             <span>Split Bill with Table / Group</span>
           </button>
@@ -5148,18 +5208,52 @@
       renderIcons();
     }
 
-    function selectTabViewTip(pct) {
-      currentSelectedTipPct = pct;
-      [0, 15, 18, 20, 25].forEach(p => {
-        const btn = document.getElementById(`tabTipBtn${p}`);
-        if (!btn) return;
-        if (p === pct) {
-          btn.className = 'tab-tip-btn py-1 px-0.5 bg-amber-400 border border-amber-400 text-black rounded-none text-[9px] font-serif font-bold transition shadow';
-        } else {
-          btn.className = 'tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-400 hover:text-white rounded-none text-[9px] font-serif font-bold transition';
-        }
-      });
+    let customTipDollarAmount = null;
+
+    function onTabTipSliderChange(val) {
+      customTipDollarAmount = null;
+      currentSelectedTipPct = parseInt(val, 10);
+      const drawer = document.getElementById('tabCustomTipDrawer');
+      if (drawer) drawer.classList.add('hidden');
       updateTabViewFinancials();
+    }
+
+    function setTipViaPreset(pct) {
+      const slider = document.getElementById('tabTipRangeSlider');
+      if (slider) slider.value = pct;
+      onTabTipSliderChange(pct);
+    }
+
+    function toggleCustomTipDrawer() {
+      const drawer = document.getElementById('tabCustomTipDrawer');
+      if (!drawer) return;
+      const isHidden = drawer.classList.toggle('hidden');
+      if (!isHidden) {
+        const inp = document.getElementById('tabCustomTipInput');
+        if (inp) {
+          inp.focus();
+          if (customTipDollarAmount !== null) inp.value = customTipDollarAmount.toFixed(2);
+        }
+      }
+    }
+
+    function applyCustomDollarTip() {
+      const inp = document.getElementById('tabCustomTipInput');
+      if (!inp) return;
+      const val = parseFloat(inp.value);
+      if (isNaN(val) || val < 0) {
+        showToast('⚠️ Invalid Amount', 'Please enter a valid dollar amount.');
+        return;
+      }
+      customTipDollarAmount = val;
+      const drawer = document.getElementById('tabCustomTipDrawer');
+      if (drawer) drawer.classList.add('hidden');
+      updateTabViewFinancials();
+      showToast('💰 Tip Updated', `Custom gratuity of $${val.toFixed(2)} applied.`);
+    }
+
+    function selectTabViewTip(pct) {
+      setTipViaPreset(pct);
     }
 
     function updateTabViewFinancials() {
@@ -5168,7 +5262,9 @@
       const rawSubtotal = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
       tabBalance = rawSubtotal;
       const taxAmt = rawSubtotal * (taxConfig.primaryRate / 100);
-      const tipAmt = rawSubtotal * (currentSelectedTipPct / 100);
+      const tipAmt = customTipDollarAmount !== null 
+        ? customTipDollarAmount 
+        : (rawSubtotal * (currentSelectedTipPct / 100));
       const grandTotal = rawSubtotal + taxAmt + tipAmt;
 
       const subEl = document.getElementById('tabViewSubtotal');
@@ -5182,10 +5278,28 @@
       if (subEl) subEl.textContent = `$${rawSubtotal.toFixed(2)}`;
       if (taxLbl) taxLbl.textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
       if (taxAmtEl) taxAmtEl.textContent = `$${taxAmt.toFixed(2)}`;
-      if (tipRowAmt) tipRowAmt.textContent = currentSelectedTipPct === 0 ? '$0.00 (No Tip)' : `$${tipAmt.toFixed(2)} (${currentSelectedTipPct}%)`;
-      if (tipDisplay) tipDisplay.textContent = currentSelectedTipPct === 0 ? 'No Tip Selected' : `${currentSelectedTipPct}% ($${tipAmt.toFixed(2)})`;
+      if (tipRowAmt) {
+        if (customTipDollarAmount !== null) {
+          tipRowAmt.textContent = `$${tipAmt.toFixed(2)} (Custom)`;
+        } else if (currentSelectedTipPct === 0) {
+          tipRowAmt.textContent = '$0.00 (No Tip)';
+        } else {
+          tipRowAmt.textContent = `$${tipAmt.toFixed(2)} (${currentSelectedTipPct}%)`;
+        }
+      }
+      if (tipDisplay) {
+        if (customTipDollarAmount !== null) {
+          tipDisplay.textContent = `Custom: $${tipAmt.toFixed(2)}`;
+        } else if (currentSelectedTipPct === 0) {
+          tipDisplay.textContent = 'No Tip ($0.00)';
+        } else {
+          tipDisplay.textContent = `${currentSelectedTipPct}% ($${tipAmt.toFixed(2)})`;
+        }
+      }
       if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)}`;
-      if (payBtn) payBtn.innerHTML = `<span>End Session &amp; Settle Tab ($${grandTotal.toFixed(2)})</span><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+      if (payBtn) {
+        payBtn.innerHTML = `<span>End Session &amp; Settle Tab ($${grandTotal.toFixed(2)})</span><svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+      }
     }
 
     // ==================== OPTION B: SQUARE ITEMIZED ORDER PAYLOAD BUILDER ====================
@@ -5232,7 +5346,7 @@
           ],
           service_charges: tipAmount > 0 ? [
             {
-              name: `Lounge Staff Gratuity (${currentSelectedTipPct}%)`,
+              name: customTipDollarAmount !== null ? `Lounge Staff Gratuity ($${tipAmount.toFixed(2)})` : `Lounge Staff Gratuity (${currentSelectedTipPct}%)`,
               amount_money: {
                 amount: Math.round(tipAmount * 100),
                 currency: 'USD'
@@ -5261,7 +5375,9 @@
       const taxConfig = CustomerStash.getTaxConfig();
       const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
       const taxAmt = rawSubtotal * (taxConfig.primaryRate / 100);
-      const tipAmt = rawSubtotal * (currentSelectedTipPct / 100);
+      const tipAmt = customTipDollarAmount !== null 
+        ? customTipDollarAmount 
+        : (rawSubtotal * (currentSelectedTipPct / 100));
       const grandTotal = rawSubtotal + taxAmt + tipAmt;
 
       // Build Option B full itemized Square Order Payload
