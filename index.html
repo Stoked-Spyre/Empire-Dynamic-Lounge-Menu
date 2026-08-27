@@ -9,6 +9,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+  <!-- Immediate Storage Purge for Clean Blank Menu State -->
+  <script>
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch(e) {}
+  </script>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -3339,29 +3347,8 @@
       return `<div class="w-16 h-16 opacity-[0.08] group-hover:opacity-[0.16] transition-opacity duration-300 text-white fill-current flex items-center justify-center">${getBrandWatermark(brandName)}</div>`;
     }
 
-    const STOKED_MASTER_INVENTORY = [
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#ff3366', desc: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['Berries', 'Citruses', 'Tropical'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', category: 'russian', strength: 6, stock: 'in_stock', color: '#00f0ff', desc: 'Sub-Zero Siberian Chill', profiles: ['Mints', 'Flavor Additives'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#e0e7ff', desc: 'Creamy Sweet Rice Pudding', profiles: ['Dairy / Creamy', 'Desserts'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', category: 'russian', strength: 7, stock: 'in_stock', color: '#ff8c00', desc: 'Tropical Mango, Passion & Berry', profiles: ['Tropical', 'Berries', 'Citruses'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'tan-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#00f0ff', desc: 'Natural Sweet Cane Peppermint', profiles: ['Mints'], region: 'USA', countryFlag: '🇺🇸' },
-      { id: 'tan-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', category: 'tangiers', strength: 9, stock: 'in_stock', color: '#fb923c', desc: 'Exotic Indian Spices + Ripe Peach', profiles: ['Orchard Fruit', 'Warm Spices', 'Florals'], region: 'USA', countryFlag: '🇺🇸' },
-      { id: 'tan-orange-soda', name: 'Orange Soda', brand: 'Tangiers', category: 'tangiers', strength: 8, stock: 'in_stock', color: '#ffcc00', desc: 'Fizzy Citrus Valencia Orange', profiles: ['Citruses', 'Beverages'], region: 'USA', countryFlag: '🇺🇸' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', category: 'russian', strength: 8, stock: 'in_stock', color: '#ff8c00', desc: 'Passionfruit & Mango Tropical Medley', profiles: ['Tropical', 'Citruses'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', category: 'russian', strength: 9, stock: 'in_stock', color: '#00f0ff', desc: 'Deep Siberian Arctic Freeze', profiles: ['Mints', 'Flavor Additives'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', category: 'russian', strength: 8, stock: 'in_stock', color: '#10b981', desc: 'Jasmine Green Tea Herbal Leaf', profiles: ['Beverages', 'Herbal'], region: 'Russia', countryFlag: '🇷🇺' },
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', category: 'blonde', strength: 3, stock: 'in_stock', color: '#22c55e', desc: 'Traditional Anise & Crisp Apple', profiles: ['Apple', 'Orchard Fruit', 'Warm Spices'], region: 'UAE', countryFlag: '🇦🇪' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', category: 'blonde', strength: 2, stock: 'in_stock', color: '#ff3366', desc: 'Sweet Blueberry Fresh Breeze', profiles: ['Berries', 'Mints'], region: 'USA', countryFlag: '🇺🇸' },
-      { id: 'ad-love-66', name: 'Love 66', brand: 'Adalya', category: 'blonde', strength: 3, stock: 'out_of_stock', color: '#ff8c00', desc: 'Watermelon, Honeydew & Mint', profiles: ['Tropical', 'Berries', 'Mints'], region: 'Turkey', countryFlag: '🇹🇷' }
-    ];
-
-    const EMPIRE_HOUSE_MIXES = [
-      { id: 'mix-pink-cane', name: 'Pink Cane Sensation', tagline: 'Lounge Signature Blend', flavors: ['mh-pinkman', 'tan-cane-mint'], ratios: [70, 30], badge: 'Craft #1', color: '#EC4899', desc: 'Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.' },
-      { id: 'mix-siberian-midnight', name: 'Siberian Midnight Tea', tagline: 'Arctic Freeze & Green Tea', flavors: ['ds-supernova', 'bb-green-tea'], ratios: [30, 70], badge: 'Staff Fav', color: '#6366F1', desc: 'Earthy jasmine green tea paired with sub-zero arctic freeze.' },
-      { id: 'mix-kashmir-velvet', name: 'Kashmir Velvet Cream', tagline: 'Spiced Floral Kashmir & Sweet Rice', flavors: ['tan-kashmir-peach', 'mh-milky-rice'], ratios: [60, 40], badge: 'Rich', color: '#FB923C', desc: 'Aromatic Indian spices with ripe peach and warm vanilla rice pudding.' },
-      { id: 'mix-empire-royalty', name: 'Empire Royalty', tagline: 'Cane Mint, Mango & Siberian Freeze', flavors: ['tan-cane-mint', 'ds-falling-star', 'mh-frosty'], ratios: [35, 35, 30], badge: 'VIP', color: '#E5A93C', desc: 'Cane mint, tropical mango passion, and crisp Siberian chill.' },
-      { id: 'mix-citrus-bliss', name: 'Fizzy Citrus Rush', tagline: 'Valencia Orange & Grapefruit Zest', flavors: ['tan-orange-soda', 'mh-pinkman'], ratios: [50, 50], badge: 'Fresh', color: '#F97316', desc: 'Sparkling Valencia orange soda balanced by tangy pink grapefruit.' }
-    ];
+    const STOKED_MASTER_INVENTORY = [];
+    const EMPIRE_HOUSE_MIXES = [];
     const DEFAULT_ZONES = [
       { id: 'indoor', name: 'Indoor Floor', icon: 'layers' },
       { id: 'bar', name: 'Main Bar', icon: 'wine' },
@@ -3377,7 +3364,7 @@
       { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
     ];
 
-    const EMPIRE_STORAGE_VERSION = '2.3_CLEAN';
+    const EMPIRE_STORAGE_VERSION = '2.4_CLEAN';
     function ensureCleanLocalStorage() {
       try {
         if (typeof localStorage === 'undefined') return;
@@ -4508,22 +4495,7 @@
     let activeProfileStation = 'mints';
     let activeStagedDrinks = []; // Array of { id, name, price, qty }
 
-    const EMPIRE_BEVERAGE_MENU = [
-      { id: 'coke-classic', name: 'Coca-Cola Classic' },
-      { id: 'coke-diet', name: 'Diet Coke' },
-      { id: 'coke-zero', name: 'Coke Zero Sugar' },
-      { id: 'sprite', name: 'Sprite Lemon-Lime' },
-      { id: 'dr-pepper', name: 'Dr Pepper' },
-      { id: 'fanta-orange', name: 'Fanta Orange' },
-      { id: 'ginger-ale', name: 'Seagram\'s Ginger Ale' },
-      { id: 'mexican-coke', name: 'Mexican Coke' },
-      { id: 'redbull-original', name: 'Red Bull Original' },
-      { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree' },
-      { id: 'redbull-yellow', name: 'Red Bull Yellow Edition' },
-      { id: 'redbull-red', name: 'Red Bull Red Edition' },
-      { id: 'maison-perrier', name: 'Maison Perrier' },
-      { id: 'bottled-water', name: 'Bottled Water' }
-    ];
+    const EMPIRE_BEVERAGE_MENU = [];
 
     function changeVariantDrinkQty(drinkId, drinkName, price, delta) {
       if (!isVipLoggedIn) {
@@ -5156,6 +5128,15 @@
           });
         }
 
+        if (!itemsHtml || itemsHtml.trim() === '') {
+          itemsHtml = `
+            <div class="py-16 text-center space-y-2">
+              <div class="font-serif text-sm text-zinc-400 italic">No tobacco selections in this section.</div>
+              <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Connect Supabase to sync live catalog</div>
+            </div>
+          `;
+        }
+
         // Assemble Pure 2-Column Container (Full Height & Atmospheric)
         spreadCont.innerHTML = `
           <div class="menu-2col-layout">
@@ -5182,6 +5163,15 @@
         EMPIRE_BEVERAGE_MENU.forEach(d => {
           drinksHtml += createEditorialItemHtml(d, 'drink', pricing, inStockInventory);
         });
+
+        if (!drinksHtml || drinksHtml.trim() === '') {
+          drinksHtml = `
+            <div class="py-16 text-center space-y-2">
+              <div class="font-serif text-sm text-zinc-400 italic">No beverage selections loaded.</div>
+              <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Connect Supabase to sync live beverages</div>
+            </div>
+          `;
+        }
 
         spreadCont.innerHTML = `
           <div class="pt-2 max-w-lg mx-auto space-y-1 px-2 pb-24 overflow-y-auto no-scrollbar">
