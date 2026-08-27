@@ -3377,114 +3377,78 @@
       { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
     ];
 
-    const DEFAULT_VIP_MEMBERS = [];
+    const EMPIRE_STORAGE_VERSION = '2.3_CLEAN';
+    function ensureCleanLocalStorage() {
+      try {
+        if (typeof localStorage === 'undefined') return;
+        const currentVersion = localStorage.getItem('empire_storage_version');
+        if (currentVersion !== EMPIRE_STORAGE_VERSION) {
+          // Explicitly clear legacy cached mock items, mock members, old pricing, and outdated inventories
+          localStorage.removeItem('empire_stoked_stash');
+          localStorage.removeItem('empire_vip_members');
+          localStorage.removeItem('empire_reward_tiers');
+          localStorage.removeItem('empire_pricing_config');
+          localStorage.removeItem('empire_custom_mixes');
+          localStorage.removeItem('empire_custom_zones');
+          localStorage.removeItem('empire_custom_floorplan');
+          localStorage.removeItem('empire_custom_floorplan_v2');
+          localStorage.removeItem('empire_active_tab');
+          localStorage.setItem('empire_storage_version', EMPIRE_STORAGE_VERSION);
+        }
+      } catch (e) {}
+    }
+    ensureCleanLocalStorage();
 
     class CustomerStash {
       static getInventory() {
-        const local = localStorage.getItem('empire_stoked_stash');
-        if (!local) {
-          localStorage.setItem('empire_stoked_stash', JSON.stringify(STOKED_MASTER_INVENTORY));
-          return STOKED_MASTER_INVENTORY;
-        }
-        let parsed;
-        try {
-          parsed = JSON.parse(local);
-        } catch(e) {
-          parsed = STOKED_MASTER_INVENTORY;
-        }
-        // Always force hydration of profiles, colors, flags, regions, strength from master inventory
-        parsed.forEach(item => {
-          const match = STOKED_MASTER_INVENTORY.find(m => m.id === item.id || (m.name && item.name && m.name.toLowerCase() === item.name.toLowerCase()));
-          if (match) {
-            item.region = match.region;
-            item.countryFlag = match.countryFlag;
-            item.profiles = match.profiles;
-            item.color = match.color;
-            item.strength = match.strength;
-            item.category = match.category;
-          }
-        });
-        return parsed;
+        return STOKED_MASTER_INVENTORY.map(item => ({ ...item }));
       }
 
       static getLoungeRules() {
-        const local = localStorage.getItem('empire_lounge_rules');
-        if (!local) {
-          const defaultRules = {
-            ageReq: '21+ ID Required',
-            pipeLimit: '2 Guests Max per Pipe',
-            policyNotice: 'Minimum 1 pipe per 2 guests.',
-            hours: 'Daily: 5:00 PM – 2:00 AM',
-            aboutTitle: 'About Empire',
-            aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
-          };
-          localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
-          return defaultRules;
-        }
-        return JSON.parse(local);
+        const defaultRules = {
+          ageReq: '21+ ID Required',
+          pipeLimit: '2 Guests Max per Pipe',
+          policyNotice: 'Minimum 1 pipe per 2 guests.',
+          hours: 'Daily: 5:00 PM – 2:00 AM',
+          aboutTitle: 'About Empire',
+          aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
+        };
+        return defaultRules;
       }
 
       static getLoungePricing() {
-        const local = localStorage.getItem('empire_pricing_config');
-        if (!local) {
-          const defaultPricing = {
-            originalPrice: 35.00,
-            refillPrice: 25.00,
-            tangiersPrice: 38.00
-          };
-          localStorage.setItem('empire_pricing_config', JSON.stringify(defaultPricing));
-          return defaultPricing;
-        }
-        return JSON.parse(local);
+        return {
+          originalPrice: 35.00,
+          refillPrice: 25.00,
+          tangiersPrice: 38.00
+        };
       }
 
       static getZones() {
-        const local = localStorage.getItem('empire_custom_zones');
-        if (!local) return DEFAULT_ZONES;
-        return JSON.parse(local).filter(z => z.id !== 'all');
+        return DEFAULT_ZONES.map(z => ({ ...z }));
       }
 
       static getFloorplan() {
-        const local = localStorage.getItem('empire_custom_floorplan_v2') || localStorage.getItem('empire_custom_floorplan');
-        if (!local) return [];
-        return JSON.parse(local);
+        return [];
       }
 
       static getTaxConfig() {
-        const local = localStorage.getItem('empire_tax_config');
-        if (!local) {
-          return { location: 'Phoenix, Arizona', primaryName: 'Phoenix Sales Tax', primaryRate: 8.60 };
-        }
-        return JSON.parse(local);
+        return { location: 'Phoenix, Arizona', primaryName: 'Phoenix Sales Tax', primaryRate: 8.60 };
       }
 
       static getRewardTiers() {
-        const local = localStorage.getItem('empire_reward_tiers');
-        if (!local) {
-          localStorage.setItem('empire_reward_tiers', JSON.stringify(DEFAULT_REWARD_TIERS));
-          return DEFAULT_REWARD_TIERS;
-        }
-        return JSON.parse(local);
+        return DEFAULT_REWARD_TIERS.map(t => ({ ...t }));
       }
 
       static getVipMembers() {
         const local = localStorage.getItem('empire_vip_members');
-        if (!local) {
-          localStorage.setItem('empire_vip_members', JSON.stringify(DEFAULT_VIP_MEMBERS));
-          return DEFAULT_VIP_MEMBERS;
+        if (!local) return [];
+        try {
+          const parsed = JSON.parse(local);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+          return [];
         }
-        const parsed = JSON.parse(local);
-        parsed.forEach(m => {
-          const match = DEFAULT_VIP_MEMBERS.find(dm => dm.id === m.id);
-          if (m.preferredBuzz === undefined && match) {
-            m.preferredBuzz = match.preferredBuzz;
-            m.favoriteMix = match.favoriteMix;
-          }
-          if ((!m.smokeHistory || m.smokeHistory.length === 0) && match && match.smokeHistory) {
-            m.smokeHistory = match.smokeHistory;
-          }
-        });
-        return parsed;
       }
 
       static saveVipMembers(members) {
