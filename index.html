@@ -2087,7 +2087,7 @@
       <div id="headerVipView" class="hidden flex items-center gap-2 pointer-events-auto">
         <span class="text-amber-400 text-xs select-none">◆</span>
         <div class="truncate">
-          <span class="font-serif font-bold text-white text-xs block tracking-wide truncate" id="vipMemberNameDisplay">Alex M.</span>
+          <span class="font-serif font-bold text-white text-xs block tracking-wide truncate" id="vipMemberNameDisplay">VIP Member</span>
         </div>
       </div>
     </div>
@@ -2112,7 +2112,7 @@
         </button>
         <button onclick="switchCustomerTab('rewards')" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400/40 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="View VIP Stash">
           <span class="text-amber-400 text-[10px]">👑</span>
-          <span id="headerVipPointsBadge" class="font-mono text-[11px]">750</span>
+          <span id="headerVipPointsBadge" class="font-mono text-[11px]">0</span>
         </button>
         <button onclick="vipLogout()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-white/30 text-zinc-400 hover:text-white px-2 py-1 text-xs font-serif tracking-widest uppercase transition active:scale-95" title="Log Out">
           <span class="text-[10px]">EXIT</span>
@@ -2132,7 +2132,7 @@
           <span class="text-base">🚨</span>
           <div>
             <div class="font-serif font-bold text-xs uppercase tracking-wider text-red-200" id="staffWifiAlertTitle">GUEST DISCONNECTED WITH OPEN TAB</div>
-            <div class="text-[11px] font-sans text-red-100 mt-0.5" id="staffWifiAlertDesc">Alex Vance (Table 4) disconnected from Empire Wi-Fi with an open tab of $48.00.</div>
+            <div class="text-[11px] font-sans text-red-100 mt-0.5" id="staffWifiAlertDesc">Guest disconnected from Empire Wi-Fi with an open tab.</div>
           </div>
         </div>
         <div class="flex items-center gap-1.5 flex-shrink-0">
@@ -2314,14 +2314,14 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <div class="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold font-bold text-sm">
-              <span id="vipStashAvatarLetter">A</span>
+              <span id="vipStashAvatarLetter">V</span>
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <h3 class="font-crest font-bold text-xs text-white" id="vipStashMemberName">Alex M.</h3>
-                <span class="text-[9px] bg-amber-950 text-brand-gold font-bold font-mono px-1.5 py-0.2 rounded border border-amber-800/60" id="vipStashTierName">GOLD VIP</span>
+                <h3 class="font-crest font-bold text-xs text-white" id="vipStashMemberName">VIP Member</h3>
+                <span class="text-[9px] bg-amber-950 text-brand-gold font-bold font-mono px-1.5 py-0.2 rounded border border-amber-800/60" id="vipStashTierName">VIP MEMBER</span>
               </div>
-              <p class="text-[11px] text-zinc-400 font-mono mt-0.5" id="vipStashPhone">480-555-0409 • Member since 2024</p>
+              <p class="text-[11px] text-zinc-400 font-mono mt-0.5" id="vipStashPhone">Member Account</p>
             </div>
           </div>
           
@@ -2334,10 +2334,10 @@
         <!-- Available Points Hero Banner -->
         <div class="bg-black/90 p-3 rounded-2xl border border-amber-500/30 text-center relative overflow-hidden">
           <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-bold block">Available VIP Stash Points</span>
-          <span class="text-2xl font-black text-brand-gold font-mono-nums block mt-0.5" id="vipStashPointsDisplay">750 PTS</span>
+          <span class="text-2xl font-black text-brand-gold font-mono-nums block mt-0.5" id="vipStashPointsDisplay">0 PTS</span>
           <div class="flex items-center justify-center gap-1 text-[11px] text-emerald-400 font-semibold mt-0.5">
             <i data-lucide="zap" class="w-3 h-3"></i>
-            <span>Earn 10 Pts per $1.00 spent on all shisha &amp; samovars</span>
+            <span>Earn 10 Pts per $1.00 spent on all shisha</span>
           </div>
         </div>
       </section>
@@ -2349,7 +2349,7 @@
             <i data-lucide="history" class="w-3.5 h-3.5 text-brand-gold"></i>
             <h3 class="font-crest font-bold text-xs tracking-wider text-white">PREVIOUS BOWLS &amp; SMOKE HISTORY</h3>
           </div>
-          <span class="text-[10px] text-brand-gold font-mono font-bold" id="vipSmokeHistoryCount">4 Bowls</span>
+          <span class="text-[10px] text-brand-gold font-mono font-bold" id="vipSmokeHistoryCount">0 Bowls</span>
         </div>
         <p class="text-[11px] text-zinc-400">Review your past handcrafted blends, nicotine buzz ratings, and re-smoke your favorites in 1 tap.</p>
 
@@ -3108,7 +3108,7 @@
           </div>
           <div>
             <h3 class="text-xs font-crest font-bold text-white tracking-wider">VIP LOYALTY REWARDS</h3>
-            <p class="text-[12px] text-brand-gold font-mono" id="modalVipTierLabel">Gold VIP • Alex M.</p>
+            <p class="text-[12px] text-brand-gold font-mono" id="modalVipTierLabel">VIP Member</p>
           </div>
         </div>
         <button onclick="closeRewardsLoyaltyModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
@@ -3117,7 +3117,7 @@
       <!-- Current Points Balance Card -->
       <div class="bg-black p-3 rounded-xl border border-zinc-800 text-center">
         <span class="text-[11px] uppercase tracking-wider text-zinc-400 font-bold block">Available Stash Points</span>
-        <span class="text-2xl font-extrabold text-brand-gold font-mono-nums block mt-0.5" id="modalCurrentPointsDisplay">750 PTS</span>
+        <span class="text-2xl font-extrabold text-brand-gold font-mono-nums block mt-0.5" id="modalCurrentPointsDisplay">0 PTS</span>
         <span class="text-[12px] text-emerald-400 font-semibold block mt-0.5">⚡ Earn 10 Pts per $1.00 spent</span>
       </div>
 
@@ -3144,7 +3144,7 @@
           </div>
           <div>
             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Square Web Payments</h3>
-            <p class="text-[12px] text-zinc-400" id="checkoutSeatSubtitle">👑 VIP Tab #409 • Phoenix, AZ</p>
+            <p class="text-[12px] text-zinc-400" id="checkoutSeatSubtitle">VIP Tab • Phoenix, AZ</p>
           </div>
         </div>
         <button onclick="closeEndSessionModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2 py-1 rounded-lg">✕</button>
@@ -3157,7 +3157,7 @@
             <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
             <span class="font-bold text-white text-[13px]">Redeem VIP Points</span>
           </div>
-          <span class="text-[12px] text-brand-gold font-mono font-bold" id="checkoutMemberPointsBadge">750 Pts Available</span>
+          <span class="text-[12px] text-brand-gold font-mono font-bold" id="checkoutMemberPointsBadge">0 Pts Available</span>
         </div>
 
         <!-- Reward Tiers Selector Options -->
@@ -3493,8 +3493,28 @@
 
       static getCurrentVipMember() {
         const members = this.getVipMembers();
-        const activeId = (typeof currentVipTabId !== 'undefined' && currentVipTabId) ? currentVipTabId.toLowerCase() : 'vip-409';
-        return members.find(m => m.id.toLowerCase() === activeId || m.id.toLowerCase() === activeId.replace('vip-', '')) || members[0];
+        const activeId = (typeof currentVipTabId !== 'undefined' && currentVipTabId) ? currentVipTabId.toLowerCase() : '';
+        const found = members.find(m => m.id.toLowerCase() === activeId || m.id.toLowerCase() === activeId.replace('vip-', ''));
+        if (found) return found;
+        const session = this.getSavedSession();
+        if (session && session.name) {
+          return {
+            id: session.memberId || 'vip-guest',
+            name: session.name,
+            tier: session.tier || 'VIP Member',
+            phone: session.phone || '',
+            points: session.points || 0,
+            smokeHistory: []
+          };
+        }
+        return {
+          id: 'vip-guest',
+          name: 'VIP Member',
+          tier: 'VIP Member',
+          phone: '',
+          points: 0,
+          smokeHistory: []
+        };
       }
 
       static getActiveTab() {
@@ -3503,7 +3523,7 @@
           try { return JSON.parse(raw); } catch (e) {}
         }
         return {
-          id: 'TAB-' + (typeof currentVipTabId !== 'undefined' ? currentVipTabId : '409'),
+          id: 'TAB-' + (typeof currentVipTabId !== 'undefined' && currentVipTabId ? currentVipTabId : '1'),
           items: [],
           seat: 'Floating VIP Tab',
           subtotal: 0
@@ -3727,10 +3747,10 @@
           id: 'vip-test',
           name: 'Test Account',
           tier: 'VIP Member',
-          points: 1000,
+          points: 0,
           canSelfOrder: true,
           email: 'test',
-          phone: '480-555-0100'
+          phone: ''
         };
         loginAsVipMember(testMember);
         return;
@@ -3805,7 +3825,7 @@
         } catch (e) {}
       }
       const member = CustomerStash.getCurrentVipMember();
-      const phone = member ? (member.phone || '480-555-0100') : 'Lounge Guest';
+      const phone = (member && member.phone) ? member.phone : 'Guest';
       console.log(`📱 [SMS DISPATCH to ${phone}]: ${title} — ${body}`);
     }
 
@@ -3862,12 +3882,17 @@
       const activeTab = CustomerStash.getActiveTab();
       const currentMember = CustomerStash.getCurrentVipMember();
 
+      if (members.length === 0) {
+        cont.innerHTML = `<div class="text-center py-6 text-xs text-zinc-500 italic">No active VIP member presence on lounge Wi-Fi.</div>`;
+        return;
+      }
+
       let html = '';
       members.slice(0, 6).forEach(m => {
         const isCurrent = isVipLoggedIn && currentMember && m.id === currentMember.id;
         const isConnected = isCurrent ? isConnectedToLoungeWifi : true;
         const tabTotal = isCurrent ? (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0) : (m.totalSpent ? 38 : 0);
-        const smokingMix = isCurrent ? (activeMixName || (activeFlavors.length > 0 ? activeFlavors.map(f => f.name).join(' + ') : 'Pink Cane Sensation')) : (m.favoriteMix || 'House Blend');
+        const smokingMix = isCurrent ? (activeMixName || (activeFlavors.length > 0 ? activeFlavors.map(f => f.name).join(' + ') : 'Signature Blend')) : (m.favoriteMix || 'House Blend');
         const canOrder = m.canSelfOrder !== false;
 
         html += `
@@ -3875,14 +3900,14 @@
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-300 font-bold font-serif flex items-center justify-center text-xs">
-                  ${m.name.charAt(0)}
+                  ${(m.name || 'V').charAt(0)}
                 </span>
                 <div>
                   <div class="font-serif font-bold text-white flex items-center gap-1.5">
                     <span>${m.name}</span>
                     <span class="text-[9px] font-sans px-1 py-0.2 uppercase border ${isCurrent ? 'border-amber-400 text-amber-300' : 'border-zinc-700 text-zinc-400'}">${m.tier || 'VIP'}</span>
                   </div>
-                  <div class="text-[10px] text-zinc-400 font-mono">${m.phone || '480-555-0100'} · ${isCurrent ? currentAssignedSeat : 'Table 3'}</div>
+                  <div class="text-[10px] text-zinc-400 font-mono">${m.phone || 'No phone'} · ${isCurrent ? currentAssignedSeat : 'Seated'}</div>
                 </div>
               </div>
               <div class="text-right">
@@ -5228,10 +5253,10 @@
       const ptsEl = document.getElementById('vipStashPointsDisplay');
       const countEl = document.getElementById('vipSmokeHistoryCount');
 
-      if (avatarEl) avatarEl.textContent = member.name.charAt(0);
-      if (nameEl) nameEl.textContent = member.name;
-      if (tierEl) tierEl.textContent = (member.tier || 'GOLD VIP').toUpperCase();
-      if (phoneEl) phoneEl.textContent = `${member.phone || '480-555-0409'} • Member since 2024`;
+      if (avatarEl) avatarEl.textContent = (member.name || 'V').charAt(0);
+      if (nameEl) nameEl.textContent = member.name || 'VIP Member';
+      if (tierEl) tierEl.textContent = (member.tier || 'VIP MEMBER').toUpperCase();
+      if (phoneEl) phoneEl.textContent = member.phone ? `${member.phone} • VIP Member` : 'VIP Member';
       if (ptsEl) ptsEl.textContent = `${member.points || 0} PTS`;
 
       // Render Previous Bowls & Smoke History
@@ -5953,7 +5978,7 @@
       const member = CustomerStash.getCurrentVipMember();
       const badge = document.getElementById('headerVipPointsBadge');
       if (badge && member) {
-        badge.textContent = `⭐ ${member.points} Pts`;
+        badge.textContent = `${member.points || 0}`;
       }
     }
 
@@ -5962,8 +5987,8 @@
       const member = CustomerStash.getCurrentVipMember();
       const tiers = CustomerStash.getRewardTiers();
 
-      document.getElementById('modalVipTierLabel').textContent = `${member.tier} • ${member.name} (${member.phone})`;
-      document.getElementById('modalCurrentPointsDisplay').textContent = `${member.points} PTS`;
+      document.getElementById('modalVipTierLabel').textContent = `${member.tier || 'VIP Member'} • ${member.name}${member.phone ? ' (' + member.phone + ')' : ''}`;
+      document.getElementById('modalCurrentPointsDisplay').textContent = `${member.points || 0} PTS`;
 
       const container = document.getElementById('modalRewardTiersContainer');
       container.innerHTML = '';
@@ -7448,10 +7473,10 @@
         const match = members.find(m => m.id === savedSession.memberId) || {
           id: savedSession.memberId,
           name: savedSession.name || 'VIP Member',
-          phone: savedSession.phone || '480-555-0100',
+          phone: savedSession.phone || '',
           tier: savedSession.tier || 'VIP Member',
           canSelfOrder: savedSession.canSelfOrder !== false,
-          points: 750
+          points: savedSession.points || 0
         };
 
         isVipLoggedIn = true;
