@@ -86,8 +86,7 @@
     .menu-skyline-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 50% 30%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 65%, #000000 95%),
-                  linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 25%, rgba(0,0,0,0.65) 75%, #000000 100%);
+      background: rgba(0, 0, 0, 0.40);
     }
 
     @media (max-width: 640px) {
@@ -5053,25 +5052,25 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // 1. BEVERAGES: FLAT LIST, NO ACCORDIONS, ULTRA-BRIGHT SUB-ITEM STYLE
+      // 1. BEVERAGES: FLAT LIST, NO ACCORDIONS, ULTRA-BRIGHT PURE WHITE TYPOGRAPHY
       if (isDrink) {
         const staged = activeStagedDrinks.find(d => d.id === item.id);
         const stagedQty = staged ? staged.qty : 0;
         const stepperBtn = isVipLoggedIn ? `
           <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
             ${stagedQty > 0 ? `
-              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, -1)" class="w-6 h-6 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">-</button>
-              <span class="font-mono text-amber-300 font-bold px-1 text-xs min-w-[16px] text-center select-none">${stagedQty}</span>
-              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="w-6 h-6 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">+</button>
+              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, -1)" class="w-7 h-7 bg-zinc-850 hover:bg-amber-400 hover:text-black border border-white/50 text-white font-mono flex items-center justify-center font-bold text-sm select-none rounded-none shadow-sm">-</button>
+              <span class="font-mono text-amber-300 font-extrabold px-1.5 text-sm min-w-[20px] text-center select-none">${stagedQty}</span>
+              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="w-7 h-7 bg-zinc-850 hover:bg-amber-400 hover:text-black border border-white/50 text-white font-mono flex items-center justify-center font-bold text-sm select-none rounded-none shadow-sm">+</button>
             ` : `
-              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-0.5 border border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
+              <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="text-[10px] font-serif uppercase tracking-widest px-3 py-1 bg-amber-400 hover:bg-amber-300 text-black font-extrabold shadow-md transition active:scale-95 select-none rounded-none">+ ADD</button>
             `}
           </div>
         ` : '';
 
         return `
-          <div class="sub-editorial-item py-2 px-1 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/sub' : ''} transition select-none flex items-center justify-between border-b border-white/[0.04]" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)"` : ''}>
-            <span class="font-serif text-[1.05rem] font-bold text-white tracking-wide ${isVipLoggedIn ? 'group-hover/sub:text-amber-300' : ''} ${stagedQty > 0 ? 'text-amber-300 font-bold' : ''} transition truncate">${item.name}</span>
+          <div class="sub-editorial-item py-2.5 px-2 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/sub' : ''} transition select-none flex items-center justify-between border-b border-white/[0.08] hover:bg-white/[0.04]" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)"` : ''}>
+            <span class="font-serif text-[1.12rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,1)] ${isVipLoggedIn ? 'group-hover/sub:text-amber-300' : ''} ${stagedQty > 0 ? 'text-amber-300 font-bold' : ''} transition truncate">${item.name}</span>
             ${stepperBtn}
           </div>
         `;
@@ -5326,7 +5325,7 @@
         });
 
         spreadCont.innerHTML = `
-          <div class="pt-2 max-w-lg mx-auto space-y-4 px-1 overflow-y-auto max-h-[75vh] no-scrollbar">
+          <div class="pt-2 max-w-lg mx-auto space-y-1 px-2 pb-24 overflow-y-auto no-scrollbar">
             ${drinksHtml}
           </div>
         `;
