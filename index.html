@@ -2149,26 +2149,17 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
-  <!-- Full-Screen Edge Glow Alert Overlay for Server/Staff Operational Mode -->
-  <div id="serverScreenGlowOverlay" class="server-screen-glow-overlay"></div>
-
-  <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY & STAFF KDS) ==================== -->
-  <header class="w-full max-w-5xl bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
+  <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
+  <header class="w-full max-w-2xl bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
     
     <!-- Left: VIP Profile Info (Account Name on Top Left) -->
-    <div class="flex items-center justify-start gap-2">
+    <div class="flex items-center justify-start">
       <div id="headerVipView" class="hidden flex items-center gap-2 pointer-events-auto">
         <span class="text-amber-400 text-xs select-none">◆</span>
         <div class="truncate">
           <span class="font-serif font-bold text-white text-xs block tracking-wide truncate" id="vipMemberNameDisplay">VIP Member</span>
         </div>
       </div>
-      
-      <!-- Direct Link to Staff Tablet POS & Operations -->
-      <a href="staff.html" class="pointer-events-auto bg-black/80 hover:bg-black border border-amber-400/40 hover:border-amber-400 text-amber-300 px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1.5 transition active:scale-95 shadow-md" title="Open Staff Tablet POS & Seating Diagram">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>STAFF POS</span>
-      </a>
     </div>
 
     <!-- Center: (Clean / Uncluttered) -->
@@ -2185,10 +2176,6 @@
       </div>
 
       <div id="headerVipRightView" class="hidden flex items-center gap-1.5 pointer-events-auto">
-        <button onclick="openStaffLoungePresenceModal()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="Live Lounge Presence & Wi-Fi Board">
-          <span class="text-[10px]">📶</span>
-          <span class="font-mono text-[10px]">WIFI</span>
-        </button>
         <button onclick="switchCustomerTab('rewards')" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400/40 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="View VIP Stash">
           <span class="text-amber-400 text-[10px]">👑</span>
           <span id="headerVipPointsBadge" class="font-mono text-[11px]">0</span>
@@ -2203,23 +2190,6 @@
 
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
   <main class="w-full max-w-2xl px-3.5 pt-0 flex flex-col gap-3">
-
-    <!-- High-Priority Staff Wi-Fi Disconnect Alert Banner (Hidden by default) -->
-    <div id="staffWifiAlertBanner" class="hidden mb-2 p-2.5 bg-red-950/90 border border-red-500 text-white shadow-2xl backdrop-blur-md select-none animate-pulse">
-      <div class="flex items-start justify-between gap-3">
-        <div class="flex items-start gap-2.5">
-          <span class="text-base">🚨</span>
-          <div>
-            <div class="font-serif font-bold text-xs uppercase tracking-wider text-red-200" id="staffWifiAlertTitle">GUEST DISCONNECTED WITH OPEN TAB</div>
-            <div class="text-[11px] font-sans text-red-100 mt-0.5" id="staffWifiAlertDesc">Guest disconnected from Empire Wi-Fi with an open tab.</div>
-          </div>
-        </div>
-        <div class="flex items-center gap-1.5 flex-shrink-0">
-          <button onclick="dispatchSmsTabReminder()" class="text-[9px] font-serif uppercase tracking-widest bg-amber-400 text-black px-2 py-1 font-bold hover:brightness-110 transition">SEND SMS</button>
-          <button onclick="dismissStaffWifiAlert()" class="text-[10px] text-zinc-400 hover:text-white px-1">✕</button>
-        </div>
-      </div>
-    </div>
 
     <!-- ==================== VIEW 1: EDITORIAL COCKTAIL SPREAD ==================== -->
     <div id="customer-view-menu" class="customer-panel menu-spread">
@@ -2633,98 +2603,6 @@
       </div>
     </div>
 
-    <!-- ==================== VIEW 5: SERVER & SOMMELIER KDS DASHBOARD ==================== -->
-    <div id="customer-view-server" class="customer-panel hidden flex flex-col gap-3 w-full max-w-5xl mx-auto pb-24 select-none">
-      
-      <!-- Top Operational KDS Bar -->
-      <div class="bg-zinc-950 border border-white/20 p-3 flex flex-wrap items-center justify-between gap-2.5 shadow-2xl">
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-sm font-bold text-white font-mono tracking-wider uppercase">EMPIRE KDS · FLOOR &amp; PREP</h2>
-                <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 font-mono text-[9px] border border-emerald-500/40">ONLINE</span>
-              </div>
-              <span class="text-[10px] text-zinc-400 font-mono">STATION: SOMMELIER / BAR / SERVER DISPATCH</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap">
-          <!-- Audio & Haptic Alerts Toggle -->
-          <button onclick="toggleServerAudioAlerts()" id="serverAudioToggleBtn" class="px-2.5 py-1 bg-zinc-900 border border-white/20 text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
-            <span id="serverAudioIcon">🔔</span>
-            <span id="serverAudioLabel">AUDIO: ON</span>
-          </button>
-
-          <!-- Simulate Live Order / Call -->
-          <button onclick="triggerSimulatedKdsTicket()" class="px-2.5 py-1 bg-amber-400/20 border border-amber-400/60 text-amber-300 hover:bg-amber-400 hover:text-black text-xs font-mono font-bold flex items-center gap-1 transition active:scale-95" title="Generate a test ticket with edge screen glow">
-            <span>⚡ SIMULATE TICKET</span>
-          </button>
-
-          <!-- Return to Customer Menu -->
-          <button onclick="switchCustomerTab('menu')" class="px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-mono tracking-wider transition active:scale-95">
-            ✕ EXIT KDS
-          </button>
-        </div>
-      </div>
-
-      <!-- KDS Main Section Selector (Tickets / Tables / 86 Stock) -->
-      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/15 pb-2">
-        <div class="flex items-center gap-1.5">
-          <button onclick="setKdsSubTab('tickets')" id="kdsTabBtn-tickets" class="px-3 py-1.5 font-mono text-xs font-bold uppercase transition border bg-amber-400 text-black border-amber-400">
-            <span>LIVE TICKETS</span>
-            <span id="kdsBadgeTickets" class="ml-1 px-1.5 py-0.2 bg-black text-amber-300 font-mono text-[10px]">0</span>
-          </button>
-          <button onclick="setKdsSubTab('tables')" id="kdsTabBtn-tables" class="px-3 py-1.5 font-mono text-xs font-bold uppercase transition border bg-black text-zinc-400 border-white/10 hover:text-white">
-            <span>TABLE MATRIX</span>
-            <span id="kdsBadgeTables" class="ml-1 px-1.5 py-0.2 bg-zinc-800 text-zinc-300 font-mono text-[10px]">12</span>
-          </button>
-          <button onclick="setKdsSubTab('inventory')" id="kdsTabBtn-inventory" class="px-3 py-1.5 font-mono text-xs font-bold uppercase transition border bg-black text-zinc-400 border-white/10 hover:text-white">
-            <span>86'D STOCK</span>
-          </button>
-        </div>
-
-        <!-- Filter Buttons inside Live Tickets -->
-        <div class="flex items-center gap-1 overflow-x-auto no-scrollbar" id="kdsTicketFilterBar">
-          <button onclick="setKdsFilter('all')" id="kdsFilter-all" class="px-2 py-0.5 text-[10px] font-mono border border-amber-400 bg-amber-400/20 text-amber-300">ALL</button>
-          <button onclick="setKdsFilter('hookah')" id="kdsFilter-hookah" class="px-2 py-0.5 text-[10px] font-mono border border-white/10 bg-black text-zinc-400 hover:text-white">HOOKAH</button>
-          <button onclick="setKdsFilter('drinks')" id="kdsFilter-drinks" class="px-2 py-0.5 text-[10px] font-mono border border-white/10 bg-black text-zinc-400 hover:text-white">DRINKS</button>
-          <button onclick="setKdsFilter('calls')" id="kdsFilter-calls" class="px-2 py-0.5 text-[10px] font-mono border border-white/10 bg-black text-zinc-400 hover:text-white">CALLS</button>
-          <button onclick="setKdsFilter('served')" id="kdsFilter-served" class="px-2 py-0.5 text-[10px] font-mono border border-white/10 bg-black text-zinc-400 hover:text-white">HISTORY</button>
-        </div>
-      </div>
-
-      <!-- KDS SubView 1: Live Ticket Grid -->
-      <div id="kdsSubView-tickets" class="space-y-3">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="kdsTicketsGrid">
-          <!-- Injected dynamically via renderKdsTickets() -->
-        </div>
-      </div>
-
-      <!-- KDS SubView 2: Table Matrix & Smoking Timers -->
-      <div id="kdsSubView-tables" class="hidden space-y-3">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5" id="kdsTablesMatrixGrid">
-          <!-- Injected dynamically via renderKdsTablesMatrix() -->
-        </div>
-      </div>
-
-      <!-- KDS SubView 3: Quick 86'd Stock Manager -->
-      <div id="kdsSubView-inventory" class="hidden space-y-3">
-        <div class="p-3 bg-zinc-950 border border-white/15 space-y-2">
-          <div class="flex justify-between items-center pb-2 border-b border-white/10">
-            <h3 class="text-xs font-mono font-bold text-white uppercase tracking-wider">Fast 86'd Inventory Board</h3>
-            <span class="text-[10px] text-zinc-400 font-mono">1-Tap to mark 86'd across customer menus</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2" id="kdsQuickStockGrid">
-            <!-- Injected dynamically via renderKdsQuickStock() -->
-          </div>
-        </div>
-      </div>
-
-    </div>
-
   </main>
 
   <div id="floatingActiveBowlBar" class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-xl px-3.5 z-40 hidden select-none">
@@ -3098,40 +2976,7 @@
     </div>
   </div>
 
-  <!-- ==================== STAFF LIVE LOUNGE PRESENCE & WI-FI BOARD MODAL ==================== -->
-  <div id="staffLoungePresenceModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="sommelier-card-frame w-full max-w-xl p-3 shadow-2xl">
-      <div class="sommelier-inner-frame p-4 space-y-3 relative overflow-hidden">
-        <!-- Header -->
-        <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="text-amber-400 text-sm">📶</span>
-            <div>
-              <h3 class="font-serif text-base font-bold text-white tracking-wide">Live Lounge Presence &amp; Wi-Fi Board</h3>
-              <p class="text-[10px] text-zinc-400 font-sans">Active Guests · Wi-Fi Sessions · Smoking Status · Owner Self-Order Approval</p>
-            </div>
-          </div>
-          <button onclick="closeStaffLoungePresenceModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-2 py-1">✕</button>
-        </div>
 
-        <!-- Live Presence List -->
-        <div class="space-y-2 max-h-80 overflow-y-auto no-scrollbar pr-1" id="staffLoungePresenceList">
-          <!-- Injected dynamically by JS -->
-        </div>
-
-        <!-- Footer Dismiss -->
-        <div class="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
-          <span>📶 Verified Network: <strong class="text-emerald-400">Empire-VIP-WiFi</strong></span>
-          <button onclick="closeStaffLoungePresenceModal()" class="text-amber-400 hover:text-white font-serif uppercase tracking-wider text-xs">
-            [ CLOSE BOARD ]
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== FIXED STAFF SCREEN EDGE GLOW NOTIFICATION OVERLAY ==================== -->
-  <div id="staffEdgeGlowOverlay" class="pointer-events-none"></div>
 
   <!-- ==================== THEMED ORDER CONFIRMATION MODAL ==================== -->
   <div id="orderConfirmationModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
