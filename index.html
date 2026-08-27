@@ -1996,12 +1996,10 @@
         <div class="menu-skyline-overlay"></div>
       </div>
 
-      <!-- Menu Header with clean transparent logo, name, and atmosphere -->
+      <!-- Menu Header with clean transparent circular logo -->
       <div class="menu-header" id="menuHeaderSpread">
         <div class="text-center pt-2 pb-1">
           <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="menu-header-logo" />
-          <h1 class="menu-masthead">Empire Hookah Lounge</h1>
-          <p class="menu-kicker">EST. 2010 · PHOENIX, ARIZONA</p>
         </div>
       </div>
 
@@ -4174,11 +4172,10 @@
       // 2. Render Primary Navigation Tabs (Public QR Menu only - hidden for VIP members who have bottom dock)
       const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
       const navTrack = document.getElementById('menuNavTrack');
+      if (headerSpread) headerSpread.classList.remove('hidden');
       if (isVipLoggedIn) {
-        if (headerSpread) headerSpread.classList.add('hidden');
         if (navTrack) navTrack.classList.add('hidden');
       } else {
-        if (headerSpread) headerSpread.classList.remove('hidden');
         if (navTrack) {
           navTrack.classList.remove('hidden');
           navTrack.innerHTML = `
