@@ -3164,10 +3164,16 @@
     let currentAssignedSeat = 'Floating VIP Tab';
     let activeFlavors = [];
     let activeMixName = null;
+    let activeBowlOrderType = 'new'; // 'new' | 'refill'
     let roundCount = 1;
     let tabBalance = 35.00;
     let currentSelectedTipPct = 18;
     let selectedAppliedReward = null;
+
+    function setBowlOrderType(type) {
+      activeBowlOrderType = type;
+      renderCustomerMenu();
+    }
 
     let selectedStationType = 'house_mixes';
     let filteredWheelItems = [];
@@ -3366,8 +3372,9 @@
         status: 'Serving',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
-      showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
+      updateActiveBowlNotificationUI();
       renderCustomerMenu();
+      showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
     }
 
     function addFlavorToActiveBowl(flavorId) {
@@ -3463,13 +3470,26 @@
 
       const pricing = CustomerStash.getLoungePricing();
       const hasTangiers = activeFlavors.some(f => f.brand === 'Tangiers');
-      const price = hasTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
-      const name = activeMixName || `Custom Mix (${activeFlavors.map(f => `${f.name} ${f.percent}%`).join(' / ')})`;
+      const origPrice = hasTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+      const refillPrice = origPrice - 10.00;
+      const isRefill = activeBowlOrderType === 'refill';
+      const price = isRefill ? refillPrice : origPrice;
+
+      const activeTab = CustomerStash.getActiveTab();
+      const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+      const hookahNum = isRefill ? (existingHookahs.length || 1) : (existingHookahs.length + 1);
+      const flavorSummary = activeMixName || activeFlavors.map(f => `${f.name} ${f.percent}%`).join(' / ');
+      
+      const orderName = isRefill 
+        ? `Refill / Repack (Hookah #${hookahNum}) - ${flavorSummary}`
+        : `Hookah #${hookahNum} - ${flavorSummary}`;
 
       CustomerStash.addItemToTab({
         id: 'order-' + Date.now(),
-        name: name,
+        name: orderName,
         type: 'shisha',
+        orderType: isRefill ? 'refill' : 'new',
+        pipeNumber: hookahNum,
         price: price,
         status: 'Preparing',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -3477,7 +3497,7 @@
 
       clearBowl();
       updateActiveBowlNotificationUI();
-      showToast('🔥 Order Dispatched', `${name} ($${price.toFixed(0)}) sent to your table!`);
+      showToast('🔥 Order Dispatched', `${orderName} ($${price.toFixed(0)}) sent to your table!`);
       switchCustomerTab('tab');
     }
 
@@ -4365,9 +4385,15 @@
           const buzzInfo = getBuzzInfo(buzzVal);
 
           const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
-          const basePrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
-          const finalPrice = roundCount === 1 ? basePrice : (basePrice - 10.00);
+          const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+          const refillPrice = origPrice - 10.00;
+          const isRefill = activeBowlOrderType === 'refill';
+          const finalPrice = isRefill ? refillPrice : origPrice;
           const estTax = (finalPrice * (taxConfig.primaryRate / 100));
+
+          const activeTab = CustomerStash.getActiveTab();
+          const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+          const hasExistingHookahs = existingHookahs.length > 0;
 
           let activeFlavorsHtml = '';
           if (activeFlavors.length === 0) {
@@ -4454,6 +4480,25 @@
                   </div>
                 </div>
 
+                <!-- Order Mode Toggle (New Hookah vs Refill) -->
+                <div class="grid grid-cols-2 gap-2 pt-1 pb-1">
+                  <button onclick="setBowlOrderType('new')" class="py-1.5 px-2 border text-center transition ${!isRefill ? 'bg-amber-400 text-black border-amber-400 font-bold shadow' : 'bg-black/40 border-white/[0.14] text-zinc-300 hover:border-amber-400/60'}">
+                    <div class="font-serif text-[11px] uppercase tracking-wider">🏺 New Hookah Pipe</div>
+                    <div class="text-[10px] font-mono opacity-90">$${origPrice.toFixed(0)}</div>
+                  </button>
+                  <button onclick="setBowlOrderType('refill')" class="py-1.5 px-2 border text-center transition ${isRefill ? 'bg-amber-400 text-black border-amber-400 font-bold shadow' : 'bg-black/40 border-white/[0.14] text-zinc-300 hover:border-amber-400/60'}">
+                    <div class="font-serif text-[11px] uppercase tracking-wider">🔄 Refill / Repack</div>
+                    <div class="text-[10px] font-mono opacity-90">$${refillPrice.toFixed(0)} <span class="text-[9px] opacity-75">(-$10)</span></div>
+                  </button>
+                </div>
+
+                ${isRefill && hasExistingHookahs ? `
+                  <div class="flex items-center justify-between py-1 px-2 bg-white/[0.03] border border-white/[0.08] text-[11px]">
+                    <span class="text-zinc-400 font-serif">Repack Existing Pipe:</span>
+                    <span class="font-bold text-amber-300 font-mono">Hookah #${existingHookahs.length}</span>
+                  </div>
+                ` : ''}
+
                 <!-- Active Flavor Rows (Discrete & Editorial) -->
                 <div class="divide-y divide-white/[0.05] my-1.5" id="flavorSlotsContainer">
                   ${activeFlavorsHtml}
@@ -4464,10 +4509,10 @@
                   <div class="flex items-baseline gap-2">
                     <span class="text-base font-serif font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">$${finalPrice.toFixed(0)}</span>
                     <span class="text-[10px] text-zinc-400 font-mono">+ $${estTax.toFixed(2)} tax</span>
-                    <span class="text-[9px] uppercase tracking-wider text-amber-400 font-mono font-semibold ml-1">${roundCount === 1 ? '[FIRST BOWL]' : '[REFILL -$10]'}</span>
+                    <span class="text-[9px] uppercase tracking-wider text-amber-400 font-mono font-semibold ml-1">${isRefill ? '[REFILL -$10]' : '[NEW HOOKAH]'}</span>
                   </div>
                   <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none">
-                    Order Bowl
+                    ${isRefill ? 'Order Refill' : 'Order Hookah'}
                   </button>
                 </div>
               `}
@@ -4638,25 +4683,42 @@
     function renderMyTabView() {
       const member = CustomerStash.getCurrentVipMember();
       const tiers = CustomerStash.getRewardTiers();
-      const taxConfig = CustomerStash.getTaxConfig();
+      const activeTab = CustomerStash.getActiveTab();
+      const items = activeTab.items || [];
 
       const seatEl = document.getElementById('tabViewSeatLabel');
       const ptsBadge = document.getElementById('tabRewardsPointsAvailable');
       if (seatEl) seatEl.textContent = `${currentAssignedSeat} (#${member.id.replace('vip-', '')})`;
       if (ptsBadge) ptsBadge.textContent = `${member.points} Pts Available`;
 
-      // Session Items
+      // Session Items (Itemized dynamic list of hookahs, refills, and beverages)
       const itemsList = document.getElementById('tabSessionItemsList');
       if (itemsList) {
-        itemsList.innerHTML = `
-          <div class="flex justify-between items-center text-zinc-200">
-            <div class="flex items-center gap-1.5">
-              <span>🏺</span>
-              <span>Original Craft Hookah (${activeMixName || 'Pink Cane Sensation'})</span>
+        if (items.length === 0) {
+          itemsList.innerHTML = `
+            <div class="py-6 text-center text-zinc-500 font-sans text-xs italic">
+              No items on tab yet. Order hookahs or beverages from the menu!
             </div>
-            <span class="font-mono font-bold">$35.00</span>
-          </div>
-        `;
+          `;
+        } else {
+          itemsList.innerHTML = items.map((item) => {
+            const isDrink = item.type === 'drink';
+            const isRefill = item.orderType === 'refill' || (item.name && (item.name.toLowerCase().includes('refill') || item.name.toLowerCase().includes('repack')));
+            const icon = isDrink ? '🥤' : (isRefill ? '🔄' : '🏺');
+            return `
+              <div class="flex justify-between items-center py-2 border-b border-white/[0.06] text-zinc-200">
+                <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+                  <span class="text-base flex-shrink-0">${icon}</span>
+                  <div class="truncate">
+                    <span class="font-serif text-sm font-bold text-white block truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">${item.name}</span>
+                    <span class="text-[10px] text-zinc-400 font-mono">${item.time || ''} · <span class="text-amber-400/90 font-semibold">${item.status || 'Active'}</span></span>
+                  </div>
+                </div>
+                <span class="font-mono font-bold text-sm text-white flex-shrink-0">$${(item.price || 0).toFixed(2)}</span>
+              </div>
+            `;
+          }).join('');
+        }
       }
 
       // Rewards options
@@ -4714,7 +4776,9 @@
 
     function updateTabViewFinancials() {
       const taxConfig = CustomerStash.getTaxConfig();
-      const rawSubtotal = tabBalance;
+      const activeTab = CustomerStash.getActiveTab();
+      const rawSubtotal = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
+      tabBalance = rawSubtotal;
       const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
       const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
       const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
@@ -4746,20 +4810,30 @@
 
     function processSquarePaymentFromView() {
       const member = CustomerStash.getCurrentVipMember();
-      const pointsEarned = Math.round(tabBalance * 10);
+      const activeTab = CustomerStash.getActiveTab();
+      const totalSpentOnTab = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
+      const pointsEarned = Math.round(totalSpentOnTab * 10);
       let pointsCost = 0;
       if (selectedAppliedReward) pointsCost = selectedAppliedReward.pointsReq;
 
       member.points = Math.max(0, member.points - pointsCost + pointsEarned);
-      member.totalSpent = (member.totalSpent || 0) + tabBalance;
+      member.totalSpent = (member.totalSpent || 0) + totalSpentOnTab;
       
       const members = CustomerStash.getVipMembers();
       const idx = members.findIndex(m => m.id === member.id);
       if (idx !== -1) members[idx] = member;
       CustomerStash.saveVipMembers(members);
 
+      CustomerStash.saveActiveTab({
+        id: 'TAB-' + (typeof currentVipTabId !== 'undefined' ? currentVipTabId : '409'),
+        items: [],
+        seat: currentAssignedSeat,
+        subtotal: 0
+      });
+
       showToast('🏁 VIP Tab Settled', `Square paid. +${pointsEarned} Pts earned! Balance: ${member.points} Pts.`);
       updateVipPointsHeader();
+      updateActiveBowlNotificationUI();
       tabBalance = 0.00;
       roundCount = 1;
       selectedAppliedReward = null;
