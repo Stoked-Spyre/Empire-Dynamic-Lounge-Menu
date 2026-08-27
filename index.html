@@ -3370,142 +3370,14 @@
     ];
 
     const DEFAULT_REWARD_TIERS = [
-      { id: 'tier-100', pointsReq: 100, label: 'Free Artisan Beverage (-$6.00)', discount: 6.00, icon: '🍹', desc: '1 Complimentary Chilled Beverage or Red Bull ($6 Value)' },
+      { id: 'tier-100', pointsReq: 100, label: 'Free Beverage', discount: 0, icon: '🍹', desc: '1 Complimentary Chilled Beverage' },
       { id: 'tier-250', pointsReq: 250, label: 'Free Ice Tip ($5.00 Off)', discount: 5.00, icon: '❄️', desc: 'Complimentary Frozen Ice Tip' },
-      { id: 'tier-500', pointsReq: 500, label: 'Free Samovar Teapot ($14.00 Off)', discount: 14.00, icon: '🫖', desc: 'Complimentary Samovar Teapot or Sand Coffee' },
       { id: 'tier-750', pointsReq: 750, label: '50% Off Refill (-$12.50)', discount: 12.50, icon: '🏺', desc: '50% off shisha repack / refill' },
       { id: 'tier-1000', pointsReq: 1000, label: 'Free Shisha Bowl (-$35.00)', discount: 35.00, icon: '✨', desc: 'Free Russian Craft or Blonde Bowl' },
       { id: 'tier-1500', pointsReq: 1500, label: 'VIP Royalty Pass (-$50.00)', discount: 50.00, icon: '👑', desc: '$50.00 Off Entire Bill' }
     ];
 
-    const DEFAULT_VIP_MEMBERS = [
-      { 
-        id: 'vip-409', 
-        name: 'Alex M.', 
-        phone: '480-555-0409', 
-        points: 750, 
-        tier: 'Gold VIP', 
-        canSelfOrder: true,
-        totalSpent: 750.00, 
-        preferredBuzz: 7.6, 
-        favoriteMix: 'Pink Cane Sensation',
-        smokeHistory: [
-          {
-            id: 'sh-409-1',
-            mixId: 'mix-pink-cane',
-            name: 'Pink Cane Sensation',
-            date: 'Yesterday • Table 6 (6-Top)',
-            flavors: 'MustHave Pinkman (70%) + Tangiers Cane Mint (30%)',
-            buzz: 7.6,
-            category: 'BOLD',
-            icon: '⚡',
-            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
-            rating: '5.0 ★',
-            desc: 'Raspberry, grapefruit, strawberry & dark leaf cane mint'
-          },
-          {
-            id: 'sh-409-2',
-            mixId: 'mix-kashmir-velvet',
-            name: 'Kashmir Velvet Cream',
-            date: 'Aug 19 • Booth 2',
-            flavors: 'Tangiers Kashmir Peach (60%) + MustHave Milky Rice (40%)',
-            buzz: 7.6,
-            category: 'BOLD',
-            icon: '⚡',
-            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
-            rating: '4.9 ★',
-            desc: 'Spiced floral Kashmir with rich sweet rice pudding'
-          },
-          {
-            id: 'sh-409-3',
-            mixId: 'custom-tea-ice',
-            name: 'Sub-Zero Green Tea Mix',
-            date: 'Aug 12 • VIP Lounge #1',
-            flavors: 'BlackBurn Green Tea (70%) + Darkside Supernova (30%)',
-            buzz: 8.3,
-            category: 'BOLD',
-            icon: '⚡',
-            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
-            rating: '4.8 ★',
-            desc: 'High-altitude iced mountain green tea with arctic freeze'
-          },
-          {
-            id: 'sh-409-4',
-            mixId: 'mix-citrus-bliss',
-            name: 'Fizzy Citrus Rush',
-            date: 'Aug 04 • Bar Seat 3',
-            flavors: 'Tangiers Orange Soda (50%) + MustHave Pinkman (50%)',
-            buzz: 7.5,
-            category: 'BOLD',
-            icon: '⚡',
-            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
-            rating: '4.7 ★',
-            desc: 'Spiced effervescent orange soda & pink grapefruit'
-          }
-        ]
-      },
-      { 
-        id: 'vip-310', 
-        name: 'Marcus Sterling', 
-        phone: '602-555-0310', 
-        points: 1200, 
-        tier: 'Platinum VIP', 
-        totalSpent: 1200.00, 
-        preferredBuzz: 8.5, 
-        favoriteMix: 'Siberian Midnight Tea',
-        smokeHistory: [
-          {
-            id: 'sh-310-1',
-            mixId: 'mix-siberian-midnight',
-            name: 'Siberian Midnight Tea',
-            date: '3 days ago • Table 8',
-            flavors: 'BlackBurn Green Tea (70%) + Darkside Supernova (30%)',
-            buzz: 8.3,
-            category: 'BOLD',
-            icon: '⚡',
-            badgeClass: 'bg-red-950/80 text-red-300 border-red-700/80',
-            rating: '5.0 ★',
-            desc: 'Sub-zero Russian mint and floral cold-steeped green tea'
-          }
-        ]
-      },
-      { 
-        id: 'vip-102', 
-        name: 'Elena Rostova', 
-        phone: '623-555-0102', 
-        points: 450, 
-        tier: 'Silver VIP', 
-        totalSpent: 450.00, 
-        preferredBuzz: 2.8, 
-        favoriteMix: 'Two Apples & Mint',
-        smokeHistory: [
-          {
-            id: 'sh-102-1',
-            mixId: 'af-two-apples',
-            name: 'Classic Two Apples',
-            date: 'Last week • Patio Table 4',
-            flavors: 'Al Fakher Two Apples (100%)',
-            buzz: 3.0,
-            category: 'MILD',
-            icon: '🍃',
-            badgeClass: 'bg-emerald-950/80 text-emerald-300 border-emerald-700/80',
-            rating: '5.0 ★',
-            desc: 'Classic double apple with sweet anise'
-          }
-        ]
-      },
-      { 
-        id: 'vip-550', 
-        name: 'Jordan Hayes', 
-        phone: '480-555-0550', 
-        points: 280, 
-        tier: 'Silver VIP', 
-        totalSpent: 280.00, 
-        preferredBuzz: 5.2, 
-        favoriteMix: 'Fizzy Citrus Rush',
-        smokeHistory: []
-      }
-    ];
+    const DEFAULT_VIP_MEMBERS = [];
 
     class CustomerStash {
       static getInventory() {
@@ -3544,7 +3416,7 @@
             policyNotice: 'Minimum 1 pipe per 2 guests.',
             hours: 'Daily: 5:00 PM – 2:00 AM',
             aboutTitle: 'About Empire',
-            aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each 22g session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
+            aboutBody: 'Crafted for connoisseurs. Empire unites traditional Russian dark leaf craftsmanship with refined lounge hospitality. Each session is prepared to order in handcrafted clay bowls with Kaloud Lotus heat regulation for clean, sustained flavor.'
           };
           localStorage.setItem('empire_lounge_rules', JSON.stringify(defaultRules));
           return defaultRules;
@@ -3558,9 +3430,7 @@
           const defaultPricing = {
             originalPrice: 35.00,
             refillPrice: 25.00,
-            tangiersPrice: 38.00,
-            samovarPrice: 14.00,
-            coffeePrice: 8.00
+            tangiersPrice: 38.00
           };
           localStorage.setItem('empire_pricing_config', JSON.stringify(defaultPricing));
           return defaultPricing;
