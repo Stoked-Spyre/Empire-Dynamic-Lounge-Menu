@@ -4516,10 +4516,14 @@
 
     let holdTimer = null;
     let isHoldFired = false;
+    let startPointerX = 0;
+    let startPointerY = 0;
 
-    function onFlavorPointerDown(itemId, type) {
+    function onFlavorPointerDown(e, itemId, type) {
       isHoldFired = false;
       clearTimeout(holdTimer);
+      startPointerX = e ? e.clientX : 0;
+      startPointerY = e ? e.clientY : 0;
       holdTimer = setTimeout(() => {
         isHoldFired = true;
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
@@ -4529,8 +4533,17 @@
       }, 450);
     }
 
+    function onFlavorPointerMove(e) {
+      if (!holdTimer) return;
+      if (e && (Math.abs(e.clientX - startPointerX) > 10 || Math.abs(e.clientY - startPointerY) > 10)) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
     function onFlavorPointerUp() {
       clearTimeout(holdTimer);
+      holdTimer = null;
     }
 
     function onFlavorClick(itemId, type) {
@@ -4540,11 +4553,8 @@
       }
       selectedFlavorId = itemId;
       if (isVipLoggedIn) {
-        if (type === 'house') {
-          loadHouseMixIntoBowl(itemId);
-        } else if (type === 'flavor') {
-          addFlavorToActiveBowl(itemId);
-        }
+        // Row tap selects item without auto-adding (adding is via + ADD button)
+        renderCustomerMenu();
       } else {
         openMenuItemDetailModal(itemId, type);
       }
@@ -4626,7 +4636,8 @@
 
         return `
           <div 
-            onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
+            onpointerdown="onFlavorPointerDown(event, '${item.id}', '${type}')" 
+            onpointermove="onFlavorPointerMove(event)"
             onpointerup="onFlavorPointerUp()" 
             onpointercancel="onFlavorPointerUp()" 
             onpointerleave="onFlavorPointerUp()" 
@@ -4664,7 +4675,8 @@
 
       return `
         <div 
-          onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
+          onpointerdown="onFlavorPointerDown(event, '${item.id}', '${type}')" 
+          onpointermove="onFlavorPointerMove(event)"
           onpointerup="onFlavorPointerUp()" 
           onpointercancel="onFlavorPointerUp()" 
           onpointerleave="onFlavorPointerUp()" 
