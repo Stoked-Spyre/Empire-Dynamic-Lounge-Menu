@@ -3824,13 +3824,11 @@
 
       const existingIdx = activeFlavors.findIndex(f => f.id === item.id);
       if (existingIdx >= 0) {
-        openBowlStudioModal();
-        showToast('✦ In Bowl', `${item.name} is in your active formulation.`);
+        showToast('✦ In Bowl', `${item.name} is already in your active formulation.`);
         return;
       }
 
       if (activeFlavors.length >= 4) {
-        openBowlStudioModal();
         showToast('⚠️ Bowl Full', 'Max 4 flavors per bowl. Tune ratios with splitters.');
         return;
       }
@@ -3867,7 +3865,6 @@
       }
       updateActiveBowlNotificationUI();
       closeMenuItemDetailModal();
-      openBowlStudioModal();
       showToast('✦ Added to Bowl', `${item.name} (${activeFlavors[activeFlavors.length-1].percent}%) added to your formulation.`);
     }
 
@@ -3903,7 +3900,6 @@
       }
       updateActiveBowlNotificationUI();
       closeMenuItemDetailModal();
-      openBowlStudioModal();
       showToast('👑 Blend Loaded', `${mix.name} loaded into your active formulation.`);
     }
 
@@ -3959,8 +3955,7 @@
     }
 
     function updateActiveBowlNotificationUI() {
-      const floatingBar = document.getElementById('floatingActiveBowlBar');
-      if (floatingBar) floatingBar.classList.add('hidden');
+      updateFloatingBowlBar();
       const dockBadge = document.getElementById('dockBowlCountBadge');
       const dockTabTotal = document.getElementById('dockTabTotalBadge');
 
