@@ -4166,6 +4166,7 @@
     function renderCustomerMenu() {
       const pricing = CustomerStash.getLoungePricing();
       const inventory = CustomerStash.getInventory();
+      const taxConfig = CustomerStash.getTaxConfig();
       
       // In-stock items only for the active menu list
       const inStockInventory = inventory.filter(i => i.stock !== 'out_of_stock');
