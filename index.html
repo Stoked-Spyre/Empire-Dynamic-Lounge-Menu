@@ -2411,6 +2411,9 @@
             </div>
           </div>
 
+          <!-- Order Action Container for Authenticated Ordering -->
+          <div id="detailModalOrderContainer" class="pt-2"></div>
+
           <!-- Quiet Dismissal Line -->
           <div class="pt-2 text-center flex justify-center items-center">
             <p class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.24em] cursor-pointer hover:text-zinc-300 transition select-none text-center" onclick="closeMenuItemDetailModal()">
@@ -2421,6 +2424,19 @@
 
       </div>
 
+    </div>
+  </div>
+
+  <!-- ==================== AUTH TRANSITION LOADING OVERLAY ==================== -->
+  <div id="authLoadingOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[60] hidden flex flex-col items-center justify-center space-y-4 select-none">
+    <div class="flex items-center justify-center gap-3 opacity-80">
+      <span class="w-14 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+      <span class="text-amber-400 text-sm animate-spin" style="animation-duration: 2.5s;">◆</span>
+      <span class="w-14 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
+    </div>
+    <div class="text-center space-y-1">
+      <h3 class="font-serif text-2xl text-white font-bold tracking-wide">Authenticating Member</h3>
+      <p class="text-xs text-zinc-400 italic font-sans">Unlocking on-premise menu &amp; self-ordering...</p>
     </div>
   </div>
 
@@ -2530,9 +2546,10 @@
               <input type="password" id="vipPasswordInput" placeholder="test" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none transition" />
             </div>
 
-            <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-black font-serif font-bold tracking-wider py-2.5 text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition uppercase mt-2">
-              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
-              <span>Sign In &amp; Unlock</span>
+            <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-transparent hover:bg-amber-500/10 border-t border-b border-amber-500/50 hover:border-amber-400 text-amber-400 hover:text-white font-serif font-semibold tracking-[0.2em] py-3 text-xs flex items-center justify-center gap-2 transition uppercase mt-3 select-none">
+              <span class="text-amber-400 text-[10px]">◆</span>
+              <span>SIGN IN &amp; UNLOCK</span>
+              <span class="text-amber-400 text-[10px]">◆</span>
             </button>
           </div>
 
@@ -3237,31 +3254,92 @@
     }
 
     function loginAsVipMember(member) {
-      isVipLoggedIn = true;
-      currentVipTabId = member.id.toUpperCase();
-      
-      // Update UI for VIP state
-      document.getElementById('headerGuestView').classList.add('hidden');
-      document.getElementById('headerGuestRightView').classList.add('hidden');
-      document.getElementById('headerVipView').classList.remove('hidden');
-      document.getElementById('headerVipRightView').classList.remove('hidden');
-      
-      const topNav = document.getElementById('vipTopNav');
-      if (topNav) topNav.classList.remove('hidden');
-
-      const bottomDock = document.getElementById('vipBottomDock');
-      if (bottomDock) bottomDock.classList.remove('hidden');
-
-      document.getElementById('vipMemberNameDisplay').textContent = member.name;
-      document.getElementById('vipTierDisplay').textContent = (member.tier || 'GOLD VIP').toUpperCase();
-      document.getElementById('vipAvatarLetter').textContent = member.name.charAt(0);
-      document.getElementById('headerSeatDisplay').textContent = `Floating VIP Tab #${member.id.replace('vip-', '')}`;
-
       closeVipLoginModal();
-      updateVipPointsHeader();
+      const overlay = document.getElementById('authLoadingOverlay');
+      if (overlay) overlay.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (overlay) overlay.classList.add('hidden');
+
+        isVipLoggedIn = true;
+        currentVipTabId = member.id.toUpperCase();
+        
+        // Update UI for VIP state
+        document.getElementById('headerGuestView').classList.add('hidden');
+        const guestRight = document.getElementById('headerGuestRightView');
+        if (guestRight) guestRight.classList.add('hidden');
+        document.getElementById('headerVipView').classList.remove('hidden');
+        document.getElementById('headerVipRightView').classList.remove('hidden');
+        
+        const topNav = document.getElementById('vipTopNav');
+        if (topNav) topNav.classList.remove('hidden');
+
+        const bottomDock = document.getElementById('vipBottomDock');
+        if (bottomDock) bottomDock.classList.remove('hidden');
+
+        document.getElementById('vipMemberNameDisplay').textContent = member.name;
+        document.getElementById('vipTierDisplay').textContent = (member.tier || 'VIP MEMBER').toUpperCase();
+        const avatarLetter = document.getElementById('vipAvatarLetter');
+        if (avatarLetter) avatarLetter.textContent = member.name.charAt(0);
+        const seatDisplay = document.getElementById('headerSeatDisplay');
+        if (seatDisplay) seatDisplay.textContent = `Floating Tab #${member.id.replace('vip-', '')}`;
+
+        updateVipPointsHeader();
+        renderCustomerMenu();
+        showToast('👑 VIP Authenticated', `Welcome, ${member.name}! Direct lounge ordering unlocked.`);
+        renderIcons();
+      }, 750);
+    }
+
+    function orderItemFromModal(itemId, itemType) {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      const inventory = CustomerStash.getInventory();
+      const pricing = CustomerStash.getLoungePricing();
+      let itemName = '';
+      let price = pricing.originalPrice || 35.00;
+
+      if (itemType === 'house') {
+        const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === itemId) || EMPIRE_HOUSE_MIXES[0];
+        itemName = mix.name;
+        price = mix.price || pricing.originalPrice || 35.00;
+      } else {
+        const item = inventory.find(i => i.id === itemId) || STOKED_MASTER_INVENTORY.find(i => i.id === itemId);
+        itemName = item ? `${item.brand} ${item.name}` : 'Custom Bowl';
+        price = item && item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+      }
+
+      CustomerStash.addItemToTab({
+        id: 'order-' + Date.now(),
+        name: itemName,
+        type: 'shisha',
+        price: price,
+        status: 'Preparing',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      closeMenuItemDetailModal();
+      showToast('🔥 Order Sent to Lounge', `${itemName} ($${price.toFixed(0)}) has been dispatched to your table.`);
       renderCustomerMenu();
-      showToast('👑 VIP Authenticated', `Welcome back, ${member.name}! Self-ordering unlocked.`);
-      renderIcons();
+    }
+
+    function orderDrinkItem(drinkId, drinkName, price) {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      CustomerStash.addItemToTab({
+        id: 'drink-' + Date.now(),
+        name: drinkName,
+        type: 'drink',
+        price: price,
+        status: 'Serving',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+      showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
+      renderCustomerMenu();
     }
 
     function vipLogout() {
@@ -3546,6 +3624,29 @@
         }
       }
 
+      const orderContainer = document.getElementById('detailModalOrderContainer');
+      if (orderContainer) {
+        if (isVipLoggedIn) {
+          const itemPriceFormatted = (itemType === 'house') 
+            ? ((EMPIRE_HOUSE_MIXES.find(m => m.id === itemId)?.price || pricing.originalPrice || 35.00)).toFixed(0)
+            : ((inventory.find(i => i.id === itemId)?.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00))).toFixed(0);
+          
+          orderContainer.innerHTML = `
+            <button onclick="orderItemFromModal('${itemId}', '${itemType}')" class="w-full bg-transparent hover:bg-amber-500/10 border-t border-b border-amber-500/50 hover:border-amber-400 text-amber-400 hover:text-white font-serif font-semibold tracking-[0.2em] py-2.5 text-xs flex items-center justify-center gap-2 transition uppercase my-1 select-none">
+              <span class="text-amber-400 text-[10px]">◆</span>
+              <span>ORDER THIS SELECTION — $${itemPriceFormatted}</span>
+              <span class="text-amber-400 text-[10px]">◆</span>
+            </button>
+          `;
+        } else {
+          orderContainer.innerHTML = `
+            <button onclick="openVipLoginModal()" class="w-full bg-transparent hover:bg-white/5 border-t border-b border-white/20 text-zinc-300 hover:text-white font-serif tracking-[0.18em] py-2 text-[11px] flex items-center justify-center gap-2 transition uppercase my-1 select-none">
+              <span>SIGN IN TO ORDER FROM TABLE</span>
+            </button>
+          `;
+        }
+      }
+
       modal.classList.remove('hidden');
       renderIcons();
     }
@@ -3798,14 +3899,21 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // If it's a drink, render with bright white name & price, crisp light description, and NO fade
+      // If it's a drink, render with bright white name & price, crisp light description, and direct order when authenticated
       if (isDrink) {
+        const orderBtn = isVipLoggedIn ? `
+          <button onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})" class="text-[9px] font-serif uppercase tracking-widest px-2 py-0.5 border border-amber-500/50 text-amber-400 hover:bg-amber-400 hover:text-black transition active:scale-95 ml-2.5 select-none">+ ORDER</button>
+        ` : '';
+
         return `
-          <div class="editorial-item mb-4 cursor-default select-none opacity-100">
+          <div class="editorial-item mb-4 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="orderDrinkItem('${item.id}', '${item.name}', ${item.price})"` : ''}>
             <div class="item-top-row flex items-baseline justify-between w-full">
-              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">${item.name}</span>
+              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition">${item.name}</span>
               <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
-              <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">$${priceStr}</span>
+              <div class="flex items-center">
+                <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">$${priceStr}</span>
+                ${orderBtn}
+              </div>
             </div>
             <div class="font-sans text-[0.80rem] text-zinc-400 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           </div>
