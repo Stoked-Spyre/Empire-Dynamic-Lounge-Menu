@@ -4527,10 +4527,14 @@
 
       // 2. SIGNATURE HOUSE MIXES: Tap to load blend or touch-and-hold for specs modal
       if (type === 'house') {
-        const inBowl = activeMixName === item.name;
+        const inBowl = (activeMixName === item.name) || (
+          activeFlavors.length > 0 &&
+          (item.flavors || []).every(fId => activeFlavors.some(af => af.id === fId)) &&
+          activeFlavors.length === (item.flavors || []).length
+        );
         const addBtn = isVipLoggedIn ? `
-          <button onclick="event.stopPropagation(); loadHouseMixIntoBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
-            ${inBowl ? '✓ LOADED' : 'LOAD BLEND'}
+          <button onclick="event.stopPropagation(); loadHouseMixIntoBowl('${item.id}')" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 border ${inBowl ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white'} transition active:scale-95 ml-2 select-none flex-shrink-0 font-bold">
+            ${inBowl ? '✓ IN BOWL' : '+ ADD'}
           </button>
         ` : '';
 
@@ -4660,11 +4664,11 @@
         const modeToggleHtml = `
           <div class="selector-mode-toggle">
             <button class="selector-mode-btn ${selectorMode === 'brands' ? 'active' : ''}" onclick="setSelectorMode('brands')">
-              BRAND
+              BRANDS
             </button>
-            <span class="text-zinc-700 font-mono text-[10px]">/</span>
+            <span class="text-zinc-600 font-mono text-[9px] px-0.5">/</span>
             <button class="selector-mode-btn ${selectorMode === 'profiles' ? 'active' : ''}" onclick="setSelectorMode('profiles')">
-              PROFILE
+              NOTES
             </button>
           </div>
         `;
@@ -4842,18 +4846,12 @@
               ` : `
                 <!-- Spectrum Slider -->
                 <div class="pt-1 pb-0.5">
-                  <div class="spectrum-drag-area ${activeMixName ? 'cursor-default pointer-events-none' : ''} relative w-full h-5 flex items-center select-none" id="spectrumDraggableArea" style="touch-action: none;">
+                  <div class="spectrum-drag-area relative w-full h-5 flex items-center select-none" id="spectrumDraggableArea" style="touch-action: none;">
                     <div id="spectrumRibbon" class="w-full h-1.5 rounded-full overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="background: linear-gradient(90deg, ${gradPartsStr});"></div>
                     <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
                   </div>
                   <div class="flex justify-between items-center text-[9px] text-zinc-400 font-mono mt-0.5 px-0.5">
-                    ${activeMixName ? `
-                      <span class="text-amber-300 font-serif italic font-medium flex items-center gap-1 text-[9px]">
-                        <span>👑</span> Curated House Recipe
-                      </span>
-                    ` : `
-                      <span class="text-zinc-400">Drag splitters to adjust %</span>
-                    `}
+                    <span class="text-zinc-400">Drag splitters to adjust %</span>
                     <span class="text-zinc-400 font-mono">${activeFlavors.length} of 4 Flavors</span>
                   </div>
                 </div>
@@ -4904,7 +4902,7 @@
           </div>
         `;
 
-        if (isVipLoggedIn && activeFlavors.length > 1 && !activeMixName) {
+        if (isVipLoggedIn && activeFlavors.length > 1) {
           const handlesCont = document.getElementById('spectrumHandlesContainer');
           if (handlesCont) {
             let handleCum = 0;
@@ -5566,8 +5564,11 @@
       }
 
       function handleDragMove(e) {
-        if (activeMixName || activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
+        if (activeCustomerDragHandleIndex === null || activeFlavors.length <= 1) return;
         if (e.cancelable) e.preventDefault();
+        if (activeMixName) {
+          activeMixName = null;
+        }
 
         const rect = container.getBoundingClientRect();
         const clientX = getClientX(e);
@@ -5600,7 +5601,6 @@
       }
 
       window.handleCustomerStartSpectrumDrag = function(e, handleIdx) {
-        if (activeMixName) return;
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         activeCustomerDragHandleIndex = handleIdx;
@@ -5612,7 +5612,6 @@
       };
 
       container.onpointerdown = (e) => {
-        if (activeMixName) return;
         if (e.target.classList.contains('spectrum-drag-thumb')) return;
         if (activeFlavors.length <= 1) return;
         const rect = container.getBoundingClientRect();
