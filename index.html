@@ -194,17 +194,14 @@
       font-weight: 600;
       color: #FFFFFF;
       letter-spacing: 0.02em;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
       transition: color 0.15s ease;
     }
     .editorial-item:hover .item-name {
       color: #FFFFFF;
-      text-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
     }
     .editorial-item.active-flavor .item-name {
       color: #FFFFFF;
       font-weight: 700;
-      text-shadow: 0 0 16px rgba(255, 255, 255, 0.45);
     }
     .item-leader {
       flex-grow: 1;
@@ -320,42 +317,109 @@
       background: #F59E0B;
     }
 
+    /* UNIVERSAL ZERO-PAGE-SCROLL (DESKTOP & MOBILE) */
+    html, body {
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      max-height: calc(100vh - 46px);
+      max-height: calc(100dvh - 46px);
+      overflow: hidden !important;
+      overflow-x: hidden !important;
+      padding-bottom: 0 !important;
+      box-sizing: border-box;
+    }
+    #customer-view-menu.menu-spread {
+      height: 100%;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden !important;
+      overflow-x: hidden !important;
+      box-sizing: border-box;
+      padding: 0 0.5rem;
+    }
+    #menuSpreadContainer {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+
     /* 2-COLUMN EDITORIAL LOUNGE BROWSER */
     .menu-2col-layout {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
       display: flex;
       gap: 1.25rem;
       align-items: flex-start;
-      margin-top: 0.25rem;
+      margin-top: 0;
+      overflow: hidden;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
     .menu-stations-rail {
       width: 120px;
       flex-shrink: 0;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       display: flex;
       flex-direction: column;
       gap: 4px;
       padding-right: 8px;
+      padding-bottom: 2.5rem;
       border-right: 1px solid rgba(255, 255, 255, 0.06);
+      box-sizing: border-box;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
     }
+    .menu-stations-rail::-webkit-scrollbar { display: none; }
+
     .selector-mode-toggle {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 2px 4px 6px 4px;
+      width: 100%;
+      padding: 2px 0 6px 0;
       margin-bottom: 6px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .selector-mode-btn {
       font-family: 'Playfair Display', serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #A1A1AA;
       background: none;
       border: none;
-      padding: 2px 2px;
+      padding: 2px 1px;
       cursor: pointer;
       transition: color 0.15s ease;
       position: relative;
+      flex: 1;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .selector-mode-btn:hover {
       color: #FFFFFF;
@@ -368,12 +432,15 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      width: 100%;
       padding: 6px 4px;
       background: transparent;
       border: none;
       text-align: left;
       cursor: pointer;
       transition: opacity 0.15s ease;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .menu-station-btn:hover {
       opacity: 0.95;
@@ -385,15 +452,18 @@
       color: #FFFFFF;
       letter-spacing: 0.02em;
       transition: color 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      display: block;
     }
     .menu-station-btn:hover .menu-station-label {
       color: #FFFFFF;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
     .menu-station-btn.active .menu-station-label {
       color: #FFFFFF;
       font-weight: 700;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
     }
     .menu-station-sub {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -402,6 +472,11 @@
       color: #CBD5E1;
       letter-spacing: 0.02em;
       transition: color 0.15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      display: block;
     }
     .menu-station-btn.active .menu-station-sub {
       color: #F59E0B;
@@ -410,35 +485,42 @@
     .menu-items-pane {
       flex: 1;
       min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .menu-items-header {
+      flex-shrink: 0;
+      width: 100%;
+      padding-bottom: 0.45rem;
+      padding-top: 0.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      box-sizing: border-box;
+    }
+    .menu-items-list {
+      flex: 1;
+      min-height: 0;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-      mask-image: linear-gradient(to bottom, transparent 0%, black 14px, black calc(100% - 20px), transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14px, black calc(100% - 20px), transparent 100%);
+      padding-right: 4px;
+      padding-bottom: 3.5rem;
+      box-sizing: border-box;
     }
+    .menu-items-list::-webkit-scrollbar { display: none; }
 
-    /* MOBILE ZERO-PAGE-SCROLL LAYOUT — Screen never scrolls; strictly the selector / flavor list scrolls */
+    /* MOBILE RESPONSIVE ADAPTATIONS */
     @media (max-width: 640px) {
-      body {
-        height: 100dvh;
-        max-height: 100dvh;
-        overflow: hidden;
-        padding-bottom: 0 !important;
-      }
-      main {
-        flex: 1;
-        min-height: 0;
-        height: 100%;
-        overflow: hidden;
-        padding-bottom: 0 !important;
-      }
-      #customer-view-menu.menu-spread {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        padding: 0 0.5rem;
-      }
       .menu-header {
         flex-shrink: 0;
         margin-bottom: 0.2rem;
@@ -458,62 +540,38 @@
         padding: 0.15rem 0;
         gap: 1.5rem;
       }
-      #menuSpreadContainer {
-        flex: 1;
-        min-height: 0;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
       .menu-2col-layout {
-        flex: 1;
-        min-height: 0;
-        height: 100%;
-        display: flex;
-        overflow: hidden;
-        gap: 0.75rem;
-        margin-top: 0;
+        gap: 0.65rem;
       }
       .menu-stations-rail {
-        width: 95px;
-        flex-shrink: 0;
-        height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        width: 102px;
         padding-right: 4px;
         padding-bottom: 3.5rem;
-        mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12px, black calc(100% - 20px), transparent 100%);
       }
-      .menu-stations-rail::-webkit-scrollbar { display: none; }
-      .menu-items-pane {
-        flex: 1;
-        min-width: 0;
-        height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+      .selector-mode-btn {
+        font-size: 0.64rem;
+        letter-spacing: 0.02em;
+      }
+      .menu-items-header {
+        padding-bottom: 0.35rem;
+        margin-bottom: 0.5rem;
+      }
+      .menu-items-list {
         padding-right: 2px;
-        padding-top: 4px;
+        padding-top: 2px;
         padding-bottom: 4.5rem;
-        mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 24px), transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 16px, black calc(100% - 24px), transparent 100%);
       }
-      .menu-items-pane::-webkit-scrollbar { display: none; }
       .menu-station-label {
-        font-size: 0.88rem;
+        font-size: 0.86rem;
       }
       .menu-station-sub {
-        font-size: 0.6rem;
+        font-size: 0.58rem;
       }
       .item-name {
         font-size: 1.04rem;
       }
       .item-desc {
         font-size: 0.8rem;
-      }
-      .menu-footer {
-        display: none;
       }
     }
     .menu-brand-summary-bar:hover {
@@ -777,7 +835,7 @@
 
     @media (min-width: 768px) {
       .landing-center-desktop-offset {
-        transform: translateY(-160px);
+        transform: translateY(-30px);
         padding-top: 0 !important;
       }
     }
@@ -2232,41 +2290,41 @@
     </button>
   </nav>
 
-  <!-- ==================== 1800s APOTHECARY SOMMELIER COMPENDIUM MODAL ==================== -->
-  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/75 backdrop-blur-[2px] z-50 hidden flex flex-col justify-end">
+  <!-- ==================== APOTHECARY SOMMELIER COMPENDIUM MODAL ==================== -->
+  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-4">
     <div class="fixed inset-0" onclick="closeMenuItemDetailModal()"></div>
-    <div class="relative w-full max-w-lg mx-auto bg-[#080808] border-t border-white/[0.12] rounded-t-3xl p-6 shadow-[0_-20px_60px_rgba(0,0,0,0.95)] max-h-[85vh] overflow-y-auto no-scrollbar space-y-4 z-10">
+    <div class="relative w-full max-w-md mx-auto bg-black border border-white/[0.12] rounded-2xl p-6 shadow-[0_20px_60px_rgba(0,0,0,1)] max-h-[90vh] overflow-y-auto no-scrollbar space-y-4 z-10">
       
-      <!-- Drag handle / close notch -->
-      <div class="w-10 h-1 bg-zinc-800 rounded-full mx-auto -mt-2 mb-3 cursor-pointer" onclick="closeMenuItemDetailModal()"></div>
-
-      <!-- Kicker & Strength Pill -->
-      <div class="flex justify-between items-center text-[10px] font-sans tracking-[0.2em] text-zinc-400 uppercase">
-        <span id="detailModalTagline">MustHave · Russia 🇷🇺</span>
-        <span class="text-amber-400 font-mono font-bold text-xs" id="detailModalBuzzPill">⚡ 7/10 · BOLD</span>
+      <!-- Top Kicker & Strength -->
+      <div class="flex justify-between items-center text-[10px] font-sans tracking-[0.2em] text-zinc-400 uppercase pb-1 border-b border-white/[0.06]">
+        <span>EST. 2010 · APOTHECARY SPECIFICATION</span>
+        <span class="text-amber-400 font-sans font-medium" id="detailModalBuzzPill">⚡ 7/10 · BOLD</span>
       </div>
 
-      <!-- Title & Price Block with Editorial Dotted Leader -->
-      <div class="flex items-baseline justify-between pt-0.5">
-        <h3 class="font-serif text-2xl text-white font-semibold tracking-wide" id="detailModalTitle">Frosty</h3>
+      <!-- Title & Price Row with Dotted Leader -->
+      <div class="flex items-baseline justify-between pt-1">
+        <h3 class="font-serif text-2xl text-white font-bold tracking-wide" id="detailModalTitle">Pink Cane Sensation</h3>
         <span class="flex-grow mx-3 border-b border-dotted border-white/20 relative -top-1"></span>
         <span class="text-2xl font-serif text-white font-bold" id="detailModalPrice">$35</span>
       </div>
 
-      <!-- Tasting Notes / Botanical Palate -->
+      <!-- Tagline / Origin Line -->
+      <p class="text-xs text-zinc-400 italic font-sans -mt-2" id="detailModalTagline">Lounge Signature Blend</p>
+
+      <!-- Tasting Profile -->
       <div class="py-2.5 border-y border-white/[0.06] space-y-1">
-        <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block">Tasting Profile &amp; Botanicals</span>
-        <p class="text-sm text-zinc-200 italic font-sans leading-relaxed" id="detailModalDesc">Sub-Zero Siberian Chill</p>
+        <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium">Tasting Profile &amp; Botanicals</span>
+        <p class="text-sm text-zinc-200 italic font-sans leading-relaxed" id="detailModalDesc">Sweet ruby raspberries, pink grapefruit &amp; strawberry chilled with natural cane peppermint.</p>
         <div class="flex items-center gap-1.5 flex-wrap pt-1 font-sans text-xs text-zinc-300" id="detailModalProfilesTags"></div>
       </div>
 
-      <!-- Formulation Composition Track & Specs -->
-      <div class="space-y-2 pt-1" id="detailModalCompositionList"></div>
+      <!-- Formulation Breakdown List -->
+      <div class="space-y-2 pt-0.5" id="detailModalCompositionList"></div>
 
-      <!-- Dismiss Button -->
-      <div class="pt-2 text-center">
-        <button onclick="closeMenuItemDetailModal()" class="text-[11px] font-sans text-zinc-400 hover:text-white py-1.5 tracking-wider uppercase">
-          Tap outside or swipe down to close
+      <!-- Dismiss Button (Return to Menu) -->
+      <div class="pt-2">
+        <button onclick="closeMenuItemDetailModal()" class="w-full py-2.5 bg-transparent hover:bg-white/[0.04] border border-white/[0.12] text-white text-xs font-serif tracking-[0.14em] uppercase rounded-xl transition active:scale-95">
+          Return to Menu
         </button>
       </div>
 
@@ -3236,21 +3294,26 @@
         }
 
         if (listEl) {
-          listEl.innerHTML = recipeList.map(r => {
-            const flag = r.item.countryFlag || getBrandCountryFlag(r.item.brand);
-            const logoUrl = getBrandLogoUrl(r.item.brand);
-            const logoImg = logoUrl ? `<img src="${logoUrl}" alt="${r.item.brand}" class="h-3.5 w-auto max-w-[45px] object-contain inline-block opacity-85" />` : '';
-            return `
-              <div class="flex justify-between items-baseline py-1.5 border-b border-white/[0.04]">
-                <div class="flex items-center gap-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${r.item.color};"></span>
-                  <span class="font-serif text-[0.98rem] text-white">${r.item.name}</span>
-                  <span class="text-zinc-400 text-xs font-sans">(${r.item.brand})</span>
-                </div>
-                <span class="font-mono text-xs text-amber-400 font-bold">${r.pct}%</span>
+          listEl.innerHTML = `
+            <div class="pt-2">
+              <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium mb-1.5">Curated Formulation</span>
+              <div class="space-y-2">
+                ${recipeList.map(r => {
+                  const flag = r.item.countryFlag || getBrandCountryFlag(r.item.brand);
+                  return `
+                    <div class="py-1 border-b border-white/[0.05]">
+                      <div class="flex items-baseline justify-between">
+                        <span class="font-serif text-[1.02rem] text-white font-medium">${r.item.name}</span>
+                        <span class="flex-grow mx-2 border-b border-dotted border-white/20 relative -top-1"></span>
+                        <span class="font-serif text-white font-bold text-sm">${r.pct}%</span>
+                      </div>
+                      <div class="text-[11px] text-zinc-400 font-sans italic mt-0.5">${r.item.brand} · ${flag} ${r.item.region || 'Craft Cellar'}</div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
-            `;
-          }).join('');
+            </div>
+          `;
         }
 
         if (descEl) descEl.textContent = mix.desc;
@@ -3265,8 +3328,6 @@
         const buzz = getBuzzInfo(item.strength || 7);
         const itemPrice = item.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
         const flag = item.countryFlag || getBrandCountryFlag(item.brand);
-        const logoUrl = getBrandLogoUrl(item.brand);
-        const logoHtml = logoUrl ? `<img src="${logoUrl}" alt="${item.brand}" class="h-5 w-auto max-w-[70px] object-contain filter drop-shadow brightness-110" />` : '';
 
         if (titleEl) titleEl.textContent = item.name;
         if (taglineEl) taglineEl.textContent = `${item.brand} · ${flag} ${item.region || 'Craft Lineage'}`;
@@ -3283,25 +3344,25 @@
 
         if (listEl) {
           listEl.innerHTML = `
-            <div class="space-y-2 py-1 text-xs">
-              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
-                <span class="text-zinc-400 font-sans">Craft House</span>
-                <div class="flex items-center gap-2">
-                  ${logoHtml}
-                  <span class="text-white font-serif text-sm font-medium">${item.brand}</span>
+            <div class="pt-2 space-y-2">
+              <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium mb-1.5">Leaf &amp; Lineage Specification</span>
+              <div class="space-y-1.5 text-xs">
+                <div class="flex items-baseline justify-between border-b border-white/[0.05] py-1.5">
+                  <span class="text-zinc-400 font-sans">Craft House</span>
+                  <span class="font-serif text-white text-[0.98rem] font-medium">${item.brand}</span>
                 </div>
-              </div>
-              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
-                <span class="text-zinc-400 font-sans">Origin &amp; Region</span>
-                <span class="text-white font-sans font-medium">${flag} ${item.region || 'Craft Cellar'}</span>
-              </div>
-              <div class="flex justify-between items-center border-b border-white/[0.04] py-1.5">
-                <span class="text-zinc-400 font-sans">Leaf Classification</span>
-                <span class="text-zinc-200 font-sans">${getFlavorCutLabel(item)}</span>
-              </div>
-              <div class="flex justify-between items-center py-1.5">
-                <span class="text-zinc-400 font-sans">Cellar Availability</span>
-                <span class="${isOut ? 'text-red-400' : 'text-emerald-400'} font-sans font-medium">${isOut ? '86\'d (Resting)' : 'Cellar Fresh ✓'}</span>
+                <div class="flex items-baseline justify-between border-b border-white/[0.05] py-1.5">
+                  <span class="text-zinc-400 font-sans">Origin &amp; Region</span>
+                  <span class="font-sans text-zinc-200">${flag} ${item.region || 'Craft Lineage'}</span>
+                </div>
+                <div class="flex items-baseline justify-between border-b border-white/[0.05] py-1.5">
+                  <span class="text-zinc-400 font-sans">Leaf Classification</span>
+                  <span class="font-sans text-zinc-200">${getFlavorCutLabel(item)}</span>
+                </div>
+                <div class="flex items-baseline justify-between py-1.5">
+                  <span class="text-zinc-400 font-sans">Cellar Availability</span>
+                  <span class="${isOut ? 'text-red-400' : 'text-emerald-400'} font-sans font-medium">${isOut ? "86'd (Unavailable)" : 'Cellar Fresh ✓'}</span>
+                </div>
               </div>
             </div>
           `;
@@ -3741,7 +3802,7 @@
               ${stationsRailHtml}
             </aside>
             <section class="menu-items-pane">
-              <div class="sticky top-0 z-20 bg-transparent pb-2 pt-0.5 border-b border-white/[0.08] mb-3 flex justify-between items-baseline">
+              <div class="menu-items-header">
                 <h2 class="text-xs font-serif tracking-[0.2em] uppercase text-white font-semibold">${headerTitle}</h2>
                 <span class="text-[10px] font-sans text-zinc-300 uppercase tracking-wider font-medium">Tap to select · Hold for specs</span>
               </div>
