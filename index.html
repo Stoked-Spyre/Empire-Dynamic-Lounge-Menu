@@ -2270,99 +2270,204 @@
 
     </div>
 
-    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (FULL VIEW) ==================== -->
-    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-3">
+    <!-- ==================== VIEW 4: MY TAB & SQUARE CHECKOUT (NOIR LUXURY RECEIPT) ==================== -->
+    <div id="customer-view-tab" class="customer-panel hidden flex flex-col gap-3 pb-24">
       
-      <!-- Tab Header & Active Seat -->
-      <section class="obsidian-card rounded-2xl p-3.5 space-y-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-brand-gold">
-              <i data-lucide="receipt" class="w-4 h-4"></i>
+      <!-- Obsidian Noir Sommelier Printed Receipt Card -->
+      <section class="sommelier-card-frame bg-[#0D0D11] border border-amber-500/40 p-3 shadow-2xl relative select-none">
+        
+        <div class="sommelier-inner-frame p-3.5 space-y-3.5 relative overflow-hidden">
+
+          <!-- Receipt Flueron & Header -->
+          <div class="text-center space-y-1 pt-0">
+            <div class="flex items-center justify-center gap-2.5 opacity-70">
+              <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+              <span class="text-amber-400 text-[8px] tracking-widest">◆</span>
+              <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
             </div>
-            <div>
-              <h3 class="font-crest font-bold text-xs tracking-wider text-white">LIVE VIP TAB SUMMARY</h3>
-              <p class="text-[11px] text-brand-gold font-mono font-semibold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</p>
+            
+            <div class="w-8 h-8 mx-auto mb-0.5">
+              <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-full h-full object-contain mix-blend-screen drop-shadow-[0_2px_10px_rgba(229,169,60,0.3)]" />
+            </div>
+
+            <h2 class="font-serif text-lg font-bold tracking-[0.14em] uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+              Empire Hookah Lounge
+            </h2>
+            <p class="font-mono text-[8px] tracking-[0.24em] text-zinc-400 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
+
+            <!-- Table & Tab Meta Strip -->
+            <div class="flex items-center justify-between pt-1.5 border-t border-white/[0.08] text-[10px] font-mono text-zinc-300">
+              <span class="text-amber-400 font-bold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</span>
+              <button onclick="openSeatAssignModal()" class="text-zinc-400 hover:text-white underline decoration-dotted transition">
+                Change Seat ⇄
+              </button>
             </div>
           </div>
-          <button onclick="openSeatAssignModal()" class="text-xs text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-xl">
-            Change Seat ⇄
-          </button>
-        </div>
 
-        <!-- Live Orders in Current Session -->
-        <div class="space-y-1.5 bg-black/80 p-3 rounded-2xl border border-zinc-850">
-          <div class="flex justify-between items-center pb-1.5 border-b border-zinc-850 text-zinc-400 font-bold uppercase text-[10px] tracking-wider">
-            <span>Session Items</span>
-            <span>Price</span>
+          <!-- Perforated Tear Line -->
+          <div class="border-b border-dashed border-white/20 my-0.5"></div>
+
+          <!-- Section 1: Itemized Hookahs, Refills & Formulations -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-[9px] font-serif uppercase tracking-[0.18em] text-amber-400/90 font-bold pb-1 border-b border-white/[0.08]">
+              <span>Formulations &amp; Orders</span>
+              <span>Price</span>
+            </div>
+            <div class="space-y-2.5 pt-0.5 text-xs" id="tabSessionItemsList">
+              <!-- Injected dynamically via JS with detailed flavor percentages & buzz ratings -->
+            </div>
           </div>
 
-          <div class="space-y-1.5 text-xs" id="tabSessionItemsList">
-            <!-- Injected via JS -->
-          </div>
-        </div>
-
-        <!-- VIP Rewards Redemption at Checkout -->
-        <div class="bg-black/90 p-3 rounded-2xl border border-amber-500/30 space-y-2">
-          <div class="flex justify-between items-center">
+          <!-- Section 2: Heat Rotation Master (Service Annotation) -->
+          <div class="py-1 px-2 bg-black/40 border border-white/[0.06] flex items-center justify-between text-[9px] font-mono text-zinc-400">
             <div class="flex items-center gap-1.5">
-              <i data-lucide="award" class="w-3.5 h-3.5 text-brand-gold"></i>
-              <span class="font-bold text-white text-xs">Apply Stash Reward Discount</span>
+              <span class="text-amber-400">🔥</span>
+              <span>Coal Master Kaloud Lotus Rotations</span>
             </div>
-            <span class="text-[11px] text-brand-gold font-mono font-bold" id="tabRewardsPointsAvailable">750 Pts</span>
+            <span class="text-emerald-400 font-bold uppercase tracking-wider">Included ✓</span>
           </div>
 
-          <div class="space-y-1.5" id="tabRewardsRedeemOptions">
-            <!-- Injected via JS with 1-tap toggle button -->
-          </div>
-        </div>
-
-        <!-- Bill Total Breakdown Card -->
-        <div class="space-y-1.5 bg-black p-3 rounded-2xl border border-zinc-800 text-xs">
-          <div class="flex justify-between text-zinc-300">
-            <span>Subtotal</span>
-            <span class="font-bold font-mono-nums" id="tabViewSubtotal">$35.00</span>
-          </div>
-
-          <div id="tabViewRewardDiscountRow" class="hidden flex justify-between text-emerald-400 font-bold">
-            <span id="tabViewRewardDiscountLabel">🎁 VIP Discount</span>
-            <span class="font-mono-nums" id="tabViewRewardDiscountAmt">-$0.00</span>
-          </div>
-
-          <div class="flex justify-between text-zinc-400 text-xs">
-            <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
-            <span class="font-bold font-mono-nums text-zinc-300" id="tabViewTaxAmt">$3.01</span>
-          </div>
-
-          <div class="flex justify-between text-zinc-400 text-xs">
-            <span>Coal Master Rotations</span>
-            <span class="text-emerald-400 font-bold">Included ✓</span>
-          </div>
-
-          <!-- Gratuity Selector -->
-          <div class="pt-2 border-t border-zinc-850">
-            <label class="text-[11px] text-zinc-400 font-semibold block mb-1.5">Add Gratuity for Lounge Staff</label>
-            <div class="grid grid-cols-4 gap-1.5 text-center">
-              <button onclick="selectTabViewTip(15)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn15">15%</button>
-              <button onclick="selectTabViewTip(18)" class="tab-tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-xl text-xs font-bold" id="tabTipBtn18">18%</button>
-              <button onclick="selectTabViewTip(20)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn20">20%</button>
-              <button onclick="selectTabViewTip(25)" class="tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold" id="tabTipBtn25">25%</button>
+          <!-- Section 3: VIP Loyalty Reward Redemptions -->
+          <div class="space-y-1 pt-0.5">
+            <div class="flex items-center justify-between text-[9px] font-serif uppercase tracking-[0.16em] text-zinc-300 font-bold">
+              <span>Apply VIP Stash Reward</span>
+              <span class="text-amber-400 font-mono" id="tabRewardsPointsAvailable">750 Pts</span>
+            </div>
+            <div class="space-y-1" id="tabRewardsRedeemOptions">
+              <!-- Injected via JS -->
             </div>
           </div>
 
-          <div class="pt-2 border-t border-zinc-800 flex justify-between text-sm font-bold text-white">
-            <span>Grand Total</span>
-            <span class="text-brand-gold font-mono-nums" id="tabViewGrandTotal">$38.01</span>
+          <!-- Perforated Tear Line -->
+          <div class="border-b border-dashed border-white/20 my-0.5"></div>
+
+          <!-- Section 4: Receipt Financial Totals -->
+          <div class="space-y-1 text-xs font-sans">
+            <div class="flex items-baseline justify-between text-zinc-300">
+              <span class="text-[11px]">Subtotal</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/20 relative -top-1"></span>
+              <span class="font-mono font-bold text-white text-[11px]" id="tabViewSubtotal">$0.00</span>
+            </div>
+
+            <div id="tabViewRewardDiscountRow" class="hidden flex items-baseline justify-between text-emerald-400 font-bold text-[11px]">
+              <span id="tabViewRewardDiscountLabel">🎁 VIP Reward Discount</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-emerald-500/30 relative -top-1"></span>
+              <span class="font-mono font-bold" id="tabViewRewardDiscountAmt">-$0.00</span>
+            </div>
+
+            <div class="flex items-baseline justify-between text-zinc-400 text-[11px]">
+              <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/15 relative -top-1"></span>
+              <span class="font-mono text-zinc-300" id="tabViewTaxAmt">$0.00</span>
+            </div>
+
+            <div class="flex items-baseline justify-between text-amber-300/90 font-medium text-[11px]">
+              <span id="tabViewTipRowLabel">Gratuity / Tip</span>
+              <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-500/20 relative -top-1"></span>
+              <span class="font-mono font-bold text-amber-400" id="tabViewTipRowAmt">$0.00</span>
+            </div>
           </div>
+
+          <!-- Section 5: Interactive Tip Strip (with Skip / No Tip) -->
+          <div class="pt-1.5 border-t border-white/[0.08] space-y-1.5">
+            <div class="flex justify-between items-center text-[9px] font-mono text-zinc-400">
+              <span>Add Gratuity for Lounge Staff</span>
+              <span class="text-amber-400 font-semibold" id="tabTipCalculatedDisplay">18% ($0.00)</span>
+            </div>
+            <div class="grid grid-cols-5 gap-1 text-center">
+              <button onclick="selectTabViewTip(0)" class="tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-400 hover:text-white rounded-none text-[9px] font-serif font-bold transition" id="tabTipBtn0">
+                No Tip
+              </button>
+              <button onclick="selectTabViewTip(15)" class="tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[9px] font-serif font-bold transition" id="tabTipBtn15">
+                15%
+              </button>
+              <button onclick="selectTabViewTip(18)" class="tab-tip-btn py-1 px-0.5 bg-amber-400 border border-amber-400 text-black rounded-none text-[9px] font-serif font-bold transition" id="tabTipBtn18">
+                18%
+              </button>
+              <button onclick="selectTabViewTip(20)" class="tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[9px] font-serif font-bold transition" id="tabTipBtn20">
+                20%
+              </button>
+              <button onclick="selectTabViewTip(25)" class="tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-300 hover:border-amber-400 rounded-none text-[9px] font-serif font-bold transition" id="tabTipBtn25">
+                25%
+              </button>
+            </div>
+          </div>
+
+          <!-- Section 6: Grand Total with Double Border -->
+          <div class="pt-1.5 border-t-2 border-amber-500/40 flex items-baseline justify-between">
+            <div>
+              <span class="font-serif text-xs font-bold tracking-widest uppercase text-white block">Grand Total</span>
+              <span class="text-[8px] font-mono text-zinc-400" id="tabViewGrandTotalSubnote">Includes tax &amp; gratuity</span>
+            </div>
+            <span class="font-serif text-xl font-bold text-amber-400 drop-shadow-[0_2px_6px_rgba(229,169,60,0.3)] font-mono-nums" id="tabViewGrandTotal">$0.00</span>
+          </div>
+
+          <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
+          <div class="space-y-1.5 pt-1.5">
+            <!-- Option B: End Session & Pay Tab Button -->
+            <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="w-full bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-xs py-2.5 px-4 shadow-lg transition active:scale-95 uppercase tracking-widest flex items-center justify-center gap-2 rounded-none">
+              <span>End Session &amp; Settle Tab</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+
+            <!-- Option C: Split Bill with Table / Group -->
+            <button onclick="openTabSplitModal()" class="w-full bg-transparent hover:bg-white/5 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-serif text-[10px] py-1.5 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none">
+              <span class="text-amber-400 text-xs">⇄</span>
+              <span>Split Bill with Table / Group</span>
+            </button>
+          </div>
+
         </div>
 
-        <!-- Checkout Action Button -->
-        <button onclick="processSquarePaymentFromView()" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black text-xs font-extrabold py-3 rounded-2xl shadow-lg flex items-center justify-center gap-1.5 transition active:scale-98">
-          <i data-lucide="lock" class="w-4 h-4"></i>
-          <span>Pay with Square &amp; Close Tab</span>
-        </button>
       </section>
 
+    </div>
+
+    <!-- ==================== OPTION C: GROUP SPLIT & BREAKOUT MODAL ==================== -->
+    <div id="tabSplitModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+      <!-- Backdrop Overlay -->
+      <div class="fixed inset-0 bg-black/85 backdrop-blur-[4px] transition-opacity duration-300" onclick="closeTabSplitModal()"></div>
+
+      <!-- Modal Frame -->
+      <div class="relative w-full max-w-md mx-auto sommelier-card-frame max-h-[90vh] overflow-y-auto no-scrollbar p-3 z-10 bg-[#0D0D11] border border-amber-500/50 rounded-none shadow-2xl">
+        <div class="sommelier-inner-frame p-3.5 space-y-3.5">
+          
+          <!-- Header -->
+          <div class="flex items-center justify-between pb-2 border-b border-white/[0.08]">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 text-sm">⇄</span>
+              <div>
+                <h3 class="font-serif text-sm font-bold text-white tracking-wide uppercase">Split Table Bill</h3>
+                <p class="text-[9px] text-zinc-400 font-mono">Itemized Square Breakout Orders</p>
+              </div>
+            </div>
+            <button onclick="closeTabSplitModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-2 py-0.5">✕</button>
+          </div>
+
+          <!-- Split Mode Toggle: EVEN SPLIT vs BY ITEM -->
+          <div class="grid grid-cols-2 gap-1 bg-black/60 p-1 border border-white/10 select-none">
+            <button onclick="setTabSplitMode('even')" id="tabSplitModeEvenBtn" class="py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow rounded-none">
+              Even Split
+            </button>
+            <button onclick="setTabSplitMode('item')" id="tabSplitModeItemBtn" class="py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white rounded-none">
+              By Item
+            </button>
+          </div>
+
+          <!-- Dynamic Split Content (Injected by JS) -->
+          <div id="tabSplitContentArea" class="space-y-3">
+            <!-- Injected via renderTabSplitModalContent() in JS -->
+          </div>
+
+          <!-- Dismiss note -->
+          <div class="pt-1 text-center">
+            <span class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.2em] cursor-pointer hover:text-zinc-300 transition" onclick="closeTabSplitModal()">
+              [ RETURN TO MY TAB ]
+            </span>
+          </div>
+
+        </div>
+      </div>
     </div>
 
   </main>
@@ -4992,6 +5097,11 @@
     }
 
     // ==================== MY TAB & SQUARE CHECKOUT FULL VIEW ====================
+    let tabSplitMode = 'even'; // 'even' or 'item'
+    let tabSplitPayersCount = 2;
+    let tabSplitSettledShares = [];
+    let tabItemAssignments = {}; // { itemIndex: payerNumber }
+
     function renderMyTabView() {
       const member = CustomerStash.getCurrentVipMember();
       const tiers = CustomerStash.getRewardTiers();
@@ -5000,40 +5110,66 @@
 
       const seatEl = document.getElementById('tabViewSeatLabel');
       const ptsBadge = document.getElementById('tabRewardsPointsAvailable');
-      if (seatEl) seatEl.textContent = `${currentAssignedSeat} (#${member.id.replace('vip-', '')})`;
+      if (seatEl) seatEl.textContent = `${currentAssignedSeat} · VIP TAB #${member.id.replace('vip-', '')}`;
       if (ptsBadge) ptsBadge.textContent = `${member.points} Pts Available`;
 
-      // Session Items (Itemized dynamic list of hookahs, refills, and beverages)
+      // Session Items (Itemized luxury receipt list of hookahs, refills, and beverages)
       const itemsList = document.getElementById('tabSessionItemsList');
       if (itemsList) {
         if (items.length === 0) {
           itemsList.innerHTML = `
-            <div class="py-6 text-center text-zinc-500 font-sans text-xs italic">
-              No items on tab yet. Order hookahs or beverages from the menu!
+            <div class="py-6 text-center text-zinc-500 font-sans text-xs italic space-y-1">
+              <p>No items on tab yet.</p>
+              <p class="text-[10px] text-zinc-600">Browse craft tobacco &amp; beverages from the menu!</p>
             </div>
           `;
         } else {
-          itemsList.innerHTML = items.map((item) => {
+          itemsList.innerHTML = items.map((item, idx) => {
             const isDrink = item.type === 'drink';
             const isRefill = item.orderType === 'refill' || (item.name && (item.name.toLowerCase().includes('refill') || item.name.toLowerCase().includes('repack')));
             const icon = isDrink ? '🥤' : (isRefill ? '🔄' : '🏺');
+            
+            // Format title & breakdown
+            let title = item.name;
+            let breakdownNotes = '';
+            if (!isDrink) {
+              if (item.name.includes(' - ')) {
+                const parts = item.name.split(' - ');
+                title = parts[0];
+                breakdownNotes = parts[1] || '';
+              } else {
+                title = item.name;
+              }
+            } else {
+              breakdownNotes = item.desc || 'Chilled Bottle / Beverage';
+            }
+
             return `
-              <div class="flex justify-between items-center py-2 border-b border-white/[0.06] text-zinc-200">
-                <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
-                  <span class="text-base flex-shrink-0">${icon}</span>
-                  <div class="truncate">
-                    <span class="font-serif text-sm font-bold text-white block truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">${item.name}</span>
-                    <span class="text-[10px] text-zinc-400 font-mono">${item.time || ''} · <span class="text-amber-400/90 font-semibold">${item.status || 'Active'}</span></span>
+              <div class="editorial-receipt-item pb-2 border-b border-white/[0.06] text-zinc-200">
+                <div class="flex items-baseline justify-between w-full">
+                  <div class="flex items-center gap-1.5 min-w-0 flex-1 pr-2">
+                    <span class="text-xs">${icon}</span>
+                    <span class="font-serif text-[0.88rem] font-bold text-white tracking-wide truncate">${title}</span>
                   </div>
+                  <span class="item-leader flex-grow mx-1.5 border-b border-dotted border-white/25 relative -top-1"></span>
+                  <span class="font-mono font-bold text-sm text-white flex-shrink-0">$${(item.price || 0).toFixed(2)}</span>
                 </div>
-                <span class="font-mono font-bold text-sm text-white flex-shrink-0">$${(item.price || 0).toFixed(2)}</span>
+                ${breakdownNotes ? `
+                  <div class="text-[10px] text-amber-400/85 font-mono pl-5 mt-0.5 leading-tight truncate">
+                    ${breakdownNotes}
+                  </div>
+                ` : ''}
+                <div class="flex items-center justify-between text-[9px] text-zinc-500 font-mono pl-5 mt-0.5">
+                  <span>${item.time || 'Table Order'} · <span class="text-zinc-400 font-medium">${item.status || 'Preparing'}</span></span>
+                  <span class="text-zinc-500 font-sans italic">Kaloud Heat</span>
+                </div>
               </div>
             `;
           }).join('');
         }
       }
 
-      // Rewards options
+      // Rewards options (Styled matching the noir aesthetic)
       const rewardsCont = document.getElementById('tabRewardsRedeemOptions');
       if (rewardsCont) {
         rewardsCont.innerHTML = '';
@@ -5041,16 +5177,16 @@
           const isEligible = member.points >= tier.pointsReq;
           const isSelected = selectedAppliedReward && selectedAppliedReward.id === tier.id;
           const btn = document.createElement('button');
-          btn.className = `w-full p-2 rounded-xl text-left flex items-center justify-between transition border ${isSelected ? 'bg-amber-950/80 border-brand-gold text-white shadow-md' : isEligible ? 'bg-zinc-900 border-zinc-800 hover:border-brand-gold text-white' : 'bg-zinc-950 border-zinc-900 opacity-40 cursor-not-allowed text-zinc-500'}`;
+          btn.className = `w-full py-1.5 px-2 text-left flex items-center justify-between transition border ${isSelected ? 'bg-amber-400 text-black border-amber-400 font-bold' : isEligible ? 'bg-black/60 border-white/15 text-zinc-200 hover:border-amber-400' : 'bg-black/30 border-white/5 opacity-40 cursor-not-allowed text-zinc-500'}`;
           if (isEligible) btn.onclick = () => toggleTabViewReward(tier);
           btn.innerHTML = `
-            <div class="flex items-center gap-1.5">
-              <span>${tier.icon}</span>
-              <span class="font-bold text-xs">${tier.label}</span>
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="text-xs">${tier.icon}</span>
+              <span class="font-serif text-[11px] truncate">${tier.label}</span>
             </div>
-            <div class="flex items-center gap-1">
-              <span class="font-mono text-[11px] ${isSelected ? 'text-brand-gold font-bold' : isEligible ? 'text-zinc-300' : 'text-zinc-600'}">-${tier.pointsReq} Pts</span>
-              <span class="text-[9px] px-1.5 py-0.2 rounded font-bold ${isSelected ? 'bg-brand-gold text-black' : isEligible ? 'bg-amber-950 text-brand-gold border border-amber-800/40' : 'bg-zinc-900 text-zinc-600'}">${isSelected ? 'APPLIED ✓' : isEligible ? 'REDEEM' : 'LOCKED'}</span>
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <span class="font-mono text-[10px] ${isSelected ? 'text-black font-bold' : isEligible ? 'text-amber-400' : 'text-zinc-500'}">-${tier.pointsReq} Pts</span>
+              <span class="text-[8px] font-mono px-1 py-0.2 ${isSelected ? 'bg-black text-amber-400' : isEligible ? 'bg-amber-950 text-amber-300 border border-amber-800/40' : 'bg-black text-zinc-600'}">${isSelected ? 'APPLIED ✓' : isEligible ? 'REDEEM' : 'LOCKED'}</span>
             </div>
           `;
           rewardsCont.appendChild(btn);
@@ -5074,13 +5210,13 @@
 
     function selectTabViewTip(pct) {
       currentSelectedTipPct = pct;
-      [15, 18, 20, 25].forEach(p => {
+      [0, 15, 18, 20, 25].forEach(p => {
         const btn = document.getElementById(`tabTipBtn${p}`);
         if (!btn) return;
         if (p === pct) {
-          btn.className = 'tab-tip-btn p-1.5 bg-brand-gold border border-brand-gold text-black rounded-xl text-xs font-bold';
+          btn.className = 'tab-tip-btn py-1 px-0.5 bg-amber-400 border border-amber-400 text-black rounded-none text-[9px] font-serif font-bold transition shadow';
         } else {
-          btn.className = 'tab-tip-btn p-1.5 bg-zinc-900 border border-zinc-800 text-zinc-300 hover:border-brand-gold rounded-xl text-xs font-bold';
+          btn.className = 'tab-tip-btn py-1 px-0.5 bg-black/60 border border-white/15 text-zinc-400 hover:text-white rounded-none text-[9px] font-serif font-bold transition';
         }
       });
       updateTabViewFinancials();
@@ -5103,13 +5239,16 @@
       const discAmt = document.getElementById('tabViewRewardDiscountAmt');
       const taxLbl = document.getElementById('tabViewTaxLabel');
       const taxAmtEl = document.getElementById('tabViewTaxAmt');
+      const tipRowAmt = document.getElementById('tabViewTipRowAmt');
+      const tipDisplay = document.getElementById('tabTipCalculatedDisplay');
       const totalEl = document.getElementById('tabViewGrandTotal');
+      const payBtn = document.getElementById('tabPayFullBtn');
 
       if (subEl) subEl.textContent = `$${rawSubtotal.toFixed(2)}`;
       if (discRow) {
         if (discountAmt > 0) {
           discRow.classList.remove('hidden');
-          if (discLbl) discLbl.textContent = `🎁 VIP Reward (${selectedAppliedReward.label.split(' ')[0]} ${selectedAppliedReward.label.split(' ')[1]})`;
+          if (discLbl) discLbl.textContent = `🎁 VIP Reward (${selectedAppliedReward.label})`;
           if (discAmt) discAmt.textContent = `-$${discountAmt.toFixed(2)}`;
         } else {
           discRow.classList.add('hidden');
@@ -5117,20 +5256,101 @@
       }
       if (taxLbl) taxLbl.textContent = `${taxConfig.primaryName} (${taxConfig.primaryRate.toFixed(2)}%)`;
       if (taxAmtEl) taxAmtEl.textContent = `$${taxAmt.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)} (inc. $${tipAmt.toFixed(2)} tip)`;
+      if (tipRowAmt) tipRowAmt.textContent = currentSelectedTipPct === 0 ? '$0.00 (No Tip)' : `$${tipAmt.toFixed(2)} (${currentSelectedTipPct}%)`;
+      if (tipDisplay) tipDisplay.textContent = currentSelectedTipPct === 0 ? 'No Tip Selected' : `${currentSelectedTipPct}% ($${tipAmt.toFixed(2)})`;
+      if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)}`;
+      if (payBtn) payBtn.innerHTML = `<span>End Session &amp; Settle Tab ($${grandTotal.toFixed(2)})</span><svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+    }
+
+    // ==================== OPTION B: SQUARE ITEMIZED ORDER PAYLOAD BUILDER ====================
+    function buildSquareItemizedOrderPayload(items, tipAmount, splitContext = null) {
+      const taxConfig = CustomerStash.getTaxConfig();
+      const activeTab = CustomerStash.getActiveTab();
+      const member = CustomerStash.getCurrentVipMember();
+      
+      const lineItems = items.map(item => {
+        const isDrink = item.type === 'drink';
+        let name = item.name;
+        let note = '';
+        if (!isDrink && item.name.includes(' - ')) {
+          const parts = item.name.split(' - ');
+          name = parts[0];
+          note = parts[1] || '';
+        } else if (isDrink) {
+          note = item.desc || 'Beverage Order';
+        }
+        return {
+          name: name,
+          note: note,
+          quantity: '1',
+          base_price_money: {
+            amount: Math.round((item.price || 0) * 100),
+            currency: 'USD'
+          }
+        };
+      });
+
+      return {
+        idempotency_key: 'sq-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
+        order: {
+          location_id: 'EMPIRE_PHX_MAIN',
+          reference_id: activeTab.id || ('TAB-' + member.id),
+          customer_id: member.id,
+          line_items: lineItems,
+          taxes: [
+            {
+              name: `${taxConfig.primaryName} (${taxConfig.primaryRate}%)`,
+              percentage: taxConfig.primaryRate.toString(),
+              type: 'ADDITIVE'
+            }
+          ],
+          service_charges: tipAmount > 0 ? [
+            {
+              name: `Lounge Staff Gratuity (${currentSelectedTipPct}%)`,
+              amount_money: {
+                amount: Math.round(tipAmount * 100),
+                currency: 'USD'
+              },
+              calculation_phase: 'TOTAL_PHASE',
+              taxable: false
+            }
+          ] : [],
+          metadata: {
+            seat: currentAssignedSeat,
+            member_name: member.name,
+            split_info: splitContext ? JSON.stringify(splitContext) : 'Full Tab Checkout'
+          }
+        }
+      };
     }
 
     function processSquarePaymentFromView() {
-      const member = CustomerStash.getCurrentVipMember();
       const activeTab = CustomerStash.getActiveTab();
-      const totalSpentOnTab = (activeTab.items || []).reduce((s, i) => s + (i.price || 0), 0);
-      const pointsEarned = Math.round(totalSpentOnTab * 10);
-      let pointsCost = 0;
-      if (selectedAppliedReward) pointsCost = selectedAppliedReward.pointsReq;
+      const items = activeTab.items || [];
+      if (items.length === 0) {
+        showToast('⚠️ Empty Tab', 'No orders on tab to settle.');
+        return;
+      }
+
+      const taxConfig = CustomerStash.getTaxConfig();
+      const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
+      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
+      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+
+      // Build Option B full itemized Square Order Payload
+      const squarePayload = buildSquareItemizedOrderPayload(items, tipAmt);
+      console.log('--- SQUARE ITEMIZED ORDER PAYLOAD (OPTION B) ---', squarePayload);
+
+      const member = CustomerStash.getCurrentVipMember();
+      const pointsEarned = Math.round(rawSubtotal * 10);
+      let pointsCost = selectedAppliedReward ? selectedAppliedReward.pointsReq : 0;
 
       member.points = Math.max(0, member.points - pointsCost + pointsEarned);
-      member.totalSpent = (member.totalSpent || 0) + totalSpentOnTab;
-      
+      member.totalSpent = (member.totalSpent || 0) + rawSubtotal;
+
       const members = CustomerStash.getVipMembers();
       const idx = members.findIndex(m => m.id === member.id);
       if (idx !== -1) members[idx] = member;
@@ -5143,7 +5363,7 @@
         subtotal: 0
       });
 
-      showToast('🏁 VIP Tab Settled', `Square paid. +${pointsEarned} Pts earned! Balance: ${member.points} Pts.`);
+      showToast('🏁 VIP Tab Settled', `Square paid $${grandTotal.toFixed(2)}! +${pointsEarned} Pts earned. Session closed.`);
       updateVipPointsHeader();
       updateActiveBowlNotificationUI();
       tabBalance = 0.00;
@@ -5151,6 +5371,217 @@
       selectedAppliedReward = null;
       clearBowl();
       renderMyTabView();
+    }
+
+    // ==================== OPTION C: GROUP SPLIT & BREAKOUT ENGINE ====================
+    function openTabSplitModal() {
+      const activeTab = CustomerStash.getActiveTab();
+      const items = activeTab.items || [];
+      if (items.length === 0) {
+        showToast('⚠️ Empty Tab', 'No orders on tab to split.');
+        return;
+      }
+      tabSplitSettledShares = [];
+      document.getElementById('tabSplitModal').classList.remove('hidden');
+      renderTabSplitModalContent();
+    }
+
+    function closeTabSplitModal() {
+      document.getElementById('tabSplitModal').classList.add('hidden');
+    }
+
+    function setTabSplitMode(mode) {
+      tabSplitMode = mode;
+      const evenBtn = document.getElementById('tabSplitModeEvenBtn');
+      const itemBtn = document.getElementById('tabSplitModeItemBtn');
+      if (mode === 'even') {
+        evenBtn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow rounded-none';
+        itemBtn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white rounded-none';
+      } else {
+        itemBtn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition bg-amber-400 text-black shadow rounded-none';
+        evenBtn.className = 'py-1.5 text-center font-serif text-xs font-bold tracking-wider uppercase transition text-zinc-400 hover:text-white rounded-none';
+      }
+      renderTabSplitModalContent();
+    }
+
+    function setTabSplitPayersCount(count) {
+      tabSplitPayersCount = count;
+      renderTabSplitModalContent();
+    }
+
+    function renderTabSplitModalContent() {
+      const container = document.getElementById('tabSplitContentArea');
+      if (!container) return;
+
+      const activeTab = CustomerStash.getActiveTab();
+      const items = activeTab.items || [];
+      const taxConfig = CustomerStash.getTaxConfig();
+      const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
+      const discountAmt = selectedAppliedReward ? Math.min(rawSubtotal, selectedAppliedReward.discount) : 0.00;
+      const discountedSubtotal = Math.max(0, rawSubtotal - discountAmt);
+      const taxAmt = discountedSubtotal * (taxConfig.primaryRate / 100);
+      const tipAmt = discountedSubtotal * (currentSelectedTipPct / 100);
+      const grandTotal = discountedSubtotal + taxAmt + tipAmt;
+
+      if (tabSplitMode === 'even') {
+        const perPerson = grandTotal / tabSplitPayersCount;
+        
+        let payersCountBtns = [2, 3, 4, 5].map(c => `
+          <button onclick="setTabSplitPayersCount(${c})" class="flex-1 py-1 text-center font-serif text-xs font-bold uppercase transition border ${tabSplitPayersCount === c ? 'bg-amber-400 text-black border-amber-400' : 'bg-black/60 border-white/15 text-zinc-300 hover:border-amber-400'} rounded-none">
+            ${c} Ways
+          </button>
+        `).join('');
+
+        let sharesCardsHtml = '';
+        for (let i = 1; i <= tabSplitPayersCount; i++) {
+          const isSettled = tabSplitSettledShares.includes(i);
+          sharesCardsHtml += `
+            <div class="p-2.5 bg-black/60 border ${isSettled ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-white/10'} space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-serif font-bold ${isSettled ? 'text-emerald-400' : 'text-white'}">Payer #${i} ${i === 1 ? '(Host / Table)' : ''}</span>
+                <span class="font-mono font-bold ${isSettled ? 'text-emerald-400' : 'text-amber-400'}">$${perPerson.toFixed(2)}</span>
+              </div>
+              <div class="text-[9px] text-zinc-400 font-mono">
+                ${isSettled ? '✓ Square Payment Received & Settled' : `Even share (${(100/tabSplitPayersCount).toFixed(0)}%) of $${grandTotal.toFixed(2)} tab`}
+              </div>
+              <div class="flex gap-1 pt-1">
+                ${isSettled ? `
+                  <div class="w-full py-1 text-center font-serif text-[10px] font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-500/40">
+                    PAID &amp; SETTLED ✓
+                  </div>
+                ` : `
+                  <button onclick="processSplitSharePayment(${i}, ${perPerson})" class="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-[10px] py-1 transition uppercase tracking-wider">
+                    Pay Payer #${i} ($${perPerson.toFixed(2)})
+                  </button>
+                  <button onclick="copySplitPaymentLink(${i}, ${perPerson})" class="px-2 bg-transparent hover:bg-white/5 border border-white/20 text-zinc-300 text-[10px] font-serif transition">
+                    Share Link 📋
+                  </button>
+                `}
+              </div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-1.5">
+            <label class="text-[9px] text-zinc-400 font-mono uppercase tracking-wider block">Select Number of Guests Splitting</label>
+            <div class="flex gap-1">
+              ${payersCountBtns}
+            </div>
+          </div>
+          <div class="space-y-2 pt-1">
+            ${sharesCardsHtml}
+          </div>
+        `;
+      } else {
+        // By Item Split
+        let itemsSelectionHtml = items.map((item, idx) => {
+          const assignedPayer = tabItemAssignments[idx] || 1;
+          return `
+            <div class="flex justify-between items-center py-1.5 border-b border-white/[0.06] text-xs">
+              <div class="truncate flex-1 pr-2">
+                <span class="font-serif font-bold text-white block truncate">${item.name}</span>
+                <span class="font-mono text-[9px] text-zinc-400">$${(item.price || 0).toFixed(2)}</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <label class="text-[9px] text-zinc-400 font-mono">Payer:</label>
+                <select onchange="assignTabItemToPayer(${idx}, this.value)" class="bg-black border border-white/20 text-amber-400 text-xs px-1 py-0.5 rounded-none font-mono">
+                  <option value="1" ${assignedPayer === 1 ? 'selected' : ''}>Payer 1</option>
+                  <option value="2" ${assignedPayer === 2 ? 'selected' : ''}>Payer 2</option>
+                  <option value="3" ${assignedPayer === 3 ? 'selected' : ''}>Payer 3</option>
+                  <option value="4" ${assignedPayer === 4 ? 'selected' : ''}>Payer 4</option>
+                </select>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Calculate subtotals for each payer
+        const payerTotals = {};
+        items.forEach((item, idx) => {
+          const p = tabItemAssignments[idx] || 1;
+          payerTotals[p] = (payerTotals[p] || 0) + (item.price || 0);
+        });
+
+        let summaryPayerCards = Object.keys(payerTotals).map(pKey => {
+          const pSub = payerTotals[pKey];
+          const pTax = pSub * (taxConfig.primaryRate / 100);
+          const pTip = pSub * (currentSelectedTipPct / 100);
+          const pGrand = pSub + pTax + pTip;
+          const isSettled = tabSplitSettledShares.includes(parseInt(pKey));
+          return `
+            <div class="p-2 bg-black/60 border ${isSettled ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-white/10'} flex justify-between items-center">
+              <div>
+                <span class="font-serif font-bold text-xs ${isSettled ? 'text-emerald-400' : 'text-white'}">Payer #${pKey} Items</span>
+                <span class="text-[9px] text-zinc-400 block font-mono">Inc. tax &amp; tip</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-xs ${isSettled ? 'text-emerald-400' : 'text-amber-400'}">$${pGrand.toFixed(2)}</span>
+                ${isSettled ? `
+                  <span class="text-[9px] font-bold text-emerald-400">PAID ✓</span>
+                ` : `
+                  <button onclick="processSplitSharePayment(${pKey}, ${pGrand})" class="px-2 py-0.5 bg-amber-400 hover:bg-amber-300 text-black font-serif text-[10px] font-bold uppercase transition">
+                    Pay Share
+                  </button>
+                `}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <div class="space-y-1">
+            <span class="text-[9px] text-zinc-400 font-mono uppercase tracking-wider block">Assign Items to Payers</span>
+            <div class="max-h-40 overflow-y-auto pr-1 no-scrollbar space-y-1">
+              ${itemsSelectionHtml}
+            </div>
+          </div>
+          <div class="space-y-1.5 pt-2 border-t border-white/10">
+            <span class="text-[9px] text-zinc-400 font-mono uppercase tracking-wider block">Itemized Payer Totals</span>
+            ${summaryPayerCards}
+          </div>
+        `;
+      }
+    }
+
+    function assignTabItemToPayer(itemIdx, payerNum) {
+      tabItemAssignments[itemIdx] = parseInt(payerNum);
+      renderTabSplitModalContent();
+    }
+
+    function copySplitPaymentLink(payerIdx, amount) {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?splitTab=409&payer=${payerIdx}&amount=${amount.toFixed(2)}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('📋 Link Copied', `Square payment link for Payer #${payerIdx} ($${amount.toFixed(2)}) copied!`);
+        });
+      } else {
+        showToast('📋 Payment Link', `Share link for Payer #${payerIdx}: $${amount.toFixed(2)}`);
+      }
+    }
+
+    function processSplitSharePayment(payerIdx, amount) {
+      if (!tabSplitSettledShares.includes(payerIdx)) {
+        tabSplitSettledShares.push(payerIdx);
+      }
+      
+      const activeTab = CustomerStash.getActiveTab();
+      const items = activeTab.items || [];
+      const squarePayload = buildSquareItemizedOrderPayload(items, amount * (currentSelectedTipPct / (100 + currentSelectedTipPct)), { splitSharePayer: payerIdx, amount: amount });
+      console.log(`--- SQUARE SPLIT ORDER PAYLOAD (OPTION C - PAYER ${payerIdx}) ---`, squarePayload);
+
+      showToast('✓ Share Settled', `Payer #${payerIdx} share ($${amount.toFixed(2)}) paid on Square!`);
+      
+      const neededCount = tabSplitMode === 'even' ? tabSplitPayersCount : Object.keys(tabItemAssignments).length;
+      if (tabSplitSettledShares.length >= (tabSplitMode === 'even' ? tabSplitPayersCount : new Set(Object.values(tabItemAssignments)).size)) {
+        // All shares settled!
+        setTimeout(() => {
+          closeTabSplitModal();
+          processSquarePaymentFromView();
+        }, 1000);
+      } else {
+        renderTabSplitModalContent();
+      }
     }
 
     function loadHouseMixAndGoToLab(mixId) {
