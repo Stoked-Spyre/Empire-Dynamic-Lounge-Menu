@@ -3653,6 +3653,13 @@
       return STOKED_CATEGORY_COLORS[p] || '#ffcc00';
     }
 
+    function getItemProfileColor(item) {
+      if (!item) return '#E5A93C';
+      if (item.color) return item.color;
+      const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+      return getProfileDotColor(primaryProfile);
+    }
+
     function getFlavorGradient(item) {
       if (!item) return 'linear-gradient(to right, #00f0ff, #3b82f6)';
       const profiles = item.profiles || [];
@@ -4166,8 +4173,7 @@
         </button>
       ` : '';
 
-      const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
-      const dotColor = getProfileDotColor(primaryProfile);
+      const dotColor = getItemProfileColor(item);
 
       return `
         <div 
@@ -4179,7 +4185,7 @@
           class="editorial-item mb-4 cursor-pointer select-none group">
           <div class="item-top-row flex items-baseline justify-between w-full">
             <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full inline-block flex-shrink-0" style="background: ${dotColor};"></span>
+              <span class="w-2 h-2 rounded-full inline-block flex-shrink-0" style="background: ${dotColor}; box-shadow: 0 0 6px ${dotColor}80;"></span>
               <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition">${item.name}</span>
             </div>
             <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
@@ -4274,7 +4280,7 @@
             stationsRailHtml += `
               <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setBrandStation('${st.id}')">
                 <span class="menu-station-label text-zinc-100">${st.name}</span>
-                <span class="menu-station-sub">${st.sub}</span>
+                ${(!isVipLoggedIn && st.sub) ? `<span class="menu-station-sub">${st.sub}</span>` : ''}
               </button>
             `;
           });
@@ -4313,7 +4319,7 @@
             stationsRailHtml += `
               <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${p.id}')">
                 <span class="menu-station-label text-zinc-100">${p.name}</span>
-                <span class="menu-station-sub">${p.sub}</span>
+                ${(!isVipLoggedIn && p.sub) ? `<span class="menu-station-sub">${p.sub}</span>` : ''}
               </button>
             `;
           });
@@ -4347,8 +4353,7 @@
 
           activeFlavors.forEach(f => {
             const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-            const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
-            const col = getProfileDotColor(primaryProfile);
+            const col = getItemProfileColor(item);
             const start = cum;
             cum += f.percent;
             gradParts.push(`${col} ${start}% ${cum}%`);
@@ -4376,13 +4381,12 @@
             activeFlavors.forEach((f, idx) => {
               const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
               const grams = ((22 * f.percent) / 100).toFixed(1);
-              const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
-              const dotColor = getProfileDotColor(primaryProfile);
+              const col = getItemProfileColor(item);
 
               activeFlavorsHtml += `
                 <div class="py-1.5 px-2 flex items-center justify-between gap-2 select-none hover:bg-white/[0.02] transition">
                   <div class="flex items-center gap-2 min-w-0 flex-1">
-                    <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
+                    <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 6px ${col}80;"></span>
                     <span class="font-serif text-[13px] font-bold text-white truncate drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">${item.name}</span>
                     <span class="text-[9px] text-zinc-400 font-mono uppercase bg-white/[0.04] px-1 py-0.2 border border-white/[0.06]">${item.brand}</span>
                     <span class="text-[9px] text-amber-400/80 font-mono">⚡${item.strength || 7}</span>
