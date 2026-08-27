@@ -4723,20 +4723,24 @@
         } 
         // ────── MODE B: BROWSE BY TASTING PROFILE ──────
         else {
-          const activeProfile = FLAVOR_PROFILES.find(p => p.id === activeProfileStation) || FLAVOR_PROFILES[0];
+          const activeProfile = SHISHA_PROFILES.find(p => p.id === activeProfileStation) || SHISHA_PROFILES[0];
           headerTitle = activeProfile.name;
-          headerSub = activeProfile.desc;
+          headerSub = activeProfile.origin || activeProfile.notes;
 
-          FLAVOR_PROFILES.forEach(prof => {
+          SHISHA_PROFILES.forEach(prof => {
             const isActive = prof.id === activeProfileStation;
             stationsRailHtml += `
               <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${prof.id}')">
                 <span class="menu-station-label text-zinc-100">${prof.name}</span>
+                ${(!isVipLoggedIn && prof.sub) ? `<span class="menu-station-sub">${prof.sub}</span>` : ''}
               </button>
             `;
           });
 
-          displayedItems = inStockInventory.filter(i => (i.profiles || []).some(p => p.toLowerCase().includes(activeProfile.id.toLowerCase())));
+          displayedItems = inStockInventory.filter(item => {
+            const profiles = (item.profiles || []).map(p => p.toLowerCase());
+            return (activeProfile.match || [activeProfile.id]).some(kw => profiles.some(p => p === kw || p.includes(kw)));
+          });
           if (displayedItems.length === 0) {
             displayedItems = inStockInventory.slice(0, 8);
           }
@@ -6424,6 +6428,11 @@
       // Auto restore persistent session if member was logged in
       const savedSession = CustomerStash.getSavedSession();
       if (savedSession && savedSession.memberId) {
+        const stage = document.getElementById('cinematicEntryStage');
+        if (stage) {
+          stage.classList.add('hidden-stage');
+          stage.style.display = 'none';
+        }
         const members = CustomerStash.getVipMembers();
         const match = members.find(m => m.id === savedSession.memberId) || {
           id: savedSession.memberId,
@@ -6433,11 +6442,26 @@
           canSelfOrder: savedSession.canSelfOrder !== false,
           points: 750
         };
-        loginAsVipMember(match);
-      }
 
-      // Show Noir landing screen on page load if not logged in
-      if (!savedSession || !savedSession.memberId) {
+        isVipLoggedIn = true;
+        currentVipTabId = match.id.toUpperCase();
+        
+        document.getElementById('headerGuestView')?.classList.add('hidden');
+        document.getElementById('headerGuestRightView')?.classList.add('hidden');
+        document.getElementById('headerVipView')?.classList.remove('hidden');
+        document.getElementById('headerVipRightView')?.classList.remove('hidden');
+        document.getElementById('vipBottomDock')?.classList.remove('hidden');
+
+        const nameDisplay = document.getElementById('vipMemberNameDisplay');
+        if (nameDisplay) nameDisplay.textContent = match.name;
+        const avatarLetter = document.getElementById('vipAvatarLetter');
+        if (avatarLetter) avatarLetter.textContent = match.name.charAt(0);
+
+        updateVipPointsHeader();
+        renderCustomerMenu();
+        renderIcons();
+      } else {
+        // Show Noir landing screen on page load if not logged in
         openWelcomeLoungeModal();
       }
     });
