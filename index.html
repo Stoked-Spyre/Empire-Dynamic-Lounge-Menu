@@ -62,9 +62,11 @@
     .menu-spread {
       position: relative;
       z-index: 10;
+      width: 100%;
       max-width: 42rem;
       margin: 0 auto;
       padding: 0 1rem;
+      box-sizing: border-box;
     }
     .menu-skyline-bg {
       position: fixed;
@@ -365,6 +367,9 @@
       flex: 1;
       min-height: 0;
       height: 100%;
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
       display: flex;
       gap: 1.25rem;
       align-items: flex-start;
@@ -375,6 +380,8 @@
     }
     .menu-stations-rail {
       width: 120px;
+      min-width: 120px;
+      max-width: 120px;
       flex-shrink: 0;
       height: 100%;
       overflow-y: auto;
@@ -485,6 +492,8 @@
     .menu-items-pane {
       flex: 1;
       min-width: 0;
+      width: calc(100% - 120px - 1.25rem);
+      max-width: calc(100% - 120px - 1.25rem);
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -494,6 +503,8 @@
     .menu-items-header {
       flex-shrink: 0;
       width: 100%;
+      min-width: 100%;
+      max-width: 100%;
       padding-bottom: 0.45rem;
       padding-top: 0.1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -506,6 +517,9 @@
     .menu-items-list {
       flex: 1;
       min-height: 0;
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
@@ -541,22 +555,39 @@
         gap: 1.5rem;
       }
       .menu-2col-layout {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         gap: 0.65rem;
       }
       .menu-stations-rail {
-        width: 102px;
+        width: 105px;
+        min-width: 105px;
+        max-width: 105px;
+        flex-shrink: 0;
         padding-right: 4px;
         padding-bottom: 3.5rem;
+      }
+      .menu-items-pane {
+        width: calc(100% - 105px - 0.65rem);
+        min-width: calc(100% - 105px - 0.65rem);
+        max-width: calc(100% - 105px - 0.65rem);
       }
       .selector-mode-btn {
         font-size: 0.64rem;
         letter-spacing: 0.02em;
       }
       .menu-items-header {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         padding-bottom: 0.35rem;
         margin-bottom: 0.5rem;
       }
       .menu-items-list {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         padding-right: 2px;
         padding-top: 2px;
         padding-bottom: 4.5rem;
@@ -1863,7 +1894,7 @@
 <body class="min-h-screen flex flex-col items-center justify-start pb-28 text-slate-200 bg-black">
 
   <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
-  <header class="w-full max-w-lg bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
+  <header class="w-full max-w-2xl bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
     
     <!-- Left: Spacer / VIP Profile Info (Balanced 80px) -->
     <div class="w-20 flex items-center justify-start">
@@ -1908,7 +1939,7 @@
   </header>
 
   <!-- Top Navigation View Switcher (Visible only when VIP is logged in) -->
-  <nav id="vipTopNav" class="hidden w-full max-w-lg px-3.5 pt-2.5 pb-1">
+  <nav id="vipTopNav" class="hidden w-full max-w-2xl px-3.5 pt-2.5 pb-1">
     <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-900/90 border border-zinc-800/80 rounded-2xl text-xs font-medium shadow-lg">
       <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-zinc-800 text-white flex items-center justify-center gap-1.5 shadow-sm font-semibold text-xs transition active:scale-95">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -1930,7 +1961,7 @@
   </nav>
 
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
-  <main class="w-full max-w-lg px-3.5 pt-0 flex flex-col gap-3">
+  <main class="w-full max-w-2xl px-3.5 pt-0 flex flex-col gap-3">
 
     <!-- ==================== VIEW 1: EDITORIAL COCKTAIL SPREAD ==================== -->
     <div id="customer-view-menu" class="customer-panel menu-spread">
