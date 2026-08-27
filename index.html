@@ -4711,19 +4711,15 @@
       }
 
       if (navTrack) {
-        if (isVipLoggedIn) {
-          navTrack.classList.add('hidden');
-        } else {
-          navTrack.classList.remove('hidden');
-          navTrack.innerHTML = `
-            <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
-              Hookah
-            </button>
-            <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
-              Beverages
-            </button>
-          `;
-        }
+        navTrack.classList.remove('hidden');
+        navTrack.innerHTML = `
+          <button class="menu-nav-tab ${(activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') ? 'active' : ''}" onclick="setPrimaryMenuTab('hookah')">
+            Hookah
+          </button>
+          <button class="menu-nav-tab ${activePrimaryTab === 'drinks' ? 'active' : ''}" onclick="setPrimaryMenuTab('drinks')">
+            Beverages
+          </button>
+        `;
       }
 
       // 3. Render Content Spread
