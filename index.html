@@ -3865,7 +3865,12 @@
       }
       updateActiveBowlNotificationUI();
       closeMenuItemDetailModal();
+      openBowlStudioModal();
       showToast('✦ Added to Bowl', `${item.name} (${activeFlavors[activeFlavors.length-1].percent}%) added to your formulation.`);
+    }
+
+    function addFlavorToActiveBowl(flavorId) {
+      addFlavor(flavorId);
     }
 
     function loadHouseMixIntoBowl(mixId) {
@@ -3896,6 +3901,7 @@
       }
       updateActiveBowlNotificationUI();
       closeMenuItemDetailModal();
+      openBowlStudioModal();
       showToast('👑 Blend Loaded', `${mix.name} loaded into your active formulation.`);
     }
 
@@ -4306,35 +4312,7 @@
       const orderContainer = document.getElementById('detailModalOrderContainer');
       if (orderContainer) {
         if (isVipLoggedIn) {
-          const itemPriceFormatted = (itemType === 'house') 
-            ? ((EMPIRE_HOUSE_MIXES.find(m => m.id === itemId)?.price || pricing.originalPrice || 35.00)).toFixed(0)
-            : ((inventory.find(i => i.id === itemId)?.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00))).toFixed(0);
-          
-          if (itemType === 'house') {
-            orderContainer.innerHTML = `
-              <div class="flex gap-2 my-1">
-                <button onclick="loadHouseMixIntoBowl('${itemId}')" class="flex-1 bg-transparent hover:bg-white/5 border border-white/20 hover:border-amber-400/60 text-zinc-200 hover:text-white font-serif tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none">
-                  <span class="text-amber-400">✦</span>
-                  <span>TUNE IN MIX LAB</span>
-                </button>
-                <button onclick="orderItemFromModal('${itemId}', 'house')" class="flex-1 bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none active:scale-95">
-                  <span>ORDER BLEND ($${itemPriceFormatted})</span>
-                </button>
-              </div>
-            `;
-          } else {
-            orderContainer.innerHTML = `
-              <div class="flex gap-2 my-1">
-                <button onclick="addFlavorToActiveBowl('${itemId}')" class="flex-1 bg-transparent hover:bg-white/5 border border-white/20 hover:border-amber-400/60 text-zinc-200 hover:text-white font-serif tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none">
-                  <span class="text-amber-400">✦</span>
-                  <span>ADD TO BOWL MIX</span>
-                </button>
-                <button onclick="orderItemFromModal('${itemId}', 'flavor')" class="flex-1 bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none active:scale-95">
-                  <span>ORDER SINGLE ($${itemPriceFormatted})</span>
-                </button>
-              </div>
-            `;
-          }
+          orderContainer.innerHTML = '';
         } else {
           orderContainer.innerHTML = `
             <button onclick="openVipLoginModal()" class="w-full bg-transparent hover:bg-white/5 border-t border-b border-white/20 text-zinc-300 hover:text-white font-serif tracking-[0.18em] py-2 text-[11px] flex items-center justify-center gap-2 transition uppercase my-1 select-none">
