@@ -76,7 +76,7 @@
       }
     }
 
-    /* Page Fade Transition Container with Safe-Area Insets */
+    /* Page Fade Transition Container with Generous Top/Bottom Clearance */
     #landingContainer {
       position: fixed;
       inset: 0;
@@ -84,7 +84,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: max(16px, env(safe-area-inset-top, 16px)) 1rem max(18px, env(safe-area-inset-bottom, 18px)) 1rem;
+      padding: max(48px, calc(env(safe-area-inset-top, 24px) + 24px)) 1.25rem max(24px, env(safe-area-inset-bottom, 20px)) 1.25rem;
       transition: opacity 0.5s ease;
       overflow: hidden;
     }
@@ -106,7 +106,7 @@
       align-items: center;
       text-align: center;
       margin: auto 0;
-      padding: 0 0.5rem;
+      padding: clamp(0.5rem, 2vh, 1.5rem) 0.5rem 0 0.5rem;
     }
 
     .landing-logo-wrap {

@@ -764,7 +764,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: max(16px, env(safe-area-inset-top, 16px)) 1rem max(18px, env(safe-area-inset-bottom, 18px)) 1rem;
+      padding: max(48px, calc(env(safe-area-inset-top, 24px) + 24px)) 1.25rem max(24px, env(safe-area-inset-bottom, 20px)) 1.25rem;
       transition: opacity 0.5s ease;
     }
     .cinematic-stage.entering {
@@ -2278,7 +2278,7 @@
     </div>
 
     <!-- Center Brand Spread with 60FPS Floating Logo -->
-    <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-2 relative z-10">
+    <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-2 pt-4 relative z-10">
       <div class="landing-logo-wrap">
         <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="landing-logo-img" />
       </div>
