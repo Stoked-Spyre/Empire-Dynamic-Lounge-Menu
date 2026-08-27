@@ -3824,11 +3824,13 @@
 
       const existingIdx = activeFlavors.findIndex(f => f.id === item.id);
       if (existingIdx >= 0) {
-        showToast('✦ Already in Bowl', `${item.name} is already in your formulation.`);
+        openBowlStudioModal();
+        showToast('✦ In Bowl', `${item.name} is in your active formulation.`);
         return;
       }
 
       if (activeFlavors.length >= 4) {
+        openBowlStudioModal();
         showToast('⚠️ Bowl Full', 'Max 4 flavors per bowl. Tune ratios with splitters.');
         return;
       }
@@ -4536,12 +4538,16 @@
         isHoldFired = false;
         return;
       }
-      selectFlavorItem(itemId, type);
-    }
-
-    function selectFlavorItem(itemId, itemType) {
       selectedFlavorId = itemId;
-      renderCustomerMenu();
+      if (isVipLoggedIn) {
+        if (type === 'house') {
+          loadHouseMixIntoBowl(itemId);
+        } else if (type === 'flavor') {
+          addFlavorToActiveBowl(itemId);
+        }
+      } else {
+        openMenuItemDetailModal(itemId, type);
+      }
     }
 
     function getBoldnessCategory(strength) {
