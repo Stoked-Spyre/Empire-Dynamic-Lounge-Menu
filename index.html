@@ -2290,41 +2290,62 @@
     </button>
   </nav>
 
-  <!-- ==================== APOTHECARY SOMMELIER COMPENDIUM MODAL ==================== -->
-  <div id="menuItemDetailModal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-center justify-center p-4">
-    <div class="fixed inset-0" onclick="closeMenuItemDetailModal()"></div>
-    <div class="relative w-full max-w-md mx-auto bg-black border border-white/[0.12] rounded-2xl p-6 shadow-[0_20px_60px_rgba(0,0,0,1)] max-h-[90vh] overflow-y-auto no-scrollbar space-y-4 z-10">
+  <!-- ==================== SOMMELIER BOTTOM DRAWER MODAL ==================== -->
+  <div id="menuItemDetailModal" class="fixed inset-0 z-50 hidden flex flex-col justify-end">
+    <!-- Backdrop Overlay -->
+    <div class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300" onclick="closeMenuItemDetailModal()"></div>
+
+    <!-- Bottom Sheet Drawer Container -->
+    <div class="relative w-full max-w-lg mx-auto bg-[#0A0D12] border-t border-x border-white/10 rounded-t-3xl shadow-[0_-15px_50px_rgba(0,0,0,0.95)] max-h-[85vh] overflow-y-auto no-scrollbar p-6 pb-9 z-10 space-y-4">
       
-      <!-- Top Kicker & Strength -->
-      <div class="flex justify-between items-center text-[10px] font-sans tracking-[0.2em] text-zinc-400 uppercase pb-1 border-b border-white/[0.06]">
-        <span>EST. 2010 · APOTHECARY SPECIFICATION</span>
-        <span class="text-amber-400 font-sans font-medium" id="detailModalBuzzPill">⚡ 7/10 · BOLD</span>
+      <!-- Top Drag Handle & Strength Badge -->
+      <div class="flex items-center justify-between pb-1">
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto -mr-6"></div>
+        <span class="text-amber-400 font-sans font-semibold tracking-wider text-xs ml-auto" id="detailModalBuzzPill">⚡ 7.0/10 · BOLD</span>
       </div>
 
       <!-- Title & Price Row with Dotted Leader -->
       <div class="flex items-baseline justify-between pt-1">
-        <h3 class="font-serif text-2xl text-white font-bold tracking-wide" id="detailModalTitle">Pink Cane Sensation</h3>
+        <h3 class="font-crest text-2xl text-white font-bold tracking-wide" id="detailModalTitle">Siberian Midnight Tea</h3>
         <span class="flex-grow mx-3 border-b border-dotted border-white/20 relative -top-1"></span>
-        <span class="text-2xl font-serif text-white font-bold" id="detailModalPrice">$35</span>
+        <span class="text-2xl font-crest text-white font-bold" id="detailModalPrice">$35</span>
       </div>
 
-      <!-- Tagline / Origin Line -->
-      <p class="text-xs text-zinc-400 italic font-sans -mt-2" id="detailModalTagline">Lounge Signature Blend</p>
+      <!-- Subtitle / Origin Line -->
+      <p class="text-xs text-zinc-400 italic font-sans -mt-2" id="detailModalTagline">Arctic Freeze &amp; Green Tea</p>
+
+      <!-- Flavor Spectrum Bar Section -->
+      <div id="detailModalSpectrumSection" class="space-y-2 py-2.5 border-y border-white/[0.07]">
+        <div class="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.2em] text-zinc-400 font-medium">
+          <span>Flavor Spectrum</span>
+          <span id="detailModalSpectrumRatio" class="text-zinc-500 lowercase tracking-normal text-[11px]">proportional blend</span>
+        </div>
+
+        <!-- Segmented Spectrum Progress Bar -->
+        <div class="w-full h-2.5 rounded-full overflow-hidden bg-white/10 flex shadow-inner" id="detailModalSpectrumBar">
+          <!-- Dynamically populated segments -->
+        </div>
+
+        <!-- Spectrum Legend Items -->
+        <div class="flex items-center gap-3 flex-wrap text-[11px] text-zinc-300 font-sans pt-0.5" id="detailModalSpectrumLegend">
+          <!-- Dynamically populated legend dots -->
+        </div>
+      </div>
 
       <!-- Tasting Profile -->
-      <div class="py-2.5 border-y border-white/[0.06] space-y-1">
-        <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium">Tasting Profile &amp; Botanicals</span>
-        <p class="text-sm text-zinc-200 italic font-sans leading-relaxed" id="detailModalDesc">Sweet ruby raspberries, pink grapefruit &amp; strawberry chilled with natural cane peppermint.</p>
+      <div class="space-y-1">
+        <span class="text-[10px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium">Tasting Profile &amp; Botanicals</span>
+        <p class="text-sm text-zinc-200 italic font-sans leading-relaxed" id="detailModalDesc">Earthy jasmine green tea paired with sub-zero arctic freeze.</p>
         <div class="flex items-center gap-1.5 flex-wrap pt-1 font-sans text-xs text-zinc-300" id="detailModalProfilesTags"></div>
       </div>
 
       <!-- Formulation Breakdown List -->
-      <div class="space-y-2 pt-0.5" id="detailModalCompositionList"></div>
+      <div class="space-y-2 pt-1" id="detailModalCompositionList"></div>
 
       <!-- Dismiss Button (Return to Menu) -->
       <div class="pt-2">
-        <button onclick="closeMenuItemDetailModal()" class="w-full py-2.5 bg-transparent hover:bg-white/[0.04] border border-white/[0.12] text-white text-xs font-serif tracking-[0.14em] uppercase rounded-xl transition active:scale-95">
-          Return to Menu
+        <button onclick="closeMenuItemDetailModal()" class="w-full py-3 bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-white text-xs font-crest tracking-[0.2em] uppercase rounded-xl transition active:scale-98 flex items-center justify-center gap-2">
+          <span>Return to Menu</span>
         </button>
       </div>
 
@@ -3255,7 +3276,9 @@
       const taglineEl = document.getElementById('detailModalTagline');
       const priceEl = document.getElementById('detailModalPrice');
       const buzzPill = document.getElementById('detailModalBuzzPill');
-      const trackEl = document.getElementById('detailModalGradientTrack');
+      const spectrumBarEl = document.getElementById('detailModalSpectrumBar');
+      const spectrumLegendEl = document.getElementById('detailModalSpectrumLegend');
+      const spectrumRatioEl = document.getElementById('detailModalSpectrumRatio');
       const listEl = document.getElementById('detailModalCompositionList');
       const descEl = document.getElementById('detailModalDesc');
       const tagsEl = document.getElementById('detailModalProfilesTags');
@@ -3263,17 +3286,12 @@
       if (itemType === 'house') {
         const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === itemId) || EMPIRE_HOUSE_MIXES[0];
         let totalStrength = 0;
-        let ribbonGradients = [];
-        let cumPct = 0;
         let recipeList = [];
 
         mix.flavors.forEach((fId, fIdx) => {
           const item = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
           const pct = mix.ratios[fIdx] || 50;
           totalStrength += ((item.strength || 7) * (pct / 100));
-          const start = cumPct;
-          cumPct += pct;
-          ribbonGradients.push(`${item.color || '#E5A93C'} ${start}% ${cumPct}%`);
           recipeList.push({ item, pct });
         });
 
@@ -3281,16 +3299,34 @@
         const buzz = getBuzzInfo(buzzVal);
 
         if (titleEl) titleEl.textContent = mix.name;
-        if (taglineEl) taglineEl.textContent = mix.tagline || 'Empire Lounge Signature Formulation';
+        if (taglineEl) taglineEl.textContent = mix.tagline || 'Lounge Signature Blend';
         if (priceEl) priceEl.textContent = `$${(pricing.originalPrice || 35.00).toFixed(0)}`;
 
         if (buzzPill) {
           buzzPill.innerHTML = `⚡ ${buzz.level}/10 · ${buzz.category}`;
         }
 
-        if (trackEl) {
-          trackEl.classList.remove('hidden');
-          trackEl.style.background = `linear-gradient(90deg, ${ribbonGradients.join(', ')})`;
+        // Flavor Spectrum Bar & Legend for House Mix
+        if (spectrumBarEl && spectrumLegendEl) {
+          const defaultColors = ['#38bdf8', '#34d399', '#fbbf24', '#f472b6', '#a78bfa'];
+          let barHtml = '';
+          let legendHtml = '';
+
+          recipeList.forEach((r, idx) => {
+            const color = r.item.color || defaultColors[idx % defaultColors.length];
+            barHtml += `<div style="width: ${r.pct}%; background: ${color};" class="h-full transition-all" title="${r.item.name}: ${r.pct}%"></div>`;
+            legendHtml += `
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background: ${color};"></span>
+                <span class="font-medium text-white text-[11px]">${r.item.name}</span>
+                <span class="text-zinc-500 font-mono-nums text-[10px]">${r.pct}%</span>
+              </div>
+            `;
+          });
+
+          spectrumBarEl.innerHTML = barHtml;
+          spectrumLegendEl.innerHTML = legendHtml;
+          if (spectrumRatioEl) spectrumRatioEl.textContent = `${recipeList.map(r => r.pct + '%').join(' · ')}`;
         }
 
         if (listEl) {
@@ -3303,9 +3339,9 @@
                   return `
                     <div class="py-1 border-b border-white/[0.05]">
                       <div class="flex items-baseline justify-between">
-                        <span class="font-serif text-[1.02rem] text-white font-medium">${r.item.name}</span>
+                        <span class="font-crest text-[1.02rem] text-white font-medium">${r.item.name}</span>
                         <span class="flex-grow mx-2 border-b border-dotted border-white/20 relative -top-1"></span>
-                        <span class="font-serif text-white font-bold text-sm">${r.pct}%</span>
+                        <span class="font-crest text-white font-bold text-sm">${r.pct}%</span>
                       </div>
                       <div class="text-[11px] text-zinc-400 font-sans italic mt-0.5">${r.item.brand} · ${flag} ${r.item.region || 'Craft Cellar'}</div>
                     </div>
@@ -3318,7 +3354,7 @@
 
         if (descEl) descEl.textContent = mix.desc;
         if (tagsEl) {
-          tagsEl.innerHTML = '';
+          tagsEl.innerHTML = (mix.profiles || []).map(p => `<span class="text-[11px] text-zinc-300 font-sans">#${p}</span>`).join(' <span class="text-zinc-600">·</span> ');
         }
 
       } else {
@@ -3337,19 +3373,28 @@
           buzzPill.innerHTML = `⚡ ${item.strength || 7}/10 · ${buzz.category}`;
         }
 
-        if (trackEl) {
-          trackEl.classList.remove('hidden');
-          trackEl.style.background = item.color || '#E5A93C';
+        // Flavor Spectrum Bar & Legend for Single Flavor
+        if (spectrumBarEl && spectrumLegendEl) {
+          const color = item.color || '#E5A93C';
+          spectrumBarEl.innerHTML = `<div style="width: 100%; background: ${color};" class="h-full"></div>`;
+          spectrumLegendEl.innerHTML = `
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full inline-block shrink-0" style="background: ${color};"></span>
+              <span class="font-medium text-white text-[11px]">${item.name}</span>
+              <span class="text-zinc-500 font-sans text-[10px]">Single Origin Leaf</span>
+            </div>
+          `;
+          if (spectrumRatioEl) spectrumRatioEl.textContent = 'single origin';
         }
 
         if (listEl) {
           listEl.innerHTML = `
             <div class="pt-2 space-y-2">
-              <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium mb-1.5">Leaf &amp; Lineage Specification</span>
+              <span class="text-[10px] font-sans uppercase tracking-wider text-zinc-400 block font-medium mb-1.5">Leaf &amp; Lineage Details</span>
               <div class="space-y-1.5 text-xs">
                 <div class="flex items-baseline justify-between border-b border-white/[0.05] py-1.5">
                   <span class="text-zinc-400 font-sans">Craft House</span>
-                  <span class="font-serif text-white text-[0.98rem] font-medium">${item.brand}</span>
+                  <span class="font-crest text-white text-[0.98rem] font-medium">${item.brand}</span>
                 </div>
                 <div class="flex items-baseline justify-between border-b border-white/[0.05] py-1.5">
                   <span class="text-zinc-400 font-sans">Origin &amp; Region</span>
