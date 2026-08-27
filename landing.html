@@ -130,18 +130,21 @@
     }
 
     .landing-logo {
-      width: 4.75rem;
-      height: 4.75rem;
+      width: 6.65rem;
+      height: 6.65rem;
       object-fit: contain;
-      margin: 0 auto 0.4rem auto;
+      margin: 0 auto 0.5rem auto;
       mix-blend-mode: screen;
-      filter: drop-shadow(0 4px 20px rgba(229, 169, 60, 0.28));
-      animation: logo-float 4.8s ease-in-out infinite;
+      filter: drop-shadow(0 4px 24px rgba(229, 169, 60, 0.32));
+      animation: logo-float 6.8s cubic-bezier(.45, 0.05, 0.55, 0.95) infinite;
       will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
     }
     @keyframes logo-float {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-7px); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50%      { transform: translate3d(0, -6px, 0); }
     }
 
     .landing-masthead {

@@ -775,12 +775,15 @@
     }
 
     .landing-logo-float {
-      animation: logo-float 4.8s ease-in-out infinite;
+      animation: logo-float 6.8s cubic-bezier(.45, 0.05, 0.55, 0.95) infinite;
       will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
     }
     @keyframes logo-float {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-7px); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50%      { transform: translate3d(0, -6px, 0); }
     }
 
     .landing-enter-line-btn {
@@ -2284,7 +2287,7 @@
 
     <!-- Center Brand Spread with Floating Logo -->
     <main class="w-full max-w-xl flex flex-col items-center text-center my-auto px-4 relative z-10">
-      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-20 h-20 object-contain mb-2 mix-blend-screen drop-shadow-[0_4px_20px_rgba(229,169,60,0.3)] landing-logo-float" />
+      <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-28 h-28 object-contain mb-2 mix-blend-screen drop-shadow-[0_4px_24px_rgba(229,169,60,0.32)] landing-logo-float" />
       <h1 class="font-crest text-3xl sm:text-4xl font-bold tracking-wide text-white mb-1 drop-shadow-md">Empire Hookah Lounge</h1>
       <p class="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] text-slate-300 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
     </main>
