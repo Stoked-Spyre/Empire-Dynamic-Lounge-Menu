@@ -4538,6 +4538,12 @@
           </button>
         ` : '';
 
+        const flavorLines = (item.flavors || []).map((fId, fIdx) => {
+          const sub = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+          const pct = item.ratios ? item.ratios[fIdx] || 50 : 50;
+          return `<div class="text-[11px] text-zinc-300 font-mono flex items-center gap-1.5"><span class="text-amber-400/80">•</span> <span>${sub.brand} ${sub.name} <strong class="text-amber-400/90 font-bold">${pct}%</strong></span></div>`;
+        }).join('');
+
         return `
           <div 
             onpointerdown="onFlavorPointerDown('${item.id}', '${type}')" 
@@ -4545,7 +4551,7 @@
             onpointercancel="onFlavorPointerUp()" 
             onpointerleave="onFlavorPointerUp()" 
             onclick="onFlavorClick('${item.id}', '${type}')" 
-            class="editorial-item mb-3 cursor-pointer select-none group">
+            class="editorial-item mb-3.5 cursor-pointer select-none group">
             <div class="item-top-row flex items-baseline justify-between w-full">
               <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate">${item.name}</span>
               <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
@@ -4554,9 +4560,13 @@
             ${(!isVipLoggedIn && item.desc) ? `
               <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
             ` : ''}
-            <div class="item-meta mt-1 flex items-center justify-between gap-2 text-[10px] text-zinc-400 font-mono">
-              <span class="truncate">${metaLine || ''}</span>
-              ${addBtn}
+            <div class="item-meta mt-1.5 flex items-end justify-between gap-2">
+              <div class="space-y-0.5 min-w-0 flex-1">
+                ${flavorLines}
+              </div>
+              <div class="flex-shrink-0 pb-0.5">
+                ${addBtn}
+              </div>
             </div>
           </div>
         `;
@@ -4592,7 +4602,7 @@
             <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           ` : ''}
           <div class="item-meta mt-1 flex items-center justify-between gap-2 text-[10px] text-zinc-400 font-mono">
-            <span class="truncate">${metaLine || (item.profiles ? item.profiles.join(' · ') : 'Craft Leaf')}</span>
+            <span class="truncate">${item.profiles ? item.profiles.join(' · ') : 'Craft Leaf'}</span>
             ${addBtn}
           </div>
         </div>
@@ -4706,49 +4716,36 @@
             if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
               selectedFlavorId = displayedItems[0]?.id;
             }
-            if (displayedItems.length > 0) {
-              displayedItems.forEach(item => {
-                itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
-              });
-            } else {
-              itemsHtml = `<p class="text-xs text-zinc-500 italic py-4">No active flavors currently in stock for this house.</p>`;
-            }
+            displayedItems.forEach(item => {
+              itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
+            });
           }
         } 
-        // ────── MODE B: BROWSE BY PROFILE ──────
-        else if (selectorMode === 'profiles') {
-          const activeStation = SHISHA_PROFILES.find(p => p.id === activeProfileStation) || SHISHA_PROFILES[0];
-          
-          headerTitle = activeStation.name;
-          headerSub = activeStation.origin;
+        // ────── MODE B: BROWSE BY TASTING PROFILE ──────
+        else {
+          const activeProfile = FLAVOR_PROFILES.find(p => p.id === activeProfileStation) || FLAVOR_PROFILES[0];
+          headerTitle = activeProfile.name;
+          headerSub = activeProfile.desc;
 
-          SHISHA_PROFILES.forEach(p => {
-            const isActive = p.id === activeProfileStation;
+          FLAVOR_PROFILES.forEach(prof => {
+            const isActive = prof.id === activeProfileStation;
             stationsRailHtml += `
-              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${p.id}')">
-                <span class="menu-station-label text-zinc-100">${p.name}</span>
-                ${(!isVipLoggedIn && p.sub) ? `<span class="menu-station-sub">${p.sub}</span>` : ''}
+              <button class="menu-station-btn ${isActive ? 'active' : ''}" onclick="setProfileStation('${prof.id}')">
+                <span class="menu-station-label text-zinc-100">${prof.name}</span>
               </button>
             `;
           });
 
-          // Match only in-stock flavors and mixes for this profile
-          displayedItems = inStockInventory.filter(item => {
-            const profiles = (item.profiles || []).map(p => p.toLowerCase());
-            return activeStation.match.some(kw => profiles.some(p => p === kw || p.includes(kw)));
-          });
-
+          displayedItems = inStockInventory.filter(i => (i.profiles || []).some(p => p.toLowerCase().includes(activeProfile.id.toLowerCase())));
+          if (displayedItems.length === 0) {
+            displayedItems = inStockInventory.slice(0, 8);
+          }
           if (!selectedFlavorId || !displayedItems.some(i => i.id === selectedFlavorId)) {
             selectedFlavorId = displayedItems[0]?.id;
           }
-
-          if (displayedItems.length > 0) {
-            displayedItems.forEach(item => {
-              itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
-            });
-          } else {
-            itemsHtml = `<p class="text-xs text-zinc-500 italic py-4">No flavors currently matched in stock for this profile.</p>`;
-          }
+          displayedItems.forEach(item => {
+            itemsHtml += createEditorialItemHtml(item, 'flavor', pricing, inStockInventory);
+          });
         }
 
         // ────── AUTHENTICATED ACTIVE BOWL BENCH (INTEGRATED AT TOP) ──────
@@ -4797,14 +4794,17 @@
               const col = getItemProfileColor(item);
 
               activeFlavorsHtml += `
-                <div class="inline-flex items-center gap-1.5 py-0.5 px-2 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none">
-                  <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 5px ${col}80;"></span>
-                  <span class="font-serif text-[11px] font-semibold text-white tracking-wide truncate max-w-[125px]">${item.name}</span>
-                  <span class="text-[8px] text-zinc-400 font-mono uppercase bg-white/[0.04] px-1 py-0.2 border border-white/[0.06]">${item.brand}</span>
-                  <span class="text-[9px] text-amber-400 font-mono font-bold flavor-percent-text">${f.percent}%</span>
-                  ${!activeMixName ? `
-                    <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 ml-0.5 text-[10px] p-0.5 transition" title="Remove flavor">✕</button>
-                  ` : ''}
+                <div class="flex items-center justify-between gap-1 py-0.5 px-2 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                    <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 5px ${col}80;"></span>
+                    <span class="font-serif text-[11px] font-semibold text-white tracking-wide truncate">${item.name}</span>
+                  </div>
+                  <div class="flex items-center gap-1 flex-shrink-0">
+                    <span class="text-[9px] text-amber-400 font-mono font-bold flavor-percent-text">${f.percent}%</span>
+                    ${!activeMixName ? `
+                      <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 text-[10px] p-0.5 transition leading-none" title="Remove flavor">✕</button>
+                    ` : ''}
+                  </div>
                 </div>
               `;
             });
@@ -4852,8 +4852,8 @@
                   </div>
                 </div>
 
-                <!-- Active Flavor Pills (Horizontal Wrapping Flex) -->
-                <div class="flex flex-wrap items-center gap-1.5 my-1" id="flavorSlotsContainer">
+                <!-- Active Flavor Pills (Max 2 Rows Auto-Fitting Grid) -->
+                <div class="grid ${activeFlavors.length <= 2 ? (activeFlavors.length === 1 ? 'grid-cols-1' : 'grid-cols-2') : 'grid-cols-2'} gap-1.5 my-1" id="flavorSlotsContainer">
                   ${activeFlavorsHtml}
                 </div>
 
