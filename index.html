@@ -362,6 +362,45 @@
       cursor: pointer;
     }
 
+    /* RECEIPT PAY BUTTON (LANDING THEME WITH HIGH VISIBILITY & GLOW) */
+    .receipt-pay-btn {
+      position: relative;
+      width: 100%;
+      padding: 15px 0;
+      background: linear-gradient(180deg, rgba(229, 169, 60, 0.22) 0%, rgba(229, 169, 60, 0.08) 100%), #0A0A0E;
+      border: 1px solid rgba(229, 169, 60, 0.7);
+      border-top: 2px solid #E5A93C;
+      border-bottom: 2px solid #E5A93C;
+      color: #FBBF24;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.90rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-shadow: 0 0 14px rgba(229, 169, 60, 0.7);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(229, 169, 60, 0.25);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      margin-top: 6px;
+    }
+    .receipt-pay-btn:hover {
+      background: linear-gradient(180deg, rgba(229, 169, 60, 0.35) 0%, rgba(229, 169, 60, 0.15) 100%), #0A0A0E;
+      color: #FFFFFF;
+      border-color: #E5A93C;
+      text-shadow: 0 0 20px rgba(229, 169, 60, 0.95);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95), 0 0 30px rgba(229, 169, 60, 0.45);
+      letter-spacing: 0.30em;
+    }
+    .receipt-pay-btn:active {
+      transform: scale(0.985);
+      opacity: 0.9;
+    }
+
     /* MENU SECTION NAVIGATION — feels like page tabs on a printed wine list */
     .menu-nav {
       display: flex;
@@ -2330,34 +2369,17 @@
             Empire Hookah Lounge
           </h1>
           <p class="font-mono text-[9px] tracking-[0.24em] text-zinc-400 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
-
-          <!-- Table & Tab Meta Strip -->
-          <div class="flex items-center justify-between pt-2 border-t border-white/[0.08] text-xs font-mono text-zinc-300">
-            <span class="text-amber-400 font-bold" id="tabViewSeatLabel">👑 Floating VIP Tab #409</span>
-            <button onclick="openSeatAssignModal()" class="text-zinc-400 hover:text-white underline decoration-dotted transition">
-              Change Seat ⇄
-            </button>
-          </div>
         </div>
 
         <!-- Section 1: Itemized Hookahs, Refills & Beverages -->
-        <div class="space-y-2">
+        <div class="space-y-2 pt-1">
           <div class="flex items-center justify-between text-[11px] font-serif uppercase tracking-[0.2em] text-amber-400 font-bold pb-1.5 border-b border-white/[0.08]">
-            <span>Formulations &amp; Table Orders</span>
+            <span>Ordered</span>
             <span>Price</span>
           </div>
           <div class="space-y-3 pt-1 text-xs" id="tabSessionItemsList">
             <!-- Injected dynamically via JS -->
           </div>
-        </div>
-
-        <!-- Section 2: Heat Rotation Master -->
-        <div class="py-2 px-3 bg-black/40 border border-white/[0.08] flex items-center justify-between text-xs font-mono text-zinc-300">
-          <div class="flex items-center gap-2">
-            <span class="text-amber-400 text-sm">🔥</span>
-            <span>Coal Master Kaloud Lotus Rotations</span>
-          </div>
-          <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px]">Included ✓</span>
         </div>
 
         <!-- Thin Divider -->
@@ -2372,7 +2394,7 @@
           </div>
 
           <div class="flex items-baseline justify-between text-zinc-400 text-xs">
-            <span id="tabViewTaxLabel">Sales Tax (8.60%)</span>
+            <span id="tabViewTaxLabel">Phoenix Sales Tax (8.60%)</span>
             <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/15 relative -top-1"></span>
             <span class="font-mono text-zinc-200 text-sm" id="tabViewTaxAmt">$0.00</span>
           </div>
@@ -2385,14 +2407,13 @@
         </div>
 
         <!-- Section 4: Incremental Gratuity Slider with Discreet Custom Option -->
-        <div class="pt-2.5 border-t border-white/[0.08] space-y-2">
-          <div class="flex justify-between items-center text-[10px] font-mono text-zinc-300">
-            <span>Staff Gratuity <span class="text-zinc-500 text-[9px]">(18% Base)</span></span>
-            <span class="text-amber-400 font-bold font-mono text-xs" id="tabTipCalculatedDisplay">18% ($0.00)</span>
+        <div class="pt-2.5 border-t border-white/[0.08] space-y-1.5">
+          <div class="flex justify-end items-center text-xs font-mono text-amber-400 font-bold">
+            <span id="tabTipCalculatedDisplay">18% ($0.00)</span>
           </div>
 
           <!-- Luxury Gold Range Slider -->
-          <div class="space-y-1 pt-1">
+          <div class="space-y-1 pt-0.5">
             <input 
               type="range" 
               min="0" 
@@ -2441,8 +2462,8 @@
 
         <!-- Action Buttons (Option B: Settle Tab & Option C: Split Bill) -->
         <div class="space-y-2 pt-2">
-          <!-- Option B: End Session & Pay Tab Button (Styled matching landing-enter-line-btn) -->
-          <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="landing-enter-line-btn" type="button">
+          <!-- Option B: End Session & Pay Tab Button -->
+          <button onclick="processSquarePaymentFromView()" id="tabPayFullBtn" class="receipt-pay-btn" type="button">
             <span>End Session &amp; Settle Tab</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </button>
@@ -5161,8 +5182,6 @@
         } else {
           itemsList.innerHTML = items.map((item, idx) => {
             const isDrink = item.type === 'drink';
-            const isRefill = item.orderType === 'refill' || (item.name && (item.name.toLowerCase().includes('refill') || item.name.toLowerCase().includes('repack')));
-            const icon = isDrink ? '🥤' : (isRefill ? '🔄' : '🏺');
             
             // Format title & breakdown
             let title = item.name;
@@ -5180,23 +5199,19 @@
             }
 
             return `
-              <div class="editorial-receipt-item pb-2.5 mb-1.5 border-b border-amber-500/25 text-zinc-100">
+              <div class="editorial-receipt-item pb-2 mb-1.5 border-b border-white/[0.08] text-zinc-100">
                 <div class="flex items-baseline justify-between w-full">
-                  <div class="flex items-center gap-2 min-w-0 flex-1 pr-2">
-                    <span class="text-sm flex-shrink-0">${icon}</span>
-                    <span class="font-serif text-[1rem] font-bold text-white tracking-wide truncate drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">${title}</span>
-                  </div>
-                  <span class="item-leader flex-grow mx-2 border-b border-dotted border-amber-400/40 relative -top-1"></span>
-                  <span class="font-mono font-bold text-base text-amber-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] flex-shrink-0">$${(item.price || 0).toFixed(2)}</span>
+                  <span class="font-serif text-[1.05rem] font-bold text-white tracking-wide truncate">${title}</span>
+                  <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/30 relative -top-1"></span>
+                  <span class="font-mono font-bold text-base text-amber-300 whitespace-nowrap flex-shrink-0">$${(item.price || 0).toFixed(2)}</span>
                 </div>
                 ${breakdownNotes ? `
-                  <div class="text-[11px] text-amber-300 font-mono pl-6 mt-1 leading-snug font-medium">
+                  <div class="text-[11px] text-amber-300/95 font-mono mt-0.5 leading-snug">
                     ${breakdownNotes}
                   </div>
                 ` : ''}
-                <div class="flex items-center justify-between text-[10px] text-zinc-300 font-mono pl-6 mt-1">
-                  <span>${item.time || 'Table Order'} · <span class="text-amber-400 font-semibold">${item.status || 'Active'}</span></span>
-                  <span class="text-zinc-400 font-sans italic font-medium">Kaloud Heat</span>
+                <div class="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  <span>${item.time || 'Table Order'}</span>
                 </div>
               </div>
             `;
