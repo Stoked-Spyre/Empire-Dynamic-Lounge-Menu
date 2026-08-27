@@ -8,8 +8,6 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -35,16 +33,48 @@
       background: #0F1420;
     }
 
-    /* SLIM ALERT ROW STYLING */
-    .alert-row {
-      background: #080C12;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      transition: all 0.18s ease;
+    /* TALL ALERT CARD STYLING (NO ICONS) */
+    .alert-card {
+      background: #090D14;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 16px;
+      padding: 14px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .alert-row:hover {
+    .alert-card:hover {
       border-color: rgba(229, 169, 60, 0.4);
-      background: #0D121B;
+      background: #0E131E;
+      transform: translateY(-1px);
+    }
+
+    /* RIGHT-SIDE SLIDE-OVER DRAWER */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 60;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      max-width: 580px;
+      background: #080C12;
+      border-left: 1.5px solid rgba(229, 169, 60, 0.35);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.85);
+      z-index: 70;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
     }
 
     /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS (Widescreen Tablet Scaled) */
@@ -191,14 +221,13 @@
 
   <!-- Toast Notification Container -->
   <div id="staffToast" class="fixed top-4 right-4 z-50 bg-[#0B0F17]/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2.5 text-xs font-mono backdrop-blur-md">
-    <span id="staffToastIcon" class="text-base">⚡</span>
     <div>
       <div id="staffToastTitle" class="font-bold text-amber-300 uppercase tracking-wider">Alert</div>
       <div id="staffToastMsg" class="text-zinc-300 text-[11px]">Message details</div>
     </div>
   </div>
 
-  <!-- ==================== 1. TOP SERVER APP BAR (Full Widescreen Stretch) ==================== -->
+  <!-- ==================== 1. TOP SERVER APP BAR ==================== -->
   <header class="w-full bg-[#06090E]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
     
     <!-- Left: Station Brand & Live Status -->
@@ -215,22 +244,22 @@
       </div>
     </div>
 
-    <!-- Center: Operational Stats Strip (Tablet / Desktop) -->
+    <!-- Center: Operational Stats Strip -->
     <div class="hidden md:flex items-center gap-2 font-mono text-xs">
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-white/5 text-zinc-300">
         <span class="text-zinc-400">Active:</span>
         <strong id="statActiveTablesCount" class="text-emerald-400">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-red-500/20 text-red-300">
-        <span>🔥 Coals:</span>
+        <span>Coals:</span>
         <strong id="statCoalsDueCount" class="text-red-400 font-bold">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-amber-500/20 text-amber-300">
-        <span>⭐ Service:</span>
+        <span>Service:</span>
         <strong id="statServiceDueCount" class="text-amber-400 font-bold">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-cyan-500/20 text-cyan-300">
-        <span>💨 Orders:</span>
+        <span>Orders:</span>
         <strong id="statOrdersDueCount" class="text-cyan-400 font-bold">0</strong>
       </div>
     </div>
@@ -238,30 +267,26 @@
     <!-- Right: Audio Alert Toggle & Simulator -->
     <div class="flex items-center gap-2">
       <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-zinc-900/90 border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
-        <span id="serverAudioIcon">🔔</span>
-        <span id="serverAudioLabel" class="hidden sm:inline">AUDIO: ON</span>
+        <span id="serverAudioLabel">AUDIO: ON</span>
       </button>
 
       <button onclick="simulateActionAlert()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500/20 border border-amber-400/50 rounded-xl text-amber-300 hover:bg-amber-400 hover:text-black font-mono text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Simulate an incoming alert with screen edge glow">
-        <span>⚡ TEST</span>
+        <span>SIMULATE ALERT</span>
       </button>
     </div>
 
   </header>
 
-  <!-- ==================== MOBILE SEGMENTED VIEW SWITCHER (Mobile Only < md) ==================== -->
+  <!-- ==================== MOBILE SEGMENTED VIEW SWITCHER ==================== -->
   <div class="md:hidden w-full px-3 pt-2.5">
     <div class="grid grid-cols-3 gap-1 bg-[#080C12] p-1 rounded-2xl border border-white/10 text-xs font-mono">
       <button onclick="setMobileActiveTab('map')" id="mobTabBtn-map" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1">
-        <i data-lucide="map" class="w-3.5 h-3.5"></i>
         <span>Floor Map</span>
       </button>
       <button onclick="setMobileActiveTab('alerts')" id="mobTabBtn-alerts" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1">
-        <i data-lucide="bell" class="w-3.5 h-3.5"></i>
         <span>Alerts (<span id="mobAlertCount">0</span>)</span>
       </button>
       <button onclick="setMobileActiveTab('grid')" id="mobTabBtn-grid" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1">
-        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
         <span>Pods</span>
       </button>
     </div>
@@ -272,7 +297,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start flex-1">
       
-      <!-- ==================== LEFT COLUMN: SLIM UNIVERSAL ACTION DOCK (4 COLS on Tablet, 3 COLS on XL) ==================== -->
+      <!-- ==================== LEFT COLUMN: TALL ALERT DOCK (4 COLS on Tablet, 3 COLS on XL) ==================== -->
       <aside id="staffActionDockColumn" class="md:col-span-5 lg:col-span-4 xl:col-span-3 flex flex-col gap-2.5">
         
         <!-- Header -->
@@ -286,8 +311,8 @@
           </span>
         </div>
 
-        <!-- Slim Action Rows Stream -->
-        <div class="space-y-1.5 max-h-[78vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
+        <!-- Taller Action Cards Stream -->
+        <div class="space-y-2.5 max-h-[78vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
           <!-- Populated dynamically via renderActionRequiredStream() -->
         </div>
 
@@ -302,11 +327,9 @@
           <!-- View Mode Toggle (Tablet/Desktop) -->
           <div class="hidden md:flex items-center gap-1 bg-black/80 p-1 border border-white/10 rounded-xl">
             <button onclick="setDeckViewMode('map')" id="viewModeMapBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition">
-              <i data-lucide="map" class="w-3.5 h-3.5"></i>
               <span>Floor Map</span>
             </button>
             <button onclick="setDeckViewMode('grid')" id="viewModeGridBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition">
-              <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
               <span>Pods Grid</span>
             </button>
           </div>
@@ -322,14 +345,13 @@
 
         </div>
 
-        <!-- VIEW A: OPENTABLE INTERACTIVE ARCHITECTURAL CANVAS (Widescreen Stretch) -->
+        <!-- VIEW A: OPENTABLE INTERACTIVE ARCHITECTURAL CANVAS -->
         <div id="floorplanCanvasContainer" class="stoked-card p-3 md:p-4 shadow-2xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
-            <span class="text-zinc-300 flex items-center gap-1.5">
-              <i data-lucide="crosshair" class="w-3.5 h-3.5 text-amber-400"></i>
-              Click any physical table or booth to view summary &amp; active tab
+            <span class="text-zinc-300">
+              Click any physical table or booth to view full details in side drawer
             </span>
-            <span class="text-[11px] text-amber-400/80">● Real-Time Physical Seating</span>
+            <span class="text-[11px] text-amber-400/80">● Real-Time Seating</span>
           </div>
 
           <div id="loungeDiagramCanvas" class="floorplan-canvas">
@@ -350,32 +372,35 @@
 
   </main>
 
-  <!-- ==================== 3. TABLE SUMMARY DETAIL MODAL (POP-UP) ==================== -->
-  <div id="tableDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 md:p-6">
-    <div class="w-full max-w-2xl bg-[#090D14] border border-amber-500/30 rounded-3xl shadow-2xl p-4 md:p-6 space-y-4 max-h-[92vh] overflow-y-auto no-scrollbar">
-      
-      <!-- Modal Header -->
-      <div class="flex justify-between items-start pb-3 border-b border-white/10">
-        <div>
-          <div class="flex items-center gap-2.5">
-            <span class="font-mono text-xl font-extrabold text-white bg-amber-400/10 px-3 py-1 rounded-xl border border-amber-400/40 text-amber-300" id="modalTableId">VIP 1</span>
-            <span class="text-xs font-mono text-zinc-300 font-bold" id="modalTableZone">VIP Lounge (8P Couch)</span>
-            <span class="px-2.5 py-0.5 text-[10px] font-mono rounded-full border" id="modalTableStatusBadge">ACTIVE</span>
-          </div>
-          <p class="text-xs font-mono text-zinc-400 mt-1.5" id="modalTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · 1 Pipe</p>
+  <!-- ==================== 3. TABLE DETAILS SLIDE-OVER DRAWER (RIGHT SIDE) ==================== -->
+  <div id="tableDrawerOverlay" class="drawer-overlay hidden" onclick="closeTableDetailModal()"></div>
+  <div id="tableDetailDrawer" class="drawer-panel transform translate-x-full">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-white/10 flex justify-between items-start bg-[#06090E]">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="font-mono text-xl font-extrabold text-white bg-amber-400/10 px-3 py-1 rounded-xl border border-amber-400/40 text-amber-300" id="modalTableId">VIP 1</span>
+          <span class="text-xs font-mono text-zinc-300 font-bold" id="modalTableZone">VIP Lounge (8P Couch)</span>
+          <span class="px-2.5 py-0.5 text-[10px] font-mono rounded-full border" id="modalTableStatusBadge">ACTIVE</span>
         </div>
-        <button onclick="closeTableDetailModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 font-mono transition">
-          ✕ CLOSE
-        </button>
+        <p class="text-xs font-mono text-zinc-400 mt-1.5" id="modalTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · 1 Pipe</p>
       </div>
+      <button onclick="closeTableDetailModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 font-mono transition">
+        CLOSE ✕
+      </button>
+    </div>
 
+    <!-- Drawer Body (Scrollable) -->
+    <div class="flex-1 p-5 space-y-4 overflow-y-auto no-scrollbar">
+      
       <!-- Live Timers Control Strip -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 bg-black/60 rounded-2xl border border-white/10 text-xs font-mono">
         
         <!-- Timer 1: Seated Time -->
         <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/5 space-y-1">
           <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Seated Duration</span>
-          <span class="text-sm font-bold text-white" id="modalSeatedTimeText">⏱️ 48m</span>
+          <span class="text-sm font-bold text-white" id="modalSeatedTimeText">48m</span>
         </div>
 
         <!-- Timer 2: 5m Quality of Service Check -->
@@ -385,7 +410,7 @@
             <span class="text-[10px] font-bold" id="modalServiceCheckBadge">OK</span>
           </div>
           <button onclick="resetTableServiceCheck()" class="w-full py-1.5 bg-amber-400/15 hover:bg-amber-400 hover:text-black border border-amber-400/40 rounded-lg text-amber-300 text-[10px] font-bold uppercase transition active:scale-95">
-            ⭐ Mark Checked (Reset 5m)
+            Mark Checked (Reset 5m)
           </button>
         </div>
 
@@ -396,20 +421,20 @@
             <span class="text-[10px] font-bold" id="modalCoalCheckBadge">18m left</span>
           </div>
           <button onclick="resetTableCoalTimer()" class="w-full py-1.5 bg-red-500/15 hover:bg-red-500 hover:text-white border border-red-500/40 rounded-lg text-red-300 text-[10px] font-bold uppercase transition active:scale-95">
-            🔥 Coals Rotated (Reset 25m)
+            Coals Rotated (Reset 25m)
           </button>
         </div>
 
       </div>
 
       <!-- Running Tab Items & Subtotal -->
-      <div class="space-y-2.5 p-3.5 bg-[#080C12] rounded-2xl border border-white/10">
+      <div class="space-y-2.5 p-3.5 bg-[#0A0E16] rounded-2xl border border-white/10">
         <div class="flex justify-between items-center pb-2 border-b border-white/10">
           <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Running Tab Items</span>
           <span class="text-sm font-mono text-amber-400 font-bold" id="modalTabTotalAmount">$0.00</span>
         </div>
 
-        <div class="space-y-2 max-h-48 overflow-y-auto no-scrollbar pr-0.5" id="modalTabItemsList">
+        <div class="space-y-2 max-h-56 overflow-y-auto no-scrollbar pr-0.5" id="modalTabItemsList">
           <!-- Injected dynamically via JS -->
         </div>
       </div>
@@ -418,55 +443,53 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
         <!-- 1. Open Mix Lab for Custom Shisha Bowl Order Taking -->
         <button onclick="openMixLabForTable()" class="py-3 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 uppercase shadow-lg transition active:scale-95">
-          <i data-lucide="flask-conical" class="w-4 h-4"></i>
-          <span>🧪 Take Shisha Order (Mix Lab)</span>
+          <span>Take Shisha Order (Mix Lab)</span>
         </button>
 
         <!-- 2. Fast Drink / Libations Selector -->
         <button onclick="openDrinkSelectorForTable()" class="py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-mono font-bold text-xs rounded-2xl flex items-center justify-center gap-2 uppercase transition active:scale-95 border border-white/15">
-          <i data-lucide="wine" class="w-4 h-4 text-cyan-400"></i>
-          <span>🥤 Add Chilled Drinks</span>
-        </button>
-      </div>
-
-      <!-- POS & Payment Settlement Strip -->
-      <div class="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2.5 text-xs font-mono">
-        <div class="flex items-center gap-2">
-          <button onclick="settleTableTab('cash')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-emerald-300 font-bold uppercase transition active:scale-95">
-            💵 Cash
-          </button>
-          <button onclick="settleTableTab('card')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-cyan-300 font-bold uppercase transition active:scale-95">
-            💳 Card
-          </button>
-          <button onclick="settleTableTab('square')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-amber-400/40 rounded-xl text-amber-300 font-bold uppercase transition active:scale-95">
-            📱 Square QR
-          </button>
-        </div>
-
-        <button onclick="closeAndFreeTable()" class="px-4 py-2 bg-red-950/80 hover:bg-red-900 border border-red-500/60 rounded-xl text-red-200 font-bold uppercase transition active:scale-95">
-          ✕ Settle &amp; Free Table
+          <span>Add Chilled Drinks</span>
         </button>
       </div>
 
     </div>
+
+    <!-- Drawer Footer (POS & Payment Settlement) -->
+    <div class="p-4 border-t border-white/10 bg-[#06090E] flex flex-wrap items-center justify-between gap-2.5 text-xs font-mono">
+      <div class="flex items-center gap-2">
+        <button onclick="settleTableTab('cash')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-emerald-300 font-bold uppercase transition active:scale-95">
+          Cash
+        </button>
+        <button onclick="settleTableTab('card')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-cyan-300 font-bold uppercase transition active:scale-95">
+          Card
+        </button>
+        <button onclick="settleTableTab('square')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-amber-400/40 rounded-xl text-amber-300 font-bold uppercase transition active:scale-95">
+          Square QR
+        </button>
+      </div>
+
+      <button onclick="closeAndFreeTable()" class="px-4 py-2 bg-red-950/80 hover:bg-red-900 border border-red-500/60 rounded-xl text-red-200 font-bold uppercase transition active:scale-95">
+        Settle &amp; Free Table
+      </button>
+    </div>
+
   </div>
 
   <!-- ==================== 4. INTEGRATED SOMMELIER MIX LAB MODAL ==================== -->
-  <div id="mixLabOrderModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 md:p-6">
+  <div id="mixLabOrderModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-80 hidden flex items-center justify-center p-3 md:p-6">
     <div class="w-full max-w-4xl bg-[#080C12] border border-amber-400/40 rounded-3xl shadow-2xl p-4 md:p-6 space-y-4 max-h-[95vh] overflow-y-auto no-scrollbar">
       
       <!-- Mix Lab Header -->
       <div class="flex justify-between items-center pb-3 border-b border-white/10">
         <div>
           <div class="flex items-center gap-2.5">
-            <span class="text-amber-400 font-mono text-sm">🧪</span>
             <h3 class="font-crest text-lg font-bold text-white tracking-wide">SOMMELIER MIXOLOGY BENCH</h3>
             <span class="px-2.5 py-0.5 bg-amber-400/15 text-amber-300 font-mono text-xs rounded-full border border-amber-400/30" id="mixLabTargetTable">TABLE 4</span>
           </div>
           <p class="text-[11px] text-zinc-400 font-mono mt-0.5">Build custom ratios, adjust splitters &amp; dispatch to table tab</p>
         </div>
         <button onclick="closeMixLabModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 font-mono transition">
-          ✕ CANCEL
+          CANCEL ✕
         </button>
       </div>
 
@@ -476,7 +499,7 @@
           <span class="text-zinc-400">Selected Formulation:</span>
           <div class="flex items-center gap-2">
             <span class="text-amber-400 font-bold" id="mixLabSelectedRatiosText">MustHave Pinkman 70% · Tangiers Cane Mint 30%</span>
-            <span class="px-2 py-0.5 bg-red-950/80 text-red-300 text-[10px] font-bold rounded-lg border border-red-800/60">⚡ 7.6 BOLD</span>
+            <span class="px-2 py-0.5 bg-red-950/80 text-red-300 text-[10px] font-bold rounded-lg border border-red-800/60">7.6 BOLD</span>
           </div>
         </div>
       </div>
@@ -487,7 +510,7 @@
         <!-- Station Selector Column -->
         <div class="space-y-1 bg-black/60 p-2.5 rounded-2xl border border-white/10" id="mixLabStationSelector">
           <span class="text-[10px] font-mono font-bold text-zinc-400 uppercase block pb-1 border-b border-white/5">Catalog Stations</span>
-          <button onclick="setMixLabStation('signatures')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-amber-300 hover:bg-amber-400/10 border-l-2 border-amber-400">👑 Signature House Mixes</button>
+          <button onclick="setMixLabStation('signatures')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-amber-300 hover:bg-amber-400/10 border-l-2 border-amber-400">Signature House Mixes</button>
           <button onclick="setMixLabStation('musthave')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">MustHave (Russian Dark)</button>
           <button onclick="setMixLabStation('tangiers')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">Tangiers (Noir Reserve)</button>
           <button onclick="setMixLabStation('darkside')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">Darkside (Burley Dark)</button>
@@ -527,7 +550,7 @@
         <div class="flex items-center gap-3">
           <span class="text-lg font-bold text-amber-400 font-mono">$35.00</span>
           <button onclick="dispatchMixLabOrderToTable()" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-bold text-xs rounded-xl uppercase tracking-wider transition active:scale-95 shadow-md">
-            ✓ Dispatch Bowl to Table
+            Dispatch Bowl to Table
           </button>
         </div>
       </div>
@@ -536,7 +559,7 @@
   </div>
 
   <!-- ==================== 5. QUICK DRINK SELECTOR MODAL ==================== -->
-  <div id="drinkOrderModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 md:p-6">
+  <div id="drinkOrderModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-80 hidden flex items-center justify-center p-3 md:p-6">
     <div class="w-full max-w-lg bg-[#090D14] border border-white/20 rounded-3xl shadow-2xl p-5 space-y-3.5">
       <div class="flex justify-between items-center pb-2.5 border-b border-white/10">
         <div>
@@ -566,10 +589,10 @@
     // Physical Seating Coordinates for OpenTable Canvas (Spacious Proportional Positions)
     const PHYSICAL_FLOORPLAN_PRESET = [
       // Landmarks
-      { id: 'infra-bar', name: 'MAIN BAR COUNTER', zone: 'bar', x: 4, y: 4, w: 260, h: 42, shape: 'rect', isInfra: true, icon: 'wine' },
-      { id: 'infra-dj', name: 'DJ STAGE', zone: 'indoor', x: 74, y: 4, w: 120, h: 46, shape: 'rect', isInfra: true, icon: 'music' },
-      { id: 'infra-host', name: 'ENTRANCE / HOST', zone: 'indoor', x: 4, y: 84, w: 130, h: 40, shape: 'rect', isInfra: true, icon: 'log-in' },
-      { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 60, y: 78, w: 200, h: 42, shape: 'rect', isInfra: true, icon: 'sun' },
+      { id: 'infra-bar', name: 'MAIN BAR COUNTER', zone: 'bar', x: 4, y: 4, w: 260, h: 42, shape: 'rect', isInfra: true },
+      { id: 'infra-dj', name: 'DJ STAGE', zone: 'indoor', x: 74, y: 4, w: 120, h: 46, shape: 'rect', isInfra: true },
+      { id: 'infra-host', name: 'ENTRANCE / HOST', zone: 'indoor', x: 4, y: 84, w: 130, h: 40, shape: 'rect', isInfra: true },
+      { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 60, y: 78, w: 200, h: 42, shape: 'rect', isInfra: true },
 
       // VIP Velvet Booths
       { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 22, w: 110, h: 72, shape: 'rect' },
@@ -593,8 +616,8 @@
 
     // Live Incoming Kitchen / Bar Orders Queue
     let liveIncomingOrders = [
-      { id: 'ord-1', tableId: 'vip-1', tableName: 'VIP 1', type: 'bowl', details: 'Pink Cane (MustHave 70% / Tangiers 30%)', timestamp: Date.now() - (3 * 60 * 1000) },
-      { id: 'ord-2', tableId: 'bar-2', tableName: 'Bar 2', type: 'drink', details: '2x Red Bull, 1x Perrier', timestamp: Date.now() - (1 * 60 * 1000) }
+      { id: 'ord-1', tableId: 'vip-1', tableName: 'VIP 1', type: 'bowl', details: 'Pink Cane Sensation (MustHave 70% / Tangiers 30%) · Russian Phunnel', guest: 'Alex M. (VIP)', timestamp: Date.now() - (3 * 60 * 1000) },
+      { id: 'ord-2', tableId: 'bar-2', tableName: 'Bar 2', type: 'drink', details: '2x Red Bull Original, 1x Maison Perrier', guest: 'Jordan K.', timestamp: Date.now() - (1 * 60 * 1000) }
     ];
 
     // Authoritative State for Lounge Tables
@@ -777,11 +800,9 @@
 
     function toggleServerAudioAlerts() {
       isServerAudioAlerts = !isServerAudioAlerts;
-      const icon = document.getElementById('serverAudioIcon');
       const label = document.getElementById('serverAudioLabel');
-      if (icon) icon.textContent = isServerAudioAlerts ? '🔔' : '🔕';
       if (label) label.textContent = isServerAudioAlerts ? 'AUDIO: ON' : 'AUDIO: MUTED';
-      showToast(isServerAudioAlerts ? '🔔 Audio Alerts Enabled' : '🔕 Audio Alerts Muted', 'Staff notifications updated.');
+      showToast(isServerAudioAlerts ? 'Audio Alerts Enabled' : 'Audio Alerts Muted', 'Staff notifications updated.');
     }
 
     function playAudioChime(type) {
@@ -855,7 +876,6 @@
         }
       });
 
-      // Show/hide based on mobile tab
       if (window.innerWidth < 768) {
         if (tab === 'alerts') {
           dockCol.classList.remove('hidden');
@@ -954,7 +974,7 @@
       if (mobAlertCount) mobAlertCount.textContent = totalPending;
     }
 
-    // ==================== SLIM UNIVERSAL ALERT ROWS ====================
+    // ==================== TALLER ICON-FREE ALERT CARDS WITH MORE DATA ====================
     function renderActionRequiredStream() {
       const container = document.getElementById('actionRequiredList');
       if (!container) return;
@@ -964,16 +984,17 @@
 
       // 1. Live Incoming Bowl & Drink Orders
       liveIncomingOrders.forEach(ord => {
+        const elapsedMins = Math.floor((now - ord.timestamp) / 60000);
         alerts.push({
           id: ord.id,
           type: ord.type,
           tableId: ord.tableId,
           tableName: ord.tableName,
-          icon: ord.type === 'bowl' ? '💨' : '🥤',
-          badgeText: ord.type === 'bowl' ? 'BOWL PREP' : 'DRINKS',
+          badgeText: ord.type === 'bowl' ? 'BOWL PREPARATION' : 'BEVERAGE ORDER',
           badgeClass: ord.type === 'bowl' ? 'bg-amber-400/20 text-amber-300 border-amber-400/40' : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
           title: ord.details,
-          actionLabel: '✓ RUN',
+          subInfo: `Guest: ${ord.guest || 'Seated Party'} · Placed ${elapsedMins}m ago`,
+          actionLabel: ord.type === 'bowl' ? 'DISPATCH BOWL' : 'RUN DRINKS',
           actionHandler: `completeIncomingOrder('${ord.id}')`,
           urgency: 'medium'
         });
@@ -984,6 +1005,8 @@
         if (t.status === 'occupied' && t.lastCoalRotation) {
           const elapsed = Math.floor((now - t.lastCoalRotation) / 1000);
           const remaining = (25 * 60) - elapsed;
+          const seatedMins = Math.floor((now - t.seatedTime) / 60000);
+
           if (remaining <= 0) {
             const overdueMins = Math.abs(Math.floor(remaining / 60));
             alerts.push({
@@ -991,11 +1014,11 @@
               type: 'coal',
               tableId: t.id,
               tableName: t.name,
-              icon: '🔥',
-              badgeText: 'COALS DUE',
+              badgeText: 'COAL ROTATION DUE',
               badgeClass: 'bg-red-500/30 text-red-300 border-red-500/50 animate-pulse',
-              title: `25m cycle expired (${overdueMins}m)`,
-              actionLabel: '✓ ROTATE',
+              title: `25-minute burn cycle expired (${overdueMins}m overdue)`,
+              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
+              actionLabel: 'ROTATE COALS',
               actionHandler: `dismissActionItem('${t.id}', 'coal')`,
               urgency: 'high'
             });
@@ -1006,11 +1029,11 @@
               type: 'coal-warning',
               tableId: t.id,
               tableName: t.name,
-              icon: '🔥',
-              badgeText: 'COAL DUE SOON',
+              badgeText: 'COALS EXPIRING SOON',
               badgeClass: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
-              title: `Rotate coals in ${minsLeft}m`,
-              actionLabel: '✓ ROTATE',
+              title: `Rotate coals in approximately ${minsLeft} minutes`,
+              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
+              actionLabel: 'ROTATE NOW',
               actionHandler: `dismissActionItem('${t.id}', 'coal')`,
               urgency: 'medium'
             });
@@ -1023,17 +1046,19 @@
         if (t.status === 'occupied' && t.lastServiceCheck) {
           const elapsedService = Math.floor((now - t.lastServiceCheck) / 1000);
           const remainingService = (5 * 60) - elapsedService;
+          const seatedMins = Math.floor((now - t.seatedTime) / 60000);
+
           if (remainingService <= 0) {
             alerts.push({
               id: `service-${t.id}`,
               type: 'service',
               tableId: t.id,
               tableName: t.name,
-              icon: '⭐',
-              badgeText: 'QUALITY CHECK',
+              badgeText: 'QUALITY OF SERVICE CHECK',
               badgeClass: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
-              title: '5m check on heat & taste',
-              actionLabel: '✓ CHECK',
+              title: 'Check cloud density, heat balance & guest satisfaction',
+              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
+              actionLabel: 'SERVICE CHECKED',
               actionHandler: `dismissActionItem('${t.id}', 'service')`,
               urgency: 'medium'
             });
@@ -1043,10 +1068,9 @@
 
       if (alerts.length === 0) {
         container.innerHTML = `
-          <div class="p-4 bg-[#080C12] border border-white/5 rounded-2xl text-center space-y-1 shadow-md">
-            <div class="text-base">✨</div>
-            <div class="text-xs font-mono font-bold text-emerald-400 uppercase">Dock Clear</div>
-            <div class="text-[10px] font-mono text-zinc-500">No pending orders, coal rotations, or checks.</div>
+          <div class="p-6 bg-[#080C12] border border-white/5 rounded-2xl text-center space-y-1.5 shadow-md">
+            <div class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">Dock Clear</div>
+            <div class="text-[11px] font-mono text-zinc-500">Zero pending orders, coal rotations, or quality checks.</div>
           </div>
         `;
         return;
@@ -1054,27 +1078,34 @@
 
       let html = '';
       alerts.forEach(item => {
-        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'border-white/10';
+        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 bg-[#14080A] shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border-white/10';
 
         html += `
-          <div class="alert-row p-2.5 ${borderGlow} flex items-center justify-between gap-2 shadow-md">
+          <div onclick="openTableDetailModal('${item.tableId}')" class="alert-card ${borderGlow}">
             
-            <!-- Left: Table & Details (Click opens table modal) -->
-            <div onclick="openTableDetailModal('${item.tableId}')" class="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0">
-              <span class="text-base select-none flex-shrink-0">${item.icon}</span>
-              <div class="truncate">
-                <div class="flex items-center gap-1.5 truncate">
-                  <span class="font-mono text-xs font-extrabold text-white">${item.tableName}</span>
-                  <span class="px-1.5 py-0.2 text-[8px] font-mono font-bold uppercase rounded border ${item.badgeClass}">${item.badgeText}</span>
-                </div>
-                <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${item.title}</span>
-              </div>
+            <!-- Card Header: Table Name & Badge -->
+            <div class="flex justify-between items-center">
+              <span class="font-mono text-sm font-extrabold text-white tracking-wide">${item.tableName}</span>
+              <span class="px-2 py-0.5 text-[9px] font-mono font-bold uppercase rounded-md border ${item.badgeClass}">
+                ${item.badgeText}
+              </span>
             </div>
 
-            <!-- Right: 1-Tap Fast Action Button -->
-            <button onclick="${item.actionHandler}" class="px-3 py-1 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[10px] uppercase tracking-wider rounded-xl transition active:scale-95 flex-shrink-0 shadow">
-              ${item.actionLabel}
-            </button>
+            <!-- Card Content: Details & Sub-info -->
+            <div class="space-y-1">
+              <p class="text-xs font-mono text-zinc-200 font-medium leading-snug">${item.title}</p>
+              <p class="text-[11px] font-mono text-zinc-400">${item.subInfo}</p>
+            </div>
+
+            <!-- Card Footer: Fast Action Button & Drawer Hint -->
+            <div class="pt-2 border-t border-white/10 flex justify-between items-center" onclick="event.stopPropagation();">
+              <span onclick="openTableDetailModal('${item.tableId}')" class="text-[10px] font-mono text-amber-400/80 hover:text-amber-300 cursor-pointer">
+                View Details ➔
+              </span>
+              <button onclick="${item.actionHandler}" class="px-3.5 py-1.5 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[10px] uppercase tracking-wider rounded-xl transition active:scale-95 shadow">
+                ${item.actionLabel}
+              </button>
+            </div>
 
           </div>
         `;
@@ -1088,7 +1119,7 @@
       if (idx !== -1) {
         const ord = liveIncomingOrders[idx];
         liveIncomingOrders.splice(idx, 1);
-        showToast('✓ Order Dispatched', `${ord.tableName}: ${ord.details} marked ready & delivered.`);
+        showToast('Order Dispatched', `${ord.tableName}: ${ord.details} marked ready & delivered.`);
         renderDeckOverview();
       }
     }
@@ -1099,10 +1130,10 @@
 
       if (actionType.includes('coal')) {
         table.lastCoalRotation = Date.now();
-        showToast('🔥 Coals Rotated', `${table.name} 25m coal cycle reset.`);
+        showToast('Coals Rotated', `${table.name} 25m coal cycle reset.`);
       } else if (actionType === 'service') {
         table.lastServiceCheck = Date.now();
-        showToast('⭐ Quality Checked', `${table.name} 5m service check recorded.`);
+        showToast('Quality Checked', `${table.name} 5m service check recorded.`);
       }
 
       renderDeckOverview();
@@ -1143,16 +1174,16 @@
           statusDot = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>';
 
           const seatedMins = Math.floor((now - table.seatedTime) / (60 * 1000));
-          timerSnippet = `<span class="text-[9px] font-mono text-zinc-300 font-bold mt-0.5">⏱️ ${seatedMins}m</span>`;
+          timerSnippet = `<span class="text-[9px] font-mono text-zinc-300 font-bold mt-0.5">${seatedMins}m</span>`;
 
           if (table.lastCoalRotation && (now - table.lastCoalRotation) >= (25 * 60 * 1000)) {
             nodeClass += ' coals-due';
             statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>';
-            timerSnippet = `<span class="text-[9px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">🔥 COALS</span>`;
+            timerSnippet = `<span class="text-[9px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">COALS DUE</span>`;
           } else if (table.lastServiceCheck && (now - table.lastServiceCheck) >= (5 * 60 * 1000)) {
             nodeClass += ' service-due';
             statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>';
-            timerSnippet = `<span class="text-[9px] font-mono font-bold text-amber-400 mt-0.5">⭐ SERVICE</span>`;
+            timerSnippet = `<span class="text-[9px] font-mono font-bold text-amber-400 mt-0.5">SERVICE</span>`;
           }
         }
 
@@ -1214,7 +1245,7 @@
             const serviceElapsed = Math.floor((now - t.lastServiceCheck) / 1000);
             const serviceRemaining = (5 * 60) - serviceElapsed;
             if (serviceRemaining <= 0) {
-              serviceStr = '⚠️ DUE';
+              serviceStr = 'DUE';
               serviceStatusClass = 'text-amber-400 font-bold animate-pulse';
               cardClass = 'stoked-card border-amber-500/60 bg-[#141007]';
             } else {
@@ -1229,7 +1260,7 @@
             const coalElapsed = Math.floor((now - t.lastCoalRotation) / 1000);
             const coalRemaining = (25 * 60) - coalElapsed;
             if (coalRemaining <= 0) {
-              coalsStr = '🚨 DUE';
+              coalsStr = 'DUE';
               coalsStatusClass = 'text-red-400 font-bold animate-pulse';
               cardClass = 'stoked-card border-red-500/70 bg-[#16080A] shadow-[0_0_16px_rgba(239,68,68,0.2)]';
             } else {
@@ -1291,14 +1322,15 @@
       grid.innerHTML = html;
     }
 
-    // ==================== TABLE DETAIL MODAL ====================
+    // ==================== RIGHT-SIDE SLIDE-OVER DRAWER LOGIC ====================
     function openTableDetailModal(tableId) {
       selectedActiveTableId = tableId;
       const table = loungeDeckTables.find(t => t.id === tableId);
       if (!table) return;
 
-      const modal = document.getElementById('tableDetailModal');
-      if (!modal) return;
+      const overlay = document.getElementById('tableDrawerOverlay');
+      const drawer = document.getElementById('tableDetailDrawer');
+      if (!drawer) return;
 
       document.getElementById('modalTableId').textContent = table.name;
       document.getElementById('modalTableZone').textContent = table.label;
@@ -1317,16 +1349,16 @@
       const now = Date.now();
       if (table.status === 'occupied') {
         const seatedMins = Math.floor((now - tSeated(table.seatedTime)) / (60 * 1000));
-        document.getElementById('modalSeatedTimeText').textContent = `⏱️ ${seatedMins}m seated`;
+        document.getElementById('modalSeatedTimeText').textContent = `${seatedMins}m seated`;
 
         const sElapsed = Math.floor((now - tService(table.lastServiceCheck)) / 1000);
         const sRem = (5 * 60) - sElapsed;
-        document.getElementById('modalServiceCheckBadge').textContent = sRem <= 0 ? '⚠️ DUE' : `${Math.floor(sRem / 60)}m left`;
+        document.getElementById('modalServiceCheckBadge').textContent = sRem <= 0 ? 'DUE' : `${Math.floor(sRem / 60)}m left`;
         document.getElementById('modalServiceCheckBadge').className = sRem <= 0 ? 'text-[10px] font-bold text-amber-400 animate-pulse' : 'text-[10px] font-bold text-emerald-400';
 
         const cElapsed = Math.floor((now - tCoal(table.lastCoalRotation)) / 1000);
         const cRem = (25 * 60) - cElapsed;
-        document.getElementById('modalCoalCheckBadge').textContent = cRem <= 0 ? '🚨 DUE' : `${Math.floor(cRem / 60)}m left`;
+        document.getElementById('modalCoalCheckBadge').textContent = cRem <= 0 ? 'DUE' : `${Math.floor(cRem / 60)}m left`;
         document.getElementById('modalCoalCheckBadge').className = cRem <= 0 ? 'text-[10px] font-bold text-red-400 animate-pulse' : 'text-[10px] font-bold text-emerald-400';
       } else {
         document.getElementById('modalSeatedTimeText').textContent = '—';
@@ -1335,7 +1367,11 @@
       }
 
       renderModalTabItems(table);
-      modal.classList.remove('hidden');
+
+      // Slide in from right
+      if (overlay) overlay.classList.remove('hidden');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
     }
 
     function tSeated(t) { return t || Date.now(); }
@@ -1385,11 +1421,17 @@
       table.tabItems.splice(idx, 1);
       renderModalTabItems(table);
       renderDeckOverview();
-      showToast('🗑️ Item Removed', 'Tab item deleted.');
+      showToast('Item Removed', 'Tab item deleted.');
     }
 
     function closeTableDetailModal() {
-      document.getElementById('tableDetailModal').classList.add('hidden');
+      const overlay = document.getElementById('tableDrawerOverlay');
+      const drawer = document.getElementById('tableDetailDrawer');
+      if (drawer) {
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('translate-x-full');
+      }
+      if (overlay) overlay.classList.add('hidden');
       selectedActiveTableId = null;
     }
 
@@ -1399,7 +1441,7 @@
       table.lastServiceCheck = Date.now();
       openTableDetailModal(selectedActiveTableId);
       renderDeckOverview();
-      showToast('⭐ Quality Checked', `${table.name} 5m timer reset.`);
+      showToast('Quality Checked', `${table.name} 5m timer reset.`);
     }
 
     function resetTableCoalTimer() {
@@ -1408,14 +1450,14 @@
       table.lastCoalRotation = Date.now();
       openTableDetailModal(selectedActiveTableId);
       renderDeckOverview();
-      showToast('🔥 Coals Rotated', `${table.name} 25m coal cycle reset.`);
+      showToast('Coals Rotated', `${table.name} 25m coal cycle reset.`);
     }
 
     function settleTableTab(method) {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
       const total = table.tabItems.reduce((s, i) => s + (i.price || 0), 0);
-      showToast('💳 Payment Processed', `${table.name} $${total.toFixed(2)} paid via ${method.toUpperCase()}.`);
+      showToast('Payment Processed', `${table.name} $${total.toFixed(2)} paid via ${method.toUpperCase()}.`);
     }
 
     function closeAndFreeTable() {
@@ -1429,7 +1471,7 @@
       table.tabItems = [];
       closeTableDetailModal();
       renderDeckOverview();
-      showToast('✓ Table Closed', `${table.name} is now free and available.`);
+      showToast('Table Closed', `${table.name} is now free and available.`);
     }
 
     // ==================== MIX LAB ORDER TAKING ====================
@@ -1470,7 +1512,6 @@
           <div onclick="selectMixLabPreset('${p.name}', '${p.ratios}')" class="p-3 bg-[#0B0F17] hover:bg-zinc-900 rounded-2xl border border-white/10 hover:border-amber-400/50 cursor-pointer flex justify-between items-center transition select-none">
             <div>
               <div class="font-mono text-xs font-bold text-white flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full" style="background-color: ${p.color};"></span>
                 <span>${p.name}</span>
                 <span class="text-[9px] text-amber-400 font-bold">${p.strength}</span>
               </div>
@@ -1486,7 +1527,7 @@
 
     function selectMixLabPreset(name, ratios) {
       document.getElementById('mixLabSelectedRatiosText').textContent = `${name} (${ratios})`;
-      showToast('🧪 Recipe Loaded', `${name} loaded to bench.`);
+      showToast('Recipe Loaded', `${name} loaded to bench.`);
     }
 
     function dispatchMixLabOrderToTable() {
@@ -1516,7 +1557,8 @@
         tableId: table.id,
         tableName: table.name,
         type: 'bowl',
-        details: recipeText,
+        details: `${recipeText} · ${bowlType}`,
+        guest: table.guest,
         timestamp: Date.now()
       });
 
@@ -1524,7 +1566,7 @@
       closeMixLabModal();
       openTableDetailModal(selectedActiveTableId);
       renderDeckOverview();
-      showToast('💨 Hookah Dispatched', `${table.name}: Bowl dispatched to tab. 5m & 25m timers started.`);
+      showToast('Hookah Dispatched', `${table.name}: Bowl dispatched to tab. 5m & 25m timers started.`);
     }
 
     // ==================== DRINK SELECTOR ====================
@@ -1542,10 +1584,10 @@
           <div class="flex justify-between items-center p-3 bg-[#0B0F17] rounded-2xl border border-white/10 text-xs font-mono">
             <div>
               <span class="text-white font-bold">${bev.name}</span>
-              <span class="text-amber-400 font-bold block">$ ${bev.price.toFixed(2)}</span>
+              <span class="text-amber-400 font-bold block">$${bev.price.toFixed(2)}</span>
             </div>
             <button onclick="addDrinkToActiveTable('${bev.name}', ${bev.price})" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 font-mono font-bold text-[10px] uppercase rounded-xl border border-cyan-500/40 transition active:scale-95">
-              + Add to Tab
+              Add to Tab
             </button>
           </div>
         `;
@@ -1583,6 +1625,7 @@
         tableName: table.name,
         type: 'drink',
         details: name,
+        guest: table.guest,
         timestamp: Date.now()
       });
 
@@ -1590,7 +1633,7 @@
       closeDrinkModal();
       openTableDetailModal(selectedActiveTableId);
       renderDeckOverview();
-      showToast('🥤 Drink Added', `${table.name}: ${name} added to tab.`);
+      showToast('Drink Added', `${table.name}: ${name} added to tab.`);
     }
 
     // ==================== SIMULATE ALERTS & TIMERS ====================
@@ -1607,30 +1650,32 @@
           tableId: target.id,
           tableName: target.name,
           type: 'bowl',
-          details: 'Empire Royalty (Noir Reserve)',
+          details: 'Empire Royalty (Noir Reserve) · Russian Clay Phunnel',
+          guest: target.guest,
           timestamp: Date.now()
         });
         triggerScreenGlow('amber');
-        showToast('💨 New Bowl Order', `${target.name}: Empire Royalty dispatched from mix lab.`);
+        showToast('New Bowl Order', `${target.name}: Empire Royalty dispatched from mix lab.`);
       } else if (chosen === 'drink') {
         liveIncomingOrders.unshift({
           id: `ord-${Date.now()}`,
           tableId: target.id,
           tableName: target.name,
           type: 'drink',
-          details: '2x Red Bull, 1x Mexican Coke',
+          details: '2x Red Bull Original, 1x Mexican Coke',
+          guest: target.guest,
           timestamp: Date.now()
         });
         triggerScreenGlow('cyan');
-        showToast('🥤 New Drink Order', `${target.name}: 2x Red Bull, 1x Mexican Coke.`);
+        showToast('New Drink Order', `${target.name}: 2x Red Bull, 1x Mexican Coke.`);
       } else if (chosen === 'coal') {
         target.lastCoalRotation = Date.now() - (26 * 60 * 1000);
         triggerScreenGlow('red');
-        showToast('🚨 Simulated Coal Alert', `${target.name}: Coals have reached 25-minute cycle.`);
+        showToast('Coal Alert', `${target.name}: Coals have reached 25-minute cycle.`);
       } else {
         target.lastServiceCheck = Date.now() - (6 * 60 * 1000);
         triggerScreenGlow('amber');
-        showToast('⭐ Simulated Service Check', `${target.name}: 5-minute quality of service check due.`);
+        showToast('Service Check', `${target.name}: 5-minute quality of service check due.`);
       }
 
       renderDeckOverview();
@@ -1654,9 +1699,6 @@
       renderDeckOverview();
       if (window.innerWidth < 768) {
         setMobileActiveTab('map');
-      }
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
       }
     });
   </script>
