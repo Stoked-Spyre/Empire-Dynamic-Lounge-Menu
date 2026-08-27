@@ -2453,21 +2453,17 @@
   </div>
 
   <!-- ==================== FLOATING BOTTOM LUXURY NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
-  <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-6 py-2 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
-    <button onclick="setPrimaryMenuTab('hookah'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-hookah">
-      <span class="text-amber-400 text-[10px]" id="dockHookahDiamond">◆</span>
-      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
-        HOOKAH
+  <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-8 py-2.5 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
+    <button onclick="handleAddToOrderDockClick()" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-order">
+      <span class="text-amber-400 text-[10px]" id="dockOrderDiamond">◆</span>
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+        ADD TO ORDER
         <span id="dockBowlCountBadge" class="hidden bg-amber-400 text-black text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-full">0</span>
       </span>
     </button>
-    <button onclick="setPrimaryMenuTab('drinks'); switchCustomerTab('menu');" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-drinks">
-      <span class="text-zinc-600 text-[10px]" id="dockDrinksDiamond">◆</span>
-      <span class="font-serif text-[11px] font-bold tracking-widest uppercase">BEVERAGES</span>
-    </button>
     <button onclick="switchCustomerTab('tab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
       <span class="text-zinc-600 text-[10px]" id="dockTabDiamond">◆</span>
-      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1.5">
         MY TAB
         <span id="dockTabTotalBadge" class="text-amber-400/90 text-[10px] font-mono font-normal"></span>
       </span>
@@ -4007,35 +4003,53 @@
       renderIcons();
     }
 
+    function handleAddToOrderDockClick() {
+      if (activeFlavors.length > 0) {
+        openBowlStudioModal();
+      } else {
+        if (activeCustomerTab !== 'menu') {
+          switchCustomerTab('menu');
+        } else {
+          openBowlStudioModal();
+        }
+      }
+    }
+
     function switchCustomerTab(tabId) {
       activeCustomerTab = tabId;
       document.querySelectorAll('.customer-panel').forEach(p => p.classList.add('hidden'));
 
-      // Update bottom dock luxury tabs
-      const tabs = ['hookah', 'drinks', 'tab'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`dock-tab-${t}`);
-        const diamond = document.getElementById(`dock${t.charAt(0).toUpperCase() + t.slice(1)}Diamond`);
-        const isActive = (t === 'hookah' && (activePrimaryTab === 'hookah' || activePrimaryTab === 'shisha') && tabId === 'menu') ||
-                         (t === 'drinks' && activePrimaryTab === 'drinks' && tabId === 'menu') ||
-                         (t === 'tab' && tabId === 'tab');
-        if (btn) {
-          if (isActive) {
-            btn.classList.add('text-white');
-            btn.classList.remove('text-zinc-400');
-          } else {
-            btn.classList.remove('text-white');
-            btn.classList.add('text-zinc-400');
-          }
+      // Update bottom dock luxury tabs (Add to Order on Left, My Tab on Right)
+      const orderBtn = document.getElementById('dock-tab-order');
+      const orderDiamond = document.getElementById('dockOrderDiamond');
+      const tabBtn = document.getElementById('dock-tab-tab');
+      const tabDiamond = document.getElementById('dockTabDiamond');
+
+      if (orderBtn) {
+        if (tabId === 'menu') {
+          orderBtn.classList.add('text-white');
+          orderBtn.classList.remove('text-zinc-400');
+        } else {
+          orderBtn.classList.remove('text-white');
+          orderBtn.classList.add('text-zinc-400');
         }
-        if (diamond) {
-          if (isActive) {
-            diamond.className = 'text-amber-400 text-[10px]';
-          } else {
-            diamond.className = 'text-zinc-600 text-[10px]';
-          }
+      }
+      if (orderDiamond) {
+        orderDiamond.className = (tabId === 'menu') ? 'text-amber-400 text-[10px]' : 'text-zinc-600 text-[10px]';
+      }
+
+      if (tabBtn) {
+        if (tabId === 'tab') {
+          tabBtn.classList.add('text-white');
+          tabBtn.classList.remove('text-zinc-400');
+        } else {
+          tabBtn.classList.remove('text-white');
+          tabBtn.classList.add('text-zinc-400');
         }
-      });
+      }
+      if (tabDiamond) {
+        tabDiamond.className = (tabId === 'tab') ? 'text-amber-400 text-[10px]' : 'text-zinc-600 text-[10px]';
+      }
 
       const activePanel = document.getElementById(tabId === 'tab' ? 'customer-view-tab' : 'customer-view-menu');
       if (activePanel) activePanel.classList.remove('hidden');
