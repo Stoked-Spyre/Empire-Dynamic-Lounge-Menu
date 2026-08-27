@@ -4732,160 +4732,143 @@
       }
     ];
 
-    function stageDrinkItem(drinkId, drinkName, price) {
+    let openBeverageAccordions = new Set(['coke-products']);
+
+    function toggleBeverageAccordion(id) {
+      if (openBeverageAccordions.has(id)) {
+        openBeverageAccordions.delete(id);
+      } else {
+        openBeverageAccordions.add(id);
+      }
+      renderCustomerMenu();
+    }
+
+    function changeVariantDrinkQty(drinkId, drinkName, price, delta) {
       if (!isVipLoggedIn) {
         openVipLoginModal();
         return;
       }
-      const existing = activeStagedDrinks.find(d => d.id === drinkId);
-      if (existing) {
-        existing.qty += 1;
-      } else {
+      const existingIdx = activeStagedDrinks.findIndex(d => d.id === drinkId);
+      if (existingIdx >= 0) {
+        activeStagedDrinks[existingIdx].qty += delta;
+        if (activeStagedDrinks[existingIdx].qty <= 0) {
+          activeStagedDrinks.splice(existingIdx, 1);
+        }
+      } else if (delta > 0) {
         activeStagedDrinks.push({
           id: drinkId,
           name: drinkName,
           price: price,
-          qty: 1
+          qty: delta
         });
       }
       updateFloatingBowlBar();
       renderCustomerMenu();
-      showToast('🥤 Drink Staged', `${drinkName} ($${price.toFixed(0)}) added to tray.`);
     }
 
-    function incrementStagedDrink(idx) {
-      if (activeStagedDrinks[idx]) {
-        activeStagedDrinks[idx].qty += 1;
-        updateFloatingBowlBar();
-        renderCustomerMenu();
-        if (activeSelectedBeverageGroup) {
-          openBeverageVariantModal(activeSelectedBeverageGroup.id);
-        }
-      }
-    }
-
-    function decrementStagedDrink(idx) {
-      if (activeStagedDrinks[idx]) {
-        activeStagedDrinks[idx].qty -= 1;
-        if (activeStagedDrinks[idx].qty <= 0) {
-          activeStagedDrinks.splice(idx, 1);
-        }
-        updateFloatingBowlBar();
-        renderCustomerMenu();
-        if (activeSelectedBeverageGroup) {
-          openBeverageVariantModal(activeSelectedBeverageGroup.id);
-        }
-      }
-    }
-
-    function removeStagedDrink(idx) {
-      if (activeStagedDrinks[idx]) {
-        activeStagedDrinks.splice(idx, 1);
-        updateFloatingBowlBar();
-        renderCustomerMenu();
-        if (activeSelectedBeverageGroup) {
-          openBeverageVariantModal(activeSelectedBeverageGroup.id);
-        }
-      }
+    function stageDrinkItem(drinkId, drinkName, price) {
+      changeVariantDrinkQty(drinkId, drinkName, price, 1);
+      showToast('🥤 Drink Staged', `${drinkName} added to tray.`);
     }
 
     function clearStagedDrinks() {
       activeStagedDrinks = [];
       updateFloatingBowlBar();
       renderCustomerMenu();
-      if (activeSelectedBeverageGroup) {
-        openBeverageVariantModal(activeSelectedBeverageGroup.id);
-      }
-      showToast('🗑️ Tray Cleared', 'All staged drinks removed.');
+      showToast('🗑️ Drinks Cleared', 'All staged drinks removed from tray.');
     }
 
-    function submitStagedDrinksOrder() {
+    function clearUnifiedTableTray() {
+      clearBowl();
+      activeStagedDrinks = [];
+      updateFloatingBowlBar();
+      renderCustomerMenu();
+      showToast('🗑️ Tray Cleared', 'All staged items cleared.');
+    }
+
+    function submitUnifiedTableOrder() {
       if (!isVipLoggedIn) {
         openVipLoginModal();
         return;
       }
-      if (activeStagedDrinks.length === 0) {
-        showToast('⚠️ Empty Tray', 'Select drinks to add to your order first.');
+      const hasHookah = activeFlavors.length > 0;
+      const hasDrinks = activeStagedDrinks.length > 0;
+
+      if (!hasHookah && !hasDrinks) {
+        showToast('⚠️ Empty Tray', 'Add a hookah blend or drinks to your tray before ordering.');
         return;
       }
 
       const member = CustomerStash.getCurrentVipMember();
       const isApproved = member && member.canSelfOrder !== false;
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      let summaryItems = [];
 
-      let summaryNames = [];
-      activeStagedDrinks.forEach(d => {
-        for (let q = 0; q < d.qty; q++) {
-          CustomerStash.addItemToTab({
-            id: 'drink-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
-            name: d.name,
-            type: 'drink',
-            price: d.price,
-            status: isApproved ? 'Serving' : 'Pending Server Verification',
-            time: timeStr
-          });
-        }
-        summaryNames.push(d.qty > 1 ? `${d.qty}x ${d.name}` : d.name);
-      });
+      // 1. Submit Hookah if staged
+      if (hasHookah) {
+        const pricing = CustomerStash.getLoungePricing();
+        const distinctInventory = CustomerStash.getInventory();
+        const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
+        const origPrice = isTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+        const refillPrice = origPrice - 10.00;
 
-      const confirmedText = summaryNames.join(', ');
-      activeStagedDrinks = [];
-      closeBeverageVariantModal();
+        const activeTab = CustomerStash.getActiveTab();
+        const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
+        const hasExistingHookahs = existingHookahs.length > 0;
+        const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
+        const price = isRefill ? refillPrice : origPrice;
+        const hookahNum = isRefill ? (existingHookahs.length || 1) : (existingHookahs.length + 1);
+        const flavorSummary = activeMixName || activeFlavors.map(f => `${f.name} ${f.percent}%`).join(' / ');
+        
+        const orderName = isRefill 
+          ? `Refill / Repack (Hookah #${hookahNum}) - ${flavorSummary}`
+          : `Hookah #${hookahNum} - ${flavorSummary}`;
+
+        CustomerStash.addItemToTab({
+          id: 'order-' + Date.now(),
+          name: orderName,
+          type: 'shisha',
+          orderType: isRefill ? 'refill' : 'new',
+          pipeNumber: hookahNum,
+          price: price,
+          status: isApproved ? 'Preparing' : 'Pending Server Verification',
+          time: timeStr
+        });
+        summaryItems.push(orderName);
+        clearBowl();
+      }
+
+      // 2. Submit Drinks if staged
+      if (hasDrinks) {
+        activeStagedDrinks.forEach(d => {
+          for (let q = 0; q < d.qty; q++) {
+            CustomerStash.addItemToTab({
+              id: 'drink-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+              name: d.name,
+              type: 'drink',
+              price: d.price,
+              status: isApproved ? 'Serving' : 'Pending Server Verification',
+              time: timeStr
+            });
+          }
+          summaryItems.push(d.qty > 1 ? `${d.qty}x ${d.name}` : d.name);
+        });
+        activeStagedDrinks = [];
+      }
+
+      const confirmedText = summaryItems.join(' & ');
       updateFloatingBowlBar();
       renderCustomerMenu();
       updateActiveBowlNotificationUI();
-      showOrderConfirmationModal('drink', 'Drink Confirmed', confirmedText, 'Your drink will be out momentarily!');
+      showOrderConfirmationModal('unified', 'Order Confirmed', confirmedText, 'Your order will arrive shortly!');
     }
 
-    let activeSelectedBeverageGroup = null;
-    function openBeverageVariantModal(beverageId) {
-      const bev = EMPIRE_BEVERAGE_MENU.find(b => b.id === beverageId);
-      if (!bev) return;
-      activeSelectedBeverageGroup = bev;
-
-      const modal = document.getElementById('beverageVariantModal');
-      const title = document.getElementById('bevVariantModalTitle');
-      const desc = document.getElementById('bevVariantModalDesc');
-      const cont = document.getElementById('bevVariantsListContainer');
-
-      if (title) title.textContent = bev.name;
-      if (desc) desc.textContent = bev.desc;
-      if (cont) {
-        cont.innerHTML = (bev.variants || []).map(v => {
-          const staged = activeStagedDrinks.find(d => d.id === v.id);
-          const stagedQty = staged ? staged.qty : 0;
-          return `
-            <div class="p-2.5 bg-black/60 border ${stagedQty > 0 ? 'border-amber-400/60 bg-amber-400/[0.04]' : 'border-white/10 hover:border-white/20'} flex items-center justify-between text-xs transition">
-              <div class="min-w-0 flex-1 pr-2">
-                <div class="font-serif font-bold text-white text-sm truncate flex items-center gap-1.5">
-                  <span>${v.name}</span>
-                  <span class="font-mono text-amber-400 text-xs font-bold">· $${(v.price || bev.price).toFixed(0)}</span>
-                </div>
-                <div class="font-sans text-[11px] text-zinc-400 italic">${v.desc}</div>
-              </div>
-              <div class="flex items-center gap-1.5 flex-shrink-0">
-                ${stagedQty > 0 ? `
-                  <button onclick="decrementStagedDrink(${activeStagedDrinks.findIndex(d => d.id === v.id)})" class="w-6 h-6 bg-black border border-white/20 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold">-</button>
-                  <span class="font-mono text-amber-400 font-bold px-1 text-xs">${stagedQty}</span>
-                  <button onclick="incrementStagedDrink(${activeStagedDrinks.findIndex(d => d.id === v.id)})" class="w-6 h-6 bg-black border border-white/20 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold">+</button>
-                ` : `
-                  <button onclick="stageDrinkItem('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${v.price || bev.price})" class="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-[10px] uppercase tracking-wider transition rounded-none">
-                    + ADD
-                  </button>
-                `}
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      if (modal) modal.classList.remove('hidden');
+    // Alias for backward compatibility
+    function submitActiveBowlOrder() {
+      submitUnifiedTableOrder();
     }
-
-    function closeBeverageVariantModal() {
-      const modal = document.getElementById('beverageVariantModal');
-      if (modal) modal.classList.add('hidden');
-      activeSelectedBeverageGroup = null;
+    function submitStagedDrinksOrder() {
+      submitUnifiedTableOrder();
     }
 
     const SHISHA_BRANDS = [
@@ -5143,31 +5126,102 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // 1. BEVERAGES: Tap to select flavor variant or stage into tray
+      // 1. BEVERAGES: Inline Accordion Dropdown with - / + Stepper on Each Item
       if (isDrink) {
-        const staged = activeStagedDrinks.find(d => d.id === item.id);
-        const stagedQty = staged ? staged.qty : 0;
-        const actionClick = item.hasVariants 
-          ? `openBeverageVariantModal('${item.id}')` 
-          : `stageDrinkItem('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price})`;
+        const isOpen = openBeverageAccordions.has(item.id);
+        const hasVariants = !!item.hasVariants && item.variants && item.variants.length > 0;
 
-        const orderBtn = isVipLoggedIn ? `
-          <button onclick="event.stopPropagation(); ${actionClick}" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-0.5 border ${stagedQty > 0 ? 'bg-amber-400 text-black font-bold border-amber-400' : 'border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black'} transition active:scale-95 select-none font-bold">
-            ${stagedQty > 0 ? `✓ STAGED (${stagedQty})` : (item.hasVariants ? '+ SELECT' : '+ ADD')}
-          </button>
-        ` : '';
+        // If standalone (no variants), single stepper on the right
+        if (!hasVariants) {
+          const staged = activeStagedDrinks.find(d => d.id === item.id);
+          const stagedQty = staged ? staged.qty : 0;
+          const stepperBtn = isVipLoggedIn ? `
+            <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
+              ${stagedQty > 0 ? `
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, -1)" class="w-6 h-6 bg-black/80 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">-</button>
+                <span class="font-mono text-amber-400 font-bold px-1 text-xs min-w-[16px] text-center select-none">${stagedQty}</span>
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)" class="w-6 h-6 bg-black/80 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">+</button>
+              ` : `
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-0.5 border border-amber-500/60 text-amber-300 hover:bg-amber-400 hover:text-black transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
+              `}
+            </div>
+          ` : '';
+
+          return `
+            <div class="editorial-item mb-3.5 select-none opacity-100">
+              <div class="item-top-row flex items-baseline justify-between w-full">
+                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] truncate">${item.name}</span>
+                <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
+                <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 mt-0.5">
+                <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
+                ${stepperBtn}
+              </div>
+            </div>
+          `;
+        }
+
+        // Accordion with product variants
+        const totalStagedForGroup = (item.variants || []).reduce((sum, v) => {
+          const s = activeStagedDrinks.find(d => d.id === v.id);
+          return sum + (s ? s.qty : 0);
+        }, 0);
+
+        const variantsHtml = (item.variants || []).map(v => {
+          const vStaged = activeStagedDrinks.find(d => d.id === v.id);
+          const vQty = vStaged ? vStaged.qty : 0;
+          const vPrice = v.price || item.price;
+          return `
+            <div class="py-1.5 px-2.5 bg-black/40 border-b border-white/[0.05] hover:bg-white/[0.02] flex items-center justify-between text-xs transition">
+              <div class="min-w-0 flex-1 pr-2">
+                <div class="font-serif font-bold text-zinc-100 text-xs truncate flex items-center gap-1.5">
+                  <span class="text-amber-400/80">•</span>
+                  <span class="${vQty > 0 ? 'text-amber-300 font-bold' : ''}">${v.name}</span>
+                  <span class="font-mono text-zinc-400 text-[10px]">· $${vPrice.toFixed(0)}</span>
+                </div>
+                <div class="font-sans text-[10px] text-zinc-400 italic pl-3">${v.desc}</div>
+              </div>
+              ${isVipLoggedIn ? `
+                <div class="flex items-center gap-1 flex-shrink-0" onclick="event.stopPropagation()">
+                  ${vQty > 0 ? `
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, -1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">-</button>
+                    <span class="font-mono text-amber-400 font-bold px-1 text-xs min-w-[14px] text-center select-none">${vQty}</span>
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">+</button>
+                  ` : `
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2 py-0.5 border border-white/20 text-zinc-300 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
+                  `}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
 
         return `
-          <div class="editorial-item mb-3.5 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer group' : 'cursor-default'}" ${isVipLoggedIn ? `onclick="${actionClick}"` : ''}>
-            <div class="item-top-row flex items-baseline justify-between w-full">
-              <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
-              <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
-              <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
+          <div class="editorial-item mb-3.5 select-none opacity-100 border ${isOpen ? 'border-amber-500/30 bg-black/30 p-1.5' : 'border-transparent'} transition">
+            <div class="cursor-pointer group" onclick="toggleBeverageAccordion('${item.id}')">
+              <div class="item-top-row flex items-baseline justify-between w-full">
+                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate flex items-center gap-1.5">
+                  <span>${item.name}</span>
+                  <span class="text-amber-400 text-[10px] transform ${isOpen ? 'rotate-180' : ''} transition-transform">▼</span>
+                </span>
+                <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
+                <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 mt-0.5">
+                <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
+                <span class="text-[9px] font-mono text-amber-400/90 font-bold uppercase tracking-wider flex-shrink-0">
+                  ${totalStagedForGroup > 0 ? `(${totalStagedForGroup} in Tray)` : `${item.variants.length} Selections`}
+                </span>
+              </div>
             </div>
-            <div class="flex items-center justify-between gap-2 mt-0.5">
-              <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
-              ${orderBtn}
-            </div>
+
+            <!-- Inline Accordion Dropdown Content -->
+            ${isOpen ? `
+              <div class="mt-2 pt-1 border-t border-white/[0.08] space-y-0.5 bg-black/60">
+                ${variantsHtml}
+              </div>
+            ` : ''}
           </div>
         `;
       }
@@ -6463,78 +6517,30 @@
           ? activeStagedDrinks.reduce((s, d) => s + d.qty, 0)
           : activeFlavors.length;
 
-        if (isVipLoggedIn && stagedCount > 0) {
+        const hasHookah = isVipLoggedIn && activeFlavors.length > 0;
+        const totalDrinksQty = activeStagedDrinks.reduce((s, d) => s + d.qty, 0);
+        const totalStagedCount = (hasHookah ? 1 : 0) + totalDrinksQty;
+
+        if (isVipLoggedIn && totalStagedCount > 0) {
           badge.classList.remove('hidden');
-          badge.textContent = `${stagedCount}`;
+          badge.textContent = `${totalStagedCount}`;
         } else {
           badge.classList.add('hidden');
         }
       }
       if (!bar) return;
-      if (!isVipLoggedIn || activeCustomerTab !== 'menu') {
-        bar.classList.add('hidden');
-        return;
-      }
 
-      // ───────────────── TAB 2: DRINKS STAGED BAR ─────────────────
-      if (activePrimaryTab === 'drinks') {
-        if (activeStagedDrinks.length === 0) {
-          bar.classList.add('hidden');
-          return;
-        }
-        bar.classList.remove('hidden');
+      const hasHookah = isVipLoggedIn && activeFlavors.length > 0;
+      const totalDrinksQty = activeStagedDrinks.reduce((s, d) => s + d.qty, 0);
+      const totalStagedCount = (hasHookah ? 1 : 0) + totalDrinksQty;
 
-        const totalQty = activeStagedDrinks.reduce((s, d) => s + d.qty, 0);
-        const totalPrice = activeStagedDrinks.reduce((s, d) => s + (d.price * d.qty), 0);
-        const drinkChips = activeStagedDrinks.map((d, idx) => `
-          <span class="inline-flex items-center gap-1 py-0.5 px-1.5 bg-black/80 border border-amber-400/40 text-[10px] text-zinc-200 font-mono flex-shrink-0">
-            <span class="text-amber-400 font-bold">${d.qty}x</span>
-            <span class="truncate max-w-[95px]">${d.name}</span>
-            <button onclick="event.stopPropagation(); removeStagedDrink(${idx})" class="text-zinc-500 hover:text-red-400 ml-0.5">✕</button>
-          </span>
-        `).join('');
-
-        bar.innerHTML = `
-          <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none select-none">
-            <!-- Top Center Diamond Flueron -->
-            <div class="flex items-center justify-center gap-2 mb-1.5 opacity-80">
-              <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
-              <span class="text-amber-400 text-[8px] tracking-widest select-none">◆</span>
-              <span class="w-10 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
-            </div>
-
-            <div class="flex items-center justify-between gap-2">
-              <div class="min-w-0 flex-1 pr-1">
-                <div class="flex items-center gap-1.5 mb-1">
-                  <span class="font-serif text-xs font-bold text-white truncate">🥤 Staged Drink Order</span>
-                  <span class="text-[10px] font-mono text-amber-400 font-bold">· $${totalPrice.toFixed(2)}</span>
-                </div>
-                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-                  ${drinkChips}
-                </div>
-              </div>
-
-              <div class="flex items-center gap-1.5 flex-shrink-0">
-                <button onclick="clearStagedDrinks()" class="text-[9px] font-mono px-1.5 py-1.5 bg-black/60 hover:bg-red-950/60 border border-white/15 hover:border-red-500/50 text-zinc-400 hover:text-red-300 transition rounded-none" title="Clear Staged Drinks">
-                  ✕
-                </button>
-                <button onclick="submitStagedDrinksOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
-                  ORDER (${totalQty}) · $${totalPrice.toFixed(0)}
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      // ───────────────── TAB 1: HOOKAH FORMULATION BAR ─────────────────
-      if (activeFlavors.length === 0) {
+      if (!isVipLoggedIn || totalStagedCount === 0 || activeCustomerTab !== 'menu') {
         bar.classList.add('hidden');
         return;
       }
       bar.classList.remove('hidden');
 
+      // Hookah calculations
       const pricing = CustomerStash.getLoungePricing();
       const distinctInventory = CustomerStash.getInventory();
       const isTangiers = activeFlavors.some(f => { const itm = distinctInventory.find(i => i.id === f.id); return itm && itm.brand === 'Tangiers'; });
@@ -6545,34 +6551,47 @@
       const existingHookahs = (activeTab.items || []).filter(i => i.type === 'shisha' || i.type === 'hookah');
       const hasExistingHookahs = existingHookahs.length > 0;
       const isRefill = (activeBowlOrderType === 'refill' || (activeBowlOrderType === 'auto' && hasExistingHookahs));
-      const finalPrice = isRefill ? refillPrice : origPrice;
+      const finalHookahPrice = isRefill ? refillPrice : origPrice;
 
-      let totalStrength = 0;
-      let dotsHtml = '';
-      activeFlavors.forEach(f => {
-        const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
-        const col = getItemProfileColor(item);
-        totalStrength += ((item.strength || 7) * (f.percent / 100));
-        dotsHtml += `<span class="w-2 h-2 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black" style="background: ${col}; box-shadow: 0 0 6px ${col}90;"></span>`;
-      });
-      const buzzVal = parseFloat(totalStrength.toFixed(1));
-      const buzzInfo = getBuzzInfo(buzzVal);
+      const totalDrinksPrice = activeStagedDrinks.reduce((s, d) => s + (d.price * d.qty), 0);
+      const grandStagedPrice = (hasHookah ? finalHookahPrice : 0) + totalDrinksPrice;
 
-      const isFixedHouseMix = !!activeMixName && !activeMixName.includes('(Custom)') && EMPIRE_HOUSE_MIXES.some(m => m.name === activeMixName);
-      const titleText = activeMixName ? `👑 ${activeMixName}` : `${activeFlavors.length} Flavors in Bowl`;
-      const subtitleText = isFixedHouseMix 
-        ? `<span class="text-amber-400/90 font-mono font-medium">Empire Signature Recipe</span>` 
-        : `<span class="text-zinc-400">Tap to tune</span>`;
+      // Summary chips
+      let hookahSummaryHtml = '';
+      if (hasHookah) {
+        let totalStrength = 0;
+        let dotsHtml = '';
+        activeFlavors.forEach(f => {
+          const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
+          const col = getItemProfileColor(item);
+          totalStrength += ((item.strength || 7) * (f.percent / 100));
+          dotsHtml += `<span class="w-2 h-2 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black" style="background: ${col};"></span>`;
+        });
+        const titleText = activeMixName ? `👑 ${activeMixName}` : `${activeFlavors.length} Flavors Bowl`;
+        const isFixedHouseMix = !!activeMixName && !activeMixName.includes('(Custom)') && EMPIRE_HOUSE_MIXES.some(m => m.name === activeMixName);
 
-      const tuneBtn = isFixedHouseMix ? '' : `
-        <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition rounded-none">
-          TUNE
-        </button>
-      `;
-      const barClickAction = isFixedHouseMix ? 'submitActiveBowlOrder()' : 'openBowlStudioModal()';
+        hookahSummaryHtml = `
+          <span class="inline-flex items-center gap-1.5 py-1 px-2 bg-black/90 border border-amber-400/50 text-[10px] text-zinc-100 font-mono flex-shrink-0">
+            <div class="flex items-center flex-shrink-0">${dotsHtml}</div>
+            <span class="text-amber-300 font-serif font-bold truncate max-w-[120px]">${titleText}</span>
+            <span class="text-amber-400/90 font-bold">$${finalHookahPrice.toFixed(0)}</span>
+            ${!isFixedHouseMix ? `<button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-zinc-400 hover:text-amber-300 ml-0.5 underline decoration-dotted text-[9px]">TUNE</button>` : ''}
+            <button onclick="event.stopPropagation(); clearActiveBowlFormulation()" class="text-zinc-500 hover:text-red-400 ml-0.5">✕</button>
+          </span>
+        `;
+      }
+
+      let drinksSummaryHtml = activeStagedDrinks.map((d, idx) => `
+        <span class="inline-flex items-center gap-1 py-1 px-1.5 bg-black/90 border border-white/20 text-[10px] text-zinc-200 font-mono flex-shrink-0">
+          <span class="text-amber-400 font-bold">${d.qty}x</span>
+          <span class="truncate max-w-[80px]">${d.name}</span>
+          <button onclick="event.stopPropagation(); changeVariantDrinkQty('${d.id}', '${d.name.replace(/'/g, "\\'")}', ${d.price}, -1)" class="w-3.5 h-3.5 bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center font-bold text-[9px] select-none">-</button>
+          <button onclick="event.stopPropagation(); changeVariantDrinkQty('${d.id}', '${d.name.replace(/'/g, "\\'")}', ${d.price}, 1)" class="w-3.5 h-3.5 bg-zinc-800 text-zinc-300 hover:text-white flex items-center justify-center font-bold text-[9px] select-none">+</button>
+        </span>
+      `).join('');
 
       bar.innerHTML = `
-        <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none cursor-pointer hover:border-amber-400 transition select-none" onclick="${barClickAction}">
+        <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none select-none">
           <!-- Top Center Diamond Flueron -->
           <div class="flex items-center justify-center gap-2 mb-1.5 opacity-80">
             <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
@@ -6580,32 +6599,24 @@
             <span class="w-10 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
           </div>
 
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
-              <div class="flex items-center flex-shrink-0 pl-1">
-                ${dotsHtml}
+          <div class="flex items-center justify-between gap-2">
+            <div class="min-w-0 flex-1 pr-1">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="font-serif text-xs font-bold text-white truncate">Table Staged Tray (${totalStagedCount})</span>
+                <span class="text-[10px] font-mono text-amber-400 font-bold">· $${grandStagedPrice.toFixed(2)}</span>
               </div>
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-1.5">
-                  <span class="font-serif text-xs font-bold text-white truncate">${titleText}</span>
-                  <span class="text-[9px] font-mono text-amber-400 font-bold">· $${finalPrice.toFixed(0)}</span>
-                </div>
-                <div class="flex items-center gap-1 text-[9px] font-mono text-zinc-400">
-                  <span>${buzzInfo.icon}</span>
-                  <span class="text-white font-bold">${buzzInfo.level}</span>
-                  <span class="${buzzInfo.textColor} uppercase font-semibold">${buzzInfo.category}</span>
-                  <span class="text-zinc-600">|</span>
-                  ${subtitleText}
-                </div>
+              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                ${hookahSummaryHtml}
+                ${drinksSummaryHtml}
               </div>
             </div>
+
             <div class="flex items-center gap-1.5 flex-shrink-0">
-              <button onclick="event.stopPropagation(); clearActiveBowlFormulation()" class="text-[9px] font-mono px-1.5 py-1 bg-black/60 hover:bg-red-950/60 border border-white/15 hover:border-red-500/50 text-zinc-400 hover:text-red-300 transition rounded-none" title="Clear Bowl">
+              <button onclick="clearUnifiedTableTray()" class="text-[9px] font-mono px-1.5 py-1.5 bg-black/60 hover:bg-red-950/60 border border-white/15 hover:border-red-500/50 text-zinc-400 hover:text-red-300 transition rounded-none" title="Clear Tray">
                 ✕
               </button>
-              ${tuneBtn}
-              <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
-                ${isRefill ? 'REFILL $28' : 'ORDER $35'}
+              <button onclick="submitUnifiedTableOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
+                ORDER ($${grandStagedPrice.toFixed(0)})
               </button>
             </div>
           </div>
