@@ -4726,16 +4726,12 @@
       if (refillEl) refillEl.textContent = `${(pricing.refillPrice || 25.00).toFixed(0)}`;
       if (tanEl) tanEl.textContent = `${(pricing.tangiersPrice || 38.00).toFixed(0)}`;
 
-      // 2. Render Primary Navigation Tabs & Logo (Logo & Nav track visible on Public QR Menu only - hidden entirely when signed in to maximize menu space)
+      // 2. Render Primary Navigation Tabs & Logo (Logo & Nav track visible on both Member & Guest views)
       const headerSpread = document.getElementById('menuHeaderSpread') || document.querySelector('.menu-header');
       const navTrack = document.getElementById('menuNavTrack');
       
       if (headerSpread) {
-        if (isVipLoggedIn) {
-          headerSpread.classList.add('hidden');
-        } else {
-          headerSpread.classList.remove('hidden');
-        }
+        headerSpread.classList.remove('hidden');
       }
 
       if (navTrack) {
