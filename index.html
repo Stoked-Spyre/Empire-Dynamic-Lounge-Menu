@@ -3340,7 +3340,6 @@
       }
 
       static saveSession(member) {
-        if (!member) return;
         const sessionData = {
           memberId: member.id,
           name: member.name,
@@ -3349,15 +3348,21 @@
           canSelfOrder: member.canSelfOrder !== false,
           loginTime: Date.now()
         };
-        localStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
-        sessionStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
+        try {
+          if (typeof localStorage !== 'undefined') localStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
+          if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('empire_vip_session', JSON.stringify(sessionData));
+        } catch (e) {}
       }
 
       static getSavedSession() {
-        const raw = sessionStorage.getItem('empire_vip_session') || localStorage.getItem('empire_vip_session');
-        if (raw) {
-          try { return JSON.parse(raw); } catch (e) {}
-        }
+        try {
+          let raw = null;
+          if (typeof sessionStorage !== 'undefined') raw = sessionStorage.getItem('empire_vip_session');
+          if (!raw && typeof localStorage !== 'undefined') raw = localStorage.getItem('empire_vip_session');
+          if (raw) {
+            return JSON.parse(raw);
+          }
+        } catch (e) {}
         return null;
       }
 
@@ -5795,6 +5800,10 @@
       };
     }
 
+    function setupCustomerSpectrumDragListeners() {
+      setupStudioSpectrumDragListeners();
+    }
+
     function clearBowl() {
       activeFlavors = [];
       activeMixName = null;
@@ -6609,7 +6618,7 @@
       initCinematicFireworksEngine();
       initBrandStationDial();
       renderMixLab();
-      setupCustomerSpectrumDragListeners();
+      setupStudioSpectrumDragListeners();
       setupCinematicStageListeners();
       updateVipPointsHeader();
       renderCustomerMenu();
