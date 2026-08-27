@@ -52,32 +52,32 @@
       transform: translateY(-1px);
     }
 
-    /* RIGHT-SIDE SLIDE-OVER DRAWER */
-    .drawer-overlay {
+    /* BOTTOM SLIDE-UP DRAWER */
+    .bottom-drawer-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
       z-index: 60;
       transition: opacity 0.3s ease;
     }
-    .drawer-panel {
+    .bottom-drawer-panel {
       position: fixed;
-      top: 0;
-      bottom: 0;
+      left: 0;
       right: 0;
-      width: 100%;
-      max-width: 580px;
-      background: #080C12;
-      border-left: 1.5px solid rgba(229, 169, 60, 0.35);
-      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.85);
+      bottom: 0;
+      max-height: 92vh;
+      background: #070B11;
+      border-top: 2px solid rgba(229, 169, 60, 0.4);
+      border-radius: 28px 28px 0 0;
+      box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.95);
       z-index: 70;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
     }
 
-    /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS (Widescreen Tablet Scaled) */
+    /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
     .floorplan-canvas {
       position: relative;
       width: 100%;
@@ -297,7 +297,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start flex-1">
       
-      <!-- ==================== LEFT COLUMN: TALL ALERT DOCK (4 COLS on Tablet, 3 COLS on XL) ==================== -->
+      <!-- ==================== LEFT COLUMN: TALL ALERT DOCK ==================== -->
       <aside id="staffActionDockColumn" class="md:col-span-5 lg:col-span-4 xl:col-span-3 flex flex-col gap-2.5">
         
         <!-- Header -->
@@ -349,7 +349,7 @@
         <div id="floorplanCanvasContainer" class="stoked-card p-3 md:p-4 shadow-2xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
             <span class="text-zinc-300">
-              Click any physical table or booth to view full details in side drawer
+              Click any physical table or booth to open bottom drawer
             </span>
             <span class="text-[11px] text-amber-400/80">● Real-Time Seating</span>
           </div>
@@ -372,244 +372,431 @@
 
   </main>
 
-  <!-- ==================== 3. TABLE DETAILS SLIDE-OVER DRAWER (RIGHT SIDE) ==================== -->
-  <div id="tableDrawerOverlay" class="drawer-overlay hidden" onclick="closeTableDetailModal()"></div>
-  <div id="tableDetailDrawer" class="drawer-panel transform translate-x-full">
+  <!-- ==================== 3. TABLE DETAILS BOTTOM SLIDE-UP DRAWER ==================== -->
+  <div id="tableDrawerOverlay" class="bottom-drawer-overlay hidden" onclick="closeTableDetailModal()"></div>
+  <div id="tableBottomDrawer" class="bottom-drawer-panel transform translate-y-full">
     
-    <!-- Drawer Header -->
-    <div class="p-5 border-b border-white/10 flex justify-between items-start bg-[#06090E]">
-      <div>
-        <div class="flex items-center gap-2.5">
-          <span class="font-mono text-xl font-extrabold text-white bg-amber-400/10 px-3 py-1 rounded-xl border border-amber-400/40 text-amber-300" id="modalTableId">VIP 1</span>
-          <span class="text-xs font-mono text-zinc-300 font-bold" id="modalTableZone">VIP Lounge (8P Couch)</span>
-          <span class="px-2.5 py-0.5 text-[10px] font-mono rounded-full border" id="modalTableStatusBadge">ACTIVE</span>
-        </div>
-        <p class="text-xs font-mono text-zinc-400 mt-1.5" id="modalTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · 1 Pipe</p>
-      </div>
-      <button onclick="closeTableDetailModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 font-mono transition">
-        CLOSE ✕
-      </button>
-    </div>
-
-    <!-- Drawer Body (Scrollable) -->
-    <div class="flex-1 p-5 space-y-4 overflow-y-auto no-scrollbar">
+    <!-- Drawer Handle & Header Bar -->
+    <div class="px-5 pt-3 pb-3 border-b border-white/10 bg-[#05080E] flex flex-col gap-2 rounded-t-[28px]">
       
-      <!-- Live Timers Control Strip -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 bg-black/60 rounded-2xl border border-white/10 text-xs font-mono">
-        
-        <!-- Timer 1: Seated Time -->
-        <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/5 space-y-1">
-          <span class="text-[10px] text-zinc-400 uppercase tracking-wider block">Seated Duration</span>
-          <span class="text-sm font-bold text-white" id="modalSeatedTimeText">48m</span>
-        </div>
-
-        <!-- Timer 2: 5m Quality of Service Check -->
-        <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/5 space-y-1 flex flex-col justify-between">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] text-zinc-400 uppercase tracking-wider">5m Quality Check</span>
-            <span class="text-[10px] font-bold" id="modalServiceCheckBadge">OK</span>
-          </div>
-          <button onclick="resetTableServiceCheck()" class="w-full py-1.5 bg-amber-400/15 hover:bg-amber-400 hover:text-black border border-amber-400/40 rounded-lg text-amber-300 text-[10px] font-bold uppercase transition active:scale-95">
-            Mark Checked (Reset 5m)
-          </button>
-        </div>
-
-        <!-- Timer 3: 25m Coal Rotation Check -->
-        <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/5 space-y-1 flex flex-col justify-between">
-          <div class="flex justify-between items-center">
-            <span class="text-[10px] text-zinc-400 uppercase tracking-wider">25m Coal Check</span>
-            <span class="text-[10px] font-bold" id="modalCoalCheckBadge">18m left</span>
-          </div>
-          <button onclick="resetTableCoalTimer()" class="w-full py-1.5 bg-red-500/15 hover:bg-red-500 hover:text-white border border-red-500/40 rounded-lg text-red-300 text-[10px] font-bold uppercase transition active:scale-95">
-            Coals Rotated (Reset 25m)
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Running Tab Items & Subtotal -->
-      <div class="space-y-2.5 p-3.5 bg-[#0A0E16] rounded-2xl border border-white/10">
-        <div class="flex justify-between items-center pb-2 border-b border-white/10">
-          <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Running Tab Items</span>
-          <span class="text-sm font-mono text-amber-400 font-bold" id="modalTabTotalAmount">$0.00</span>
-        </div>
-
-        <div class="space-y-2 max-h-56 overflow-y-auto no-scrollbar pr-0.5" id="modalTabItemsList">
-          <!-- Injected dynamically via JS -->
-        </div>
-      </div>
-
-      <!-- Order Dispatch Actions -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-        <!-- 1. Open Mix Lab for Custom Shisha Bowl Order Taking -->
-        <button onclick="openMixLabForTable()" class="py-3 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs rounded-2xl flex items-center justify-center gap-2 uppercase shadow-lg transition active:scale-95">
-          <span>Take Shisha Order (Mix Lab)</span>
-        </button>
-
-        <!-- 2. Fast Drink / Libations Selector -->
-        <button onclick="openDrinkSelectorForTable()" class="py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-mono font-bold text-xs rounded-2xl flex items-center justify-center gap-2 uppercase transition active:scale-95 border border-white/15">
-          <span>Add Chilled Drinks</span>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- Drawer Footer (POS & Payment Settlement) -->
-    <div class="p-4 border-t border-white/10 bg-[#06090E] flex flex-wrap items-center justify-between gap-2.5 text-xs font-mono">
-      <div class="flex items-center gap-2">
-        <button onclick="settleTableTab('cash')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-emerald-300 font-bold uppercase transition active:scale-95">
-          Cash
-        </button>
-        <button onclick="settleTableTab('card')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-white/15 rounded-xl text-cyan-300 font-bold uppercase transition active:scale-95">
-          Card
-        </button>
-        <button onclick="settleTableTab('square')" class="px-3 py-2 bg-zinc-900 hover:bg-zinc-800 border border-amber-400/40 rounded-xl text-amber-300 font-bold uppercase transition active:scale-95">
-          Square QR
-        </button>
-      </div>
-
-      <button onclick="closeAndFreeTable()" class="px-4 py-2 bg-red-950/80 hover:bg-red-900 border border-red-500/60 rounded-xl text-red-200 font-bold uppercase transition active:scale-95">
-        Settle &amp; Free Table
-      </button>
-    </div>
-
-  </div>
-
-  <!-- ==================== 4. INTEGRATED SOMMELIER MIX LAB MODAL ==================== -->
-  <div id="mixLabOrderModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-80 hidden flex items-center justify-center p-3 md:p-6">
-    <div class="w-full max-w-4xl bg-[#080C12] border border-amber-400/40 rounded-3xl shadow-2xl p-4 md:p-6 space-y-4 max-h-[95vh] overflow-y-auto no-scrollbar">
-      
-      <!-- Mix Lab Header -->
-      <div class="flex justify-between items-center pb-3 border-b border-white/10">
-        <div>
-          <div class="flex items-center gap-2.5">
-            <h3 class="font-crest text-lg font-bold text-white tracking-wide">SOMMELIER MIXOLOGY BENCH</h3>
-            <span class="px-2.5 py-0.5 bg-amber-400/15 text-amber-300 font-mono text-xs rounded-full border border-amber-400/30" id="mixLabTargetTable">TABLE 4</span>
-          </div>
-          <p class="text-[11px] text-zinc-400 font-mono mt-0.5">Build custom ratios, adjust splitters &amp; dispatch to table tab</p>
-        </div>
-        <button onclick="closeMixLabModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1.5 font-mono transition">
-          CANCEL ✕
-        </button>
-      </div>
-
-      <!-- Ratio Splitter Bar & Buzz Readout -->
-      <div class="p-3.5 bg-black/80 rounded-2xl border border-white/10 space-y-2">
-        <div class="flex justify-between items-center text-xs font-mono">
-          <span class="text-zinc-400">Selected Formulation:</span>
-          <div class="flex items-center gap-2">
-            <span class="text-amber-400 font-bold" id="mixLabSelectedRatiosText">MustHave Pinkman 70% · Tangiers Cane Mint 30%</span>
-            <span class="px-2 py-0.5 bg-red-950/80 text-red-300 text-[10px] font-bold rounded-lg border border-red-800/60">7.6 BOLD</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Flavor Catalog Picker & Stations -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-        
-        <!-- Station Selector Column -->
-        <div class="space-y-1 bg-black/60 p-2.5 rounded-2xl border border-white/10" id="mixLabStationSelector">
-          <span class="text-[10px] font-mono font-bold text-zinc-400 uppercase block pb-1 border-b border-white/5">Catalog Stations</span>
-          <button onclick="setMixLabStation('signatures')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-amber-300 hover:bg-amber-400/10 border-l-2 border-amber-400">Signature House Mixes</button>
-          <button onclick="setMixLabStation('musthave')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">MustHave (Russian Dark)</button>
-          <button onclick="setMixLabStation('tangiers')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">Tangiers (Noir Reserve)</button>
-          <button onclick="setMixLabStation('darkside')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">Darkside (Burley Dark)</button>
-          <button onclick="setMixLabStation('blondes')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-mono text-zinc-300 hover:bg-white/5">Heritage Blondes</button>
-        </div>
-
-        <!-- Flavor Selections Grid (2 Cols) -->
-        <div class="md:col-span-2 space-y-2 max-h-64 overflow-y-auto no-scrollbar p-2.5 bg-black/60 rounded-2xl border border-white/10" id="mixLabFlavorPickerList">
-          <!-- Injected dynamically via JS -->
-        </div>
-
-      </div>
-
-      <!-- Packing Details & Dispatch Bar -->
-      <div class="p-3.5 bg-black rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3 text-xs font-mono">
-          <div class="flex items-center gap-1.5">
-            <span class="text-zinc-400">Bowl:</span>
-            <select id="mixLabBowlSelect" class="bg-zinc-900 text-white px-3 py-1.5 rounded-xl border border-white/20 text-xs font-mono">
-              <option value="Russian Phunnel (22g)">Russian Clay Phunnel (22g)</option>
-              <option value="Alpaca Mini Rook (18g)">Alpaca Mini Rook (18g)</option>
-              <option value="Oblako Mono (20g)">Oblako Mono (20g)</option>
-              <option value="Solaris Classic (22g)">Solaris Classic (22g)</option>
-            </select>
-          </div>
-
-          <div class="flex items-center gap-1.5">
-            <span class="text-zinc-400">Heat:</span>
-            <select id="mixLabHeatSelect" class="bg-zinc-900 text-white px-3 py-1.5 rounded-xl border border-white/20 text-xs font-mono">
-              <option value="Kaloud Lotus III (3 Coals)">Kaloud Lotus III (3 Coals)</option>
-              <option value="Provost HMD (2 Coals)">Provost HMD (2 Coals)</option>
-              <option value="Direct Foil + Provost">Direct Foil + Provost</option>
-            </select>
-          </div>
-        </div>
-
+      <!-- Top Handle Bar & Quick Timers -->
+      <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="text-lg font-bold text-amber-400 font-mono">$35.00</span>
-          <button onclick="dispatchMixLabOrderToTable()" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-bold text-xs rounded-xl uppercase tracking-wider transition active:scale-95 shadow-md">
-            Dispatch Bowl to Table
+          <span class="font-mono text-lg font-extrabold text-amber-300 bg-amber-400/10 px-3 py-0.5 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono font-bold text-white" id="drawerTableZone">VIP Lounge (8P Couch)</span>
+              <span class="px-2 py-0.2 text-[9px] font-mono rounded-full border" id="drawerTableStatusBadge">ACTIVE</span>
+            </div>
+            <span class="text-[11px] font-mono text-zinc-400" id="drawerTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · Seated 48m</span>
+          </div>
+        </div>
+
+        <!-- Quick Timers & Close Action -->
+        <div class="flex items-center gap-2">
+          <div class="hidden sm:flex items-center gap-2 text-xs font-mono">
+            <button onclick="resetTableServiceCheck()" class="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400 hover:text-black border border-amber-400/30 rounded-xl text-amber-300 transition text-[11px] font-bold">
+              Service: <span id="drawerQuickServiceText">OK</span> [Reset 5m]
+            </button>
+            <button onclick="resetTableCoalTimer()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl text-red-300 transition text-[11px] font-bold">
+              Coals: <span id="drawerQuickCoalText">18m left</span> [Reset 25m]
+            </button>
+          </div>
+
+          <button onclick="closeTableDetailModal()" class="px-3 py-1.5 bg-zinc-900 border border-white/15 text-zinc-300 hover:text-white text-xs font-mono font-bold rounded-xl transition">
+            ✕ CLOSE
           </button>
         </div>
       </div>
 
-    </div>
-  </div>
+      <!-- 3 MAIN TABS SWITCHER -->
+      <div class="grid grid-cols-3 gap-2 p-1 bg-black/70 rounded-2xl border border-white/10 text-xs font-mono mt-1">
+        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
+          <span>Tab &amp; POS Settle</span>
+        </button>
+        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+          <span>Sommelier Mix Lab</span>
+        </button>
+        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+          <span>Member Smoke Profile</span>
+        </button>
+      </div>
 
-  <!-- ==================== 5. QUICK DRINK SELECTOR MODAL ==================== -->
-  <div id="drinkOrderModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-80 hidden flex items-center justify-center p-3 md:p-6">
-    <div class="w-full max-w-lg bg-[#090D14] border border-white/20 rounded-3xl shadow-2xl p-5 space-y-3.5">
-      <div class="flex justify-between items-center pb-2.5 border-b border-white/10">
-        <div>
-          <h3 class="text-sm font-mono font-bold text-white uppercase">Add Chilled Drinks</h3>
-          <span class="text-[10px] text-zinc-400 font-mono" id="drinkModalTargetTable">Table 4</span>
+    </div>
+
+    <!-- Drawer Content Panels -->
+    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 bg-[#070B11]">
+      
+      <!-- ==================== TAB 1: ITEMIZED BILL & POS SETTLEMENT ==================== -->
+      <div id="drawerPanel-bill" class="space-y-4 max-w-5xl mx-auto">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+          
+          <!-- Left 7 Cols: Itemized Tab Table -->
+          <div class="lg:col-span-7 space-y-3">
+            <div class="p-4 bg-[#090D14] rounded-2xl border border-white/10 space-y-3">
+              <div class="flex justify-between items-center pb-2 border-b border-white/10">
+                <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Active Tab Items</span>
+                <span class="text-xs font-mono text-zinc-400" id="billTabItemCount">3 items</span>
+              </div>
+
+              <div class="space-y-2 max-h-72 overflow-y-auto no-scrollbar pr-0.5" id="billTabItemsList">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Quick Add Drinks Shortcut -->
+            <div class="p-3 bg-black/40 rounded-2xl border border-white/5 flex items-center justify-between text-xs font-mono">
+              <span class="text-zinc-400">Need to add drinks or snacks?</span>
+              <button onclick="setDrawerActiveTab('mixlab'); setMixLabSubTab('drinks');" class="px-3 py-1.5 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black font-bold rounded-xl border border-cyan-500/40 transition">
+                + Open Drink Stash
+              </button>
+            </div>
+          </div>
+
+          <!-- Right 5 Cols: Calculations & POS Settlement -->
+          <div class="lg:col-span-5 space-y-3">
+            <div class="p-4 bg-[#090D14] rounded-2xl border border-amber-500/30 space-y-3">
+              <h3 class="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider pb-2 border-b border-white/10">Bill Summary &amp; Taxes</h3>
+
+              <div class="space-y-1.5 text-xs font-mono">
+                <div class="flex justify-between text-zinc-400">
+                  <span>Subtotal</span>
+                  <span class="text-white font-bold" id="billSubtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>State &amp; Local Tax (8.6%)</span>
+                  <span class="text-white font-bold" id="billTax">$0.00</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>Tip / Gratuity</span>
+                  <span class="text-emerald-400 font-bold" id="billTip">$0.00</span>
+                </div>
+                <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+                  <span class="text-sm font-bold text-white uppercase">Total Amount</span>
+                  <span class="text-xl font-extrabold text-amber-400 font-mono" id="billGrandTotal">$0.00</span>
+                </div>
+              </div>
+
+              <!-- Tip Buttons -->
+              <div class="pt-1">
+                <span class="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">Tip Presets:</span>
+                <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
+                  <button onclick="applyTipPercent(18)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10">18%</button>
+                  <button onclick="applyTipPercent(20)" class="py-1.5 bg-amber-400/20 text-amber-300 font-bold rounded-lg border border-amber-400/40">20%</button>
+                  <button onclick="applyTipPercent(25)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10">25%</button>
+                  <button onclick="applyTipPercent(0)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-400 rounded-lg border border-white/10">None</button>
+                </div>
+              </div>
+
+              <!-- Payment Tender Methods -->
+              <div class="space-y-2 pt-2 border-t border-white/10">
+                <span class="text-[10px] font-mono text-zinc-400 uppercase block">Select Tender:</span>
+                <div class="grid grid-cols-3 gap-2 text-xs font-mono font-bold">
+                  <button onclick="processBillPayment('cash')" class="py-2.5 bg-zinc-900 hover:bg-emerald-600 hover:text-white border border-emerald-500/30 text-emerald-300 rounded-xl transition">Cash</button>
+                  <button onclick="processBillPayment('card')" class="py-2.5 bg-zinc-900 hover:bg-cyan-600 hover:text-white border border-cyan-500/30 text-cyan-300 rounded-xl transition">Card EMV</button>
+                  <button onclick="processBillPayment('square')" class="py-2.5 bg-zinc-900 hover:bg-amber-500 hover:text-black border border-amber-400/40 text-amber-300 rounded-xl transition">Square QR</button>
+                </div>
+
+                <button onclick="closeAndFreeTable()" class="w-full py-3 bg-red-950/90 hover:bg-red-900 border border-red-500/60 rounded-xl text-red-200 font-mono font-bold text-xs uppercase tracking-wider transition active:scale-95 shadow">
+                  Settle &amp; Close Table
+                </button>
+              </div>
+
+            </div>
+          </div>
+
         </div>
-        <button onclick="closeDrinkModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 border border-white/10 rounded-xl px-3 py-1 font-mono">✕</button>
+
       </div>
 
-      <div class="space-y-2 max-h-72 overflow-y-auto no-scrollbar" id="drinkModalList">
-        <!-- Injected via JS -->
+      <!-- ==================== TAB 2: ERGONOMIC SPLIT MIX LAB ==================== -->
+      <div id="drawerPanel-mixlab" class="hidden space-y-3">
+        
+        <!-- Top Smoker Base Preferences Quick Strip -->
+        <div class="p-3 bg-[#090D14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider">Base Palate Presets:</span>
+            <span class="text-[10px] font-mono text-zinc-500">Tap to load baseline profile</span>
+          </div>
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="mixLabBasePalatePills">
+            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Sweet Berry &amp; Grapefruit</button>
+            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Heavy Russian Dark Leaf</button>
+            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Arctic Ice &amp; Mint</button>
+            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Spiced Chai &amp; Kashmir</button>
+            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Valencia Orange Soda</button>
+          </div>
+        </div>
+
+        <!-- 3-COLUMN ERGONOMIC SPLIT DECK -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch min-h-[460px]">
+          
+          <!-- FAR LEFT COLUMN (3 Cols): FLAVORS CATALOG (Filtered by Brand/Profile) -->
+          <div class="lg:col-span-4 bg-[#090D14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="leftCatalogTitle">Catalog Flavors</span>
+              <span class="text-[10px] font-mono text-zinc-400" id="leftCatalogCount">12 available</span>
+            </div>
+
+            <!-- Scrollable Flavor Cards List -->
+            <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 max-h-[380px]" id="leftFlavorsCatalogList">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <!-- CENTER COLUMN (5 Cols): ACTIVE BENCH / DRINKS SUB-TABS & DISPATCH -->
+          <div class="lg:col-span-5 bg-[#090D14] rounded-2xl border border-amber-500/30 p-3.5 flex flex-col justify-between gap-3 shadow-xl">
+            
+            <div class="space-y-3">
+              <!-- Center Sub-Tabs Switcher -->
+              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+                <div class="flex items-center gap-1 bg-black/80 p-1 rounded-xl border border-white/10">
+                  <button onclick="setMixLabSubTab('shisha')" id="subTabBtn-shisha" class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition">
+                    Shisha Mix Bench
+                  </button>
+                  <button onclick="setMixLabSubTab('drinks')" id="subTabBtn-drinks" class="px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition">
+                    Chilled Drinks
+                  </button>
+                </div>
+                <button onclick="clearMixBench()" class="text-[10px] font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
+              </div>
+
+              <!-- VIEW A: ACTIVE SHISHA BENCH -->
+              <div id="mixLabBenchView" class="space-y-3">
+                
+                <!-- Buzz & Ratios Calculation Strip -->
+                <div class="p-2.5 bg-black/70 rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
+                  <div>
+                    <span class="text-[10px] text-zinc-400 uppercase block">Buzz Strength:</span>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <span class="text-sm font-extrabold text-amber-400" id="benchBuzzScore">7.6 / 10</span>
+                      <span class="px-1.5 py-0.2 bg-red-950 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[10px] text-zinc-400 uppercase block">Pack Weight:</span>
+                    <span class="text-xs text-white font-bold">Standard 22g</span>
+                  </div>
+                </div>
+
+                <!-- Active Slots List with Ratio Steppers -->
+                <div class="space-y-2" id="benchActiveSlotsList">
+                  <!-- Injected via JS -->
+                </div>
+
+                <!-- Hardware & Heat Selection -->
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Clay Bowl:</label>
+                    <select id="benchBowlSelect" class="w-full bg-[#05080E] text-white px-2.5 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
+                      <option value="Russian Clay Phunnel (22g)">Russian Clay Phunnel (22g)</option>
+                      <option value="Alpaca Mini Rook (18g)">Alpaca Mini Rook (18g)</option>
+                      <option value="Oblako Mono (20g)">Oblako Mono (20g)</option>
+                      <option value="Solaris Classic (22g)">Solaris Classic (22g)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Heat Regulation:</label>
+                    <select id="benchHeatSelect" class="w-full bg-[#05080E] text-white px-2.5 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
+                      <option value="Kaloud Lotus III (3 Coals)">Kaloud Lotus III (3 Coals)</option>
+                      <option value="Provost HMD (2 Coals)">Provost HMD (2 Coals)</option>
+                      <option value="Direct Foil + Provost">Direct Foil + Provost</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- VIEW B: CHILLED DRINKS LIST -->
+              <div id="mixLabDrinksView" class="hidden space-y-2 max-h-[340px] overflow-y-auto no-scrollbar">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Center Bottom Dispatch Bar -->
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-mono text-zinc-400 uppercase block">Total Add-on</span>
+                <span class="text-base font-extrabold text-amber-400 font-mono" id="benchTotalPrice">$35.00</span>
+              </div>
+              <button onclick="dispatchActiveBenchToTable()" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl transition active:scale-95 shadow-lg">
+                ✓ Dispatch to Table Tab
+              </button>
+            </div>
+
+          </div>
+
+          <!-- FAR RIGHT COLUMN (3 Cols): BRAND HOUSES & PROFILE SELECTORS -->
+          <div class="lg:col-span-3 bg-[#090D14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
+            <div class="pb-2 border-b border-white/10">
+              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Brands &amp; Profiles</span>
+            </div>
+
+            <!-- Brand House Buttons -->
+            <div class="space-y-1 overflow-y-auto no-scrollbar max-h-[380px]" id="rightBrandSelectorList">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+        </div>
+
       </div>
+
+      <!-- ==================== TAB 3: MEMBER PROFILE & SMOKE PALATE DATA ==================== -->
+      <div id="drawerPanel-member" class="hidden space-y-4 max-w-4xl mx-auto">
+        
+        <!-- Member Card Header -->
+        <div class="p-4 bg-[#090D14] rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/40 flex items-center justify-center font-crest font-bold text-lg text-amber-300" id="memberAvatarLetter">
+              A
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-crest font-bold text-base text-white" id="memberNameText">Alex Mercer</h3>
+                <span class="px-2 py-0.5 bg-amber-400/20 text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40" id="memberTierBadge">VIP BLACK RESERVE</span>
+              </div>
+              <p class="text-xs font-mono text-zinc-400 mt-0.5" id="memberVisitsText">18 Lounge Visits · 2,450 Loyalty Points · Member since 2022</p>
+            </div>
+          </div>
+
+          <div class="text-right font-mono">
+            <span class="text-[10px] text-zinc-400 uppercase block">Preferred Table:</span>
+            <span class="text-xs font-bold text-amber-300">VIP Booth #1 (8P Velvet)</span>
+          </div>
+        </div>
+
+        <!-- Smoke Palate Profile Breakdown -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
+          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
+            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Preferred Leaf</span>
+            <span class="text-white font-bold">Russian Dark Leaf &amp; Burley</span>
+          </div>
+          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
+            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Preferred Buzz Level</span>
+            <span class="text-red-400 font-bold">7.5 - 9.0 (Heavy Nicotine)</span>
+          </div>
+          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
+            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Ice / Mint Level</span>
+            <span class="text-cyan-300 font-bold">Medium Sub-Zero Chill</span>
+          </div>
+          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
+            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Favorite Brand</span>
+            <span class="text-amber-400 font-bold">MustHave &amp; Tangiers</span>
+          </div>
+        </div>
+
+        <!-- Past Favorite Formulations (1-Tap Re-order) -->
+        <div class="p-4 bg-[#090D14] rounded-2xl border border-white/10 space-y-3">
+          <div class="flex justify-between items-center pb-2 border-b border-white/10">
+            <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Frequently Ordered Formulations</span>
+            <span class="text-[10px] font-mono text-amber-400">1-Tap Load to Mix Lab</span>
+          </div>
+
+          <div class="space-y-2" id="memberFavoriteBlendsList">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <!-- Member Preferences & Notes -->
+        <div class="p-4 bg-black/60 rounded-2xl border border-white/5 space-y-1.5 text-xs font-mono">
+          <span class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider block">Server &amp; Sommelier Notes:</span>
+          <p class="text-zinc-300 leading-relaxed">
+            "Prefers Russian Clay Phunnel bowl packed dense with Kaloud Lotus. Always enjoys sparkling water with lemon. Sensitive to strong anise/licorice notes."
+          </p>
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 
   <script>
     // ==========================================================================
-    // ⚡ SERVER & STAFF TABLET POS & OPERATIONS ENGINE
+    // ⚡ SERVER & STAFF POS & ERGONOMIC SOMMELIER BENCH ENGINE
     // ==========================================================================
     let isServerAudioAlerts = true;
     let selectedActiveTableId = null;
     let activeZoneFilter = 'all';
     let activeDeckViewMode = 'map'; // 'map' or 'grid'
     let activeMobileTab = 'map'; // 'map', 'alerts', or 'grid'
+    let activeDrawerTab = 'bill'; // 'bill', 'mixlab', or 'member'
+    let activeMixLabSubTab = 'shisha'; // 'shisha' or 'drinks'
     let staffScreenGlowTimer = null;
 
-    // Physical Seating Coordinates for OpenTable Canvas (Spacious Proportional Positions)
+    // Master Flavor Catalog with Brand & Profile Metadata
+    const FLAVOR_CATALOG = [
+      // MustHave (Russian Dark Leaf)
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'fruit', color: '#EC4899' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'mint', color: '#06B6D4' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'cream', color: '#FBBF24' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'fruit', color: '#F97316' },
+      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'fruit', color: '#8B5CF6' },
+
+      // Tangiers (Noir Reserve)
+      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'mint', color: '#10B981' },
+      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'spiced', color: '#F59E0B' },
+      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'citrus', color: '#FB923C' },
+
+      // Darkside (Burley Dark)
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'mint', color: '#38BDF8' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'fruit', color: '#EAB308' },
+      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'fruit', color: '#A855F7' },
+
+      // BlackBurn (Overdose)
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'spiced', color: '#84CC16' },
+      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'citrus', color: '#FACC15' },
+
+      // Heritage Blondes
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'spiced', color: '#EF4444' },
+      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'mint', color: '#34D399' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'fruit', color: '#60A5FA' },
+      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'fruit', color: '#F43F5E' }
+    ];
+
+    // Master Beverages
+    const SERVER_BEVERAGES = [
+      { id: 'coke', name: 'Coca-Cola Classic', price: 4.00, desc: 'Chilled glass bottle' },
+      { id: 'coke-diet', name: 'Diet Coke', price: 4.00, desc: 'Zero calories' },
+      { id: 'sprite', name: 'Sprite', price: 4.00, desc: 'Crisp lemon-lime' },
+      { id: 'mex-coke', name: 'Mexican Coke (Glass)', price: 5.00, desc: 'Cane sugar import' },
+      { id: 'redbull', name: 'Red Bull Original', price: 6.00, desc: '8.4 fl oz can' },
+      { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree', price: 6.00, desc: 'Sugar-free energy' },
+      { id: 'redbull-yellow', name: 'Red Bull Yellow Edition', price: 6.00, desc: 'Tropical fruit' },
+      { id: 'perrier', name: 'Maison Perrier Sparkling', price: 5.00, desc: 'French sparkling water' },
+      { id: 'samovar-tea', name: 'Russian Samovar Teapot 🫖', price: 14.00, desc: 'Serves 2-4 with mint & honey' },
+      { id: 'water', name: 'Bottled Mountain Water', price: 3.00, desc: 'Still spring water' }
+    ];
+
+    // Current Bench Slots State (1 to 4 flavors)
+    let benchSlots = [
+      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
+      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
+    ];
+
+    let activeBrandFilter = 'all'; // 'all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher'
+
+    // Physical Seating Coordinates for OpenTable Canvas
     const PHYSICAL_FLOORPLAN_PRESET = [
-      // Landmarks
       { id: 'infra-bar', name: 'MAIN BAR COUNTER', zone: 'bar', x: 4, y: 4, w: 260, h: 42, shape: 'rect', isInfra: true },
       { id: 'infra-dj', name: 'DJ STAGE', zone: 'indoor', x: 74, y: 4, w: 120, h: 46, shape: 'rect', isInfra: true },
       { id: 'infra-host', name: 'ENTRANCE / HOST', zone: 'indoor', x: 4, y: 84, w: 130, h: 40, shape: 'rect', isInfra: true },
       { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 60, y: 78, w: 200, h: 42, shape: 'rect', isInfra: true },
 
-      // VIP Velvet Booths
       { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 22, w: 110, h: 72, shape: 'rect' },
       { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 48, w: 110, h: 72, shape: 'rect' },
 
-      // Bar Stools
       { id: 'bar-1', name: 'B1', label: 'Bar Stool 1', zone: 'bar', capacity: 1, x: 6, y: 18, w: 46, h: 46, shape: 'circle' },
       { id: 'bar-2', name: 'B2', label: 'Bar Stool 2', zone: 'bar', capacity: 1, x: 19, y: 18, w: 46, h: 46, shape: 'circle' },
       { id: 'bar-3', name: 'B3', label: 'Bar Stool 3', zone: 'bar', capacity: 1, x: 32, y: 18, w: 46, h: 46, shape: 'circle' },
 
-      // Indoor Dining & Lounge Tables
       { id: 'tbl-1', name: 'T1', label: 'Table 1 (2-Top Cozy)', zone: 'indoor', capacity: 2, x: 8, y: 40, w: 58, h: 58, shape: 'circle' },
       { id: 'tbl-2', name: 'T2', label: 'Table 2 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 40, w: 68, h: 68, shape: 'rect' },
       { id: 'tbl-3', name: 'T3', label: 'Table 3 (4-Top Table)', zone: 'indoor', capacity: 4, x: 46, y: 40, w: 68, h: 68, shape: 'rect' },
       { id: 'tbl-4', name: 'T4', label: 'Table 4 (4-Top Table)', zone: 'indoor', capacity: 4, x: 26, y: 64, w: 68, h: 68, shape: 'rect' },
 
-      // Patio Tables
       { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', capacity: 4, x: 63, y: 60, w: 64, h: 64, shape: 'circle' },
       { id: 'patio-2', name: 'P2', label: 'Patio Table 2 (4-Top)', zone: 'patio', capacity: 4, x: 82, y: 60, w: 64, h: 64, shape: 'circle' }
     ];
@@ -629,9 +816,11 @@
         zone: 'vip',
         status: 'occupied',
         guest: 'Alex M. (VIP)',
+        memberId: 'mem-101',
         seatedTime: Date.now() - (48 * 60 * 1000),
         lastServiceCheck: Date.now() - (2 * 60 * 1000),
         lastCoalRotation: Date.now() - (27 * 60 * 1000),
+        appliedTip: 0,
         tabItems: [
           { id: 'item-1', name: 'Hookah #1 — Pink Cane Sensation (MustHave 70% / Tangiers 30%)', price: 38.00, type: 'hookah' },
           { id: 'item-2', name: 'Red Bull Original (x2)', price: 12.00, type: 'drink' },
@@ -645,9 +834,11 @@
         zone: 'vip',
         status: 'occupied',
         guest: 'Elena R. (VIP)',
+        memberId: 'mem-102',
         seatedTime: Date.now() - (12 * 60 * 1000),
         lastServiceCheck: Date.now() - (6 * 60 * 1000),
         lastCoalRotation: Date.now() - (12 * 60 * 1000),
+        appliedTip: 0,
         tabItems: [
           { id: 'item-4', name: 'Hookah #1 — Siberian Midnight Tea', price: 35.00, type: 'hookah' }
         ]
@@ -659,9 +850,11 @@
         zone: 'indoor',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -671,9 +864,11 @@
         zone: 'indoor',
         status: 'occupied',
         guest: 'Marcus V.',
+        memberId: 'mem-103',
         seatedTime: Date.now() - (22 * 60 * 1000),
         lastServiceCheck: Date.now() - (1 * 60 * 1000),
         lastCoalRotation: Date.now() - (22 * 60 * 1000),
+        appliedTip: 0,
         tabItems: [
           { id: 'item-5', name: 'Hookah #1 — Kashmir Velvet Cream', price: 35.00, type: 'hookah' },
           { id: 'item-6', name: 'Mexican Coke (x1)', price: 5.00, type: 'drink' }
@@ -686,9 +881,11 @@
         zone: 'indoor',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -698,9 +895,11 @@
         zone: 'indoor',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -710,9 +909,11 @@
         zone: 'bar',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -722,9 +923,11 @@
         zone: 'bar',
         status: 'occupied',
         guest: 'Jordan K.',
+        memberId: null,
         seatedTime: Date.now() - (34 * 60 * 1000),
         lastServiceCheck: Date.now() - (3 * 60 * 1000),
         lastCoalRotation: Date.now() - (9 * 60 * 1000),
+        appliedTip: 0,
         tabItems: [
           { id: 'item-7', name: 'Hookah #1 — Fizzy Citrus Rush', price: 35.00, type: 'hookah' }
         ]
@@ -736,9 +939,11 @@
         zone: 'bar',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -748,9 +953,11 @@
         zone: 'patio',
         status: 'available',
         guest: 'Available',
+        memberId: null,
         seatedTime: null,
         lastServiceCheck: null,
         lastCoalRotation: null,
+        appliedTip: 0,
         tabItems: []
       },
       {
@@ -760,26 +967,16 @@
         zone: 'patio',
         status: 'occupied',
         guest: 'Sarah & Guests',
+        memberId: null,
         seatedTime: Date.now() - (18 * 60 * 1000),
         lastServiceCheck: Date.now() - (2 * 60 * 1000),
         lastCoalRotation: Date.now() - (18 * 60 * 1000),
+        appliedTip: 0,
         tabItems: [
           { id: 'item-8', name: 'Hookah #1 — Empire Royalty', price: 38.00, type: 'hookah' },
           { id: 'item-9', name: 'Diet Coke (x2)', price: 8.00, type: 'drink' }
         ]
       }
-    ];
-
-    const SERVER_BEVERAGES = [
-      { id: 'coke', name: 'Coca-Cola Classic', price: 4.00 },
-      { id: 'coke-diet', name: 'Diet Coke', price: 4.00 },
-      { id: 'sprite', name: 'Sprite', price: 4.00 },
-      { id: 'mex-coke', name: 'Mexican Coke (Glass)', price: 5.00 },
-      { id: 'redbull', name: 'Red Bull Original', price: 6.00 },
-      { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree', price: 6.00 },
-      { id: 'redbull-yellow', name: 'Red Bull Yellow Edition', price: 6.00 },
-      { id: 'perrier', name: 'Maison Perrier Sparkling', price: 5.00 },
-      { id: 'water', name: 'Bottled Water', price: 3.00 }
     ];
 
     function showToast(title, msg) {
@@ -931,6 +1128,54 @@
         }
       });
       renderDeckOverview();
+    }
+
+    // ==================== DRAWER TAB SWITCHER ====================
+    function setDrawerActiveTab(tab) {
+      activeDrawerTab = tab;
+      ['bill', 'mixlab', 'member'].forEach(t => {
+        const btn = document.getElementById(`drawerTabBtn-${t}`);
+        const panel = document.getElementById(`drawerPanel-${t}`);
+        if (btn && panel) {
+          if (t === tab) {
+            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
+            panel.classList.remove('hidden');
+          } else {
+            btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
+            panel.classList.add('hidden');
+          }
+        }
+      });
+
+      if (tab === 'bill') {
+        const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
+        if (table) renderBillTab(table);
+      } else if (tab === 'mixlab') {
+        renderErgonomicMixLab();
+      } else if (tab === 'member') {
+        renderMemberProfileTab();
+      }
+    }
+
+    function setMixLabSubTab(sub) {
+      activeMixLabSubTab = sub;
+      const shishaBtn = document.getElementById('subTabBtn-shisha');
+      const drinksBtn = document.getElementById('subTabBtn-drinks');
+      const benchView = document.getElementById('mixLabBenchView');
+      const drinksView = document.getElementById('mixLabDrinksView');
+
+      if (sub === 'shisha') {
+        if (shishaBtn) shishaBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
+        if (drinksBtn) drinksBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
+        if (benchView) benchView.classList.remove('hidden');
+        if (drinksView) drinksView.classList.add('hidden');
+      } else {
+        if (drinksBtn) drinksBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
+        if (shishaBtn) shishaBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
+        if (drinksView) drinksView.classList.remove('hidden');
+        if (benchView) benchView.classList.add('hidden');
+        renderDrinksSubView();
+      }
     }
 
     // ==================== RENDERING ENGINE ====================
@@ -1322,117 +1567,145 @@
       grid.innerHTML = html;
     }
 
-    // ==================== RIGHT-SIDE SLIDE-OVER DRAWER LOGIC ====================
+    // ==================== BOTTOM SLIDE-UP DRAWER CONTROLLER ====================
     function openTableDetailModal(tableId) {
       selectedActiveTableId = tableId;
       const table = loungeDeckTables.find(t => t.id === tableId);
       if (!table) return;
 
       const overlay = document.getElementById('tableDrawerOverlay');
-      const drawer = document.getElementById('tableDetailDrawer');
+      const drawer = document.getElementById('tableBottomDrawer');
       if (!drawer) return;
 
-      document.getElementById('modalTableId').textContent = table.name;
-      document.getElementById('modalTableZone').textContent = table.label;
+      document.getElementById('drawerTableId').textContent = table.name;
+      document.getElementById('drawerTableZone').textContent = table.label;
       
-      const badge = document.getElementById('modalTableStatusBadge');
+      const badge = document.getElementById('drawerTableStatusBadge');
       if (table.status === 'occupied') {
-        badge.className = 'px-2.5 py-0.5 text-[10px] font-mono rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
-        badge.textContent = 'ACTIVE OCCUPIED';
+        badge.className = 'px-2 py-0.2 text-[9px] font-mono rounded-full border bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+        badge.textContent = 'ACTIVE';
       } else {
-        badge.className = 'px-2.5 py-0.5 text-[10px] font-mono rounded-full border bg-zinc-800 text-zinc-400 border-zinc-700';
+        badge.className = 'px-2 py-0.2 text-[9px] font-mono rounded-full border bg-zinc-800 text-zinc-400 border-zinc-700';
         badge.textContent = 'AVAILABLE';
       }
 
-      document.getElementById('modalTableGuestInfo').textContent = `Guest: ${table.guest} · ${table.tabItems.length} active tab items`;
-
       const now = Date.now();
-      if (table.status === 'occupied') {
-        const seatedMins = Math.floor((now - tSeated(table.seatedTime)) / (60 * 1000));
-        document.getElementById('modalSeatedTimeText').textContent = `${seatedMins}m seated`;
+      let seatedStr = '0m';
+      if (table.seatedTime) {
+        seatedStr = `${Math.floor((now - table.seatedTime) / 60000)}m`;
+      }
+      document.getElementById('drawerTableGuestInfo').textContent = `Guest: ${table.guest} · ${table.tabItems.length} items · Seated ${seatedStr}`;
 
-        const sElapsed = Math.floor((now - tService(table.lastServiceCheck)) / 1000);
-        const sRem = (5 * 60) - sElapsed;
-        document.getElementById('modalServiceCheckBadge').textContent = sRem <= 0 ? 'DUE' : `${Math.floor(sRem / 60)}m left`;
-        document.getElementById('modalServiceCheckBadge').className = sRem <= 0 ? 'text-[10px] font-bold text-amber-400 animate-pulse' : 'text-[10px] font-bold text-emerald-400';
-
-        const cElapsed = Math.floor((now - tCoal(table.lastCoalRotation)) / 1000);
-        const cRem = (25 * 60) - cElapsed;
-        document.getElementById('modalCoalCheckBadge').textContent = cRem <= 0 ? 'DUE' : `${Math.floor(cRem / 60)}m left`;
-        document.getElementById('modalCoalCheckBadge').className = cRem <= 0 ? 'text-[10px] font-bold text-red-400 animate-pulse' : 'text-[10px] font-bold text-emerald-400';
+      // Update Quick Header Timers
+      if (table.lastServiceCheck) {
+        const sRem = (5 * 60) - Math.floor((now - table.lastServiceCheck) / 1000);
+        document.getElementById('drawerQuickServiceText').textContent = sRem <= 0 ? 'DUE' : `${Math.floor(sRem / 60)}m`;
       } else {
-        document.getElementById('modalSeatedTimeText').textContent = '—';
-        document.getElementById('modalServiceCheckBadge').textContent = '—';
-        document.getElementById('modalCoalCheckBadge').textContent = '—';
+        document.getElementById('drawerQuickServiceText').textContent = '—';
       }
 
-      renderModalTabItems(table);
+      if (table.lastCoalRotation) {
+        const cRem = (25 * 60) - Math.floor((now - table.lastCoalRotation) / 1000);
+        document.getElementById('drawerQuickCoalText').textContent = cRem <= 0 ? 'DUE' : `${Math.floor(cRem / 60)}m`;
+      } else {
+        document.getElementById('drawerQuickCoalText').textContent = '—';
+      }
 
-      // Slide in from right
+      // Default to Bill Tab
+      setDrawerActiveTab(activeDrawerTab);
+
+      // Slide up from bottom
       if (overlay) overlay.classList.remove('hidden');
-      drawer.classList.remove('translate-x-full');
-      drawer.classList.add('translate-x-0');
+      drawer.classList.remove('translate-y-full');
+      drawer.classList.add('translate-y-0');
     }
 
-    function tSeated(t) { return t || Date.now(); }
-    function tService(t) { return t || Date.now(); }
-    function tCoal(t) { return t || Date.now(); }
+    function closeTableDetailModal() {
+      const overlay = document.getElementById('tableDrawerOverlay');
+      const drawer = document.getElementById('tableBottomDrawer');
+      if (drawer) {
+        drawer.classList.remove('translate-y-0');
+        drawer.classList.add('translate-y-full');
+      }
+      if (overlay) overlay.classList.add('hidden');
+      selectedActiveTableId = null;
+    }
 
-    function renderModalTabItems(table) {
-      const list = document.getElementById('modalTabItemsList');
-      const totalEl = document.getElementById('modalTabTotalAmount');
+    // ==================== TAB 1: ITEMIZED BILL ENGINE ====================
+    function renderBillTab(table) {
+      const list = document.getElementById('billTabItemsList');
+      const countEl = document.getElementById('billTabItemCount');
       if (!list) return;
+
+      if (countEl) countEl.textContent = `${table.tabItems.length} items`;
 
       if (table.tabItems.length === 0) {
         list.innerHTML = `
-          <div class="py-5 text-center text-xs font-mono text-zinc-500 italic">
-            No items on tab. Use buttons below to take an order or add drinks.
+          <div class="py-8 text-center text-xs font-mono text-zinc-500 italic">
+            No items on this table's tab. Use the "Sommelier Mix Lab" tab to order hookahs or drinks.
           </div>
         `;
-        if (totalEl) totalEl.textContent = '$0.00';
+        updateBillTotals(0, table.appliedTip || 0);
         return;
       }
 
-      let total = 0;
+      let subtotal = 0;
       let html = '';
       table.tabItems.forEach((item, idx) => {
-        total += item.price || 0;
+        subtotal += item.price || 0;
         html += `
-          <div class="flex justify-between items-center p-2.5 bg-[#0B0F17] rounded-xl border border-white/5 text-xs font-mono">
-            <div>
-              <span class="text-white font-bold">${item.name}</span>
-              <span class="text-[10px] text-zinc-500 block uppercase tracking-wider">${item.type}</span>
+          <div class="flex justify-between items-center p-3 bg-[#0B0F17] rounded-xl border border-white/5 text-xs font-mono">
+            <div class="truncate mr-2">
+              <span class="text-white font-bold block truncate">${item.name}</span>
+              <span class="text-[10px] text-zinc-500 uppercase tracking-wider">${item.type}</span>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-3 flex-shrink-0">
               <span class="font-bold text-amber-400">$${(item.price || 0).toFixed(2)}</span>
-              <button onclick="removeTabItem(${idx})" class="text-zinc-500 hover:text-red-400 px-1.5 py-0.5 rounded">✕</button>
+              <button onclick="removeBillTabItem(${idx})" class="text-zinc-500 hover:text-red-400 p-1 rounded transition">✕</button>
             </div>
           </div>
         `;
       });
 
       list.innerHTML = html;
-      if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+      updateBillTotals(subtotal, table.appliedTip || 0);
     }
 
-    function removeTabItem(idx) {
+    function removeBillTabItem(idx) {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
       table.tabItems.splice(idx, 1);
-      renderModalTabItems(table);
+      renderBillTab(table);
       renderDeckOverview();
       showToast('Item Removed', 'Tab item deleted.');
     }
 
-    function closeTableDetailModal() {
-      const overlay = document.getElementById('tableDrawerOverlay');
-      const drawer = document.getElementById('tableDetailDrawer');
-      if (drawer) {
-        drawer.classList.remove('translate-x-0');
-        drawer.classList.add('translate-x-full');
-      }
-      if (overlay) overlay.classList.add('hidden');
-      selectedActiveTableId = null;
+    function applyTipPercent(percent) {
+      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
+      if (!table) return;
+      const subtotal = table.tabItems.reduce((s, i) => s + (i.price || 0), 0);
+      const tipAmount = subtotal * (percent / 100);
+      table.appliedTip = tipAmount;
+      updateBillTotals(subtotal, tipAmount);
+      showToast('Tip Applied', `${percent}% gratuity added to bill.`);
+    }
+
+    function updateBillTotals(subtotal, tip) {
+      const tax = subtotal * 0.086; // 8.6% Tax
+      const grandTotal = subtotal + tax + tip;
+
+      document.getElementById('billSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('billTax').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('billTip').textContent = `$${tip.toFixed(2)}`;
+      document.getElementById('billGrandTotal').textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    function processBillPayment(method) {
+      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
+      if (!table) return;
+      const subtotal = table.tabItems.reduce((s, i) => s + (i.price || 0), 0);
+      const grandTotal = subtotal + (subtotal * 0.086) + (table.appliedTip || 0);
+      showToast('Payment Tendered', `${table.name}: $${grandTotal.toFixed(2)} settled via ${method.toUpperCase()}.`);
     }
 
     function resetTableServiceCheck() {
@@ -1453,71 +1726,99 @@
       showToast('Coals Rotated', `${table.name} 25m coal cycle reset.`);
     }
 
-    function settleTableTab(method) {
-      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
-      if (!table) return;
-      const total = table.tabItems.reduce((s, i) => s + (i.price || 0), 0);
-      showToast('Payment Processed', `${table.name} $${total.toFixed(2)} paid via ${method.toUpperCase()}.`);
-    }
-
     function closeAndFreeTable() {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
       table.status = 'available';
       table.guest = 'Available';
+      table.memberId = null;
       table.seatedTime = null;
       table.lastServiceCheck = null;
       table.lastCoalRotation = null;
+      table.appliedTip = 0;
       table.tabItems = [];
       closeTableDetailModal();
       renderDeckOverview();
       showToast('Table Closed', `${table.name} is now free and available.`);
     }
 
-    // ==================== MIX LAB ORDER TAKING ====================
-    let activeMixLabStation = 'signatures';
-    const MIX_LAB_PRESETS = [
-      { id: 'mix-1', name: 'Pink Cane Sensation', ratios: 'MustHave Pinkman 70% · Tangiers Cane Mint 30%', strength: '7.6 BOLD', color: '#EC4899', desc: 'Raspberry grapefruit with sweet cane peppermint' },
-      { id: 'mix-2', name: 'Siberian Midnight Tea', ratios: 'Darkside Supernova 30% · BlackBurn Green Tea 70%', strength: '8.5 BOLD', color: '#6366F1', desc: 'Jasmine green tea with sub-zero arctic freeze' },
-      { id: 'mix-3', name: 'Kashmir Velvet Cream', ratios: 'Tangiers Kashmir Peach 60% · MustHave Milky Rice 40%', strength: '8.0 RICH', color: '#FB923C', desc: 'Spiced Indian florals with warm sweet rice pudding' },
-      { id: 'mix-4', name: 'Empire Royalty', ratios: 'Tangiers Cane Mint 35% · Darkside Falling Star 35% · MustHave Frosty 30%', strength: '8.8 NOIR', color: '#E5A93C', desc: 'Cane mint, tropical mango passion, and Siberian chill' },
-      { id: 'mix-5', name: 'Fizzy Citrus Rush', ratios: 'Tangiers Orange Soda 50% · MustHave Pinkman 50%', strength: '7.5 FRESH', color: '#F97316', desc: 'Sparkling Valencia orange soda balanced by ruby grapefruit' }
-    ];
-
-    function openMixLabForTable() {
-      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
-      if (!table) return;
-
-      document.getElementById('mixLabTargetTable').textContent = `${table.name} · ${table.label}`;
-      document.getElementById('mixLabOrderModal').classList.remove('hidden');
-      renderMixLabPresets();
+    // ==================== TAB 2: ERGONOMIC SPLIT MIX LAB ENGINE ====================
+    function renderErgonomicMixLab() {
+      renderRightBrandSelectors();
+      renderLeftFlavorsCatalog();
+      renderBenchActiveSlots();
     }
 
-    function closeMixLabModal() {
-      document.getElementById('mixLabOrderModal').classList.add('hidden');
-    }
-
-    function setMixLabStation(st) {
-      activeMixLabStation = st;
-      renderMixLabPresets();
-    }
-
-    function renderMixLabPresets() {
-      const list = document.getElementById('mixLabFlavorPickerList');
+    function renderRightBrandSelectors() {
+      const list = document.getElementById('rightBrandSelectorList');
       if (!list) return;
 
+      const BRANDS = [
+        { id: 'all', name: 'All Brands & Flavors', count: FLAVOR_CATALOG.length },
+        { id: 'MustHave', name: 'MustHave (Russian Dark)', count: 5 },
+        { id: 'Tangiers', name: 'Tangiers (Noir Reserve)', count: 3 },
+        { id: 'Darkside', name: 'Darkside (Burley Dark)', count: 3 },
+        { id: 'BlackBurn', name: 'BlackBurn (Overdose)', count: 2 },
+        { id: 'Al Fakher', name: 'Al Fakher (Blondes)', count: 2 },
+        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2 }
+      ];
+
       let html = '';
-      MIX_LAB_PRESETS.forEach(p => {
+      BRANDS.forEach(b => {
+        const isSel = activeBrandFilter === b.id;
+        const activeClass = isSel ? 'bg-amber-400/20 text-amber-300 border-amber-400/60 font-bold' : 'bg-black/60 text-zinc-400 border-white/10 hover:text-white';
+
         html += `
-          <div onclick="selectMixLabPreset('${p.name}', '${p.ratios}')" class="p-3 bg-[#0B0F17] hover:bg-zinc-900 rounded-2xl border border-white/10 hover:border-amber-400/50 cursor-pointer flex justify-between items-center transition select-none">
-            <div>
-              <div class="font-mono text-xs font-bold text-white flex items-center gap-1.5">
-                <span>${p.name}</span>
-                <span class="text-[9px] text-amber-400 font-bold">${p.strength}</span>
+          <button onclick="setMixLabBrandFilter('${b.id}')" class="w-full text-left p-2.5 rounded-xl border ${activeClass} text-xs font-mono flex justify-between items-center transition select-none">
+            <span>${b.name}</span>
+            <span class="text-[10px] opacity-70">${b.count}</span>
+          </button>
+        `;
+      });
+
+      list.innerHTML = html;
+    }
+
+    function setMixLabBrandFilter(brand) {
+      activeBrandFilter = brand;
+      renderRightBrandSelectors();
+      renderLeftFlavorsCatalog();
+    }
+
+    function renderLeftFlavorsCatalog() {
+      const list = document.getElementById('leftFlavorsCatalogList');
+      const titleEl = document.getElementById('leftCatalogTitle');
+      const countEl = document.getElementById('leftCatalogCount');
+      if (!list) return;
+
+      let filtered = FLAVOR_CATALOG;
+      if (activeBrandFilter !== 'all') {
+        if (activeBrandFilter === 'Starbuzz') {
+          filtered = FLAVOR_CATALOG.filter(f => f.brand === 'Starbuzz' || f.brand === 'Adalya');
+        } else {
+          filtered = FLAVOR_CATALOG.filter(f => f.brand === activeBrandFilter);
+        }
+      }
+
+      if (titleEl) titleEl.textContent = activeBrandFilter === 'all' ? 'All Flavors Stash' : `${activeBrandFilter} Stash`;
+      if (countEl) countEl.textContent = `${filtered.length} available`;
+
+      let html = '';
+      filtered.forEach(f => {
+        html += `
+          <div class="p-2.5 bg-[#0B0F17] hover:bg-[#111722] rounded-xl border border-white/5 hover:border-amber-400/40 flex justify-between items-center gap-2 transition select-none">
+            <div class="truncate">
+              <div class="flex items-center gap-1.5 truncate">
+                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background-color: ${f.color};"></span>
+                <span class="font-mono text-xs font-bold text-white truncate">${f.name}</span>
+                <span class="text-[9px] font-mono text-red-400 font-bold flex-shrink-0">⚡ ${f.buzz}</span>
               </div>
-              <p class="text-[10px] font-mono text-zinc-400 mt-0.5">${p.ratios}</p>
+              <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${f.brand} · ${f.notes}</span>
             </div>
-            <button class="px-3 py-1 bg-amber-400/20 text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40">Select</button>
+            
+            <button onclick="addFlavorToBench('${f.id}')" class="px-2.5 py-1 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
+              + ADD
+            </button>
           </div>
         `;
       });
@@ -1525,17 +1826,209 @@
       list.innerHTML = html;
     }
 
-    function selectMixLabPreset(name, ratios) {
-      document.getElementById('mixLabSelectedRatiosText').textContent = `${name} (${ratios})`;
-      showToast('Recipe Loaded', `${name} loaded to bench.`);
+    function addFlavorToBench(flavorId) {
+      if (benchSlots.length >= 4) {
+        showToast('Max Slots Reached', 'A bowl can have up to 4 flavors.');
+        return;
+      }
+
+      const flavor = FLAVOR_CATALOG.find(f => f.id === flavorId);
+      if (!flavor) return;
+
+      const existingIdx = benchSlots.findIndex(s => s.flavorId === flavorId);
+      if (existingIdx !== -1) {
+        showToast('Flavor Already Added', `${flavor.name} is already in the bowl.`);
+        return;
+      }
+
+      benchSlots.push({
+        flavorId: flavor.id,
+        name: `${flavor.brand} ${flavor.name}`,
+        brand: flavor.brand,
+        buzz: flavor.buzz,
+        ratio: 0,
+        color: flavor.color
+      });
+
+      redistributeBenchRatios();
+      renderBenchActiveSlots();
+      showToast('Flavor Added', `${flavor.name} added to bench.`);
     }
 
-    function dispatchMixLabOrderToTable() {
+    function removeFlavorFromBench(idx) {
+      benchSlots.splice(idx, 1);
+      redistributeBenchRatios();
+      renderBenchActiveSlots();
+    }
+
+    function redistributeBenchRatios() {
+      if (benchSlots.length === 0) return;
+      const count = benchSlots.length;
+      if (count === 1) {
+        benchSlots[0].ratio = 100;
+      } else if (count === 2) {
+        benchSlots[0].ratio = 70;
+        benchSlots[1].ratio = 30;
+      } else if (count === 3) {
+        benchSlots[0].ratio = 50;
+        benchSlots[1].ratio = 30;
+        benchSlots[2].ratio = 20;
+      } else if (count === 4) {
+        benchSlots[0].ratio = 40;
+        benchSlots[1].ratio = 20;
+        benchSlots[2].ratio = 20;
+        benchSlots[3].ratio = 20;
+      }
+    }
+
+    function adjustSlotRatio(idx, delta) {
+      if (benchSlots.length <= 1) return;
+      const current = benchSlots[idx].ratio;
+      const newRatio = Math.max(10, Math.min(90, current + delta));
+      benchSlots[idx].ratio = newRatio;
+      
+      // Balance remaining
+      let remaining = 100 - newRatio;
+      let others = benchSlots.filter((_, i) => i !== idx);
+      let totalOther = others.reduce((s, o) => s + o.ratio, 0) || 1;
+      others.forEach(o => {
+        o.ratio = Math.round((o.ratio / totalOther) * remaining);
+      });
+
+      renderBenchActiveSlots();
+    }
+
+    function renderBenchActiveSlots() {
+      const list = document.getElementById('benchActiveSlotsList');
+      if (!list) return;
+
+      if (benchSlots.length === 0) {
+        list.innerHTML = `
+          <div class="py-6 text-center text-xs font-mono text-zinc-500 italic">
+            Bowl is empty. Tap "+ ADD" on any flavor from the left stash.
+          </div>
+        `;
+        updateBenchCalculations();
+        return;
+      }
+
+      let html = '';
+      benchSlots.forEach((slot, idx) => {
+        html += `
+          <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/10 space-y-1.5">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <div class="flex items-center gap-1.5 truncate">
+                <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${slot.color};"></span>
+                <span class="font-bold text-white truncate">${slot.name}</span>
+                <span class="text-[10px] text-red-400 font-bold">⚡ ${slot.buzz}</span>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded-lg border border-white/10">
+                  <button onclick="adjustSlotRatio(${idx}, -10)" class="text-zinc-400 hover:text-white px-1 text-xs">-</button>
+                  <span class="text-amber-400 font-bold text-xs min-w-[32px] text-center">${slot.ratio}%</span>
+                  <button onclick="adjustSlotRatio(${idx}, 10)" class="text-zinc-400 hover:text-white px-1 text-xs">+</button>
+                </div>
+                <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 px-1">✕</button>
+              </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+              <div class="h-full rounded-full" style="width: ${slot.ratio}%; background-color: ${slot.color};"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+      updateBenchCalculations();
+    }
+
+    function updateBenchCalculations() {
+      if (benchSlots.length === 0) {
+        document.getElementById('benchBuzzScore').textContent = '0.0 / 10';
+        document.getElementById('benchBuzzCategory').textContent = 'EMPTY';
+        document.getElementById('benchTotalPrice').textContent = '$0.00';
+        return;
+      }
+
+      let totalBuzz = 0;
+      let totalRatio = 0;
+      let hasReserve = false;
+
+      benchSlots.forEach(s => {
+        totalBuzz += (s.buzz * (s.ratio / 100));
+        totalRatio += s.ratio;
+        if (s.brand === 'Tangiers') hasReserve = true;
+      });
+
+      const roundedBuzz = totalBuzz.toFixed(1);
+      document.getElementById('benchBuzzScore').textContent = `${roundedBuzz} / 10`;
+      
+      let cat = 'MILD';
+      if (roundedBuzz >= 8.0) cat = 'NOIR RESERVE';
+      else if (roundedBuzz >= 6.5) cat = 'BOLD DARK';
+      else if (roundedBuzz >= 5.0) cat = 'MEDIUM';
+      document.getElementById('benchBuzzCategory').textContent = cat;
+
+      const price = hasReserve ? 38.00 : 35.00;
+      document.getElementById('benchTotalPrice').textContent = `$${price.toFixed(2)}`;
+    }
+
+    function applyBaseSmokerProfile(type) {
+      if (type === 'sweet-berries') {
+        benchSlots = [
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
+        ];
+        showToast('Profile Loaded', 'Sweet Berry & Grapefruit preset loaded.');
+      } else if (type === 'russian-burley') {
+        benchSlots = [
+          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' },
+          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' }
+        ];
+        showToast('Profile Loaded', 'Heavy Russian Dark Leaf preset loaded.');
+      } else if (type === 'arctic-mint') {
+        benchSlots = [
+          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, color: '#06B6D4' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, color: '#10B981' }
+        ];
+        showToast('Profile Loaded', 'Arctic Ice & Mint preset loaded.');
+      } else if (type === 'spiced-chai') {
+        benchSlots = [
+          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
+          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
+        ];
+        showToast('Profile Loaded', 'Spiced Chai & Kashmir preset loaded.');
+      } else if (type === 'citrus-soda') {
+        benchSlots = [
+          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, color: '#FB923C' },
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, color: '#EC4899' }
+        ];
+        showToast('Profile Loaded', 'Valencia Orange Soda preset loaded.');
+      }
+
+      renderBenchActiveSlots();
+    }
+
+    function clearMixBench() {
+      benchSlots = [];
+      renderBenchActiveSlots();
+    }
+
+    function dispatchActiveBenchToTable() {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
 
-      const recipeText = document.getElementById('mixLabSelectedRatiosText').textContent;
-      const bowlType = document.getElementById('mixLabBowlSelect').value;
+      if (benchSlots.length === 0) {
+        showToast('Empty Bowl', 'Please add at least one flavor to the bowl.');
+        return;
+      }
+
+      const recipeSummary = benchSlots.map(s => `${s.name} ${s.ratio}%`).join(' · ');
+      const bowlType = document.getElementById('benchBowlSelect').value;
+      const heatType = document.getElementById('benchHeatSelect').value;
 
       if (table.status !== 'occupied') {
         table.status = 'occupied';
@@ -1545,63 +2038,59 @@
       table.lastServiceCheck = Date.now();
       table.lastCoalRotation = Date.now();
 
+      const price = benchSlots.some(s => s.brand === 'Tangiers') ? 38.00 : 35.00;
+
       table.tabItems.push({
         id: `bowl-${Date.now()}`,
-        name: `Hookah — ${recipeText} [${bowlType}]`,
-        price: 35.00,
+        name: `Hookah — ${recipeSummary} [${bowlType}]`,
+        price: price,
         type: 'hookah'
       });
 
+      // Add to universal alert dock
       liveIncomingOrders.unshift({
         id: `ord-${Date.now()}`,
         tableId: table.id,
         tableName: table.name,
         type: 'bowl',
-        details: `${recipeText} · ${bowlType}`,
+        details: `${recipeSummary} · ${bowlType}`,
         guest: table.guest,
         timestamp: Date.now()
       });
 
       triggerScreenGlow('amber');
-      closeMixLabModal();
-      openTableDetailModal(selectedActiveTableId);
+      setDrawerActiveTab('bill');
       renderDeckOverview();
-      showToast('Hookah Dispatched', `${table.name}: Bowl dispatched to tab. 5m & 25m timers started.`);
+      showToast('Bowl Dispatched', `${table.name}: Bowl dispatched to tab. 5m & 25m timers started.`);
     }
 
-    // ==================== DRINK SELECTOR ====================
-    function openDrinkSelectorForTable() {
-      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
-      if (!table) return;
-
-      document.getElementById('drinkModalTargetTable').textContent = `${table.name} · ${table.label}`;
-      const list = document.getElementById('drinkModalList');
+    // Drinks Sub-view inside Mix Lab
+    function renderDrinksSubView() {
+      const list = document.getElementById('mixLabDrinksView');
       if (!list) return;
 
       let html = '';
       SERVER_BEVERAGES.forEach(bev => {
         html += `
-          <div class="flex justify-between items-center p-3 bg-[#0B0F17] rounded-2xl border border-white/10 text-xs font-mono">
+          <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
             <div>
-              <span class="text-white font-bold">${bev.name}</span>
-              <span class="text-amber-400 font-bold block">$${bev.price.toFixed(2)}</span>
+              <span class="text-white font-bold block">${bev.name}</span>
+              <span class="text-[10px] text-zinc-400">${bev.desc}</span>
             </div>
-            <button onclick="addDrinkToActiveTable('${bev.name}', ${bev.price})" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 font-mono font-bold text-[10px] uppercase rounded-xl border border-cyan-500/40 transition active:scale-95">
-              Add to Tab
-            </button>
+            <div class="flex items-center gap-3">
+              <span class="text-amber-400 font-bold">$${bev.price.toFixed(2)}</span>
+              <button onclick="addDrinkToTableDirect('${bev.name}', ${bev.price})" class="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 font-bold text-[10px] uppercase rounded-lg border border-cyan-500/40 transition active:scale-95">
+                + ADD
+              </button>
+            </div>
           </div>
         `;
       });
 
       list.innerHTML = html;
-      document.getElementById('drinkOrderModal').classList.remove('hidden');
     }
 
-    function closeDrinkModal() {
-      document.getElementById('drinkOrderModal').classList.add('hidden');
-    }
-
-    function addDrinkToActiveTable(name, price) {
+    function addDrinkToTableDirect(name, price) {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
 
@@ -1630,10 +2119,71 @@
       });
 
       triggerScreenGlow('cyan');
-      closeDrinkModal();
-      openTableDetailModal(selectedActiveTableId);
       renderDeckOverview();
       showToast('Drink Added', `${table.name}: ${name} added to tab.`);
+    }
+
+    // ==================== TAB 3: MEMBER PROFILE & PALATE ENGINE ====================
+    function renderMemberProfileTab() {
+      const list = document.getElementById('memberFavoriteBlendsList');
+      if (!list) return;
+
+      const PAST_BLENDS = [
+        {
+          name: 'Pink Cane Sensation',
+          ratios: 'MustHave Pinkman 70% · Tangiers Cane Mint 30%',
+          bowl: 'Russian Clay Phunnel',
+          strength: '7.6 BOLD',
+          lastOrdered: '3 days ago'
+        },
+        {
+          name: 'Siberian Midnight Tea',
+          ratios: 'BlackBurn Green Tea 70% · Darkside Supernova 30%',
+          bowl: 'Alpaca Mini Rook',
+          strength: '8.5 BOLD',
+          lastOrdered: '10 days ago'
+        },
+        {
+          name: 'Kashmir Velvet Cream',
+          ratios: 'Tangiers Kashmir Peach 60% · MustHave Milky Rice 40%',
+          bowl: 'Russian Clay Phunnel',
+          strength: '8.0 RICH',
+          lastOrdered: '2 weeks ago'
+        }
+      ];
+
+      let html = '';
+      PAST_BLENDS.forEach(p => {
+        html += `
+          <div class="p-3 bg-[#0B0F17] rounded-xl border border-white/5 flex justify-between items-center gap-2 select-none">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs font-bold text-white">${p.name}</span>
+                <span class="text-[9px] font-mono text-amber-400 font-bold">${p.strength}</span>
+              </div>
+              <p class="text-[10px] font-mono text-zinc-400 mt-0.5">${p.ratios} · ${p.bowl}</p>
+            </div>
+            
+            <button onclick="loadPastBlendToMixLab('${p.name}')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 font-mono text-[10px] font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
+              ⚡ Load to Bench
+            </button>
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+    }
+
+    function loadPastBlendToMixLab(blendName) {
+      if (blendName.includes('Pink Cane')) {
+        applyBaseSmokerProfile('sweet-berries');
+      } else if (blendName.includes('Siberian')) {
+        applyBaseSmokerProfile('russian-burley');
+      } else {
+        applyBaseSmokerProfile('spiced-chai');
+      }
+      setDrawerActiveTab('mixlab');
+      showToast('Blend Loaded', `${blendName} loaded into Mix Lab bench.`);
     }
 
     // ==================== SIMULATE ALERTS & TIMERS ====================
