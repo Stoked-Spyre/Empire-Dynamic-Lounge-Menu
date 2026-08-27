@@ -2360,7 +2360,7 @@
 
   <!-- ==================== ACTIVE BOWL FLOATING NOTIFIER BAR ==================== -->
   <div id="floatingActiveBowlBar" class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-xl px-3.5 z-40 hidden select-none">
-    <!-- Populated via updateFloatingBowlBar() in JS -->
+    <!-- Populated via updateFloatingBowlBar() in JS with square edges & center diamond -->
   </div>
 
   <!-- ==================== ACTIVE BOWL STUDIO / MIX SHEET MODAL ==================== -->
@@ -2368,11 +2368,17 @@
     <!-- Backdrop Overlay -->
     <div class="fixed inset-0 bg-black/85 backdrop-blur-[4px] transition-opacity duration-300" onclick="closeBowlStudioModal()"></div>
 
-    <!-- Slide-Up Studio Card Container -->
-    <div class="relative w-full max-w-lg mx-auto sommelier-card-frame max-h-[85vh] overflow-y-auto no-scrollbar p-3.5 z-10 bg-[#0D0D11] border-t border-x border-amber-500/40 rounded-t-2xl shadow-2xl">
-      <div class="w-10 h-1 bg-white/20 rounded-full mx-auto mb-2 cursor-pointer" onclick="closeBowlStudioModal()"></div>
+    <!-- Slide-Up Studio Card Container (Square Edges, Center Diamond, Luxury Noir) -->
+    <div class="relative w-full max-w-lg mx-auto sommelier-card-frame max-h-[85vh] overflow-y-auto no-scrollbar p-3.5 z-10 bg-[#0D0D11] border-t-2 border-x border-amber-500/50 rounded-none shadow-2xl">
+      
+      <!-- Center Diamond Flueron Top Bar -->
+      <div class="flex items-center justify-center gap-2 mb-2 opacity-85 cursor-pointer" onclick="closeBowlStudioModal()">
+        <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+        <span class="text-amber-400 text-[9px] tracking-widest select-none">◆</span>
+        <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
+      </div>
 
-      <div class="sommelier-inner-frame px-4 pt-2 pb-3 space-y-3 relative overflow-hidden">
+      <div class="sommelier-inner-frame px-4 pt-2 pb-3 space-y-3 relative overflow-hidden rounded-none border border-white/[0.08]">
         <!-- Top Row: Title + Buzz Level + Reset + Close -->
         <div class="flex justify-between items-center pb-1.5 border-b border-white/[0.08]">
           <div class="flex items-center gap-1.5 min-w-0">
@@ -2382,15 +2388,15 @@
             </h3>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <div class="flex items-center gap-1 font-mono text-[10px] bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.08]">
+            <div class="flex items-center gap-1 font-mono text-[10px] bg-white/[0.04] px-1.5 py-0.5 border border-white/[0.08] rounded-none">
               <span id="studioBuzzIcon">⚡</span>
               <span id="studioBuzzLevel" class="font-bold text-white">7.0</span>
               <span id="studioBuzzCategory" class="text-[9px] font-sans font-bold uppercase text-amber-400 ml-0.5">BOLD</span>
             </div>
-            <button onclick="clearBowl(); closeBowlStudioModal();" class="text-[9px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 transition font-semibold">
+            <button onclick="clearBowl(); closeBowlStudioModal();" class="text-[9px] font-serif uppercase tracking-widest text-zinc-400 hover:text-red-400 transition font-semibold rounded-none">
               RESET [✕]
             </button>
-            <button onclick="closeBowlStudioModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-1.5 py-0.5">
+            <button onclick="closeBowlStudioModal()" class="text-zinc-400 hover:text-white text-xs bg-black/40 border border-white/10 px-1.5 py-0.5 rounded-none">
               ✕
             </button>
           </div>
@@ -2399,7 +2405,7 @@
         <!-- Continuous Spectrum Slider -->
         <div class="pt-1 pb-0.5">
           <div class="spectrum-drag-area relative w-full h-6 flex items-center select-none" id="studioSpectrumDraggableArea" style="touch-action: none;">
-            <div id="studioSpectrumRibbon" class="w-full h-2 rounded-full overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="box-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
+            <div id="studioSpectrumRibbon" class="w-full h-2 rounded-none overflow-hidden bg-zinc-800 pointer-events-none shadow-inner" style="box-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>
             <div id="studioSpectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
           </div>
           <div class="flex justify-between items-center text-[9px] text-zinc-400 font-mono mt-1 px-0.5">
@@ -2410,7 +2416,7 @@
 
         <!-- Active Flavor Pills (1-2 Rows Auto-Fitting Grid) -->
         <div class="grid grid-cols-2 gap-1.5 my-1" id="studioFlavorSlotsContainer">
-          <!-- Injected via JS -->
+          <!-- Injected via JS with rounded-none square pill cards -->
         </div>
 
         <!-- Order Action Bar -->
@@ -2422,7 +2428,7 @@
               Refill (-$10)
             </button>
           </div>
-          <button onclick="submitStudioBowlOrder()" id="studioSubmitOrderBtn" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none flex-shrink-0">
+          <button onclick="submitStudioBowlOrder()" id="studioSubmitOrderBtn" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-1.5 px-4 shadow transition active:scale-95 uppercase tracking-wider select-none flex-shrink-0 rounded-none">
             Order Refill
           </button>
         </div>
@@ -5477,32 +5483,41 @@
       const titleText = activeMixName ? `👑 ${activeMixName}` : `${activeFlavors.length} Flavors in Bowl`;
 
       bar.innerHTML = `
-        <div class="sommelier-card-frame p-2.5 flex items-center justify-between shadow-[0_12px_35px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/40 rounded-xl cursor-pointer hover:border-amber-400 transition" onclick="openBowlStudioModal()">
-          <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
-            <div class="flex items-center flex-shrink-0 pl-1">
-              ${dotsHtml}
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-1.5">
-                <span class="font-serif text-xs font-bold text-white truncate">${titleText}</span>
-                <span class="text-[9px] font-mono text-amber-400 font-bold">· $${finalPrice.toFixed(0)}</span>
-              </div>
-              <div class="flex items-center gap-1 text-[9px] font-mono text-zinc-400">
-                <span>${buzzInfo.icon}</span>
-                <span class="text-white font-bold">${buzzInfo.level}</span>
-                <span class="${buzzInfo.textColor} uppercase font-semibold">${buzzInfo.category}</span>
-                <span class="text-zinc-600">|</span>
-                <span class="text-zinc-400">Tap to tune</span>
-              </div>
-            </div>
+        <div class="sommelier-card-frame p-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.95)] bg-black/95 border border-amber-500/50 rounded-none cursor-pointer hover:border-amber-400 transition select-none" onclick="openBowlStudioModal()">
+          <!-- Top Center Diamond Flueron -->
+          <div class="flex items-center justify-center gap-2 mb-1.5 opacity-80">
+            <span class="w-10 h-[1px] bg-gradient-to-r from-transparent to-amber-400/60"></span>
+            <span class="text-amber-400 text-[8px] tracking-widest select-none">◆</span>
+            <span class="w-10 h-[1px] bg-gradient-to-l from-transparent to-amber-400/60"></span>
           </div>
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition">
-              TUNE
-            </button>
-            <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95">
-              ${isRefill ? 'REFILL $28' : 'ORDER $35'}
-            </button>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+              <div class="flex items-center flex-shrink-0 pl-1">
+                ${dotsHtml}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-serif text-xs font-bold text-white truncate">${titleText}</span>
+                  <span class="text-[9px] font-mono text-amber-400 font-bold">· $${finalPrice.toFixed(0)}</span>
+                </div>
+                <div class="flex items-center gap-1 text-[9px] font-mono text-zinc-400">
+                  <span>${buzzInfo.icon}</span>
+                  <span class="text-white font-bold">${buzzInfo.level}</span>
+                  <span class="${buzzInfo.textColor} uppercase font-semibold">${buzzInfo.category}</span>
+                  <span class="text-zinc-600">|</span>
+                  <span class="text-zinc-400">Tap to tune</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <button onclick="event.stopPropagation(); openBowlStudioModal()" class="text-[9px] font-serif uppercase tracking-wider px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 text-zinc-200 font-bold transition rounded-none">
+                TUNE
+              </button>
+              <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
+                ${isRefill ? 'REFILL $28' : 'ORDER $35'}
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -5606,14 +5621,14 @@
           const item = distinctInventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
           const col = getItemProfileColor(item);
           pillsHtml += `
-            <div class="flex items-center justify-between gap-1 py-1 px-2.5 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none min-w-0">
+            <div class="flex items-center justify-between gap-1 py-1 px-2.5 bg-black/70 border border-white/[0.12] hover:border-amber-400/40 transition select-none min-w-0 rounded-none">
               <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${col}; box-shadow: 0 0 6px ${col}80;"></span>
+                <span class="w-2 h-2 rounded-none flex-shrink-0" style="background: ${col}; box-shadow: 0 0 6px ${col}80;"></span>
                 <span class="font-serif text-xs font-semibold text-white tracking-wide truncate">${item.name}</span>
               </div>
               <div class="flex items-center gap-1.5 flex-shrink-0">
                 <span class="text-[10px] text-amber-400 font-mono font-bold studio-flavor-percent-text">${f.percent}%</span>
-                <button onclick="removeFlavorFromStudio(${idx})" class="text-zinc-500 hover:text-red-400 text-xs p-0.5 transition leading-none" title="Remove flavor">✕</button>
+                <button onclick="removeFlavorFromStudio(${idx})" class="text-zinc-500 hover:text-red-400 text-xs p-0.5 transition leading-none rounded-none" title="Remove flavor">✕</button>
               </div>
             </div>
           `;
@@ -5801,38 +5816,49 @@
           badgeClass: 'bg-zinc-900 text-zinc-400 border-zinc-800',
           desc: 'Empty Pack'
         };
-      } else if (r <= 3.4) {
+      } else if (r <= 3.5) {
         return {
           level: r.toFixed(1),
-          category: 'MILD',
-          range: '1-3 Mild',
-          icon: '🍃',
+          category: 'MELLOW',
+          range: 'Blonde / Smooth',
+          icon: '🌿',
           dotColor: '#10B981',
           textColor: 'text-emerald-400',
           badgeClass: 'bg-emerald-950/90 text-emerald-300 border-emerald-700/80',
-          desc: 'Blonde Leaf • Light Nicotine'
+          desc: 'Blonde Leaf • Smooth'
         };
-      } else if (r <= 6.4) {
+      } else if (r <= 6.5) {
         return {
           level: r.toFixed(1),
-          category: 'MEDIUM',
-          range: '4-6 Medium',
+          category: 'BALANCED',
+          range: 'Medium / Russian Dark',
           icon: '⚖️',
           dotColor: '#F59E0B',
-          textColor: 'text-amber-400',
+          textColor: 'text-amber-300',
           badgeClass: 'bg-amber-950/90 text-amber-300 border-amber-700/80',
-          desc: 'Dark Leaf • Balanced Nicotine'
+          desc: 'Dark Leaf • Balanced'
+        };
+      } else if (r <= 8.5) {
+        return {
+          level: r.toFixed(1),
+          category: 'BOLD',
+          range: 'Heavy / Dark Craft',
+          icon: '⚡',
+          dotColor: '#E5A93C',
+          textColor: 'text-amber-400',
+          badgeClass: 'bg-amber-950/90 text-amber-400 border-amber-500/80',
+          desc: 'Heavy Dark Leaf'
         };
       } else {
         return {
           level: r.toFixed(1),
-          category: 'BOLD',
-          range: '7-10 Bold',
-          icon: '⚡',
+          category: 'INTENSE',
+          range: 'Unwashed / Noir',
+          icon: '🔥',
           dotColor: '#EF4444',
           textColor: 'text-red-400',
           badgeClass: 'bg-red-950/90 text-red-300 border-red-700/80',
-          desc: 'Raw Dark Leaf • Heavy Nicotine'
+          desc: 'Raw Noir Dark Leaf'
         };
       }
     }
