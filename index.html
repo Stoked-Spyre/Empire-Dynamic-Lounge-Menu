@@ -310,16 +310,16 @@
     .sommelier-card-frame {
       position: relative;
       background: #000000;
-      border-top: 1px solid rgba(255, 255, 255, 0.32);
-      border-left: 1px solid rgba(255, 255, 255, 0.14);
-      border-right: 1px solid rgba(255, 255, 255, 0.14);
-      border-bottom: none;
-      box-shadow: 0 -25px 60px rgba(0, 0, 0, 0.98), 0 0 25px rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95), 0 0 20px rgba(229, 169, 60, 0.05);
     }
     .sommelier-inner-frame {
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       position: relative;
-      background: radial-gradient(ellipse at 50% -10%, rgba(229, 169, 60, 0.08) 0%, rgba(0, 0, 0, 0.98) 75%), #000000;
+      background: radial-gradient(ellipse at 50% -10%, rgba(229, 169, 60, 0.08) 0%, rgba(0, 0, 0, 1) 75%), #000000;
+    }
+    #menuItemDetailModal .sommelier-card-frame {
+      border-bottom: none;
     }
 
     /* MENU SECTION NAVIGATION — feels like page tabs on a printed wine list */
@@ -2077,56 +2077,28 @@
         </div>
       </section>
 
-      <!-- 2. STOKED SPLIT DIAL: HOUSE MIXES & BRANDS (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
+      <!-- 2. APOTHECARY FLAVOR STASH SELECTOR (CLEAN HIGH-CONTRAST SPREAD) -->
       <section class="sommelier-card-frame p-2.5">
-        <div class="sommelier-inner-frame p-3.5 space-y-2">
+        <div class="sommelier-inner-frame p-3.5 space-y-3">
           
-          <div class="flex justify-between items-center mb-1 px-0.5">
+          <div class="flex justify-between items-center px-0.5 border-b border-white/[0.08] pb-2">
             <div class="flex items-center gap-2">
               <span class="text-amber-400 text-[10px]">◆</span>
-              <span class="font-serif text-sm uppercase tracking-wider text-slate-200 font-bold">Flavor Stash Selector</span>
+              <span class="font-serif text-sm uppercase tracking-wider text-white font-bold">Apothecary Stash Catalog</span>
             </div>
-            <span class="text-[11px] text-zinc-400 font-sans italic">Select Category • Spin Drum</span>
+            <span class="text-[11px] text-zinc-400 font-sans italic">Select category &amp; tap + to add</span>
           </div>
 
-          <!-- Dual Split Layout: Brands & House Mixes on Left, Drum on Right -->
-          <div class="flex gap-2.5 items-stretch">
-            
-            <!-- LEFT: HOUSE MIXES & BRANDS VERTICAL STATION DIAL -->
-            <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
-              <div class="v-ruler-track" id="brandStationsTrack">
-                <!-- Populated via JS -->
-              </div>
-            </aside>
-
-            <!-- RIGHT: 3D MECHANICAL ROTARY DRUM -->
-            <div 
-              id="rotaryWheel" 
-              class="cylinder-wheel-container"
-              onwheel="handleWheelScroll(event)"
-              ontouchstart="handleTouchStart(event)"
-              ontouchmove="handleTouchMove(event)"
-              ontouchend="handleTouchEnd(event)"
-            >
-              <div class="cylinder-drum-viewport">
-                <!-- Center Target Slot -->
-                <div class="cylinder-target-slot"></div>
-                <!-- 3D Drum Items Track -->
-                <div class="cylinder-drum-track" id="cylinderDrumTrack">
-                  <!-- Populated via JS -->
-                </div>
-              </div>
-            </div>
-
+          <!-- Category Filter Tabs (Scrollable luxury pills) -->
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="mixLabCategoryTabs">
+            <!-- Populated via JS: House Mixes, All Flavors, MustHave, Tangiers, Darkside, etc. -->
           </div>
 
-          <!-- 1-Tap Add To Bowl Confirmation Button -->
-          <button 
-            onclick="confirmWheelSelection()" 
-            class="mt-2 w-full bg-transparent hover:bg-amber-500/10 border-t border-b border-amber-500/40 text-amber-400 hover:text-white font-serif tracking-[0.16em] text-xs font-bold py-2.5 flex items-center justify-center gap-2 transition uppercase active:scale-98 select-none"
-          >
-            <span>+ ADD SELECTION TO BOWL</span>
-          </button>
+          <!-- High-Contrast Flavor Items List -->
+          <div class="space-y-1.5 max-h-[280px] overflow-y-auto no-scrollbar pr-0.5" id="mixLabCatalogList">
+            <!-- Populated via JS -->
+          </div>
+
         </div>
       </section>
 
@@ -3546,6 +3518,12 @@
       const activePanel = document.getElementById(`customer-view-${tabId}`);
       if (activePanel) activePanel.classList.remove('hidden');
 
+      // Hide fixed skyline background when not in menu view so Mix Lab & Tab are crisp, solid obsidian
+      const skylineBg = document.querySelector('#customer-view-menu .menu-skyline-bg');
+      if (skylineBg) {
+        skylineBg.style.display = (tabId === 'menu') ? 'block' : 'none';
+      }
+
       if (tabId === 'menu') renderCustomerMenu();
       if (tabId === 'lab') renderMixLab();
       if (tabId === 'tab') renderMyTabView();
@@ -4678,158 +4656,120 @@
       const inventory = CustomerStash.getInventory();
       const distinctBrands = Array.from(new Set(inventory.map(i => i.brand)));
       
-      const stationsTrack = document.getElementById('brandStationsTrack');
-      stationsTrack.innerHTML = '';
+      const tabsContainer = document.getElementById('mixLabCategoryTabs');
+      if (!tabsContainer) return;
+      tabsContainer.innerHTML = '';
 
-      const houseStation = document.createElement('div');
+      // 1. House Mixes Tab
+      const houseTab = document.createElement('button');
       const isHouseActive = selectedStationType === 'house_mixes';
-      houseStation.className = `v-ruler-mark-station ${isHouseActive ? 'active' : ''}`;
-      houseStation.onclick = () => {
+      houseTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isHouseActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
+      houseTab.innerHTML = `👑 House Mixes (${EMPIRE_HOUSE_MIXES.length})`;
+      houseTab.onclick = () => {
         selectedStationType = 'house_mixes';
-        wheelSelectedIndex = 0;
         initBrandStationDial();
-        renderDrumTrack();
+        renderMixLabCatalog();
       };
-      houseStation.innerHTML = `
-        <span class="truncate text-brand-gold font-bold">👑 House Mixes</span>
-        <span class="v-ruler-station-count">${EMPIRE_HOUSE_MIXES.length}</span>
-      `;
-      stationsTrack.appendChild(houseStation);
+      tabsContainer.appendChild(houseTab);
 
-      const allStation = document.createElement('div');
+      // 2. All Single Flavors Tab
+      const allTab = document.createElement('button');
       const isAllActive = selectedStationType === 'all';
-      allStation.className = `v-ruler-mark-station ${isAllActive ? 'active' : ''}`;
-      allStation.onclick = () => {
+      const allCount = inventory.filter(i => i.stock !== 'out_of_stock').length;
+      allTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isAllActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
+      allTab.innerHTML = `All Flavors (${allCount})`;
+      allTab.onclick = () => {
         selectedStationType = 'all';
-        wheelSelectedIndex = 0;
         initBrandStationDial();
-        renderDrumTrack();
+        renderMixLabCatalog();
       };
-      allStation.innerHTML = `
-        <span class="truncate">All Single Flavors</span>
-        <span class="v-ruler-station-count">${inventory.filter(i => i.stock !== 'out_of_stock').length}</span>
-      `;
-      stationsTrack.appendChild(allStation);
+      tabsContainer.appendChild(allTab);
 
+      // 3. Brand Tabs
       distinctBrands.forEach(brandName => {
         const inStockCount = inventory.filter(i => i.brand === brandName && i.stock !== 'out_of_stock').length;
         if (inStockCount === 0) return;
 
-        const station = document.createElement('div');
+        const brandTab = document.createElement('button');
         const isActive = selectedStationType.toLowerCase() === brandName.toLowerCase();
-        station.className = `v-ruler-mark-station ${isActive ? 'active' : ''}`;
-        station.onclick = () => {
+        brandTab.className = `px-3 py-1 text-xs font-serif whitespace-nowrap transition uppercase tracking-wider rounded-sm select-none ${isActive ? 'bg-amber-400/20 text-amber-300 font-bold border border-amber-400/50' : 'text-zinc-400 hover:text-white border border-white/[0.08] bg-black'}`;
+        brandTab.innerHTML = `${brandName} (${inStockCount})`;
+        brandTab.onclick = () => {
           selectedStationType = brandName;
-          wheelSelectedIndex = 0;
           initBrandStationDial();
-          renderDrumTrack();
+          renderMixLabCatalog();
         };
-        station.innerHTML = `
-          <span class="truncate">${brandName}</span>
-          <span class="v-ruler-station-count">${inStockCount}</span>
-        `;
-        stationsTrack.appendChild(station);
+        tabsContainer.appendChild(brandTab);
       });
 
-      if (selectedStationType === 'house_mixes') {
-        filteredWheelItems = EMPIRE_HOUSE_MIXES;
-      } else {
-        filteredWheelItems = inventory.filter(item => (selectedStationType === 'all' || item.brand.toLowerCase() === selectedStationType.toLowerCase()) && item.stock !== 'out_of_stock');
-      }
-      renderDrumTrack();
+      renderMixLabCatalog();
     }
 
-    function renderDrumTrack() {
-      const track = document.getElementById('cylinderDrumTrack');
-      track.innerHTML = '';
+    function renderMixLabCatalog() {
+      const listCont = document.getElementById('mixLabCatalogList');
+      if (!listCont) return;
+      listCont.innerHTML = '';
 
-      const count = filteredWheelItems.length;
-      if (count === 0) return;
-
+      const inventory = CustomerStash.getInventory();
       const isHouseMode = (selectedStationType === 'house_mixes');
 
-      filteredWheelItems.forEach((item, index) => {
-        const diff = index - wheelSelectedIndex;
-        const isSelected = index === wheelSelectedIndex;
-        const isVisible = Math.abs(diff) <= 3;
-        if (!isVisible) return;
+      let items = [];
+      if (isHouseMode) {
+        items = EMPIRE_HOUSE_MIXES;
+      } else {
+        items = inventory.filter(item => (selectedStationType === 'all' || item.brand.toLowerCase() === selectedStationType.toLowerCase()) && item.stock !== 'out_of_stock');
+      }
 
-        const yOffset = diff * 44;
-        const scale = isSelected ? 1 : Math.max(0.78, 1 - Math.abs(diff) * 0.08);
-        const opacity = isSelected ? 1 : Math.max(0.24, 1 - Math.abs(diff) * 0.28);
-        const rotateX = diff * -14;
+      if (items.length === 0) {
+        listCont.innerHTML = `<p class="text-xs text-zinc-500 italic p-3 text-center">No flavors available in this category.</p>`;
+        return;
+      }
 
-        const row = document.createElement('button');
-        row.type = 'button';
-        row.className = `cylinder-item-row ${isSelected ? 'active' : ''}`;
-        row.style.transform = `translate3d(0, ${yOffset}px, 0) rotateX(${rotateX}deg) scale(${scale})`;
-        row.style.opacity = opacity;
+      items.forEach(item => {
+        const isHouse = !!item.flavors;
+        const inBowl = activeFlavors.some(f => f.id === item.id);
+        const card = document.createElement('div');
+        card.className = 'p-2.5 bg-black border border-white/[0.12] hover:border-amber-400/50 transition flex items-center justify-between gap-2.5 select-none';
 
-        row.onclick = () => {
-          if (isSelected) confirmWheelSelection();
-          else { wheelSelectedIndex = index; renderDrumTrack(); }
-        };
-
-        if (isHouseMode) {
-          row.innerHTML = `
-            <div class="flex items-center min-w-0">
-              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
-              <span class="truncate font-bold">${item.name}</span>
+        if (isHouse) {
+          card.innerHTML = `
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-1.5">
+                <span class="text-amber-400 text-xs">👑</span>
+                <span class="font-serif text-sm font-bold text-white tracking-wide truncate">${item.name}</span>
+                <span class="text-[9px] text-amber-400 border border-amber-500/30 px-1 font-mono">${item.badge || 'Craft'}</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 italic font-sans truncate mt-0.5">${item.desc}</p>
             </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <span class="text-[11px] bg-amber-950/80 text-brand-gold border border-amber-800/40 px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
-            </div>
+            <button onclick="loadHouseMixIntoBowl('${item.id}')" class="text-[10px] font-serif uppercase tracking-wider px-3 py-1.5 bg-transparent border border-amber-500/60 hover:bg-amber-400 hover:text-black text-amber-400 font-bold transition flex-shrink-0 active:scale-95">
+              LOAD BLEND
+            </button>
           `;
         } else {
-          row.innerHTML = `
-            <div class="flex items-center min-w-0">
-              <span class="cylinder-color-bar" style="background: ${item.color};"></span>
-              <span class="truncate">${item.name}</span>
+          const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+          const dotColor = getProfileDotColor(primaryProfile);
+
+          card.innerHTML = `
+            <div class="min-w-0 flex-1 cursor-pointer" onclick="addFlavorToActiveBowl('${item.id}')">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
+                <span class="font-serif text-sm font-bold text-white tracking-wide truncate">${item.name}</span>
+                <span class="text-[9px] text-zinc-300 bg-zinc-900 border border-white/[0.08] px-1 font-mono">${item.brand}</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 italic font-sans truncate mt-0.5">${item.desc || (item.profiles ? item.profiles.join(' · ') : 'Craft Tobacco')}</p>
             </div>
-            <div class="flex items-center gap-1.5 flex-shrink-0">
-              <span class="text-[11px] bg-zinc-900 text-zinc-400 px-1.5 py-0.5 rounded font-bold">${item.brand}</span>
-              <span class="text-[11px] text-zinc-400 font-bold font-mono">Str ${item.strength}</span>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <span class="text-[10px] text-amber-400 font-mono font-semibold">⚡ ${item.strength || 7}</span>
+              <button onclick="addFlavorToActiveBowl('${item.id}')" class="text-[10px] font-serif uppercase tracking-wider px-2.5 py-1.5 ${inBowl ? 'bg-amber-400 text-black font-bold' : 'bg-transparent border border-white/20 hover:border-amber-400 text-zinc-200 hover:text-white'} transition active:scale-95">
+                ${inBowl ? '✓ IN BOWL' : '+ ADD'}
+              </button>
             </div>
           `;
         }
-        track.appendChild(row);
+
+        listCont.appendChild(card);
       });
-
-      const activeItem = filteredWheelItems[wheelSelectedIndex];
-      if (activeItem) {
-        if (isHouseMode) {
-          document.getElementById('wheelConfirmBtnText').textContent = `👑 Load House Mix: "${activeItem.name}"`;
-        } else {
-          document.getElementById('wheelConfirmBtnText').textContent = `+ Add "${activeItem.name}" to Bowl`;
-        }
-      }
     }
-
-    function handleWheelScroll(e) {
-      e.preventDefault();
-      const count = filteredWheelItems.length;
-      if (count === 0) return;
-      if (e.deltaY > 0 && wheelSelectedIndex < count - 1) { wheelSelectedIndex++; renderDrumTrack(); }
-      else if (e.deltaY < 0 && wheelSelectedIndex > 0) { wheelSelectedIndex--; renderDrumTrack(); }
-    }
-
-    function handleTouchStart(e) { touchStartY = e.touches[0].clientY; touchAccumulator = 0; }
-    function handleTouchMove(e) {
-      if (touchStartY === null) return;
-      const currentY = e.touches[0].clientY;
-      const delta = touchStartY - currentY;
-      touchStartY = currentY;
-      touchAccumulator += delta;
-
-      const step = 28;
-      const count = filteredWheelItems.length;
-      if (touchAccumulator > step && wheelSelectedIndex < count - 1) {
-        wheelSelectedIndex++; touchAccumulator = 0; renderDrumTrack();
-      } else if (touchAccumulator < -step && wheelSelectedIndex > 0) {
-        wheelSelectedIndex--; touchAccumulator = 0; renderDrumTrack();
-      }
-    }
-    function handleTouchEnd() { touchStartY = null; touchAccumulator = 0; }
 
     function clearBowl() {
       activeFlavors = [];
@@ -5040,36 +4980,40 @@
       activeFlavors.forEach((f, idx) => {
         const item = inventory.find(i => i.id === f.id) || STOKED_MASTER_INVENTORY[0];
         const grams = ((22 * f.percent) / 100).toFixed(1);
+        const primaryProfile = (item.profiles && item.profiles[0]) ? item.profiles[0] : 'Craft';
+        const dotColor = getProfileDotColor(primaryProfile);
+
         const row = document.createElement('div');
-        row.className = 'bg-zinc-950 border border-zinc-800/80 rounded-xl p-2 flex items-center justify-between gap-2.5 transition-all';
+        row.className = 'bg-black border border-white/[0.12] p-2.5 flex items-center justify-between gap-2.5 select-none transition-all';
         row.innerHTML = `
-          <div class="flex items-center gap-2 min-w-0 flex-1">
-            <span class="w-1.5 h-6 rounded-full flex-shrink-0" style="background: ${item.color};"></span>
+          <div class="flex items-center gap-2.5 min-w-0 flex-1">
+            <span class="w-2 h-2 rounded-full flex-shrink-0" style="background: ${dotColor};"></span>
             <div class="truncate">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-white truncate">${item.name}</span>
-                <span class="text-[11px] bg-zinc-900 text-zinc-400 px-1 py-0.2 rounded font-bold">${item.brand}</span>
+              <div class="flex items-center gap-2">
+                <span class="font-serif text-sm font-bold text-white truncate">${item.name}</span>
+                <span class="text-[9px] bg-zinc-900 border border-white/[0.08] text-zinc-300 px-1.5 py-0.2 font-mono font-bold">${item.brand}</span>
               </div>
-              <span class="text-[11px] text-zinc-500 font-mono">Str ${item.strength || 7}/10</span>
+              <span class="text-[10px] text-zinc-400 font-mono">⚡ Strength ${item.strength || 7}/10</span>
             </div>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-3">
             <div class="text-right">
-              <span class="text-xs font-bold text-brand-gold font-mono-nums">${f.percent}%</span>
-              <span class="text-[11px] text-zinc-500 block font-mono-nums">${grams}g</span>
+              <span class="text-xs font-bold text-amber-400 font-mono">${f.percent}%</span>
+              <span class="text-[10px] text-zinc-400 block font-mono">${grams}g</span>
             </div>
-            <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+            <button onclick="removeFlavor(${idx})" class="text-zinc-500 hover:text-red-400 p-1 flex-shrink-0 transition">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
           </div>
         `;
         container.appendChild(row);
       });
       profileContainer.innerHTML = '';
-      const profileEmojis = { 'Mints': '🍃', 'Ice': '❄️', 'Cooling': '🧊', 'Extreme Ice': '🥶', 'Berries': '🍓', 'Citrus': '🍋', 'Sweet': '🍯', 'Tropical': '🥭', 'Dessert': '🍰', 'Creamy': '🥛', 'Warm Spices': '🪵', 'Floral': '🌸', 'Orchard Fruit': '🍑', 'Beverage': '🥤', 'Tea': '🫖', 'Herbal': '🌿', 'Anise': '⭐', 'Heavy Nicotine': '⚡' };
       activeProfilesSet.forEach(prof => {
-        const emoji = profileEmojis[prof] || '✦';
+        const dotColor = getProfileDotColor(prof);
         const span = document.createElement('span');
-        span.className = 'text-[11px] font-bold bg-zinc-950 text-zinc-300 px-2 py-0.5 rounded-lg border border-zinc-850 flex items-center gap-1';
-        span.innerHTML = `<span>${emoji}</span><span>#${prof}</span>`;
+        span.className = 'text-[11px] font-sans text-zinc-200 border border-white/[0.1] px-2 py-0.5 flex items-center gap-1.5 bg-black';
+        span.innerHTML = `<span class="w-1.5 h-1.5 rounded-full inline-block" style="background: ${dotColor};"></span><span>${prof}</span>`;
         profileContainer.appendChild(span);
       });
 
@@ -5097,6 +5041,9 @@
       document.getElementById('totalPriceText').textContent = `$${finalPrice.toFixed(2)}`;
       document.getElementById('taxEstimateText').textContent = `+ $${estTax.toFixed(2)} (${taxConfig.primaryRate}% tax)`;
       document.getElementById('orderTypeLabel').textContent = roundCount === 1 ? '[FIRST BOWL]' : '[REFILL / REPACK -$10]';
+      
+      initBrandStationDial();
+      updateActiveBowlNotificationUI();
       renderIcons();
     }
 
