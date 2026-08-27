@@ -835,8 +835,8 @@
 
     @media (min-width: 768px) {
       .landing-center-desktop-offset {
-        transform: translateY(-30px);
-        padding-top: 0 !important;
+        transform: translateY(15px);
+        padding-top: 1.5rem !important;
       }
     }
 
@@ -3626,17 +3626,16 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // If it's a drink, render with dotted leader and price
+      // If it's a drink, render with bright white name & price, slightly duller white description, and NO click action
       if (isDrink) {
-        const drinkClick = isVipLoggedIn ? `addDrinkToTab('${item.name}', ${item.price}, '${item.icon}')` : `openVipLoginModal()`;
         return `
-          <div onclick="${drinkClick}" class="editorial-item mb-5">
-            <div class="item-top-row">
-              <span class="item-name">${item.name}</span>
-              <span class="item-leader"></span>
-              <span class="item-price">$${priceStr}</span>
+          <div class="editorial-item mb-4 cursor-default select-none">
+            <div class="item-top-row flex items-baseline justify-between w-full">
+              <span class="font-serif text-[1.14rem] font-bold text-white tracking-wide">${item.name}</span>
+              <span class="item-leader flex-grow mx-2.5 border-b border-dotted border-white/40 relative -top-1"></span>
+              <span class="font-serif text-[1.14rem] font-bold text-white whitespace-nowrap">$${priceStr}</span>
             </div>
-            <div class="item-desc">${item.desc}</div>
+            <div class="font-sans text-[0.84rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed">${item.desc}</div>
           </div>
         `;
       }
@@ -3830,7 +3829,7 @@
         });
 
         spreadCont.innerHTML = `
-          <div class="pt-2 max-w-lg mx-auto space-y-4">
+          <div class="pt-2 max-w-lg mx-auto space-y-4 px-1 overflow-y-auto max-h-[75vh] no-scrollbar">
             ${drinksHtml}
           </div>
         `;
