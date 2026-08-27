@@ -35,6 +35,18 @@
       background: #0F1420;
     }
 
+    /* SLIM ALERT ROW STYLING */
+    .alert-row {
+      background: #080C12;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      transition: all 0.18s ease;
+    }
+    .alert-row:hover {
+      border-color: rgba(229, 169, 60, 0.4);
+      background: #0D121B;
+    }
+
     /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
     .floorplan-canvas {
       position: relative;
@@ -203,8 +215,12 @@
         <strong id="statCoalsDueCount" class="text-red-400 font-bold">0</strong>
       </div>
       <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-amber-500/20 text-amber-300">
-        <span>⭐ Service Due:</span>
+        <span>⭐ Service:</span>
         <strong id="statServiceDueCount" class="text-amber-400 font-bold">0</strong>
+      </div>
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-cyan-500/20 text-cyan-300">
+        <span>💨 Orders:</span>
+        <strong id="statOrdersDueCount" class="text-cyan-400 font-bold">0</strong>
       </div>
     </div>
 
@@ -227,29 +243,29 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start flex-1">
       
-      <!-- ==================== LEFT COLUMN: SLIM ACTION REQUIRED DOCK (3 COLS) ==================== -->
-      <aside class="lg:col-span-3 flex flex-col gap-2.5">
+      <!-- ==================== LEFT COLUMN: SLIM UNIVERSAL ACTION DOCK (4 COLS) ==================== -->
+      <aside class="lg:col-span-4 flex flex-col gap-2.5">
         
         <!-- Header -->
         <div class="p-3 bg-[#080C12] border border-white/10 rounded-2xl flex justify-between items-center shadow-lg">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-            <h2 class="text-xs font-mono font-bold text-white uppercase tracking-wider">ACTION DOCK</h2>
+            <h2 class="text-xs font-mono font-bold text-white uppercase tracking-wider">LIVE ACTION DOCK</h2>
           </div>
           <span id="actionTickerCount" class="px-2 py-0.5 bg-red-950/80 text-red-300 font-mono text-[11px] font-bold rounded-lg border border-red-800/60">
             0 PENDING
           </span>
         </div>
 
-        <!-- Action Items Stream -->
-        <div class="space-y-2 max-h-[75vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
+        <!-- Slim Action Rows Stream -->
+        <div class="space-y-1.5 max-h-[75vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
           <!-- Populated dynamically via renderActionRequiredStream() -->
         </div>
 
       </aside>
 
-      <!-- ==================== RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER (9 COLS) ==================== -->
-      <section class="lg:col-span-9 flex flex-col gap-3">
+      <!-- ==================== RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER (8 COLS) ==================== -->
+      <section class="lg:col-span-8 flex flex-col gap-3">
         
         <!-- Top Controller Strip: View Toggle + Zone Pills -->
         <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#080C12] border border-white/10 rounded-2xl shadow-lg">
@@ -525,7 +541,7 @@
       { id: 'infra-host', name: 'ENTRANCE', zone: 'indoor', x: 5, y: 82, w: 100, h: 36, shape: 'rect', isInfra: true, icon: 'log-in' },
       { id: 'infra-patio', name: 'OUTDOOR PATIO DECK', zone: 'patio', x: 62, y: 76, w: 160, h: 36, shape: 'rect', isInfra: true, icon: 'sun' },
 
-      // VIP Velvet Booths (Left/Right Luxury Perimeter)
+      // VIP Velvet Booths
       { id: 'vip-1', name: 'VIP 1', label: 'VIP Booth 1 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 22, w: 96, h: 62, shape: 'rect' },
       { id: 'vip-2', name: 'VIP 2', label: 'VIP Booth 2 (8P Velvet Couch)', zone: 'vip', capacity: 8, x: 74, y: 48, w: 96, h: 62, shape: 'rect' },
 
@@ -543,6 +559,12 @@
       // Patio Tables
       { id: 'patio-1', name: 'P1', label: 'Patio Table 1 (4-Top)', zone: 'patio', capacity: 4, x: 64, y: 62, w: 56, h: 56, shape: 'circle' },
       { id: 'patio-2', name: 'P2', label: 'Patio Table 2 (4-Top)', zone: 'patio', capacity: 4, x: 82, y: 62, w: 56, h: 56, shape: 'circle' }
+    ];
+
+    // Live Incoming Kitchen / Bar Orders Queue
+    let liveIncomingOrders = [
+      { id: 'ord-1', tableId: 'vip-1', tableName: 'VIP 1', type: 'bowl', details: 'Pink Cane (MustHave 70% / Tangiers 30%)', timestamp: Date.now() - (3 * 60 * 1000) },
+      { id: 'ord-2', tableId: 'bar-2', tableName: 'Bar 2', type: 'drink', details: '2x Red Bull, 1x Perrier', timestamp: Date.now() - (1 * 60 * 1000) }
     ];
 
     // Authoritative State for Lounge Tables
@@ -849,121 +871,155 @@
       const elActive = document.getElementById('statActiveTablesCount');
       const elCoals = document.getElementById('statCoalsDueCount');
       const elService = document.getElementById('statServiceDueCount');
+      const elOrders = document.getElementById('statOrdersDueCount');
       const elTickerCount = document.getElementById('actionTickerCount');
 
       if (elActive) elActive.textContent = activeCount;
       if (elCoals) elCoals.textContent = coalsDueCount;
       if (elService) elService.textContent = serviceDueCount;
-      if (elTickerCount) elTickerCount.textContent = `${coalsDueCount + serviceDueCount} PENDING`;
+      if (elOrders) elOrders.textContent = liveIncomingOrders.length;
+      
+      const totalPending = coalsDueCount + serviceDueCount + liveIncomingOrders.length;
+      if (elTickerCount) elTickerCount.textContent = `${totalPending} PENDING`;
     }
 
+    // ==================== SLIM UNIVERSAL ALERT ROWS ====================
     function renderActionRequiredStream() {
       const container = document.getElementById('actionRequiredList');
       if (!container) return;
 
       const now = Date.now();
-      let actions = [];
+      let alerts = [];
 
+      // 1. Live Incoming Bowl & Drink Orders
+      liveIncomingOrders.forEach(ord => {
+        alerts.push({
+          id: ord.id,
+          type: ord.type,
+          tableId: ord.tableId,
+          tableName: ord.tableName,
+          icon: ord.type === 'bowl' ? '💨' : '🥤',
+          badgeText: ord.type === 'bowl' ? 'BOWL PREP' : 'DRINKS',
+          badgeClass: ord.type === 'bowl' ? 'bg-amber-400/20 text-amber-300 border-amber-400/40' : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+          title: ord.details,
+          actionLabel: '✓ RUN',
+          actionHandler: `completeIncomingOrder('${ord.id}')`,
+          urgency: 'medium'
+        });
+      });
+
+      // 2. Overdue Coal Checks (25m cycle)
       loungeDeckTables.forEach(t => {
-        if (t.status === 'occupied') {
-          // 1. 25-Minute Coal Check
-          if (t.lastCoalRotation) {
-            const elapsed = Math.floor((now - t.lastCoalRotation) / 1000);
-            const remaining = (25 * 60) - elapsed;
-            if (remaining <= 0) {
-              const overdueMins = Math.abs(Math.floor(remaining / 60));
-              actions.push({
-                type: 'coal',
-                tableId: t.id,
-                tableName: t.name,
-                zone: t.zone,
-                guest: t.guest,
-                urgency: 'high',
-                title: `🔥 Coal Rotation Due`,
-                desc: `25m cycle expired (${overdueMins}m overdue)`,
-                actionText: '✓ Rotated'
-              });
-            } else if (remaining <= 300) {
-              const minsLeft = Math.ceil(remaining / 60);
-              actions.push({
-                type: 'coal-warning',
-                tableId: t.id,
-                tableName: t.name,
-                zone: t.zone,
-                guest: t.guest,
-                urgency: 'medium',
-                title: `🔥 Coals Due Soon`,
-                desc: `Rotate in ${minsLeft}m`,
-                actionText: '✓ Rotate'
-              });
-            }
-          }
-
-          // 2. 5-Minute Quality of Service Check
-          if (t.lastServiceCheck) {
-            const elapsedService = Math.floor((now - t.lastServiceCheck) / 1000);
-            const remainingService = (5 * 60) - elapsedService;
-            if (remainingService <= 0) {
-              actions.push({
-                type: 'service',
-                tableId: t.id,
-                tableName: t.name,
-                zone: t.zone,
-                guest: t.guest,
-                urgency: 'medium',
-                title: `⭐ 5m Quality Check`,
-                desc: `Check heat & satisfaction`,
-                actionText: '✓ Checked'
-              });
-            }
+        if (t.status === 'occupied' && t.lastCoalRotation) {
+          const elapsed = Math.floor((now - t.lastCoalRotation) / 1000);
+          const remaining = (25 * 60) - elapsed;
+          if (remaining <= 0) {
+            const overdueMins = Math.abs(Math.floor(remaining / 60));
+            alerts.push({
+              id: `coal-${t.id}`,
+              type: 'coal',
+              tableId: t.id,
+              tableName: t.name,
+              icon: '🔥',
+              badgeText: 'COALS DUE',
+              badgeClass: 'bg-red-500/30 text-red-300 border-red-500/50 animate-pulse',
+              title: `25m cycle expired (${overdueMins}m)`,
+              actionLabel: '✓ ROTATE',
+              actionHandler: `dismissActionItem('${t.id}', 'coal')`,
+              urgency: 'high'
+            });
+          } else if (remaining <= 300) {
+            const minsLeft = Math.ceil(remaining / 60);
+            alerts.push({
+              id: `coal-warn-${t.id}`,
+              type: 'coal-warning',
+              tableId: t.id,
+              tableName: t.name,
+              icon: '🔥',
+              badgeText: 'COAL DUE SOON',
+              badgeClass: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
+              title: `Rotate coals in ${minsLeft}m`,
+              actionLabel: '✓ ROTATE',
+              actionHandler: `dismissActionItem('${t.id}', 'coal')`,
+              urgency: 'medium'
+            });
           }
         }
       });
 
-      if (actions.length === 0) {
+      // 3. 5-Minute Quality of Service Checks
+      loungeDeckTables.forEach(t => {
+        if (t.status === 'occupied' && t.lastServiceCheck) {
+          const elapsedService = Math.floor((now - t.lastServiceCheck) / 1000);
+          const remainingService = (5 * 60) - elapsedService;
+          if (remainingService <= 0) {
+            alerts.push({
+              id: `service-${t.id}`,
+              type: 'service',
+              tableId: t.id,
+              tableName: t.name,
+              icon: '⭐',
+              badgeText: 'QUALITY CHECK',
+              badgeClass: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
+              title: '5m check on heat & taste',
+              actionLabel: '✓ CHECK',
+              actionHandler: `dismissActionItem('${t.id}', 'service')`,
+              urgency: 'medium'
+            });
+          }
+        }
+      });
+
+      if (alerts.length === 0) {
         container.innerHTML = `
-          <div class="p-5 bg-[#080C12] border border-white/5 rounded-2xl text-center space-y-1.5 shadow-md">
-            <div class="text-xl">✨</div>
-            <div class="text-xs font-mono font-bold text-emerald-400 uppercase">All Tables Serviced</div>
-            <div class="text-[10px] font-mono text-zinc-500">Zero pending coal rotations or quality checks.</div>
+          <div class="p-4 bg-[#080C12] border border-white/5 rounded-2xl text-center space-y-1 shadow-md">
+            <div class="text-base">✨</div>
+            <div class="text-xs font-mono font-bold text-emerald-400 uppercase">Dock Clear</div>
+            <div class="text-[10px] font-mono text-zinc-500">No pending orders, coal rotations, or checks.</div>
           </div>
         `;
         return;
       }
 
       let html = '';
-      actions.forEach(act => {
-        let borderClass = 'border-yellow-500/40 bg-[#120F08]';
-        let badgeColor = 'bg-yellow-500/20 text-yellow-300';
-        if (act.urgency === 'high') {
-          borderClass = 'border-red-500/60 bg-[#16080A] shadow-[0_0_15px_rgba(239,68,68,0.2)] animate-pulse';
-          badgeColor = 'bg-red-500/30 text-red-300 border border-red-500/50';
-        }
+      alerts.forEach(item => {
+        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 shadow-[0_0_12px_rgba(239,68,68,0.2)]' : 'border-white/10';
 
         html += `
-          <div class="p-3 ${borderClass} border rounded-2xl flex flex-col justify-between gap-2 shadow-lg transition">
-            <div>
-              <div class="flex justify-between items-center">
-                <span class="font-mono text-xs font-extrabold text-white">${act.tableName}</span>
-                <span class="px-1.5 py-0.2 text-[9px] font-mono font-bold uppercase rounded-md ${badgeColor}">${act.title}</span>
+          <div class="alert-row p-2.5 ${borderGlow} flex items-center justify-between gap-2 shadow-md">
+            
+            <!-- Left: Table & Details (Click opens table modal) -->
+            <div onclick="openTableDetailModal('${item.tableId}')" class="flex items-center gap-2 cursor-pointer flex-1 min-w-0">
+              <span class="text-sm select-none">${item.icon}</span>
+              <div class="truncate">
+                <div class="flex items-center gap-1.5 truncate">
+                  <span class="font-mono text-xs font-extrabold text-white">${item.tableName}</span>
+                  <span class="px-1.5 py-0.2 text-[8px] font-mono font-bold uppercase rounded border ${item.badgeClass}">${item.badgeText}</span>
+                </div>
+                <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${item.title}</span>
               </div>
-              <span class="text-[10px] font-mono text-zinc-400 block mt-0.5">${act.guest}</span>
-              <p class="text-[10px] font-mono text-zinc-200 mt-1">${act.desc}</p>
             </div>
 
-            <div class="pt-2 border-t border-white/10 flex justify-between items-center">
-              <button onclick="openTableDetailModal('${act.tableId}')" class="text-[10px] font-mono text-amber-400 hover:underline">
-                Summary ➔
-              </button>
-              <button onclick="dismissActionItem('${act.tableId}', '${act.type}')" class="px-2.5 py-1 bg-white text-black font-mono font-bold text-[10px] rounded-lg uppercase tracking-wider hover:bg-amber-300 transition active:scale-95">
-                ${act.actionText}
-              </button>
-            </div>
+            <!-- Right: 1-Tap Fast Action Button -->
+            <button onclick="${item.actionHandler}" class="px-2.5 py-1 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[9px] uppercase tracking-wider rounded-lg transition active:scale-95 flex-shrink-0 shadow">
+              ${item.actionLabel}
+            </button>
+
           </div>
         `;
       });
 
       container.innerHTML = html;
+    }
+
+    function completeIncomingOrder(orderId) {
+      const idx = liveIncomingOrders.findIndex(o => o.id === orderId);
+      if (idx !== -1) {
+        const ord = liveIncomingOrders[idx];
+        liveIncomingOrders.splice(idx, 1);
+        showToast('✓ Order Dispatched', `${ord.tableName}: ${ord.details} marked ready & delivered.`);
+        renderDeckOverview();
+      }
     }
 
     function dismissActionItem(tableId, actionType) {
@@ -1002,7 +1058,6 @@
         const table = loungeDeckTables.find(t => t.id === item.id);
         if (!table) return;
 
-        // Zone filter check
         if (activeZoneFilter !== 'all' && table.zone !== activeZoneFilter) {
           return;
         }
@@ -1019,11 +1074,10 @@
           const seatedMins = Math.floor((now - table.seatedTime) / (60 * 1000));
           timerSnippet = `<span class="text-[8px] font-mono text-zinc-400 mt-0.5">⏱️ ${seatedMins}m</span>`;
 
-          // Check if coals due
           if (table.lastCoalRotation && (now - table.lastCoalRotation) >= (25 * 60 * 1000)) {
             nodeClass += ' coals-due';
             statusDot = '<span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>';
-            timerSnippet = `<span class="text-[8px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">🔥 COALS DUE</span>`;
+            timerSnippet = `<span class="text-[8px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">🔥 COALS</span>`;
           } else if (table.lastServiceCheck && (now - table.lastServiceCheck) >= (5 * 60 * 1000)) {
             nodeClass += ' service-due';
             statusDot = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>';
@@ -1386,6 +1440,16 @@
         type: 'hookah'
       });
 
+      // Add to Live Action Dock
+      liveIncomingOrders.unshift({
+        id: `ord-${Date.now()}`,
+        tableId: table.id,
+        tableName: table.name,
+        type: 'bowl',
+        details: recipeText,
+        timestamp: Date.now()
+      });
+
       triggerScreenGlow('amber');
       closeMixLabModal();
       openTableDetailModal(selectedActiveTableId);
@@ -1443,6 +1507,16 @@
         type: 'drink'
       });
 
+      // Add to Live Action Dock
+      liveIncomingOrders.unshift({
+        id: `ord-${Date.now()}`,
+        tableId: table.id,
+        tableName: table.name,
+        type: 'drink',
+        details: name,
+        timestamp: Date.now()
+      });
+
       triggerScreenGlow('cyan');
       closeDrinkModal();
       openTableDetailModal(selectedActiveTableId);
@@ -1452,17 +1526,35 @@
 
     // ==================== SIMULATE ALERTS & TIMERS ====================
     function simulateActionAlert() {
-      const activeList = loungeDeckTables.filter(t => t.status === 'occupied');
-      if (activeList.length === 0) {
-        showToast('ℹ️ Notice', 'No occupied tables. Open a table to test live timers.');
-        return;
-      }
-      const target = activeList[Math.floor(Math.random() * activeList.length)];
-      
-      const alertChoices = ['coal', 'service'];
-      const chosen = alertChoices[Math.floor(Math.random() * alertChoices.length)];
+      const simTypes = ['bowl', 'drink', 'coal', 'service'];
+      const chosen = simTypes[Math.floor(Math.random() * simTypes.length)];
 
-      if (chosen === 'coal') {
+      const activeList = loungeDeckTables.filter(t => t.status === 'occupied');
+      const target = activeList.length > 0 ? activeList[Math.floor(Math.random() * activeList.length)] : loungeDeckTables[0];
+
+      if (chosen === 'bowl') {
+        liveIncomingOrders.unshift({
+          id: `ord-${Date.now()}`,
+          tableId: target.id,
+          tableName: target.name,
+          type: 'bowl',
+          details: 'Empire Royalty (Noir Reserve)',
+          timestamp: Date.now()
+        });
+        triggerScreenGlow('amber');
+        showToast('💨 New Bowl Order', `${target.name}: Empire Royalty dispatched from mix lab.`);
+      } else if (chosen === 'drink') {
+        liveIncomingOrders.unshift({
+          id: `ord-${Date.now()}`,
+          tableId: target.id,
+          tableName: target.name,
+          type: 'drink',
+          details: '2x Red Bull, 1x Mexican Coke',
+          timestamp: Date.now()
+        });
+        triggerScreenGlow('cyan');
+        showToast('🥤 New Drink Order', `${target.name}: 2x Red Bull, 1x Mexican Coke.`);
+      } else if (chosen === 'coal') {
         target.lastCoalRotation = Date.now() - (26 * 60 * 1000);
         triggerScreenGlow('red');
         showToast('🚨 Simulated Coal Alert', `${target.name}: Coals have reached 25-minute cycle.`);
