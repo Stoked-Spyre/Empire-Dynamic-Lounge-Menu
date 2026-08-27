@@ -759,13 +759,16 @@
       inset: 0;
       z-index: 99999;
       overflow: hidden;
-      background: #000000;
-      transform-origin: 50% 34%;
-      will-change: transform, opacity;
+      background: transparent;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
+      transition: opacity 0.5s ease;
+    }
+    .cinematic-stage.entering {
+      opacity: 0;
+      pointer-events: none;
     }
     .cinematic-stage.hidden-stage {
       display: none !important;
@@ -780,53 +783,40 @@
       50%      { transform: translateY(-7px); }
     }
 
-    .enter-silver-btn {
+    .landing-enter-line-btn {
       position: relative;
       width: 100%;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 45%, #cbd5e1 75%, #94a3b8 100%);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-radius: 12px;
-      color: #09090b;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.22em;
+      padding: 13px 0;
+      background: transparent;
+      border: none;
+      border-top: 1px solid rgba(229, 169, 60, 0.45);
+      border-bottom: 1px solid rgba(229, 169, 60, 0.45);
+      color: #E5A93C;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       cursor: pointer;
-      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      transition: all 0.2s ease;
+      gap: 10px;
+      text-shadow: 0 0 12px rgba(229, 169, 60, 0.45);
+      transition: all 0.25s ease;
       text-decoration: none;
+      margin-top: 4px;
     }
-    .enter-silver-btn:hover {
-      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 45%, #e2e8f0 75%, #cbd5e1 100%);
-      box-shadow: 0 6px 28px rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 1);
-      transform: translateY(-1px);
+    .landing-enter-line-btn:hover {
+      color: #FFFFFF;
+      border-top-color: rgba(229, 169, 60, 0.85);
+      border-bottom-color: rgba(229, 169, 60, 0.85);
+      text-shadow: 0 0 16px rgba(229, 169, 60, 0.8), 0 0 24px rgba(229, 169, 60, 0.4);
+      letter-spacing: 0.32em;
     }
-    .enter-silver-btn:active {
+    .landing-enter-line-btn:active {
       transform: scale(0.985);
-    }
-    .enter-silver-btn::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 45%;
-      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.7) 50%, transparent);
-      transform: translate3d(-140%, 0, 0) skewX(-20deg);
-      animation: silver-sweep 3.6s cubic-bezier(.66, 0, .16, 1) infinite;
-      pointer-events: none;
-    }
-    @keyframes silver-sweep {
-      0%   { transform: translate3d(-140%, 0, 0) skewX(-20deg); }
-      40%  { transform: translate3d(360%, 0, 0) skewX(-20deg); }
-      100% { transform: translate3d(360%, 0, 0) skewX(-20deg); }
+      opacity: 0.85;
     }
 
     /* Ambient Dynamic Sky with Smooth Theme Transitions */
@@ -2299,50 +2289,55 @@
       <p class="text-[10px] sm:text-[11px] font-semibold tracking-[0.22em] text-slate-300 uppercase">EST. 2010 · PHOENIX, ARIZONA</p>
     </main>
 
-    <!-- Transparent Noir House Regulations Placard & Silver Animated CTA -->
-    <footer class="w-[calc(100%-24px)] max-w-sm mb-6 relative z-10">
-      <div class="bg-transparent border border-white/10 rounded-2xl p-4 backdrop-blur-md space-y-2.5">
-        <div class="flex items-center justify-center gap-2.5 mb-0.5">
-          <span class="flex-1 h-px bg-white/10"></span>
-          <span class="font-crest text-[11px] font-semibold tracking-[0.26em] text-slate-300 uppercase">House Regulations</span>
-          <span class="flex-1 h-px bg-white/10"></span>
-        </div>
-
-        <div class="space-y-1.5 text-xs text-zinc-300">
-          <!-- Rule 1: 21+ Age -->
-          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
-            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">21+</span>
-            <div class="flex flex-col flex-1 min-w-0">
-              <span class="text-[11px] font-semibold text-white">Age Requirement</span>
-              <span id="entryAgeReqDisplay" class="text-[10px] text-slate-400 italic font-light truncate">Minimum 21+ of age with valid physical ID</span>
-            </div>
-            <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-[10px] text-[#E5A93C] hover:text-[#F5BA4C] underline ml-1 shrink-0 font-semibold" title="Federal Tobacco 21 Law">Law ↗</a>
-          </div>
-
-          <!-- Rule 2: 2 Guests Max -->
-          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
-            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">2P</span>
-            <div class="flex flex-col flex-1 min-w-0">
-              <span class="text-[11px] font-semibold text-white">Pipe Capacity</span>
-              <span id="entryPipeLimitDisplay" class="text-[10px] text-slate-400 italic font-light truncate">Maximum 2 guests per handcrafted hookah pipe</span>
-            </div>
-          </div>
-
-          <!-- Rule 3: No Outside Drinks -->
-          <div class="flex items-center gap-2.5 p-2 bg-white/[0.02] border border-white/[0.05] rounded-xl hover:bg-white/[0.04] transition-colors">
-            <span class="w-6 h-6 rounded-md bg-[#E5A93C]/15 border border-[#E5A93C]/40 flex items-center justify-center text-[10px] font-bold text-[#E5A93C] font-crest shrink-0">NB</span>
-            <div class="flex flex-col flex-1 min-w-0">
-              <span class="text-[11px] font-semibold text-white">Outside Beverages</span>
-              <span class="text-[10px] text-slate-400 italic font-light truncate">No outside beverages or containers permitted</span>
-            </div>
-          </div>
-        </div>
-
-        <button onclick="enterLounge()" class="enter-silver-btn">
-          <span>Enter Lounge Menu</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        </button>
+    <!-- Fully Transparent Noir House Regulations & Gold Lined CTA -->
+    <footer class="w-full max-w-sm px-4 mb-6 relative z-10 space-y-4">
+      <div class="flex items-center justify-center gap-3">
+        <span class="flex-1 h-px bg-white/15"></span>
+        <span class="font-crest text-xs font-semibold tracking-[0.28em] text-white/90 uppercase">House Regulations</span>
+        <span class="flex-1 h-px bg-white/15"></span>
       </div>
+
+      <div class="space-y-3">
+        <!-- Rule 1: 21+ Age -->
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-baseline gap-2">
+              <span class="text-xs font-bold text-[#E5A93C] font-mono-nums">21+</span>
+              <span class="font-crest text-sm font-semibold text-white tracking-wide">Age Requirement</span>
+            </div>
+            <span class="text-xs text-slate-400 italic font-light mt-0.5">Minimum 21+ of age with valid physical ID</span>
+          </div>
+          <a href="https://www.fda.gov/tobacco-products/retail-sales-tobacco-products/tobacco-21" target="_blank" rel="noopener noreferrer" class="text-xs text-[#E5A93C] hover:text-[#F5BA4C] underline shrink-0 font-medium mt-0.5" title="Federal Tobacco 21 Law">Law ↗</a>
+        </div>
+
+        <!-- Rule 2: 2 Guests Max -->
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-baseline gap-2">
+              <span class="text-xs font-bold text-[#E5A93C] font-mono-nums">2P</span>
+              <span class="font-crest text-sm font-semibold text-white tracking-wide">Pipe Capacity</span>
+            </div>
+            <span class="text-xs text-slate-400 italic font-light mt-0.5">Maximum 2 guests per handcrafted hookah pipe</span>
+          </div>
+        </div>
+
+        <!-- Rule 3: No Outside Drinks -->
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-baseline gap-2">
+              <span class="text-xs font-bold text-[#E5A93C] font-mono-nums">NB</span>
+              <span class="font-crest text-sm font-semibold text-white tracking-wide">Outside Beverages</span>
+            </div>
+            <span class="text-xs text-slate-400 italic font-light mt-0.5">No outside beverages or containers permitted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button with Top/Bottom Line, Gold Text & Soft Glow -->
+      <button onclick="enterLounge()" class="landing-enter-line-btn" type="button">
+        <span>Enter Lounge Menu</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
     </footer>
 
   </div>
@@ -5106,7 +5101,7 @@
           stage.classList.remove('entering');
           document.dispatchEvent(new CustomEvent('empire:entered'));
         }
-      }, 880);
+      }, 500);
     }
 
     function openWelcomeLoungeModal() {
@@ -5131,11 +5126,13 @@
     function setupCinematicStageListeners() {
       const stage = document.getElementById('cinematicEntryStage');
       if (stage) {
-        stage.addEventListener('animationend', (e) => {
-          if (e.target !== stage || e.animationName !== 'enter-zoom') return;
-          stage.classList.add('hidden-stage');
-          stage.classList.remove('entering');
-          document.dispatchEvent(new CustomEvent('empire:entered'));
+        stage.addEventListener('transitionend', (e) => {
+          if (e.target !== stage || e.propertyName !== 'opacity') return;
+          if (stage.classList.contains('entering')) {
+            stage.classList.add('hidden-stage');
+            stage.classList.remove('entering');
+            document.dispatchEvent(new CustomEvent('empire:entered'));
+          }
         });
       }
 
