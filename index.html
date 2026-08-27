@@ -401,6 +401,35 @@
       opacity: 0.9;
     }
 
+    /* STAFF SCREEN EDGE GLOW NOTIFICATION PULSE */
+    #staffEdgeGlowOverlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .edge-glow-amber {
+      opacity: 1 !important;
+      box-shadow: inset 0 0 50px rgba(245, 158, 11, 0.9), inset 0 0 20px rgba(245, 158, 11, 0.9);
+      animation: staffEdgePulse 0.9s infinite alternate;
+    }
+    .edge-glow-gold {
+      opacity: 1 !important;
+      box-shadow: inset 0 0 50px rgba(229, 169, 60, 0.9), inset 0 0 20px rgba(229, 169, 60, 0.9);
+      animation: staffEdgePulse 0.9s infinite alternate;
+    }
+    .edge-glow-blue {
+      opacity: 1 !important;
+      box-shadow: inset 0 0 50px rgba(59, 130, 246, 0.9), inset 0 0 20px rgba(59, 130, 246, 0.9);
+      animation: staffEdgePulse 0.9s infinite alternate;
+    }
+    @keyframes staffEdgePulse {
+      0% { box-shadow: inset 0 0 30px rgba(229, 169, 60, 0.5); }
+      100% { box-shadow: inset 0 0 70px rgba(229, 169, 60, 1), inset 0 0 25px rgba(255, 255, 255, 0.8); }
+    }
+
     /* MENU SECTION NAVIGATION — feels like page tabs on a printed wine list */
     .menu-nav {
       display: flex;
@@ -2468,10 +2497,10 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
           </button>
 
-          <!-- Option C: Split Bill with Table / Group -->
-          <button onclick="openTabSplitModal()" class="w-full bg-black/40 hover:bg-white/5 border border-white/10 hover:border-amber-400 text-zinc-400 hover:text-white font-serif text-[10px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none" type="button">
-            <span class="text-amber-400 text-xs">⇄</span>
-            <span>Split Bill with Table / Group</span>
+          <!-- Option C: Request Server to Split Bill at Table -->
+          <button onclick="requestServerTableAssistance('Split Bill')" class="w-full bg-black/40 hover:bg-white/5 border border-white/10 hover:border-amber-400 text-zinc-400 hover:text-white font-serif text-[10px] py-2 px-3 transition active:scale-95 uppercase tracking-wider flex items-center justify-center gap-1.5 rounded-none" type="button">
+            <span class="text-amber-400 text-xs">🛎️</span>
+            <span>Request Server to Split Bill at Table</span>
           </button>
         </div>
 
@@ -2900,6 +2929,106 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ==================== FIXED STAFF SCREEN EDGE GLOW NOTIFICATION OVERLAY ==================== -->
+  <div id="staffEdgeGlowOverlay" class="pointer-events-none"></div>
+
+  <!-- ==================== THEMED ORDER CONFIRMATION MODAL ==================== -->
+  <div id="orderConfirmationModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm mx-auto bg-[#0A0A0E] border-2 border-amber-500/60 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(229,169,60,0.2)] text-center space-y-4 select-none">
+      
+      <!-- Top Center Diamond Flueron -->
+      <div class="flex items-center justify-center gap-2.5 opacity-80 mb-1">
+        <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
+        <span class="text-amber-400 text-[9px] tracking-widest">◆</span>
+        <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
+      </div>
+
+      <!-- Loading State -->
+      <div id="orderConfirmationLoader" class="py-8 space-y-3">
+        <div class="w-10 h-10 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="font-serif text-xs text-zinc-300 tracking-wider uppercase" id="orderLoaderText">Sending Order to Lounge...</p>
+      </div>
+
+      <!-- Confirmation State -->
+      <div id="orderConfirmationContent" class="hidden space-y-3.5">
+        <div class="w-10 h-10 mx-auto">
+          <img src="logos/empire_clean.png" alt="Empire Hookah Lounge" class="w-full h-full object-contain mix-blend-screen drop-shadow-[0_2px_12px_rgba(229,169,60,0.5)]" />
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-serif text-lg font-bold uppercase tracking-wider text-white" id="orderConfirmTitle">Order Confirmed</h3>
+          <p class="font-serif text-amber-300 text-sm font-semibold" id="orderConfirmItemName">Hookah #1 - Pink Cane Sensation</p>
+          <p class="font-sans text-xs text-zinc-300 font-light pt-1" id="orderConfirmMessage">Your bowl will arrive shortly!</p>
+        </div>
+
+        <div class="pt-2 border-t border-white/[0.08] space-y-2">
+          <button onclick="closeOrderConfirmationModal('menu')" class="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-xs uppercase tracking-widest transition active:scale-95 rounded-none shadow">
+            Continue Browsing
+          </button>
+          <button onclick="closeOrderConfirmationModal('tab')" class="w-full py-2 bg-transparent hover:bg-white/5 border border-white/20 text-zinc-300 hover:text-white font-serif text-[11px] uppercase tracking-wider transition active:scale-95 rounded-none">
+            View My Tab →
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== SQUARE DIGITAL WALLET CHECKOUT MODAL ==================== -->
+  <div id="digitalWalletPaymentModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm mx-auto bg-[#0A0A0E] border-2 border-amber-500/60 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.98),0_0_35px_rgba(229,169,60,0.2)] text-center space-y-4 select-none">
+      
+      <!-- Flueron -->
+      <div class="flex items-center justify-center gap-2.5 opacity-80 mb-1">
+        <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
+        <span class="text-amber-400 text-[9px] tracking-widest">◆</span>
+        <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
+      </div>
+
+      <div class="space-y-1">
+        <h3 class="font-serif text-lg font-bold uppercase tracking-wider text-white">Square Digital Checkout</h3>
+        <p class="font-mono text-[10px] text-zinc-400 tracking-wider">APPLE PAY · GOOGLE PAY · SQUARE</p>
+      </div>
+
+      <!-- Amount Summary -->
+      <div class="py-3 px-4 bg-black/60 border border-white/10 space-y-1">
+        <span class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest block">Total Balance Due</span>
+        <span class="font-serif text-3xl font-bold text-amber-300 drop-shadow-[0_2px_10px_rgba(229,169,60,0.5)] font-mono-nums" id="digitalWalletTotalAmt">$0.00</span>
+      </div>
+
+      <!-- Payment Options / Action State -->
+      <div id="digitalWalletActionArea" class="space-y-2.5 pt-1">
+        <!-- Apple Pay / Google Pay Button -->
+        <button onclick="executeDigitalWalletPayment('apple_pay')" class="w-full py-3 bg-white text-black font-sans font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-zinc-200 transition active:scale-95 shadow rounded-none">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 170 170"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.6-7.7-11.7-13.98-5.77-8.81-10.33-19.16-13.68-31.05-3.35-11.89-5.03-23.01-5.03-33.37 0-14.89 3.59-27.24 10.77-37.05 7.18-9.81 16.32-14.86 27.42-15.15 4.35 0 9.29 1.15 14.82 3.45 5.53 2.3 9.47 3.51 11.82 3.63 2.13-.24 6.13-1.56 12.01-3.95 5.88-2.4 10.9-3.52 15.06-3.37 12.44.88 22.18 5.65 29.21 14.3-10.87 6.64-16.19 15.77-15.96 27.39.23 9.38 3.73 17.13 10.5 23.25 6.77 6.13 14.84 9.68 24.21 10.66-2.45 7.42-5.46 14.52-9.03 21.32zM119.22 31.84c0-7.39 2.65-14.43 7.95-21.12 5.3-6.69 11.75-10.72 19.35-12.1-.88 7.39-3.64 14.28-8.28 20.67-4.64 6.39-10.98 10.68-19.02 12.55z"/></svg>
+          <span>Pay with Apple Pay / G Pay</span>
+        </button>
+
+        <!-- Cancel / Keep Tab Open -->
+        <button onclick="closeDigitalWalletModal()" class="w-full py-2 bg-transparent text-zinc-400 hover:text-white font-mono text-[10px] tracking-wider uppercase transition">
+          Cancel &amp; Keep Tab Open
+        </button>
+      </div>
+
+      <!-- Processing State -->
+      <div id="digitalWalletProcessingArea" class="hidden py-6 space-y-3">
+        <div class="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="font-mono text-xs text-amber-300 tracking-wider uppercase">Authorizing Apple Pay / Square...</p>
+      </div>
+
+      <!-- Success State -->
+      <div id="digitalWalletSuccessArea" class="hidden py-6 space-y-2">
+        <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mx-auto border border-emerald-500/40">✓</div>
+        <h4 class="font-serif text-base font-bold text-white uppercase tracking-wider">Payment Confirmed</h4>
+        <p class="text-xs text-zinc-300 font-sans">Thank you for visiting Empire Hookah Lounge!</p>
+        <button onclick="finishPaymentAndResetTab()" class="mt-3 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-black font-serif font-bold text-xs uppercase tracking-wider transition">
+          Close Session
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -3936,12 +4065,9 @@
       });
 
       closeMenuItemDetailModal();
-      if (isApproved) {
-        showToast('🔥 Order Sent to Lounge', `${itemName} ($${price.toFixed(0)}) has been dispatched to staff.`);
-      } else {
-        showToast('🛎️ Sent to Table Server', `${itemName} recipe sent to your server for table verification.`);
-      }
       renderCustomerMenu();
+      updateActiveBowlNotificationUI();
+      showOrderConfirmationModal('bowl', 'Order Confirmed', itemName, 'Your bowl will arrive shortly!');
     }
 
     let lastDrinkOrderTimestamp = 0;
@@ -3967,11 +4093,7 @@
       });
       updateActiveBowlNotificationUI();
       renderCustomerMenu();
-      if (isApproved) {
-        showToast('🍹 Drink Ordered', `${drinkName} ($${price.toFixed(0)}) added to your tab.`);
-      } else {
-        showToast('🛎️ Sent to Table Server', `${drinkName} requested via table server.`);
-      }
+      showOrderConfirmationModal('drink', 'Drink Confirmed', drinkName, 'Your drink will be out momentarily!');
     }
 
     function addFlavor(flavorId) {
@@ -4114,12 +4236,8 @@
 
       clearBowl();
       updateActiveBowlNotificationUI();
-      if (isApproved) {
-        showToast('🔥 Order Dispatched', `${orderName} ($${price.toFixed(0)}) sent to your table!`);
-      } else {
-        showToast('🛎️ Sent to Table Server', `${orderName} sent to your server for table verification.`);
-      }
-      switchCustomerTab('tab');
+      renderCustomerMenu();
+      showOrderConfirmationModal('bowl', 'Order Confirmed', orderName, 'Your bowl will arrive shortly!');
     }
 
     function updateActiveBowlNotificationUI() {
@@ -5399,16 +5517,60 @@
       const squarePayload = buildSquareItemizedOrderPayload(items, tipAmt);
       console.log('--- SQUARE ITEMIZED ORDER PAYLOAD (OPTION B) ---', squarePayload);
 
-      const member = CustomerStash.getCurrentVipMember();
+      // Open Digital Wallet Modal with balance
+      const totalAmtEl = document.getElementById('digitalWalletTotalAmt');
+      if (totalAmtEl) totalAmtEl.textContent = `$${grandTotal.toFixed(2)}`;
+
+      const actArea = document.getElementById('digitalWalletActionArea');
+      const procArea = document.getElementById('digitalWalletProcessingArea');
+      const succArea = document.getElementById('digitalWalletSuccessArea');
+
+      if (actArea) actArea.classList.remove('hidden');
+      if (procArea) procArea.classList.add('hidden');
+      if (succArea) succArea.classList.add('hidden');
+
+      const modal = document.getElementById('digitalWalletPaymentModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeDigitalWalletModal() {
+      const modal = document.getElementById('digitalWalletPaymentModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function executeDigitalWalletPayment(method = 'apple_pay') {
+      const actArea = document.getElementById('digitalWalletActionArea');
+      const procArea = document.getElementById('digitalWalletProcessingArea');
+      const succArea = document.getElementById('digitalWalletSuccessArea');
+
+      if (actArea) actArea.classList.add('hidden');
+      if (procArea) procArea.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (procArea) procArea.classList.add('hidden');
+        if (succArea) succArea.classList.remove('hidden');
+        triggerStaffScreenEdgeGlow('gold', 3000);
+      }, 1200);
+    }
+
+    function finishPaymentAndResetTab() {
+      closeDigitalWalletModal();
+
+      const activeTab = CustomerStash.getActiveTab();
+      const items = activeTab.items || [];
+      const rawSubtotal = items.reduce((s, i) => s + (i.price || 0), 0);
       const pointsEarned = Math.round(rawSubtotal * 10);
+      const member = CustomerStash.getCurrentVipMember();
 
-      member.points = (member.points || 0) + pointsEarned;
-      member.totalSpent = (member.totalSpent || 0) + rawSubtotal;
-
-      const members = CustomerStash.getVipMembers();
-      const idx = members.findIndex(m => m.id === member.id);
-      if (idx !== -1) members[idx] = member;
-      CustomerStash.saveVipMembers(members);
+      if (member) {
+        member.points = (member.points || 0) + pointsEarned;
+        member.totalSpent = (member.totalSpent || 0) + rawSubtotal;
+        const members = CustomerStash.getVipMembers();
+        const idx = members.findIndex(m => m.id === member.id);
+        if (idx !== -1) members[idx] = member;
+        CustomerStash.saveVipMembers(members);
+        CustomerStash.saveSession(member);
+      }
 
       CustomerStash.saveActiveTab({
         id: 'TAB-' + (typeof currentVipTabId !== 'undefined' ? currentVipTabId : '409'),
@@ -5417,14 +5579,93 @@
         subtotal: 0
       });
 
-      showToast('🏁 VIP Tab Settled', `Square paid $${grandTotal.toFixed(2)}! +${pointsEarned} Pts earned. Session closed.`);
-      updateVipPointsHeader();
-      updateActiveBowlNotificationUI();
       tabBalance = 0.00;
       roundCount = 1;
       selectedAppliedReward = null;
       clearBowl();
       renderMyTabView();
+      updateVipPointsHeader();
+      updateActiveBowlNotificationUI();
+      renderCustomerMenu();
+      showToast('🏁 VIP Tab Settled', `Payment confirmed! +${pointsEarned} Pts earned. Session closed.`);
+    }
+
+    function showOrderConfirmationModal(type, title, itemName, message) {
+      const modal = document.getElementById('orderConfirmationModal');
+      const loader = document.getElementById('orderConfirmationLoader');
+      const content = document.getElementById('orderConfirmationContent');
+      const loaderText = document.getElementById('orderLoaderText');
+      const titleEl = document.getElementById('orderConfirmTitle');
+      const itemEl = document.getElementById('orderConfirmItemName');
+      const msgEl = document.getElementById('orderConfirmMessage');
+
+      if (!modal) return;
+
+      if (loaderText) {
+        loaderText.textContent = type === 'drink' ? 'Sending Drink to Bar...' : 'Sending Order to Lounge...';
+      }
+      if (titleEl) titleEl.textContent = title;
+      if (itemEl) itemEl.textContent = itemName;
+      if (msgEl) msgEl.textContent = message;
+
+      if (loader) loader.classList.remove('hidden');
+      if (content) content.classList.add('hidden');
+      modal.classList.remove('hidden');
+
+      // Trigger Staff Screen Edge Glow & Haptic Feedback
+      triggerStaffScreenEdgeGlow(type === 'drink' ? 'blue' : 'gold', 3000);
+
+      const delay = type === 'drink' ? 500 : 750;
+      setTimeout(() => {
+        if (loader) loader.classList.add('hidden');
+        if (content) content.classList.remove('hidden');
+      }, delay);
+    }
+
+    function closeOrderConfirmationModal(action = 'menu') {
+      const modal = document.getElementById('orderConfirmationModal');
+      if (modal) modal.classList.add('hidden');
+      if (action === 'tab') {
+        switchCustomerTab('tab');
+      } else {
+        switchCustomerTab('menu');
+      }
+    }
+
+    function triggerStaffScreenEdgeGlow(glowColor = 'amber', duration = 3000) {
+      const overlay = document.getElementById('staffEdgeGlowOverlay');
+      if (overlay) {
+        overlay.className = `edge-glow-${glowColor}`;
+        setTimeout(() => {
+          overlay.className = '';
+        }, duration);
+      }
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try {
+          navigator.vibrate([100, 50, 100, 50, 200]);
+        } catch (e) {}
+      }
+    }
+
+    function requestServerTableAssistance(reason = 'Server Assistance') {
+      showToast('🛎️ Server Notified', 'Your server has been alerted and will be right over.');
+      triggerStaffScreenEdgeGlow('amber', 4000);
+      
+      const banner = document.getElementById('staffWifiAlertBanner');
+      const titleEl = document.getElementById('staffWifiAlertTitle');
+      const descEl = document.getElementById('staffWifiAlertDesc');
+      if (banner && titleEl && descEl) {
+        titleEl.textContent = `🛎️ TABLE CALL: ${currentAssignedSeat.toUpperCase()}`;
+        descEl.textContent = `Guest at ${currentAssignedSeat} requested: ${reason}`;
+        banner.className = 'mb-2 p-2.5 bg-amber-950/90 border border-amber-500 text-white shadow-2xl backdrop-blur-md select-none animate-pulse';
+        banner.classList.remove('hidden');
+      }
+    }
+
+    function clearActiveBowlFormulation() {
+      clearBowl();
+      updateFloatingBowlBar();
+      showToast('🗑️ Bowl Cleared', 'Active formulation reset.');
     }
 
     // ==================== OPTION C: GROUP SPLIT & BREAKOUT ENGINE ====================
@@ -6023,6 +6264,9 @@
               </div>
             </div>
             <div class="flex items-center gap-1.5 flex-shrink-0">
+              <button onclick="event.stopPropagation(); clearActiveBowlFormulation()" class="text-[9px] font-mono px-1.5 py-1 bg-black/60 hover:bg-red-950/60 border border-white/15 hover:border-red-500/50 text-zinc-400 hover:text-red-300 transition rounded-none" title="Clear Bowl">
+                ✕
+              </button>
               ${tuneBtn}
               <button onclick="event.stopPropagation(); submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 rounded-none">
                 ${isRefill ? 'REFILL $28' : 'ORDER $35'}
