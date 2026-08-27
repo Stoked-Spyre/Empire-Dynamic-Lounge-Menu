@@ -1944,14 +1944,13 @@
   <!-- ==================== 1. TOP APP BAR (QR GUEST VS VIP IDENTITY) ==================== -->
   <header class="w-full max-w-2xl bg-transparent sticky top-0 z-40 px-3.5 pt-2 pb-0 flex items-center justify-between pointer-events-none">
     
-    <!-- Left: Spacer / VIP Profile Info (Balanced 80px) -->
-    <div class="w-20 flex items-center justify-start">
-      <div id="headerVipView" class="hidden flex items-center gap-1.5 pointer-events-auto">
-        <div class="w-7 h-7 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold text-xs">
-          <span id="vipAvatarLetter">A</span>
-        </div>
+    <!-- Left: VIP Profile Info (Account Name on Top Left) -->
+    <div class="flex items-center justify-start">
+      <div id="headerVipView" class="hidden flex items-center gap-2 pointer-events-auto">
+        <span class="text-amber-400 text-xs select-none">◆</span>
         <div class="truncate">
-          <span class="font-bold text-white text-xs block truncate" id="vipMemberNameDisplay">Alex M.</span>
+          <span class="font-serif font-bold text-white text-xs block tracking-wide truncate" id="vipMemberNameDisplay">Alex M.</span>
+          <span class="text-[9px] font-sans text-amber-400/90 uppercase tracking-widest block -mt-0.5" id="vipTierDisplay">GOLD VIP</span>
         </div>
       </div>
     </div>
@@ -1960,8 +1959,8 @@
     <div class="flex items-center justify-center">
     </div>
 
-    <!-- Right: VIP Log In Button (Public Guest View) OR VIP Actions (Logged In View) (Balanced 80px) -->
-    <div class="w-20 flex items-center justify-end">
+    <!-- Right: VIP Log In Button (Public Guest View) OR VIP Actions (Logged In View) -->
+    <div class="flex items-center justify-end">
       <!-- Public Guest Mode: VIP Log In Button on Right -->
       <div id="headerGuestView" class="flex items-center justify-end pointer-events-auto">
         <button onclick="openVipLoginModal()" class="menu-login-btn">
@@ -1969,16 +1968,16 @@
         </button>
       </div>
 
-      <div id="headerVipRightView" class="hidden flex items-center gap-1 pointer-events-auto">
-        <button onclick="switchCustomerTab('rewards')" class="bg-amber-950/80 hover:bg-amber-900 border border-amber-800/60 text-amber-300 px-1.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-0.5 transition active:scale-95" title="View VIP Stash">
-          <i data-lucide="award" class="w-3 h-3 text-amber-400"></i>
-          <span id="headerVipPointsBadge">750</span>
+      <div id="headerVipRightView" class="hidden flex items-center gap-1.5 pointer-events-auto">
+        <button onclick="switchCustomerTab('rewards')" class="bg-black/60 hover:bg-black border border-white/10 hover:border-amber-400/40 text-amber-300 px-2 py-1 text-xs font-serif flex items-center gap-1 transition active:scale-95" title="View VIP Stash">
+          <span class="text-amber-400 text-[10px]">👑</span>
+          <span id="headerVipPointsBadge" class="font-mono text-[11px]">750</span>
         </button>
-        <button onclick="requestCoalService()" class="bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 px-1.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-0.5 transition active:scale-95" title="Request Coal Service">
+        <button onclick="requestCoalService()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-red-500/40 text-red-400 px-2 py-1 text-xs transition active:scale-95" title="Request Coal Service">
           <i data-lucide="flame" class="w-3 h-3 text-red-400"></i>
         </button>
-        <button onclick="vipLogout()" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-400 hover:text-white p-1 rounded-lg text-xs transition active:scale-95" title="Log Out">
-          <i data-lucide="log-out" class="w-3 h-3"></i>
+        <button onclick="vipLogout()" class="bg-black/60 hover:bg-black border border-white/10 hover:border-white/30 text-zinc-400 hover:text-white px-2 py-1 text-xs font-serif tracking-widest uppercase transition active:scale-95" title="Log Out">
+          <span class="text-[10px]">EXIT</span>
         </button>
       </div>
     </div>
@@ -2492,55 +2491,69 @@
   <!-- ⛔ [END OF OFF-LIMITS CINEMATIC HTML] ⛔                                   -->
   <!-- ========================================================================== -->
 
-  <!-- ==================== VIP LOGIN & WI-FI VERIFICATION MODAL ==================== -->
-  <div id="vipLoginModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-zinc-950 border border-amber-500/40 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4">
+  <!-- ==================== VIP LOGIN & LOUNGE IDENTIFICATION MODAL ==================== -->
+  <div id="vipLoginModal" class="fixed inset-0 bg-black/85 backdrop-blur-[3px] z-50 hidden flex items-center justify-center p-4">
+    <!-- Sommelier Framed Card Container (Crisp Print Style, Soft White Faded Border) -->
+    <div class="relative w-full max-w-sm mx-auto sommelier-card-frame shadow-[0_20px_60px_rgba(0,0,0,0.95)] p-3 z-10">
       
-      <!-- Modal Header -->
-      <div class="flex justify-between items-start pb-2.5 border-b border-zinc-800">
-        <div class="flex items-center gap-2">
-          <div class="w-9 h-9 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-brand-gold">
-            <i data-lucide="crown" class="w-5 h-5"></i>
+      <!-- Inner Double Border Frame with Ambient Glow -->
+      <div class="sommelier-inner-frame px-5 pt-3 pb-4 space-y-3.5 relative overflow-hidden">
+        
+        <div class="relative z-10 space-y-3.5">
+          <!-- Refined Diamond Flueron Header -->
+          <div class="flex items-center justify-center gap-2.5 pt-0 pb-0.5 opacity-60">
+            <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400/50"></span>
+            <span class="text-amber-400 text-[8px] tracking-widest select-none">◆</span>
+            <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400/50"></span>
           </div>
-          <div>
-            <h3 class="font-crest font-bold text-xs tracking-wider text-white">VIP SELF-ORDERING</h3>
-            <p class="text-[11px] text-zinc-400">Empire Lounge On-Premise Portal</p>
+
+          <!-- Title & Subtitle -->
+          <div class="text-center pt-0">
+            <h3 class="font-serif text-2xl text-white font-bold tracking-wide">Member Portal</h3>
+            <p class="text-xs text-zinc-400 italic font-sans mt-0.5">Lounge Identification &amp; Self-Ordering</p>
           </div>
-        </div>
-        <button onclick="closeVipLoginModal()" class="text-zinc-400 hover:text-white text-xs bg-zinc-900 px-2.5 py-1 rounded-lg">✕</button>
-      </div>
 
-      <!-- Wi-Fi Verification Check Card -->
-      <div class="p-3 rounded-2xl border transition-all" id="wifiCheckStatusCard">
-        <!-- Injected dynamically based on wifi status -->
-      </div>
+          <!-- Wi-Fi Verification Check Card -->
+          <div class="p-2.5 border border-white/[0.08] transition-all bg-black/40 text-xs" id="wifiCheckStatusCard">
+            <!-- Injected dynamically based on wifi status -->
+          </div>
 
-      <!-- VIP Member Phone Lookup Form -->
-      <div class="space-y-2.5" id="vipLoginFormSection">
-        <div>
-          <label class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">VIP Phone Number / Member ID</label>
-          <input type="tel" id="vipPhoneInput" placeholder="480-555-0409" class="w-full bg-black border border-zinc-800 focus:border-brand-gold rounded-xl px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none" />
-        </div>
+          <!-- VIP Member Phone Lookup Form -->
+          <div class="space-y-3" id="vipLoginFormSection">
+            <div>
+              <label class="text-[9px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-medium mb-1">VIP Phone / Member ID</label>
+              <input type="tel" id="vipPhoneInput" placeholder="480-555-0409" class="w-full bg-black/80 border border-white/20 focus:border-amber-400 px-3 py-2 text-sm text-white font-mono placeholder:text-zinc-600 outline-none transition" />
+            </div>
 
-        <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-brand-gold hover:bg-brand-goldHover text-black font-extrabold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition">
-          <i data-lucide="unlock" class="w-4 h-4"></i>
-          <span>Log In &amp; Unlock Self-Ordering</span>
-        </button>
-
-        <!-- Quick VIP Demo Accounts for instant 1-tap testing -->
-        <div class="pt-1">
-          <span class="text-[10px] text-zinc-500 block uppercase font-bold text-center mb-1.5">Quick VIP Profile Select:</span>
-          <div class="grid grid-cols-2 gap-1.5 text-left text-xs">
-            <button onclick="quickVipLogin('vip-409')" class="p-2 rounded-xl bg-black border border-zinc-800 hover:border-amber-500/40 text-zinc-300 hover:text-white">
-              <span class="font-bold block text-brand-gold">Alex M.</span>
-              <span class="text-[10px] text-zinc-500 font-mono">Gold VIP • 750 Pts</span>
+            <button onclick="attemptVipLogin()" id="vipLoginSubmitBtn" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:brightness-110 text-black font-serif font-bold tracking-wider py-2.5 text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition uppercase">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+              <span>Authenticate &amp; Unlock</span>
             </button>
-            <button onclick="quickVipLogin('vip-310')" class="p-2 rounded-xl bg-black border border-zinc-800 hover:border-amber-500/40 text-zinc-300 hover:text-white">
-              <span class="font-bold block text-brand-gold">Marcus S.</span>
-              <span class="text-[10px] text-zinc-500 font-mono">Platinum • 1200 Pts</span>
-            </button>
+
+            <!-- Quick VIP Demo Accounts for instant 1-tap testing -->
+            <div class="pt-1 border-t border-white/[0.08]">
+              <span class="text-[9px] text-zinc-500 block uppercase tracking-[0.2em] text-center mb-1.5 font-medium">Quick VIP Profile Select:</span>
+              <div class="grid grid-cols-2 gap-2 text-left text-xs">
+                <button onclick="quickVipLogin('vip-409')" class="p-2 bg-black/60 border border-white/10 hover:border-amber-400/60 text-zinc-300 hover:text-white transition">
+                  <span class="font-serif font-bold block text-amber-400">Alex M.</span>
+                  <span class="text-[9px] text-zinc-500 font-mono">Gold VIP • 750 Pts</span>
+                </button>
+                <button onclick="quickVipLogin('vip-310')" class="p-2 bg-black/60 border border-white/10 hover:border-amber-400/60 text-zinc-300 hover:text-white transition">
+                  <span class="font-serif font-bold block text-amber-400">Marcus S.</span>
+                  <span class="text-[9px] text-zinc-500 font-mono">Platinum • 1200 Pts</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiet Dismissal Line -->
+          <div class="pt-1 text-center flex justify-center items-center">
+            <p class="text-[9px] font-sans text-zinc-500 uppercase tracking-[0.24em] cursor-pointer hover:text-zinc-300 transition select-none text-center" onclick="closeVipLoginModal()">
+              [ DISMISS ]
+            </p>
           </div>
         </div>
+
       </div>
 
     </div>
