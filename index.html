@@ -4762,6 +4762,9 @@
           qty: delta
         });
       }
+      if (delta > 0) {
+        showToast('🥤 Added to Tray', `${drinkName} ($${price.toFixed(0)}) staged.`);
+      }
       updateFloatingBowlBar();
       renderCustomerMenu();
     }
@@ -5148,9 +5151,9 @@
           ` : '';
 
           return `
-            <div class="editorial-item mb-3.5 select-none opacity-100">
+            <div class="editorial-item mb-3.5 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group' : ''}" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)"` : ''}>
               <div class="item-top-row flex items-baseline justify-between w-full">
-                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] truncate">${item.name}</span>
+                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
                 <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
                 <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
               </div>
@@ -5173,9 +5176,9 @@
           const vQty = vStaged ? vStaged.qty : 0;
           const vPrice = v.price || item.price;
           return `
-            <div class="py-1.5 px-2.5 bg-black/40 border-b border-white/[0.05] hover:bg-white/[0.02] flex items-center justify-between text-xs transition">
+            <div class="py-2 px-2.5 bg-black/40 border-b border-white/[0.05] hover:bg-amber-400/[0.04] ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/variant' : ''} flex items-center justify-between text-xs transition" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)"` : ''}>
               <div class="min-w-0 flex-1 pr-2">
-                <div class="font-serif font-bold text-zinc-100 text-xs truncate flex items-center gap-1.5">
+                <div class="font-serif font-bold text-zinc-100 text-xs truncate flex items-center gap-1.5 ${isVipLoggedIn ? 'group-hover/variant:text-amber-300' : ''} transition">
                   <span class="text-amber-400/80">•</span>
                   <span class="${vQty > 0 ? 'text-amber-300 font-bold' : ''}">${v.name}</span>
                   <span class="font-mono text-zinc-400 text-[10px]">· $${vPrice.toFixed(0)}</span>
@@ -5185,11 +5188,11 @@
               ${isVipLoggedIn ? `
                 <div class="flex items-center gap-1 flex-shrink-0" onclick="event.stopPropagation()">
                   ${vQty > 0 ? `
-                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, -1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">-</button>
+                    <button onclick="event.stopPropagation(); changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, -1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">-</button>
                     <span class="font-mono text-amber-400 font-bold px-1 text-xs min-w-[14px] text-center select-none">${vQty}</span>
-                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">+</button>
+                    <button onclick="event.stopPropagation(); changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="w-5 h-5 bg-black border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none">+</button>
                   ` : `
-                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2 py-0.5 border border-white/20 text-zinc-300 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
+                    <button onclick="event.stopPropagation(); changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2 py-0.5 border border-white/20 text-zinc-300 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
                   `}
                 </div>
               ` : ''}
