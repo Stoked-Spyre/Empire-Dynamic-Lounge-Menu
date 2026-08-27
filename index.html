@@ -1984,28 +1984,6 @@
 
   </header>
 
-  <!-- Top Navigation View Switcher (Visible only when VIP is logged in) -->
-  <nav id="vipTopNav" class="hidden w-full max-w-2xl px-3.5 pt-2.5 pb-1">
-    <div class="grid grid-cols-4 gap-1 p-1 bg-zinc-900/90 border border-zinc-800/80 rounded-2xl text-xs font-medium shadow-lg">
-      <button onclick="switchCustomerTab('menu')" id="cust-tab-menu" class="cust-nav-btn py-2 rounded-xl bg-zinc-800 text-white flex items-center justify-center gap-1.5 shadow-sm font-semibold text-xs transition active:scale-95">
-        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-        <span>Menu</span>
-      </button>
-      <button onclick="switchCustomerTab('lab')" id="cust-tab-lab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
-        <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span>Mix Lab</span>
-      </button>
-      <button onclick="switchCustomerTab('rewards')" id="cust-tab-rewards" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
-        <i data-lucide="award" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span>VIP Stash</span>
-      </button>
-      <button onclick="switchCustomerTab('tab')" id="cust-tab-tab" class="cust-nav-btn py-2 rounded-xl text-zinc-400 hover:text-white flex items-center justify-center gap-1.5 text-xs transition active:scale-95">
-        <i data-lucide="receipt" class="w-3.5 h-3.5 text-amber-400"></i>
-        <span>My Tab</span>
-      </button>
-    </div>
-  </nav>
-
   <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
   <main class="w-full max-w-2xl px-3.5 pt-0 flex flex-col gap-3">
 
@@ -2038,146 +2016,162 @@
     </div>
 
     <!-- ==================== VIEW 2: STOKED MIX LAB (INTERACTIVE) ==================== -->
-    <div id="customer-view-lab" class="customer-panel hidden flex flex-col gap-3">
+    <div id="customer-view-lab" class="customer-panel hidden flex flex-col gap-3.5 pb-20">
 
-    <!-- 1. DYNAMIC IN YOUR BOWL TRAY (POPS UP DYNAMICALLY ABOVE THE DIAL) -->
-    <section class="obsidian-card rounded-2xl p-3.5 space-y-2.5 transition-all">
-      <div class="flex justify-between items-center">
-        <div class="flex items-center gap-1.5">
-          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-brand-gold"></i>
-          <span class="text-xs font-bold text-white uppercase tracking-wider" id="activeBowlTitle">In Your Bowl Mix</span>
+      <!-- Mix Lab Header Spread -->
+      <div class="text-center pt-2 pb-1 space-y-1">
+        <div class="flex items-center justify-center gap-2.5 opacity-60">
+          <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-amber-400/50"></span>
+          <span class="text-amber-400 text-[8px] tracking-widest select-none">◆</span>
+          <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-amber-400/50"></span>
         </div>
-        <button onclick="clearBowl()" id="clearBowlBtn" class="text-[12px] text-zinc-500 hover:text-red-400 font-semibold hidden">
-          Clear ✕
-        </button>
+        <h2 class="font-serif text-2xl text-white font-bold tracking-wide">Mixology Bench</h2>
+        <p class="text-xs text-zinc-400 italic font-sans">Craft custom bowl ratios &amp; explore botanical pairings</p>
       </div>
 
-      <!-- SOMMELIER BUZZ READOUT (CLEAN TYPOGRAPHY - NO PILLS) -->
-      <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-black/60 rounded-xl border border-zinc-850 text-xs">
-        <div class="flex items-center gap-2">
-          <span class="text-[11px] uppercase font-bold text-zinc-400">Buzz Rating:</span>
-          <div class="flex items-center gap-1.5 font-mono" id="labBuzzBadge">
-            <span id="labBuzzIcon">⚡</span>
-            <span id="labBuzzScoreText" class="font-bold text-white text-xs">7.6</span>
-            <span class="text-[11px] text-zinc-500">/10</span>
-            <span id="labBuzzCategoryText" class="text-[10px] font-sans font-bold uppercase text-red-400">BOLD</span>
+      <!-- 1. DYNAMIC IN YOUR BOWL TRAY (SOMMELIER FRAMED CARD) -->
+      <section class="sommelier-card-frame p-2.5">
+        <div class="sommelier-inner-frame p-3.5 space-y-2.5">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 text-[10px]">◆</span>
+              <span class="font-serif text-sm font-bold text-white tracking-wide uppercase" id="activeBowlTitle">In Your Bowl Mix</span>
+            </div>
+            <button onclick="clearBowl()" id="clearBowlBtn" class="text-[10px] font-serif uppercase tracking-widest text-zinc-500 hover:text-red-400 font-semibold hidden">
+              CLEAR [✕]
+            </button>
           </div>
-        </div>
 
-        <!-- Customer Account Buzz History Match -->
-        <div id="labGuestBuzzMatchBadge" class="text-[11px] text-zinc-400 font-mono">
-          <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
-        </div>
-      </div>
+          <!-- SOMMELIER BUZZ READOUT (CLEAN TYPOGRAPHY - NO PILLS) -->
+          <div class="flex flex-wrap items-center justify-between gap-2 p-2 bg-black/60 border border-white/[0.08] text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Buzz Rating:</span>
+              <div class="flex items-center gap-1.5 font-mono" id="labBuzzBadge">
+                <span id="labBuzzIcon">⚡</span>
+                <span id="labBuzzScoreText" class="font-bold text-white text-xs">7.6</span>
+                <span class="text-[11px] text-zinc-500">/10</span>
+                <span id="labBuzzCategoryText" class="text-[10px] font-sans font-bold uppercase text-red-400">BOLD</span>
+              </div>
+            </div>
 
-      <!-- Continuous Multi-Stop Spectrum Gradient Track with Draggable Splitter Thumbs -->
-      <div class="spectrum-drag-area" id="spectrumDraggableArea">
-        <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
-        <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
-      </div>
-      <div class="flex justify-between text-[11px] text-zinc-400 font-mono px-1">
-        <span>Drag gold thumb to adjust flavor ratios</span>
-        <span class="text-brand-gold font-bold">Standard 22g Pack</span>
-      </div>
-
-      <!-- Dynamically Populated Flavor Chips Tray -->
-      <div class="space-y-1.5" id="flavorSlotsContainer">
-        <!-- Injected dynamically via JS as flavors or house mixes are selected -->
-      </div>
-    </section>
-
-    <!-- 2. STOKED SPLIT DIAL: HOUSE MIXES & BRANDS (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
-    <section class="obsidian-card rounded-2xl p-3">
-      
-      <div class="flex justify-between items-center mb-2 px-1">
-        <div class="flex items-center gap-1.5">
-          <i data-lucide="disc" class="w-3.5 h-3.5 text-brand-gold animate-spin" style="animation-duration: 16s;"></i>
-          <span class="text-xs uppercase tracking-wider text-slate-300 font-bold">Stash Dial Selector</span>
-        </div>
-        <span class="text-[12px] text-zinc-400 font-medium">Select Category • Spin Drum</span>
-      </div>
-
-      <!-- Dual Split Layout: Brands & House Mixes on Left, Drum on Right -->
-      <div class="flex gap-2.5 items-stretch">
-        
-        <!-- LEFT: HOUSE MIXES & BRANDS VERTICAL STATION DIAL -->
-        <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
-          <div class="v-ruler-track" id="brandStationsTrack">
-            <!-- Populated via JS -->
-          </div>
-        </aside>
-
-        <!-- RIGHT: 3D MECHANICAL ROTARY DRUM -->
-        <div 
-          id="rotaryWheel" 
-          class="cylinder-wheel-container"
-          onwheel="handleWheelScroll(event)"
-          ontouchstart="handleTouchStart(event)"
-          ontouchmove="handleTouchMove(event)"
-          ontouchend="handleTouchEnd(event)"
-        >
-          <div class="cylinder-drum-viewport">
-            <!-- Center Target Slot -->
-            <div class="cylinder-target-slot"></div>
-            <!-- 3D Drum Items Track -->
-            <div class="cylinder-drum-track" id="cylinderDrumTrack">
-              <!-- Populated via JS -->
+            <!-- Customer Account Buzz History Match -->
+            <div id="labGuestBuzzMatchBadge" class="text-[11px] text-zinc-400 font-mono">
+              <span id="labGuestBuzzMatchText">Your Standard: 7.6 (Bold)</span>
             </div>
           </div>
+
+          <!-- Continuous Multi-Stop Spectrum Gradient Track with Draggable Splitter Thumbs -->
+          <div class="spectrum-drag-area" id="spectrumDraggableArea">
+            <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
+            <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-zinc-400 font-mono px-0.5">
+            <span>Drag gold thumb to adjust flavor ratios</span>
+            <span class="text-amber-400 font-bold">Standard 22g Pack</span>
+          </div>
+
+          <!-- Dynamically Populated Flavor Chips Tray -->
+          <div class="space-y-1.5" id="flavorSlotsContainer">
+            <!-- Injected dynamically via JS as flavors or house mixes are selected -->
+          </div>
         </div>
+      </section>
 
-      </div>
+      <!-- 2. STOKED SPLIT DIAL: HOUSE MIXES & BRANDS (LEFT) + 3D FLAVOR DRUM (RIGHT) -->
+      <section class="sommelier-card-frame p-2.5">
+        <div class="sommelier-inner-frame p-3.5 space-y-2">
+          
+          <div class="flex justify-between items-center mb-1 px-0.5">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-400 text-[10px]">◆</span>
+              <span class="font-serif text-sm uppercase tracking-wider text-slate-200 font-bold">Flavor Stash Selector</span>
+            </div>
+            <span class="text-[11px] text-zinc-400 font-sans italic">Select Category • Spin Drum</span>
+          </div>
 
-      <!-- 1-Tap Add To Bowl Confirmation Button -->
-      <button 
-        onclick="confirmWheelSelection()" 
-        class="mt-2.5 w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1.5 transition active:scale-98"
-      >
-        <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-gold"></i>
-        <span id="wheelConfirmBtnText">+ Add to Bowl</span>
-      </button>
-    </section>
+          <!-- Dual Split Layout: Brands & House Mixes on Left, Drum on Right -->
+          <div class="flex gap-2.5 items-stretch">
+            
+            <!-- LEFT: HOUSE MIXES & BRANDS VERTICAL STATION DIAL -->
+            <aside class="v-ruler-sidebar no-scrollbar" id="brandStationDial">
+              <div class="v-ruler-track" id="brandStationsTrack">
+                <!-- Populated via JS -->
+              </div>
+            </aside>
 
-    <!-- 3. BOWL PROFILES & TASTING NOTES INDICATOR (AT THE BOTTOM OF THE BOWL) -->
-    <section class="obsidian-card rounded-2xl p-3">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-[12px] font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
-          Bowl Profiles &amp; Tasting Notes
-        </span>
-        <span class="text-[11px] text-emerald-400 font-bold bg-zinc-950 border border-emerald-900/40 px-2 py-0.5 rounded">
-          Standard 22g Pack
-        </span>
-      </div>
+            <!-- RIGHT: 3D MECHANICAL ROTARY DRUM -->
+            <div 
+              id="rotaryWheel" 
+              class="cylinder-wheel-container"
+              onwheel="handleWheelScroll(event)"
+              ontouchstart="handleTouchStart(event)"
+              ontouchmove="handleTouchMove(event)"
+              ontouchend="handleTouchEnd(event)"
+            >
+              <div class="cylinder-drum-viewport">
+                <!-- Center Target Slot -->
+                <div class="cylinder-target-slot"></div>
+                <!-- 3D Drum Items Track -->
+                <div class="cylinder-drum-track" id="cylinderDrumTrack">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+            </div>
 
-      <!-- Dynamic Flavor Note Pills -->
-      <div class="flex items-center gap-1.5 flex-wrap" id="bowlProfileBadges">
-        <span class="text-[12px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>
-      </div>
-    </section>
+          </div>
 
-    <!-- 4. STICKY ORDER SUBMISSION & TAB DISPATCH BAR WITH FLOATING VIP STATUS -->
-    <div class="sticky bottom-2 z-30 bg-black/95 border border-zinc-800 p-3 rounded-2xl shadow-2xl flex items-center justify-between">
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-[11px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
-          <span class="text-[11px] text-brand-gold font-mono font-semibold" id="orderSeatTag">👑 VIP Tab (Floating)</span>
+          <!-- 1-Tap Add To Bowl Confirmation Button -->
+          <button 
+            onclick="confirmWheelSelection()" 
+            class="mt-2 w-full bg-transparent hover:bg-amber-500/10 border-t border-b border-amber-500/40 text-amber-400 hover:text-white font-serif tracking-[0.16em] text-xs font-bold py-2.5 flex items-center justify-center gap-2 transition uppercase active:scale-98 select-none"
+          >
+            <span>+ ADD SELECTION TO BOWL</span>
+          </button>
         </div>
-        <div class="flex items-baseline gap-1.5">
-          <span class="text-lg font-bold text-brand-gold font-mono-nums" id="totalPriceText">$0.00</span>
-          <span class="text-[12px] text-zinc-400 font-mono" id="taxEstimateText">+ $0.00 tax</span>
+      </section>
+
+      <!-- 3. BOWL PROFILES & TASTING NOTES INDICATOR -->
+      <section class="sommelier-card-frame p-2.5">
+        <div class="sommelier-inner-frame p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-zinc-400 flex items-center gap-1.5">
+              <span class="text-amber-400 text-[8px]">◆</span>
+              Bowl Profiles &amp; Tasting Notes
+            </span>
+            <span class="text-[10px] text-amber-400 font-mono font-bold border border-amber-500/30 px-2 py-0.5">
+              Standard 22g Pack
+            </span>
+          </div>
+
+          <!-- Dynamic Flavor Note Pills -->
+          <div class="flex items-center gap-1.5 flex-wrap" id="bowlProfileBadges">
+            <span class="text-[12px] text-zinc-500 italic">Select flavors or a House Mix above to see tasting notes.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ORDER SUBMISSION & TAB DISPATCH BAR -->
+      <div class="sommelier-card-frame p-2.5">
+        <div class="sommelier-inner-frame p-3 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-bold block" id="orderTypeLabel">[FIRST BOWL]</span>
+              <span class="text-[10px] text-amber-400 font-mono font-semibold" id="orderSeatTag">👑 VIP Tab</span>
+            </div>
+            <div class="flex items-baseline gap-1.5">
+              <span class="text-lg font-bold text-amber-400 font-serif" id="totalPriceText">$0.00</span>
+              <span class="text-[11px] text-zinc-500 font-mono" id="taxEstimateText">+ $0.00 tax</span>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button onclick="submitActiveBowlOrder()" class="bg-amber-400 hover:brightness-110 text-black font-serif font-bold text-xs py-2.5 px-4 shadow-lg transition active:scale-95 uppercase tracking-wider select-none">
+              <span>Order Bowl Now</span>
+            </button>
+          </div>
         </div>
       </div>
-      
-      <div class="flex items-center gap-2">
-        <button onclick="dispatchOrder('tab')" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-slate-200 text-xs font-bold py-2.5 px-3 rounded-xl transition active:scale-95">
-          + Add to VIP Tab
-        </button>
-        <button onclick="switchCustomerTab('tab')" class="bg-brand-gold hover:bg-brand-goldHover text-black font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center gap-1">
-          <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
-          <span>Pay with Square</span>
-        </button>
-      </div>
+
     </div>
 
     <!-- ==================== VIEW 3: VIP STASH & PREVIOUS BOWLS (FULL VIEW) ==================== -->
@@ -2347,23 +2341,42 @@
 
   </main>
 
-  <!-- ==================== FLOATING BOTTOM MOBILE NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
-  <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-zinc-800/80 px-4 py-2 flex justify-around items-center backdrop-blur-md">
-    <button onclick="switchCustomerTab('menu')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-menu">
-      <i data-lucide="book-open" class="w-4 h-4 text-brand-gold"></i>
-      <span class="text-[10px] font-bold">Menu</span>
+  <!-- ==================== ACTIVE BOWL FLOATING NOTIFIER BAR ==================== -->
+  <div id="floatingActiveBowlBar" class="fixed bottom-14 left-1/2 -translate-x-1/2 w-full max-w-xl px-3.5 z-40 hidden select-none">
+    <div class="sommelier-card-frame p-2.5 flex items-center justify-between shadow-2xl bg-black/95 border border-white/[0.14]">
+      <div class="flex items-center gap-2 truncate pr-2 cursor-pointer" onclick="switchCustomerTab('lab')">
+        <span class="text-amber-400 text-xs flex-shrink-0">◆</span>
+        <div class="truncate">
+          <span class="text-[8px] font-sans uppercase tracking-[0.2em] text-zinc-400 block font-semibold">Active Bowl Formulation</span>
+          <span class="font-serif text-xs text-white truncate block" id="floatingBowlSummary">Pinkman (50%) · Cane Mint (50%)</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button onclick="switchCustomerTab('lab')" class="text-[9px] font-serif uppercase tracking-widest px-2 py-1 border border-white/20 hover:border-amber-400 text-zinc-300 hover:text-white transition">TUNE</button>
+        <button onclick="submitActiveBowlOrder()" class="text-[9px] font-serif uppercase tracking-widest px-2.5 py-1 bg-amber-400 text-black font-bold hover:brightness-110 transition active:scale-95">ORDER</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FLOATING BOTTOM LUXURY NAVIGATION DOCK (VIP LOGGED IN ONLY) ==================== -->
+  <nav id="vipBottomDock" class="hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 border-t border-white/[0.14] px-6 py-2 flex justify-around items-center backdrop-blur-md max-w-xl mx-auto select-none">
+    <button onclick="switchCustomerTab('menu')" class="flex flex-col items-center gap-0.5 text-white cust-dock-btn" id="dock-tab-menu">
+      <span class="text-amber-400 text-[10px]" id="dockMenuDiamond">◆</span>
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase">MENU</span>
     </button>
-    <button onclick="switchCustomerTab('lab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-lab">
-      <i data-lucide="flask-conical" class="w-4 h-4"></i>
-      <span class="text-[10px] font-bold">Mix Lab</span>
-    </button>
-    <button onclick="switchCustomerTab('rewards')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-rewards">
-      <i data-lucide="award" class="w-4 h-4"></i>
-      <span class="text-[10px] font-bold">VIP Stash</span>
+    <button onclick="switchCustomerTab('lab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn relative" id="dock-tab-lab">
+      <span class="text-zinc-600 text-[10px]" id="dockLabDiamond">◆</span>
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
+        MIX LAB
+        <span id="dockBowlCountBadge" class="hidden bg-amber-400 text-black text-[9px] font-mono font-bold px-1.5 py-0.2 rounded-full">0</span>
+      </span>
     </button>
     <button onclick="switchCustomerTab('tab')" class="flex flex-col items-center gap-0.5 text-zinc-400 hover:text-white cust-dock-btn" id="dock-tab-tab">
-      <i data-lucide="receipt" class="w-4 h-4"></i>
-      <span class="text-[10px] font-bold">My Tab</span>
+      <span class="text-zinc-600 text-[10px]" id="dockTabDiamond">◆</span>
+      <span class="font-serif text-[11px] font-bold tracking-widest uppercase flex items-center gap-1">
+        TAB
+        <span id="dockTabTotalBadge" class="text-amber-400/90 text-[10px] font-mono font-normal"></span>
+      </span>
     </button>
   </nav>
 
@@ -3342,18 +3355,160 @@
       renderCustomerMenu();
     }
 
+    function addFlavorToActiveBowl(flavorId) {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      const inventory = CustomerStash.getInventory();
+      const item = inventory.find(i => i.id === flavorId) || STOKED_MASTER_INVENTORY.find(i => i.id === flavorId);
+      if (!item) return;
+
+      const existingIdx = activeFlavors.findIndex(f => f.id === item.id);
+      if (existingIdx >= 0) {
+        showToast('✦ Already in Bowl', `${item.name} is already in your formulation.`);
+        return;
+      }
+
+      if (activeFlavors.length >= 3) {
+        showToast('⚠️ Bowl Full', 'Max 3 flavors per bowl. Tune ratios in Mix Lab.');
+        return;
+      }
+
+      activeFlavors.push({
+        id: item.id,
+        name: item.name,
+        brand: item.brand,
+        percent: 0
+      });
+      activeMixName = null;
+
+      const count = activeFlavors.length;
+      if (count === 1) {
+        activeFlavors[0].percent = 100;
+      } else if (count === 2) {
+        activeFlavors[0].percent = 50;
+        activeFlavors[1].percent = 50;
+      } else if (count === 3) {
+        activeFlavors[0].percent = 40;
+        activeFlavors[1].percent = 30;
+        activeFlavors[2].percent = 30;
+      }
+
+      renderMixLab();
+      updateActiveBowlNotificationUI();
+      closeMenuItemDetailModal();
+      showToast('✦ Added to Bowl', `${item.name} (${activeFlavors[activeFlavors.length-1].percent}%) added to your formulation.`);
+    }
+
+    function loadHouseMixIntoBowl(mixId) {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === mixId) || EMPIRE_HOUSE_MIXES[0];
+      const inventory = CustomerStash.getInventory();
+      activeFlavors = [];
+      activeMixName = mix.name;
+
+      (mix.flavors || []).forEach((fId, idx) => {
+        const sub = inventory.find(i => i.id === fId) || STOKED_MASTER_INVENTORY.find(i => i.id === fId) || STOKED_MASTER_INVENTORY[0];
+        const pct = mix.ratios ? (mix.ratios[idx] || 50) : 50;
+        activeFlavors.push({
+          id: sub.id,
+          name: sub.name,
+          brand: sub.brand,
+          percent: pct
+        });
+      });
+
+      renderMixLab();
+      updateActiveBowlNotificationUI();
+      closeMenuItemDetailModal();
+      switchCustomerTab('lab');
+      showToast('👑 Blend Loaded', `${mix.name} loaded into Mix Lab.`);
+    }
+
+    function submitActiveBowlOrder() {
+      if (!isVipLoggedIn) {
+        openVipLoginModal();
+        return;
+      }
+      if (activeFlavors.length === 0) {
+        showToast('⚠️ Empty Bowl', 'Add at least 1 flavor to your bowl before ordering.');
+        return;
+      }
+
+      const pricing = CustomerStash.getLoungePricing();
+      const hasTangiers = activeFlavors.some(f => f.brand === 'Tangiers');
+      const price = hasTangiers ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00);
+      const name = activeMixName || `Custom Mix (${activeFlavors.map(f => `${f.name} ${f.percent}%`).join(' / ')})`;
+
+      CustomerStash.addItemToTab({
+        id: 'order-' + Date.now(),
+        name: name,
+        type: 'shisha',
+        price: price,
+        status: 'Preparing',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+
+      clearBowl();
+      updateActiveBowlNotificationUI();
+      showToast('🔥 Order Dispatched', `${name} ($${price.toFixed(0)}) sent to your table!`);
+      switchCustomerTab('tab');
+    }
+
+    function updateActiveBowlNotificationUI() {
+      const floatingBar = document.getElementById('floatingActiveBowlBar');
+      const floatingSummary = document.getElementById('floatingBowlSummary');
+      const dockBadge = document.getElementById('dockBowlCountBadge');
+      const dockTabTotal = document.getElementById('dockTabTotalBadge');
+
+      if (activeFlavors.length > 0 && isVipLoggedIn && activeCustomerTab === 'menu') {
+        if (floatingBar) floatingBar.classList.remove('hidden');
+        if (floatingSummary) {
+          const summaryStr = activeFlavors.map(f => `${f.name} (${f.percent}%)`).join(' · ');
+          floatingSummary.textContent = activeMixName ? `${activeMixName} (${summaryStr})` : summaryStr;
+        }
+        if (dockBadge) {
+          dockBadge.textContent = activeFlavors.length;
+          dockBadge.classList.remove('hidden');
+        }
+      } else {
+        if (floatingBar) floatingBar.classList.add('hidden');
+        if (dockBadge) {
+          if (activeFlavors.length > 0 && isVipLoggedIn) {
+            dockBadge.textContent = activeFlavors.length;
+            dockBadge.classList.remove('hidden');
+          } else {
+            dockBadge.classList.add('hidden');
+          }
+        }
+      }
+
+      // Update active tab total on dock
+      const activeTab = CustomerStash.getActiveTab();
+      if (dockTabTotal && activeTab && activeTab.items && activeTab.items.length > 0) {
+        const total = activeTab.items.reduce((s, i) => s + (i.price || 0), 0);
+        dockTabTotal.textContent = `($${total.toFixed(0)})`;
+      } else if (dockTabTotal) {
+        dockTabTotal.textContent = '';
+      }
+    }
+
     function vipLogout() {
       isVipLoggedIn = false;
       document.getElementById('headerGuestView').classList.remove('hidden');
-      document.getElementById('headerGuestRightView').classList.remove('hidden');
+      if (document.getElementById('headerGuestRightView')) document.getElementById('headerGuestRightView').classList.remove('hidden');
       document.getElementById('headerVipView').classList.add('hidden');
       document.getElementById('headerVipRightView').classList.add('hidden');
 
-      const topNav = document.getElementById('vipTopNav');
-      if (topNav) topNav.classList.add('hidden');
-
       const bottomDock = document.getElementById('vipBottomDock');
       if (bottomDock) bottomDock.classList.add('hidden');
+
+      const floatingBar = document.getElementById('floatingActiveBowlBar');
+      if (floatingBar) floatingBar.classList.add('hidden');
 
       switchCustomerTab('menu');
       renderCustomerMenu();
@@ -3364,34 +3519,38 @@
     function switchCustomerTab(tabId) {
       activeCustomerTab = tabId;
       document.querySelectorAll('.customer-panel').forEach(p => p.classList.add('hidden'));
-      document.querySelectorAll('.cust-nav-btn').forEach(b => {
-        b.classList.remove('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
-        b.classList.add('text-zinc-400');
-      });
-      document.querySelectorAll('.cust-dock-btn').forEach(b => {
-        b.classList.remove('text-brand-gold');
-        b.classList.add('text-zinc-400');
+
+      // Update bottom dock luxury tabs
+      const tabs = ['menu', 'lab', 'tab'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`dock-tab-${t}`);
+        const diamond = document.getElementById(`dock${t.charAt(0).toUpperCase() + t.slice(1)}Diamond`);
+        if (btn) {
+          if (t === tabId) {
+            btn.classList.add('text-white');
+            btn.classList.remove('text-zinc-400');
+          } else {
+            btn.classList.remove('text-white');
+            btn.classList.add('text-zinc-400');
+          }
+        }
+        if (diamond) {
+          if (t === tabId) {
+            diamond.className = 'text-amber-400 text-[10px]';
+          } else {
+            diamond.className = 'text-zinc-600 text-[10px]';
+          }
+        }
       });
 
       const activePanel = document.getElementById(`customer-view-${tabId}`);
       if (activePanel) activePanel.classList.remove('hidden');
 
-      const activeBtn = document.getElementById(`cust-tab-${tabId}`);
-      if (activeBtn) {
-        activeBtn.classList.add('bg-brand-gold', 'text-black', 'shadow-md', 'font-extrabold');
-        activeBtn.classList.remove('text-zinc-400');
-      }
-
-      const activeDockBtn = document.getElementById(`dock-tab-${tabId}`);
-      if (activeDockBtn) {
-        activeDockBtn.classList.add('text-brand-gold');
-        activeDockBtn.classList.remove('text-zinc-400');
-      }
-
       if (tabId === 'menu') renderCustomerMenu();
       if (tabId === 'lab') renderMixLab();
-      if (tabId === 'rewards') renderVipStashView();
       if (tabId === 'tab') renderMyTabView();
+      
+      updateActiveBowlNotificationUI();
       renderIcons();
     }
 
@@ -3631,13 +3790,31 @@
             ? ((EMPIRE_HOUSE_MIXES.find(m => m.id === itemId)?.price || pricing.originalPrice || 35.00)).toFixed(0)
             : ((inventory.find(i => i.id === itemId)?.brand === 'Tangiers' ? (pricing.tangiersPrice || 38.00) : (pricing.originalPrice || 35.00))).toFixed(0);
           
-          orderContainer.innerHTML = `
-            <button onclick="orderItemFromModal('${itemId}', '${itemType}')" class="w-full bg-transparent hover:bg-amber-500/10 border-t border-b border-amber-500/50 hover:border-amber-400 text-amber-400 hover:text-white font-serif font-semibold tracking-[0.2em] py-2.5 text-xs flex items-center justify-center gap-2 transition uppercase my-1 select-none">
-              <span class="text-amber-400 text-[10px]">◆</span>
-              <span>ORDER THIS SELECTION — $${itemPriceFormatted}</span>
-              <span class="text-amber-400 text-[10px]">◆</span>
-            </button>
-          `;
+          if (itemType === 'house') {
+            orderContainer.innerHTML = `
+              <div class="flex gap-2 my-1">
+                <button onclick="loadHouseMixIntoBowl('${itemId}')" class="flex-1 bg-transparent hover:bg-white/5 border border-white/20 hover:border-amber-400/60 text-zinc-200 hover:text-white font-serif tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none">
+                  <span class="text-amber-400">✦</span>
+                  <span>TUNE IN MIX LAB</span>
+                </button>
+                <button onclick="orderItemFromModal('${itemId}', 'house')" class="flex-1 bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none active:scale-95">
+                  <span>ORDER BLEND ($${itemPriceFormatted})</span>
+                </button>
+              </div>
+            `;
+          } else {
+            orderContainer.innerHTML = `
+              <div class="flex gap-2 my-1">
+                <button onclick="addFlavorToActiveBowl('${itemId}')" class="flex-1 bg-transparent hover:bg-white/5 border border-white/20 hover:border-amber-400/60 text-zinc-200 hover:text-white font-serif tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none">
+                  <span class="text-amber-400">✦</span>
+                  <span>ADD TO BOWL MIX</span>
+                </button>
+                <button onclick="orderItemFromModal('${itemId}', 'flavor')" class="flex-1 bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.16em] py-2 text-[10px] flex items-center justify-center gap-1.5 transition uppercase select-none active:scale-95">
+                  <span>ORDER SINGLE ($${itemPriceFormatted})</span>
+                </button>
+              </div>
+            `;
+          }
         } else {
           orderContainer.innerHTML = `
             <button onclick="openVipLoginModal()" class="w-full bg-transparent hover:bg-white/5 border-t border-b border-white/20 text-zinc-300 hover:text-white font-serif tracking-[0.18em] py-2 text-[11px] flex items-center justify-center gap-2 transition uppercase my-1 select-none">
