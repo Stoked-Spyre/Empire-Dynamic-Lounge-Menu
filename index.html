@@ -4651,103 +4651,60 @@
     let activeStagedDrinks = []; // Array of { id, name, price, qty }
 
     const EMPIRE_BEVERAGE_MENU = [
-      // 1. Multi-Item Category: Coca-Cola Family (Accordion)
+      // 1. Coca-Cola Products (Accordion)
       {
         id: 'coke-products',
-        name: 'Coca-Cola Craft & Classic Sodas',
-        price: 4.00,
-        desc: 'Coca-Cola, Diet, Zero, Sprite, Dr Pepper, Fanta, Ginger Ale, Mexican Coke.',
+        name: 'Coca-Cola Products',
+        desc: 'Coca-Cola, Diet Coke, Coke Zero Sugar, Sprite, Dr Pepper, Fanta Orange, Ginger Ale, Mexican Coke',
         hasVariants: true,
         variants: [
-          { id: 'coke-classic', name: 'Coca-Cola Classic', desc: 'Original formula classic cola', price: 4.00 },
-          { id: 'coke-diet', name: 'Diet Coke', desc: 'Crisp zero-sugar classic', price: 4.00 },
-          { id: 'coke-zero', name: 'Coke Zero Sugar', desc: 'Real cola taste with zero calories', price: 4.00 },
-          { id: 'sprite', name: 'Sprite Lemon-Lime', desc: 'Crisp refreshing lemon-lime', price: 4.00 },
-          { id: 'dr-pepper', name: 'Dr Pepper', desc: '23 signature authentic blend flavors', price: 4.00 },
-          { id: 'fanta-orange', name: 'Fanta Orange', desc: 'Bright bubbly citrus orange', price: 4.00 },
-          { id: 'ginger-ale', name: 'Seagram\'s Ginger Ale', desc: 'Smooth crisp ginger bubbles', price: 4.00 },
-          { id: 'mexican-coke', name: 'Mexican Coke (Glass Bottle)', desc: 'Pure cane sugar glass bottle', price: 5.00 }
+          { id: 'coke-classic', name: 'Coca-Cola Classic' },
+          { id: 'coke-diet', name: 'Diet Coke' },
+          { id: 'coke-zero', name: 'Coke Zero Sugar' },
+          { id: 'sprite', name: 'Sprite Lemon-Lime' },
+          { id: 'dr-pepper', name: 'Dr Pepper' },
+          { id: 'fanta-orange', name: 'Fanta Orange' },
+          { id: 'ginger-ale', name: 'Seagram\'s Ginger Ale' },
+          { id: 'mexican-coke', name: 'Mexican Coke' }
         ]
       },
-      // 2. Standalone Item: Maison Perrier (Single Item -> Direct Click, NO Accordion)
-      {
-        id: 'maison-perrier',
-        name: 'Maison Perrier Sparkling Mineral Water',
-        price: 6.00,
-        desc: 'French sparkling natural mineral water with crisp, refreshing effervescence.',
-        hasVariants: false
-      },
-      // 3. Standalone Item: Topo Chico (Single Item -> Direct Click, NO Accordion)
-      {
-        id: 'topo-chico',
-        name: 'Topo Chico Mineral Water',
-        price: 6.00,
-        desc: 'Iconic Mexican sparkling mineral water in glass bottle.',
-        hasVariants: false
-      },
-      // 4. Multi-Item Category: Red Bull Selection (Accordion)
+      // 2. Red Bull Energy Selection (Accordion)
       {
         id: 'redbull',
-        name: 'Red Bull Energy Selection',
-        price: 6.00,
-        desc: 'Original, Sugarfree, Yellow Tropical & Red Watermelon editions.',
+        name: 'Red Bull Energy Drink',
+        desc: 'Original, Sugarfree, Yellow Edition & Red Edition',
         hasVariants: true,
         variants: [
-          { id: 'redbull-original', name: 'Red Bull Original', desc: 'Classic 8.4oz energy formula', price: 6.00 },
-          { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree', desc: 'Zero sugar energy formula', price: 6.00 },
-          { id: 'redbull-yellow', name: 'Red Bull Yellow Edition', desc: 'Tropical fruits blend', price: 6.00 },
-          { id: 'redbull-red', name: 'Red Bull Red Edition', desc: 'Watermelon chill blend', price: 6.00 }
+          { id: 'redbull-original', name: 'Red Bull Original' },
+          { id: 'redbull-sugarfree', name: 'Red Bull Sugarfree' },
+          { id: 'redbull-yellow', name: 'Red Bull Yellow Edition' },
+          { id: 'redbull-red', name: 'Red Bull Red Edition' }
         ]
       },
-      // 5. Multi-Item Category: Artisan Teas (Accordion)
+      // 3. Standalone Mineral & Sparkling Waters (Direct 1-tap, NO Accordion)
       {
-        id: 'lounge-teas',
-        name: 'Artisan Hot Teas & Samovar Pots',
-        price: 8.00,
-        desc: 'Slow brewed hot teas & traditional samovar infusions.',
-        hasVariants: true,
-        variants: [
-          { id: 'tea-moroccan-mint', name: 'Moroccan Fresh Mint Tea', desc: 'Gunpowder green tea & spearmint leaves', price: 8.00 },
-          { id: 'tea-jasmine-green', name: 'Russian Samovar Green Tea', desc: 'High-mountain floral jasmine green tea', price: 8.00 },
-          { id: 'tea-earl-grey', name: 'Imperial Earl Grey', desc: 'Rich black tea with Italian bergamot', price: 8.00 }
-        ]
-      },
-      // 6. Standalone Item: Turkish Coffee (Single Item -> Direct Click, NO Accordion)
-      {
-        id: 'turkish-coffee',
-        name: 'Traditional Turkish Coffee',
-        price: 9.00,
-        desc: 'Cardamom infused, slow-brewed hot sand style.',
+        id: 'maison-perrier',
+        name: 'Maison Perrier',
+        desc: 'French sparkling natural mineral water with crisp effervescence.',
         hasVariants: false
       },
-      // 7. Multi-Item Category: Chilled Iced Teas & Juices (Accordion)
       {
-        id: 'iced-teas-juices',
-        name: 'Chilled Iced Teas & Fresh Juices',
-        price: 5.00,
-        desc: 'Chilled refreshing fruit infusions & botanical iced teas.',
-        hasVariants: true,
-        variants: [
-          { id: 'az-green-tea', name: 'Arizona Ginseng Green Tea', desc: 'Classic green tea with organic honey', price: 4.00 },
-          { id: 'peach-iced-tea', name: 'Sweet Georgia Peach Iced Tea', desc: 'Slow brewed black tea & peach nectar', price: 5.00 },
-          { id: 'pomegranate-juice', name: 'POM Pure Pomegranate', desc: 'Tart antioxidant powerhouse', price: 6.00 },
-          { id: 'mango-nectar', name: 'Chilled Mango Nectar', desc: 'Smooth golden mango pulp', price: 5.00 }
-        ]
+        id: 'topo-chico',
+        name: 'Topo Chico',
+        desc: 'Mexican sparkling mineral water in glass bottle.',
+        hasVariants: false
       },
-      // 8. Standalone Item: Bottled Spring Water (Single Item -> Direct Click, NO Accordion)
+      // 4. Standalone Still Waters (Direct 1-tap, NO Accordion)
       {
         id: 'bottled-water',
-        name: 'Bottled Artisan Spring Water',
-        price: 3.00,
+        name: 'Bottled Water',
         desc: 'Pure artisan chilled spring water.',
         hasVariants: false
       },
-      // 9. Standalone Item: House Water (Single Item -> Direct Click, NO Accordion)
       {
         id: 'house-water',
-        name: 'Iced Filtered Table Water',
-        price: 2.00,
-        desc: 'Chilled purified table water over ice with lemon slice.',
+        name: 'Iced Table Water',
+        desc: 'Chilled purified table water over ice.',
         hasVariants: false
       }
     ];
@@ -5145,43 +5102,39 @@
         metaLine = brandBadge ? `${brandBadge} — ${profiles}` : profiles;
       }
 
-      // 1. BEVERAGES: Inline Accordion Dropdown with - / + Stepper on Each Item
+      // 1. BEVERAGES: NO PRICING DISPLAY, NO SUB-ITEM DESCRIPTIONS, ULTRA-BRIGHT TEXT
       if (isDrink) {
         const isOpen = (activeOpenBeverageAccordionId === item.id);
         const hasVariants = !!item.hasVariants && item.variants && item.variants.length > 0;
 
-        // If standalone (no variants), single stepper on the right
+        // If standalone (no variants), clean item row without price
         if (!hasVariants) {
           const staged = activeStagedDrinks.find(d => d.id === item.id);
           const stagedQty = staged ? staged.qty : 0;
           const stepperBtn = isVipLoggedIn ? `
             <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
               ${stagedQty > 0 ? `
-                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, -1)" class="w-6 h-6 bg-zinc-850 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">-</button>
-                <span class="font-mono text-amber-300 font-bold px-1 text-xs min-w-[18px] text-center select-none">${stagedQty}</span>
-                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)" class="w-6 h-6 bg-zinc-850 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">+</button>
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, -1)" class="w-7 h-7 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-sm select-none rounded-none shadow-sm">-</button>
+                <span class="font-mono text-amber-300 font-bold px-1.5 text-sm min-w-[20px] text-center select-none">${stagedQty}</span>
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="w-7 h-7 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-sm select-none rounded-none shadow-sm">+</button>
               ` : `
-                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)" class="text-[10px] font-serif uppercase tracking-widest px-3 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 select-none rounded-none">+ ADD</button>
+                <button onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)" class="text-[10px] font-serif uppercase tracking-wider px-3 py-1 bg-amber-400 hover:bg-amber-300 text-black font-bold shadow transition active:scale-95 select-none rounded-none">+ ADD</button>
               `}
             </div>
           ` : '';
 
           return `
-            <div class="editorial-item mb-3.5 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group' : ''}" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', ${item.price}, 1)"` : ''}>
-              <div class="item-top-row flex items-baseline justify-between w-full">
-                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
-                <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
-                <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
-              </div>
-              <div class="flex items-center justify-between gap-2 mt-0.5">
-                <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
+            <div class="editorial-item mb-4 select-none opacity-100 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group' : ''}" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${item.id}', '${item.name.replace(/'/g, "\\'")}', 0, 1)"` : ''}>
+              <div class="flex items-center justify-between w-full">
+                <span class="font-serif text-[1.12rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] ${isVipLoggedIn ? 'group-hover:text-amber-300' : ''} transition truncate">${item.name}</span>
                 ${stepperBtn}
               </div>
+              ${item.desc ? `<div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed truncate">${item.desc}</div>` : ''}
             </div>
           `;
         }
 
-        // Accordion with product variants
+        // Accordion with product variants (No sub-item descriptions, ultra bright pure white text, no prices)
         const totalStagedForGroup = (item.variants || []).reduce((sum, v) => {
           const s = activeStagedDrinks.find(d => d.id === v.id);
           return sum + (s ? s.qty : 0);
@@ -5190,54 +5143,42 @@
         const variantsHtml = (item.variants || []).map(v => {
           const vStaged = activeStagedDrinks.find(d => d.id === v.id);
           const vQty = vStaged ? vStaged.qty : 0;
-          const vPrice = v.price || item.price;
           return `
-            <div class="sub-editorial-item py-1.5 pl-3.5 pr-0.5 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/sub' : ''} transition select-none" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)"` : ''}>
-              <div class="item-top-row flex items-baseline justify-between w-full">
-                <span class="font-serif text-[1.00rem] font-bold text-white tracking-wide ${isVipLoggedIn ? 'group-hover/sub:text-amber-300' : ''} ${vQty > 0 ? 'text-amber-300' : ''} transition truncate">${v.name}</span>
-                <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/30 relative -top-1"></span>
-                <span class="font-serif text-[1.00rem] font-bold text-white whitespace-nowrap flex-shrink-0">$${vPrice.toFixed(0)}</span>
-              </div>
-              <div class="flex items-center justify-between gap-2 mt-0.5">
-                <div class="font-sans text-[0.78rem] text-zinc-300 italic font-light leading-relaxed truncate">${v.desc}</div>
-                ${isVipLoggedIn ? `
-                  <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
-                    ${vQty > 0 ? `
-                      <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, -1)" class="w-5 h-5 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">-</button>
-                      <span class="font-mono text-amber-300 font-bold px-1 text-xs min-w-[16px] text-center select-none">${vQty}</span>
-                      <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="w-5 h-5 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">+</button>
-                    ` : `
-                      <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', ${vPrice}, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-0.5 border border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
-                    `}
-                  </div>
-                ` : ''}
-              </div>
+            <div class="sub-editorial-item py-2 pl-3 pr-1 ${isVipLoggedIn ? 'cursor-pointer active:scale-[0.99] group/sub' : ''} transition select-none flex items-center justify-between" ${isVipLoggedIn ? `onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', 0, 1)"` : ''}>
+              <span class="font-serif text-[1.05rem] font-bold text-white tracking-wide ${isVipLoggedIn ? 'group-hover/sub:text-amber-300' : ''} ${vQty > 0 ? 'text-amber-300 font-bold' : ''} transition truncate">${v.name}</span>
+              ${isVipLoggedIn ? `
+                <div class="flex items-center gap-1.5 flex-shrink-0" onclick="event.stopPropagation()">
+                  ${vQty > 0 ? `
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', 0, -1)" class="w-6 h-6 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">-</button>
+                    <span class="font-mono text-amber-300 font-bold px-1 text-xs min-w-[16px] text-center select-none">${vQty}</span>
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', 0, 1)" class="w-6 h-6 bg-zinc-800 hover:bg-amber-400 hover:text-black border border-white/40 text-white font-mono flex items-center justify-center font-bold text-xs select-none rounded-none shadow-sm">+</button>
+                  ` : `
+                    <button onclick="changeVariantDrinkQty('${v.id}', '${v.name.replace(/'/g, "\\'")}', 0, 1)" class="text-[9px] font-serif uppercase tracking-wider px-2.5 py-0.5 border border-white/30 text-zinc-200 hover:border-amber-400 hover:text-white transition active:scale-95 select-none font-bold rounded-none">+ ADD</button>
+                  `}
+                </div>
+              ` : ''}
             </div>
           `;
         }).join('');
 
         return `
-          <div class="editorial-item mb-3.5 select-none opacity-100">
+          <div class="editorial-item mb-4 select-none opacity-100">
             <div class="cursor-pointer group" onclick="toggleBeverageAccordion('${item.id}')">
-              <div class="item-top-row flex items-baseline justify-between w-full">
-                <span class="font-serif text-[1.08rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate flex items-center gap-1.5">
+              <div class="flex items-center justify-between w-full">
+                <span class="font-serif text-[1.12rem] font-bold text-white tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:text-amber-300 transition truncate flex items-center gap-2">
                   <span>${item.name}</span>
-                  <span class="text-amber-400 text-[10px] transform ${isOpen ? 'rotate-180' : ''} transition-transform font-bold">▼</span>
+                  <span class="text-amber-400 text-xs transform ${isOpen ? 'rotate-180' : ''} transition-transform font-bold">▼</span>
                 </span>
-                <span class="item-leader flex-grow mx-2 border-b border-dotted border-white/40 relative -top-1"></span>
-                <span class="font-serif text-[1.08rem] font-bold text-white whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] flex-shrink-0">$${priceStr}</span>
-              </div>
-              <div class="flex items-center justify-between gap-2 mt-0.5">
-                <div class="font-sans text-[0.80rem] text-zinc-300 italic font-light leading-relaxed truncate">${item.desc}</div>
-                <span class="text-[9px] font-mono text-amber-400/90 font-bold uppercase tracking-wider flex-shrink-0">
+                <span class="text-[10px] font-mono text-amber-400/90 font-bold uppercase tracking-wider flex-shrink-0">
                   ${totalStagedForGroup > 0 ? `(${totalStagedForGroup} in Tray)` : `${item.variants.length} Selections`}
                 </span>
               </div>
+              ${item.desc ? `<div class="font-sans text-[0.80rem] text-zinc-300 italic font-light mt-0.5 leading-relaxed truncate">${item.desc}</div>` : ''}
             </div>
 
-            <!-- Inline Accordion Dropdown Content (Editorial Spread Layout) -->
+            <!-- Inline Accordion Dropdown Content (Ultra Bright Pure White, No Descriptions, No Prices) -->
             ${isOpen ? `
-              <div class="mt-2 pl-2 space-y-1">
+              <div class="mt-1 pl-2 space-y-0.5">
                 ${variantsHtml}
               </div>
             ` : ''}
