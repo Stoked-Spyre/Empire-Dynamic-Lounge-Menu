@@ -19,6 +19,9 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -2827,6 +2830,7 @@
       </div>
       <h1 class="menu-masthead text-2xl md:text-3xl">Empire Hookah Lounge</h1>
       <p class="menu-kicker text-[10px]">EST. 2010 · PHOENIX, ARIZONA</p>
+      <p class="menu-kicker text-[9px] text-[#E5A93C]/80 tracking-[0.24em] uppercase mt-0.5">POWERED BY STOKED CRAFT NETWORK</p>
     </div>
 
     <!-- Fully Transparent Noir House Regulations & Gold Lined CTA -->
@@ -2961,6 +2965,10 @@
             <button onclick="attemptVipRegister()" id="vipRegisterSubmitBtn" class="w-full bg-amber-400 hover:brightness-110 text-black font-serif font-bold tracking-[0.18em] py-2.5 text-xs flex items-center justify-center gap-1.5 transition uppercase mt-2 shadow select-none">
               <span>REGISTER &amp; CLAIM REWARD</span>
             </button>
+
+            <p class="text-[9px] font-sans text-zinc-500 text-center leading-relaxed pt-1.5 border-t border-white/5">
+              ✦ Powered by <strong class="text-amber-400">Stoked Craft Shisha Network</strong>. Creating an account links your lounge tasting history. De-identified flavor trend analytics used to refine craft blend profiles.
+            </p>
           </div>
 
           <!-- Quiet Dismissal Line -->
@@ -3307,6 +3315,21 @@
 
   <!-- ==================== JAVASCRIPT & STOKED LAB ENGINE ==================== -->
   <script>
+    // ==========================================================================
+    // ⚡ SUPABASE BACKEND CLIENT (STOKED UNIVERSAL NETWORK)
+    // ==========================================================================
+    const SUPABASE_URL = "https://zwrryhzynpbyqyecyomz.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cnJ5aHp5bnBieXF5ZWN5b216Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTczNTYsImV4cCI6MjEwMjI5MzM1Nn0.eIA1j6xCRCmmI-D5WQS4KvWr9UZoSMvVO0k1Jlq4Vfs";
+
+    let supabaseClient = null;
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+      try {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      } catch (e) {
+        console.warn('Supabase client initialization deferred:', e);
+      }
+    }
+
     const BRAND_WATERMARKS = {
       empire: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M50 14 L62 32 L84 22 L76 48 L24 48 L16 22 L38 32 Z M28 54 L72 54 L68 76 L50 86 L32 76 Z M46 60 L54 60 L52 74 L48 74 Z" fill-rule="evenodd"/></svg>`,
       musthave: `<svg viewBox="0 0 100 100" fill="currentColor" class="w-full h-full"><path d="M20 25 L35 25 L50 50 L65 25 L80 25 L80 80 L66 80 L66 48 L54 68 L46 68 L34 48 L34 80 L20 80 Z M38 12 L50 18 L62 12 L56 22 L44 22 Z"/></svg>`,
@@ -3688,6 +3711,20 @@
       CustomerStash.saveVipMembers(members);
       loginAsVipMember(newMember);
       showToast('🎁 Welcome Bonus Added', '100 Welcome Points (1 Free Beverage) added to your VIP account!');
+
+      // Asynchronously sync profile to Stoked Supabase Network
+      if (supabaseClient) {
+        try {
+          supabaseClient.from('user_profiles').upsert({
+            id: newId,
+            display_name: name,
+            phone: phone,
+            email: email,
+            home_lounge: 'empire-hookah-lounge',
+            created_at: new Date().toISOString()
+          }, { onConflict: 'email' }).then(() => console.log('Synced guest profile to Stoked Supabase')).catch(e => console.warn('Supabase profile sync deferred:', e));
+        } catch(e) {}
+      }
     }
 
     function attemptVipLogin() {

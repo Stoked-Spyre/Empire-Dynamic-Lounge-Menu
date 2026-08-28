@@ -9,6 +9,9 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Supabase JS Client CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
@@ -225,6 +228,7 @@
         <div class="flex items-center gap-2">
           <h1 class="font-crest font-bold text-sm tracking-wider text-[#E8E6E3]">EMPIRE STAFF PORTAL</h1>
           <span class="px-2 py-0.5 bg-emerald-500/15 text-emerald-300 font-mono text-[9px] font-bold rounded-full border border-emerald-500/30">● LIVE POS</span>
+          <span class="hidden lg:inline-block px-2 py-0.5 bg-amber-500/10 text-[#D4AF37] font-mono text-[9px] font-bold rounded-full border border-[#D4AF37]/30">POWERED BY STOKED</span>
         </div>
         <span class="hidden sm:inline-block text-[10px] text-zinc-400 font-mono">OPENTABLE FLOOR DECK &amp; LIVE TIMERS</span>
       </div>
@@ -335,7 +339,7 @@
         <div id="floorplanCanvasContainer" class="soft-card p-3 md:p-4 shadow-xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
             <span class="text-zinc-300">Click any physical table or booth to open deck</span>
-            <span class="text-[11px] text-[#D4AF37]">● Real-Time Seating</span>
+            <span class="text-[11px] text-[#D4AF37]">● Real-Time Seating · Powered by Stoked</span>
           </div>
 
           <div id="loungeDiagramCanvas" class="floorplan-canvas">
@@ -505,7 +509,7 @@
               <div class="flex-shrink-0">
                 <div class="pb-1.5 border-b border-white/10 flex justify-between items-center">
                   <span class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider">Tobacco Houses</span>
-                  <span class="text-[10px] font-mono text-zinc-500">Filter</span>
+                  <span class="text-[10px] font-mono text-zinc-500" id="liveDbIndicator">● LIVE</span>
                 </div>
 
                 <div class="space-y-1 pt-1.5 overflow-y-auto no-scrollbar max-h-[160px]" id="leftBrandList">
@@ -680,9 +684,24 @@
 
     </div>
 
-  </div>
+  </main>
 
   <script>
+    // ==========================================================================
+    // ⚡ SUPABASE BACKEND CLIENT (STOKED UNIVERSAL NETWORK)
+    // ==========================================================================
+    const SUPABASE_URL = "https://zwrryhzynpbyqyecyomz.supabase.co";
+    const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cnJ5aHp5bnBieXF5ZWN5b216Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTczNTYsImV4cCI6MjEwMjI5MzM1Nn0.eIA1j6xCRCmmI-D5WQS4KvWr9UZoSMvVO0k1Jlq4Vfs";
+
+    let supabaseClient = null;
+    if (typeof supabase !== 'undefined' && supabase.createClient) {
+      try {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+      } catch (e) {
+        console.warn('Supabase client initialization deferred:', e);
+      }
+    }
+
     // ==========================================================================
     // ⚡ STOKED MASTER FLAVOR CATEGORIES & SPECTRUM GRADIENT ENGINE
     // ==========================================================================
@@ -852,8 +871,8 @@
       return `linear-gradient(90deg, ${stops.join(", ")})`;
     }
 
-    // Master Flavors Catalog
-    const FLAVOR_CATALOG = [
+    // Master Seed Catalog (Instant Load Fallback & Cache)
+    let FLAVOR_CATALOG = [
       { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['berries', 'citruses', 'candy'] },
       { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profiles: ['mints', 'sour'] },
       { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profiles: ['dairy', 'desserts'] },
@@ -1231,6 +1250,48 @@
         ]
       }
     ];
+
+    // Live Supabase Background Fetch
+    async function syncFlavorsFromSupabase() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient
+          .from('tobacco_flavors')
+          .select('id, brand_name, flavor_name, profile, available_lines')
+          .in('brand_name', ['MustHave', 'Must Have', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'Adalya'])
+          .order('flavor_name', { ascending: true })
+          .limit(200);
+
+        if (error) throw error;
+        if (data && data.length > 0) {
+          const mapped = data.map(f => ({
+            id: f.id,
+            name: f.flavor_name,
+            brand: f.brand_name === 'Must Have' ? 'MustHave' : f.brand_name,
+            origin: f.brand_name.includes('Tangiers') ? 'San Diego 🇺🇸' : (f.brand_name.includes('Al Fakher') ? 'Ajman 🇦🇪' : 'Moscow 🇷🇺'),
+            leaf: f.brand_name.includes('Al Fakher') || f.brand_name.includes('Starbuzz') || f.brand_name.includes('Adalya') ? 'Blonde Leaf' : 'Dark Leaf',
+            buzz: f.brand_name.includes('Tangiers') ? 9 : (f.brand_name.includes('BlackBurn') ? 8 : (f.brand_name.includes('Al Fakher') ? 4 : 7)),
+            notes: (f.profile && f.profile.length > 0) ? f.profile.join(' · ') : 'Craft Lineage',
+            profiles: f.profile || []
+          }));
+
+          FLAVOR_CATALOG = mapped;
+          try {
+            localStorage.setItem('empire_cached_flavors', JSON.stringify(mapped));
+          } catch(e) {}
+
+          const ind = document.getElementById('liveDbIndicator');
+          if (ind) ind.textContent = `● SYNCED (${mapped.length})`;
+          
+          if (activeDrawerTab === 'mixlab') {
+            renderLeftFilterSelectors();
+            renderRightCatalogList();
+          }
+        }
+      } catch (err) {
+        console.warn('Supabase offline or background fetch deferred, using cached/seed catalog:', err);
+      }
+    }
 
     function showToast(title, msg) {
       const toast = document.getElementById('staffToast');
@@ -1900,16 +1961,16 @@
       const drinksBtn = document.getElementById('leftDrinksBtn');
       if (!brandList || !profileList) return;
 
-      // 1. Brand list with 👑 Signature House Mixes as the DEFAULT option
+      // Extract unique brands present in FLAVOR_CATALOG
+      const uniqueBrands = Array.from(new Set(FLAVOR_CATALOG.map(f => f.brand))).filter(Boolean);
       const BRANDS_AND_MIXES = [
-        { id: 'house_mixes', name: '👑 Signature House Mixes', count: EMPIRE_HOUSE_MIXES.length, isHouse: true },
-        { id: 'MustHave', name: 'MustHave Dark Leaf', count: 5 },
-        { id: 'Tangiers', name: 'Tangiers Noir', count: 3 },
-        { id: 'Darkside', name: 'Darkside Burley', count: 3 },
-        { id: 'BlackBurn', name: 'BlackBurn Overdose', count: 2 },
-        { id: 'Al Fakher', name: 'Al Fakher Blondes', count: 2 },
-        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2 }
+        { id: 'house_mixes', name: '👑 Signature House Mixes', count: EMPIRE_HOUSE_MIXES.length, isHouse: true }
       ];
+
+      uniqueBrands.forEach(b => {
+        const count = FLAVOR_CATALOG.filter(f => f.brand === b).length;
+        BRANDS_AND_MIXES.push({ id: b, name: b, count: count });
+      });
 
       let bHtml = '';
       BRANDS_AND_MIXES.forEach(b => {
@@ -1927,15 +1988,19 @@
       });
       brandList.innerHTML = bHtml;
 
-      // 2. Flavor Profiles List
+      // 2. Canonical Stoked Flavor Profiles List
       const PROFILES = [
         { id: 'berries', label: 'Berries', color: '#ff3366' },
-        { id: 'citruses', label: 'Citrus', color: '#ffcc00' },
-        { id: 'mints', label: 'Mint / Ice', color: '#00f0ff' },
-        { id: 'desserts', label: 'Cream / Dessert', color: '#c084fc' },
-        { id: 'warm-spices', label: 'Spiced / Floral', color: '#d97706' },
+        { id: 'citruses', label: 'Citruses', color: '#ffcc00' },
+        { id: 'mints', label: 'Mints', color: '#00f0ff' },
+        { id: 'desserts', label: 'Desserts', color: '#c084fc' },
+        { id: 'dairy', label: 'Dairy / Creamy', color: '#e0e7ff' },
+        { id: 'warm-spices', label: 'Warm Spices', color: '#d97706' },
         { id: 'tropical', label: 'Tropical', color: '#ff8c00' },
-        { id: 'herbal', label: 'Botanical', color: '#10b981' }
+        { id: 'orchard', label: 'Orchard Fruit', color: '#fb923c' },
+        { id: 'herbal', label: 'Herbal', color: '#10b981' },
+        { id: 'candy', label: 'Candy', color: '#ec4899' },
+        { id: 'sour', label: 'Sour', color: '#ccff00' }
       ];
 
       let pHtml = '';
@@ -2061,7 +2126,7 @@
         filtered = FLAVOR_CATALOG.filter(f => (f.profiles || []).some(p => p.toLowerCase().includes(profId)));
         if (titleEl) titleEl.textContent = `${activeFilterType.replace('prof-', '').toUpperCase()} Flavors`;
       } else {
-        filtered = FLAVOR_CATALOG.filter(f => f.brand === activeFilterType || (activeFilterType === 'Starbuzz' && (f.brand === 'Starbuzz' || f.brand === 'Adalya')));
+        filtered = FLAVOR_CATALOG.filter(f => f.brand === activeFilterType);
         if (titleEl) titleEl.textContent = `${activeFilterType} Flavors`;
       }
 
@@ -2503,10 +2568,24 @@
     }, 2500);
 
     window.addEventListener('DOMContentLoaded', () => {
+      // Try loading cached flavors if present
+      try {
+        const cached = localStorage.getItem('empire_cached_flavors');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            FLAVOR_CATALOG = parsed;
+          }
+        }
+      } catch(e) {}
+
       renderDeckOverview();
       if (window.innerWidth < 768) {
         setMobileActiveTab('map');
       }
+
+      // Sync latest data from Supabase in background
+      syncFlavorsFromSupabase();
     });
   </script>
 </body>
