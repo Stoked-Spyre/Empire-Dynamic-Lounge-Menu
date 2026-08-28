@@ -4,61 +4,61 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Empire Hookah Lounge — Staff Operations &amp; OpenTable Floor Deck</title>
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#12151B" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #030508;
-      color: #E2E8F0;
+      background: #12151B;
+      color: #E8E6E3;
       -webkit-tap-highlight-color: transparent;
     }
     .font-crest { font-family: 'Cinzel', serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
 
-    /* STOKED LUXURY THEME CARDS */
-    .stoked-card {
-      background: #080C14;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
+    /* SOFT WARM DARK THEME SURFACES */
+    .soft-card {
+      background: #181C24;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .stoked-card:hover {
-      border-color: rgba(229, 169, 60, 0.35);
-      background: #0E1320;
+    .soft-card:hover {
+      border-color: rgba(212, 175, 55, 0.35);
+      background: #1E232E;
     }
 
-    /* TALL ALERT CARD STYLING */
+    /* TALL ALERT CARDS */
     .alert-card {
-      background: #080C14;
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: #181C24;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
-      padding: 14px;
+      padding: 13px;
       transition: all 0.2s ease;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
     }
     .alert-card:hover {
-      border-color: rgba(229, 169, 60, 0.4);
-      background: #0D121F;
+      border-color: rgba(212, 175, 55, 0.4);
+      background: #1F2430;
       transform: translateY(-1px);
     }
 
     /* FULL-SCREEN MODAL CANVAS */
-    .fullscreen-drawer-panel {
+    .fullscreen-modal-deck {
       position: fixed;
       inset: 0;
-      background: #030508;
+      background: #12151B;
       z-index: 70;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -67,42 +67,34 @@
     /* MULTI-STOP SPECTRUM GRADIENT TRACK */
     .spectrum-track {
       width: 100%;
-      height: 20px;
-      border-radius: 10px;
-      background: #0A0F1A;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      transition: background 0.2s ease;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.8);
+      height: 22px;
+      border-radius: 11px;
+      background: #1E232E;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: background 0.25s ease;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.6);
     }
 
-    /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
+    /* OPENTABLE ARCHITECTURAL CANVAS */
     .floorplan-canvas {
       position: relative;
       width: 100%;
       height: 480px;
-      background-color: #05080E;
+      background-color: #151922;
       background-image: 
-        radial-gradient(circle at 50% 50%, rgba(229, 169, 60, 0.04) 0%, transparent 75%),
+        radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 75%),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 100% 100%, 32px 32px, 32px 32px;
-      border: 1.5px solid rgba(255, 255, 255, 0.09);
-      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
       overflow: hidden;
       user-select: none;
-      box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.7);
     }
 
-    @media (min-width: 768px) {
-      .floorplan-canvas {
-        height: 600px;
-      }
-    }
-    @media (min-width: 1024px) {
-      .floorplan-canvas {
-        height: 660px;
-      }
-    }
+    @media (min-width: 768px) { .floorplan-canvas { height: 580px; } }
+    @media (min-width: 1024px) { .floorplan-canvas { height: 640px; } }
 
     /* PHYSICAL SEAT / TABLE NODES */
     .diagram-seat-node {
@@ -113,45 +105,43 @@
       justify-content: center;
       cursor: pointer;
       border-radius: 16px;
-      background: #080C14;
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      background: #1A1F2B;
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 10;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
     .diagram-seat-node:hover {
-      transform: scale(1.06);
+      transform: scale(1.05);
       z-index: 25;
-      border-color: #E5A93C;
-      box-shadow: 0 0 22px rgba(229, 169, 60, 0.45);
+      border-color: #D4AF37;
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
     }
-    .diagram-seat-node:active {
-      transform: scale(0.95);
-    }
+    .diagram-seat-node:active { transform: scale(0.96); }
 
     .diagram-seat-node.occupied {
-      background: #0F1626 !important;
-      border-color: #E5A93C !important;
-      box-shadow: 0 0 16px rgba(229, 169, 60, 0.25);
+      background: #202736 !important;
+      border-color: #D4AF37 !important;
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.2);
     }
     .diagram-seat-node.service-due {
       border-color: #F59E0B !important;
-      background: rgba(245, 158, 11, 0.15) !important;
+      background: rgba(245, 158, 11, 0.18) !important;
       animation: pulse-amber 1.8s infinite;
     }
     .diagram-seat-node.coals-due {
       border-color: #EF4444 !important;
-      background: rgba(239, 68, 68, 0.18) !important;
+      background: rgba(239, 68, 68, 0.2) !important;
       animation: pulse-ember 1.5s infinite;
     }
 
     @keyframes pulse-ember {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      50% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
     }
     @keyframes pulse-amber {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
-      50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+      50% { box-shadow: 0 0 0 5px rgba(245, 158, 11, 0); }
     }
 
     /* ARCHITECTURAL LANDMARKS */
@@ -160,103 +150,64 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px dashed rgba(148, 163, 184, 0.25);
-      border-radius: 14px;
-      color: #64748B;
-      font-size: 0.7rem;
-      font-weight: 800;
+      background: rgba(26, 32, 44, 0.6);
+      border: 1px dashed rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      color: #718096;
+      font-size: 0.68rem;
+      font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       pointer-events: none;
       z-index: 5;
     }
 
-    /* FULL-SCREEN EDGE GLOW ALERT SYSTEM */
-    .staff-screen-glow-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: all 0.3s ease;
-    }
-    .glow-red {
-      box-shadow: inset 0 0 50px rgba(239, 68, 68, 0.9), inset 0 0 100px rgba(239, 68, 68, 0.4);
-      border: 3px solid #EF4444;
-      animation: alert-flash-red 0.9s infinite ease-in-out;
-    }
-    .glow-amber {
-      box-shadow: inset 0 0 50px rgba(245, 158, 11, 0.9), inset 0 0 100px rgba(245, 158, 11, 0.4);
-      border: 3px solid #F59E0B;
-      animation: alert-flash-amber 1.2s infinite ease-in-out;
-    }
-    .glow-cyan {
-      box-shadow: inset 0 0 50px rgba(6, 182, 212, 0.9), inset 0 0 100px rgba(6, 182, 212, 0.4);
-      border: 3px solid #06B6D4;
-      animation: alert-flash-cyan 1.2s infinite ease-in-out;
-    }
-    @keyframes alert-flash-red {
-      0%, 100% { box-shadow: inset 0 0 35px rgba(239, 68, 68, 0.7); opacity: 0.8; }
-      50% { box-shadow: inset 0 0 75px rgba(239, 68, 68, 1), 0 0 30px rgba(239, 68, 68, 0.8); opacity: 1; }
-    }
-    @keyframes alert-flash-amber {
-      0%, 100% { box-shadow: inset 0 0 35px rgba(245, 158, 11, 0.7); opacity: 0.8; }
-      50% { box-shadow: inset 0 0 75px rgba(245, 158, 11, 1), 0 0 30px rgba(245, 158, 11, 0.8); opacity: 1; }
-    }
-    @keyframes alert-flash-cyan {
-      0%, 100% { box-shadow: inset 0 0 35px rgba(6, 182, 212, 0.7); opacity: 0.8; }
-      50% { box-shadow: inset 0 0 75px rgba(6, 182, 212, 1), 0 0 30px rgba(6, 182, 212, 0.8); opacity: 1; }
-    }
-
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 select-none bg-[#030508]">
-
-  <!-- Screen Edge Glow Alert Overlay -->
-  <div id="staffScreenGlowOverlay" class="staff-screen-glow-overlay"></div>
+<body class="min-h-screen flex flex-col items-center justify-start pb-16 md:pb-8 select-none bg-[#12151B]">
 
   <!-- Toast Notification Container -->
-  <div id="staffToast" class="fixed top-4 right-4 z-90 bg-[#080C14]/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2.5 text-xs font-mono backdrop-blur-md">
+  <div id="staffToast" class="fixed top-4 right-4 z-90 bg-[#181C24]/95 border border-[#D4AF37]/40 text-[#E8E6E3] px-4 py-2.5 rounded-2xl shadow-xl transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2.5 text-xs font-mono backdrop-blur-md">
     <div>
-      <div id="staffToastTitle" class="font-bold text-amber-300 uppercase tracking-wider">Alert</div>
+      <div id="staffToastTitle" class="font-bold text-[#D4AF37] uppercase tracking-wider">Alert</div>
       <div id="staffToastMsg" class="text-zinc-300 text-[11px]">Message details</div>
     </div>
   </div>
 
   <!-- ==================== 1. TOP SERVER APP BAR ==================== -->
-  <header class="w-full bg-[#05080E]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
+  <header class="w-full bg-[#151922]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-md backdrop-blur-md">
     
     <!-- Left: Station Brand & Live Status -->
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-2xl bg-zinc-950 border border-amber-500/30 flex items-center justify-center p-1 shadow-inner">
-        <span class="text-amber-400 font-crest font-bold text-base">E</span>
+      <div class="w-8 h-8 rounded-xl bg-[#1A1F2B] border border-[#D4AF37]/30 flex items-center justify-center p-1 shadow-inner">
+        <span class="text-[#D4AF37] font-crest font-bold text-sm">E</span>
       </div>
       <div>
         <div class="flex items-center gap-2">
-          <h1 class="font-crest font-bold text-sm tracking-wider text-white">EMPIRE STAFF PORTAL</h1>
+          <h1 class="font-crest font-bold text-sm tracking-wider text-[#E8E6E3]">EMPIRE STAFF PORTAL</h1>
           <span class="px-2 py-0.5 bg-emerald-500/15 text-emerald-300 font-mono text-[9px] font-bold rounded-full border border-emerald-500/30">● LIVE POS</span>
         </div>
-        <span class="hidden sm:inline-block text-[10px] text-zinc-400 font-mono">OPENTABLE SEATING CHART &amp; LIVE TIMERS</span>
+        <span class="hidden sm:inline-block text-[10px] text-zinc-400 font-mono">OPENTABLE FLOOR DECK &amp; LIVE TIMERS</span>
       </div>
     </div>
 
     <!-- Center: Operational Stats Strip -->
     <div class="hidden md:flex items-center gap-2 font-mono text-xs">
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-white/5 text-zinc-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#1A1F2B] rounded-xl border border-white/5 text-zinc-300">
         <span class="text-zinc-400">Active:</span>
         <strong id="statActiveTablesCount" class="text-emerald-400">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-red-500/20 text-red-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#1A1F2B] rounded-xl border border-red-500/20 text-red-300">
         <span>Coals:</span>
         <strong id="statCoalsDueCount" class="text-red-400 font-bold">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-amber-500/20 text-amber-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#1A1F2B] rounded-xl border border-amber-500/20 text-amber-300">
         <span>Service:</span>
         <strong id="statServiceDueCount" class="text-amber-400 font-bold">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-cyan-500/20 text-cyan-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#1A1F2B] rounded-xl border border-cyan-500/20 text-cyan-300">
         <span>Orders:</span>
         <strong id="statOrdersDueCount" class="text-cyan-400 font-bold">0</strong>
       </div>
@@ -264,11 +215,11 @@
 
     <!-- Right: Audio Alert Toggle & Simulator -->
     <div class="flex items-center gap-2">
-      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-[#090D18] border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
+      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-[#1A1F2B] border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
         <span id="serverAudioLabel">AUDIO: ON</span>
       </button>
 
-      <button onclick="simulateActionAlert()" class="px-2.5 sm:px-3 py-1.5 bg-amber-500/20 border border-amber-400/50 rounded-xl text-amber-300 hover:bg-amber-400 hover:text-black font-mono text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm" title="Simulate an incoming alert with screen edge glow">
+      <button onclick="simulateActionAlert()" class="px-2.5 sm:px-3 py-1.5 bg-[#D4AF37]/15 border border-[#D4AF37]/40 rounded-xl text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black font-mono text-xs font-bold flex items-center gap-1.5 transition active:scale-95 shadow-sm">
         <span>SIMULATE ALERT</span>
       </button>
     </div>
@@ -277,8 +228,8 @@
 
   <!-- ==================== MOBILE SEGMENTED VIEW SWITCHER ==================== -->
   <div class="md:hidden w-full px-3 pt-2.5">
-    <div class="grid grid-cols-3 gap-1 bg-[#06090E] p-1 rounded-2xl border border-white/10 text-xs font-mono">
-      <button onclick="setMobileActiveTab('map')" id="mobTabBtn-map" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1">
+    <div class="grid grid-cols-3 gap-1 bg-[#151922] p-1 rounded-2xl border border-white/10 text-xs font-mono">
+      <button onclick="setMobileActiveTab('map')" id="mobTabBtn-map" class="py-2 rounded-xl font-bold bg-[#D4AF37] text-black shadow transition flex items-center justify-center gap-1">
         <span>Floor Map</span>
       </button>
       <button onclick="setMobileActiveTab('alerts')" id="mobTabBtn-alerts" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1">
@@ -295,36 +246,36 @@
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start flex-1">
       
-      <!-- ==================== LEFT COLUMN: TALL ALERT DOCK ==================== -->
+      <!-- LEFT COLUMN: TALL ALERT DOCK -->
       <aside id="staffActionDockColumn" class="md:col-span-5 lg:col-span-4 xl:col-span-3 flex flex-col gap-2.5">
         
         <!-- Header -->
-        <div class="p-3 bg-[#060A12] border border-white/10 rounded-2xl flex justify-between items-center shadow-lg">
+        <div class="p-3 bg-[#151922] border border-white/10 rounded-2xl flex justify-between items-center shadow">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-            <h2 class="text-xs font-mono font-bold text-white uppercase tracking-wider">LIVE ACTION DOCK</h2>
+            <h2 class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider">LIVE ACTION DOCK</h2>
           </div>
           <span id="actionTickerCount" class="px-2 py-0.5 bg-red-950/80 text-red-300 font-mono text-[11px] font-bold rounded-lg border border-red-800/60">
             0 PENDING
           </span>
         </div>
 
-        <!-- Taller Action Cards Stream -->
+        <!-- Action Cards Stream -->
         <div class="space-y-2.5 max-h-[78vh] overflow-y-auto no-scrollbar pr-0.5" id="actionRequiredList">
           <!-- Populated dynamically via renderActionRequiredStream() -->
         </div>
 
       </aside>
 
-      <!-- ==================== RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER ==================== -->
+      <!-- RIGHT COLUMN: OPENTABLE SEATING CHART & ZONE CONTROLLER -->
       <section id="staffFloorplanColumn" class="md:col-span-7 lg:col-span-8 xl:col-span-9 flex flex-col gap-3">
         
-        <!-- Top Controller Strip: View Toggle + Zone Pills -->
-        <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#060A12] border border-white/10 rounded-2xl shadow-lg">
+        <!-- Top Controller Strip -->
+        <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#151922] border border-white/10 rounded-2xl shadow">
           
-          <!-- View Mode Toggle (Tablet/Desktop) -->
-          <div class="hidden md:flex items-center gap-1 bg-black/80 p-1 border border-white/10 rounded-xl">
-            <button onclick="setDeckViewMode('map')" id="viewModeMapBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition">
+          <!-- View Mode Toggle -->
+          <div class="hidden md:flex items-center gap-1 bg-[#1A1F2B] p-1 border border-white/10 rounded-xl">
+            <button onclick="setDeckViewMode('map')" id="viewModeMapBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-[#D4AF37] text-black shadow-sm flex items-center gap-1.5 transition">
               <span>Floor Map</span>
             </button>
             <button onclick="setDeckViewMode('grid')" id="viewModeGridBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition">
@@ -334,22 +285,20 @@
 
           <!-- Zone Filter Pills -->
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="zoneFilterPills">
-            <button onclick="setZoneFilter('all')" id="zonePill-all" class="px-3 py-1 text-xs font-mono rounded-xl border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold flex-shrink-0">ALL ZONES</button>
-            <button onclick="setZoneFilter('vip')" id="zonePill-vip" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">VIP BOOTHS</button>
-            <button onclick="setZoneFilter('indoor')" id="zonePill-indoor" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">INDOOR FLOOR</button>
-            <button onclick="setZoneFilter('bar')" id="zonePill-bar" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">MAIN BAR</button>
-            <button onclick="setZoneFilter('patio')" id="zonePill-patio" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0">PATIO</button>
+            <button onclick="setZoneFilter('all')" id="zonePill-all" class="px-3 py-1 text-xs font-mono rounded-xl border bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/50 font-bold flex-shrink-0">ALL ZONES</button>
+            <button onclick="setZoneFilter('vip')" id="zonePill-vip" class="px-3 py-1 text-xs font-mono rounded-xl border bg-[#1A1F2B] text-zinc-400 border-white/10 hover:text-white flex-shrink-0">VIP BOOTHS</button>
+            <button onclick="setZoneFilter('indoor')" id="zonePill-indoor" class="px-3 py-1 text-xs font-mono rounded-xl border bg-[#1A1F2B] text-zinc-400 border-white/10 hover:text-white flex-shrink-0">INDOOR FLOOR</button>
+            <button onclick="setZoneFilter('bar')" id="zonePill-bar" class="px-3 py-1 text-xs font-mono rounded-xl border bg-[#1A1F2B] text-zinc-400 border-white/10 hover:text-white flex-shrink-0">MAIN BAR</button>
+            <button onclick="setZoneFilter('patio')" id="zonePill-patio" class="px-3 py-1 text-xs font-mono rounded-xl border bg-[#1A1F2B] text-zinc-400 border-white/10 hover:text-white flex-shrink-0">PATIO</button>
           </div>
 
         </div>
 
         <!-- VIEW A: OPENTABLE INTERACTIVE ARCHITECTURAL CANVAS -->
-        <div id="floorplanCanvasContainer" class="stoked-card p-3 md:p-4 shadow-2xl">
+        <div id="floorplanCanvasContainer" class="soft-card p-3 md:p-4 shadow-xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
-            <span class="text-zinc-300">
-              Click any physical table or booth to open full-screen deck
-            </span>
-            <span class="text-[11px] text-amber-400/80">● Real-Time Seating</span>
+            <span class="text-zinc-300">Click any physical table or booth to open deck</span>
+            <span class="text-[11px] text-[#D4AF37]">● Real-Time Seating</span>
           </div>
 
           <div id="loungeDiagramCanvas" class="floorplan-canvas">
@@ -357,7 +306,7 @@
           </div>
         </div>
 
-        <!-- VIEW B: ALTERNATIVE PODS GRID -->
+        <!-- VIEW B: PODS GRID -->
         <div id="tablesDeckGridContainer" class="hidden">
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5" id="tablesDeckGrid">
             <!-- Populated dynamically via renderTablesDeckGrid() -->
@@ -371,28 +320,28 @@
   </main>
 
   <!-- ==================== 3. TABLE DETAILS FULL-SCREEN MODAL DECK ==================== -->
-  <div id="tableFullscreenDrawer" class="fullscreen-drawer-panel transform translate-y-full">
+  <div id="tableFullscreenDrawer" class="fullscreen-modal-deck transform translate-y-full">
     
-    <!-- Top Nav & Header Bar (Fixed Height) -->
-    <div class="px-4 md:px-6 py-2.5 border-b border-white/10 bg-[#05080E] flex flex-col gap-2 flex-shrink-0">
+    <!-- Top Nav & Header Bar -->
+    <div class="px-4 md:px-6 py-2.5 border-b border-white/10 bg-[#151922] flex flex-col gap-2 flex-shrink-0">
       
       <!-- Top Title & Quick Actions -->
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-xl font-extrabold text-amber-300 bg-amber-400/10 px-3.5 py-0.5 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
+          <span class="font-mono text-xl font-extrabold text-[#D4AF37] bg-[#D4AF37]/10 px-3.5 py-0.5 rounded-xl border border-[#D4AF37]/40" id="drawerTableId">VIP 1</span>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-sm font-mono font-bold text-white" id="drawerTableZone">VIP Lounge (8P Couch)</span>
+              <span class="text-sm font-mono font-bold text-[#E8E6E3]" id="drawerTableZone">VIP Lounge (8P Couch)</span>
               <span class="px-2 py-0.2 text-[9px] font-mono rounded-full border" id="drawerTableStatusBadge">ACTIVE</span>
             </div>
-            <span class="text-xs font-mono text-zinc-400" id="drawerTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · Seated 48m</span>
+            <span class="text-xs font-mono text-zinc-400" id="drawerTableGuestInfo">Guest: Alex Mercer · Seated 48m</span>
           </div>
         </div>
 
         <!-- Timers & Exit -->
         <div class="flex items-center gap-2.5">
           <div class="hidden sm:flex items-center gap-2 text-xs font-mono">
-            <button onclick="resetTableServiceCheck()" class="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400 hover:text-black border border-amber-400/30 rounded-xl text-amber-300 transition font-bold">
+            <button onclick="resetTableServiceCheck()" class="px-3 py-1.5 bg-[#D4AF37]/10 hover:bg-[#D4AF37] hover:text-black border border-[#D4AF37]/30 rounded-xl text-[#D4AF37] transition font-bold">
               Service: <span id="drawerQuickServiceText">OK</span> [Reset 5m]
             </button>
             <button onclick="resetTableCoalTimer()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl text-red-300 transition font-bold">
@@ -400,40 +349,37 @@
             </button>
           </div>
 
-          <button onclick="closeTableDetailModal()" class="px-4 py-2 bg-zinc-900 border border-white/20 text-zinc-200 hover:text-white text-xs font-mono font-bold rounded-xl transition shadow active:scale-95">
+          <button onclick="closeTableDetailModal()" class="px-4 py-2 bg-[#1A1F2B] border border-white/20 text-zinc-200 hover:text-white text-xs font-mono font-bold rounded-xl transition shadow active:scale-95">
             ✕ CLOSE DECK
           </button>
         </div>
       </div>
 
-      <!-- 3 PRIMARY TABS SWITCHER -->
-      <div class="grid grid-cols-3 gap-2 p-1 bg-black/80 rounded-2xl border border-white/10 text-xs font-mono">
-        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
-          <span>Tab &amp; POS Settlement</span>
+      <!-- 2 PRIMARY TABS SWITCHER -->
+      <div class="grid grid-cols-2 gap-2 p-1 bg-[#1A1F2B] rounded-2xl border border-white/10 text-xs font-mono">
+        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+          <span>Tab &amp; POS Settle</span>
         </button>
-        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2 rounded-xl font-bold bg-[#D4AF37] text-black shadow transition flex items-center justify-center gap-2">
           <span>Sommelier Mix Lab</span>
-        </button>
-        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
-          <span>Member Smoke Profile</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Drawer Body Panels (Flex Container with strict boundaries) -->
-    <div class="flex-1 min-h-0 flex flex-col bg-[#030508] overflow-hidden">
+    <!-- Drawer Body Panels -->
+    <div class="flex-1 min-h-0 flex flex-col bg-[#12151B] overflow-hidden">
       
       <!-- ==================== TAB 1: ITEMIZED BILL & POS SETTLEMENT ==================== -->
-      <div id="drawerPanel-bill" class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-4 max-w-5xl mx-auto w-full">
+      <div id="drawerPanel-bill" class="hidden flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-4 max-w-5xl mx-auto w-full">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           
           <!-- Left 7 Cols: Itemized Tab Table -->
           <div class="lg:col-span-7 space-y-3">
-            <div class="p-4 bg-[#080C14] rounded-2xl border border-white/10 space-y-3">
+            <div class="p-4 bg-[#181C24] rounded-2xl border border-white/10 space-y-3">
               <div class="flex justify-between items-center pb-2 border-b border-white/10">
-                <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Active Tab Items</span>
+                <span class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider">Active Tab Items</span>
                 <span class="text-xs font-mono text-zinc-400" id="billTabItemCount">3 items</span>
               </div>
 
@@ -443,9 +389,9 @@
             </div>
 
             <!-- Quick Add Drinks Shortcut -->
-            <div class="p-3.5 bg-[#080C14] rounded-2xl border border-white/5 flex items-center justify-between text-xs font-mono">
-              <span class="text-zinc-400">Add beverages or artisan samovar teapots?</span>
-              <button onclick="setDrawerActiveTab('mixlab'); selectCategory('drinks');" class="px-3.5 py-1.5 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black font-bold rounded-xl border border-cyan-500/40 transition">
+            <div class="p-3.5 bg-[#181C24] rounded-2xl border border-white/5 flex items-center justify-between text-xs font-mono">
+              <span class="text-zinc-400">Add beverages or tea?</span>
+              <button onclick="setDrawerActiveTab('mixlab'); selectFilterCategory('drinks');" class="px-3.5 py-1.5 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black font-bold rounded-xl border border-cyan-500/40 transition">
                 + Open Drink Stash
               </button>
             </div>
@@ -453,8 +399,8 @@
 
           <!-- Right 5 Cols: Calculations & POS Settlement -->
           <div class="lg:col-span-5 space-y-3">
-            <div class="p-4 bg-[#080C14] rounded-2xl border border-amber-500/30 space-y-3.5 shadow-xl">
-              <h3 class="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider pb-2 border-b border-white/10">Bill Summary &amp; Taxes</h3>
+            <div class="p-4 bg-[#181C24] rounded-2xl border border-[#D4AF37]/30 space-y-3.5 shadow-lg">
+              <h3 class="text-xs font-mono font-bold text-[#D4AF37] uppercase tracking-wider pb-2 border-b border-white/10">Bill Summary &amp; Taxes</h3>
 
               <div class="space-y-2 text-xs font-mono">
                 <div class="flex justify-between text-zinc-400">
@@ -471,7 +417,7 @@
                 </div>
                 <div class="pt-2.5 border-t border-white/10 flex justify-between items-baseline">
                   <span class="text-sm font-bold text-white uppercase">Total Amount</span>
-                  <span class="text-2xl font-extrabold text-amber-400 font-mono" id="billGrandTotal">$0.00</span>
+                  <span class="text-2xl font-extrabold text-[#D4AF37] font-mono" id="billGrandTotal">$0.00</span>
                 </div>
               </div>
 
@@ -479,10 +425,10 @@
               <div class="pt-1">
                 <span class="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">Tip Presets:</span>
                 <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
-                  <button onclick="applyTipPercent(18)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">18%</button>
-                  <button onclick="applyTipPercent(20)" class="py-2 bg-amber-400/20 text-amber-300 font-bold rounded-xl border border-amber-400/40">20%</button>
-                  <button onclick="applyTipPercent(25)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">25%</button>
-                  <button onclick="applyTipPercent(0)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-400 rounded-xl border border-white/10">None</button>
+                  <button onclick="applyTipPercent(18)" class="py-2 bg-[#1A1F2B] hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">18%</button>
+                  <button onclick="applyTipPercent(20)" class="py-2 bg-[#D4AF37]/20 text-[#D4AF37] font-bold rounded-xl border border-[#D4AF37]/40">20%</button>
+                  <button onclick="applyTipPercent(25)" class="py-2 bg-[#1A1F2B] hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">25%</button>
+                  <button onclick="applyTipPercent(0)" class="py-2 bg-[#1A1F2B] hover:bg-white/10 text-zinc-400 rounded-xl border border-white/10">None</button>
                 </div>
               </div>
 
@@ -490,9 +436,9 @@
               <div class="space-y-2 pt-2 border-t border-white/10">
                 <span class="text-[10px] font-mono text-zinc-400 uppercase block">Select Tender:</span>
                 <div class="grid grid-cols-3 gap-2 text-xs font-mono font-bold">
-                  <button onclick="processBillPayment('cash')" class="py-2.5 bg-zinc-900 hover:bg-emerald-600 hover:text-white border border-emerald-500/30 text-emerald-300 rounded-xl transition">Cash</button>
-                  <button onclick="processBillPayment('card')" class="py-2.5 bg-zinc-900 hover:bg-cyan-600 hover:text-white border border-cyan-500/30 text-cyan-300 rounded-xl transition">Card EMV</button>
-                  <button onclick="processBillPayment('square')" class="py-2.5 bg-zinc-900 hover:bg-amber-500 hover:text-black border border-amber-400/40 text-amber-300 rounded-xl transition">Square QR</button>
+                  <button onclick="processBillPayment('cash')" class="py-2.5 bg-[#1A1F2B] hover:bg-emerald-600 hover:text-white border border-emerald-500/30 text-emerald-300 rounded-xl transition">Cash</button>
+                  <button onclick="processBillPayment('card')" class="py-2.5 bg-[#1A1F2B] hover:bg-cyan-600 hover:text-white border border-cyan-500/30 text-cyan-300 rounded-xl transition">Card EMV</button>
+                  <button onclick="processBillPayment('square')" class="py-2.5 bg-[#1A1F2B] hover:bg-[#D4AF37] hover:text-black border border-[#D4AF37]/40 text-[#D4AF37] rounded-xl transition">Square QR</button>
                 </div>
 
                 <button onclick="closeAndFreeTable()" class="w-full py-3 bg-red-950/90 hover:bg-red-900 border border-red-500/60 rounded-xl text-red-200 font-mono font-bold text-xs uppercase tracking-wider transition active:scale-95 shadow">
@@ -507,116 +453,132 @@
 
       </div>
 
-      <!-- ==================== TAB 2: SOMMELIER MIX LAB WITH FIXED HEIGHT SCROLLING COLUMNS & FLOATING BOTTOM TRAY ==================== -->
+      <!-- ==================== TAB 2: SOMMELIER MIX LAB (3 SCROLLING COLUMNS + BOTTOM TRAY) ==================== -->
       <div id="drawerPanel-mixlab" class="flex-1 min-h-0 flex flex-col p-3 md:p-4 gap-2.5 overflow-hidden">
         
-        <!-- Top Smoker Base Preferences Quick Bar (Fixed Height) -->
-        <div class="p-2.5 bg-[#080C14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Base Palate Presets:</span>
-            <span class="text-[10px] font-mono text-zinc-500">1-Tap loads baseline</span>
-          </div>
-          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="mixLabBasePalatePills">
-            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Sweet Berry &amp; Grapefruit</button>
-            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Heavy Russian Dark Leaf</button>
-            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Arctic Ice &amp; Mint</button>
-            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Spiced Chai &amp; Kashmir</button>
-            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Valencia Orange Soda</button>
-          </div>
-        </div>
-
         <!-- 3 FIXED-HEIGHT COLUMNS WITH INTERNAL SCROLLING -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 items-stretch overflow-hidden">
           
-          <!-- FAR LEFT COLUMN (3 Cols): BRANDS & DRINKS BUTTON (Fixed Height, Scrollable) -->
-          <div class="lg:col-span-3 bg-[#080C14] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
+          <!-- FAR LEFT COLUMN (3.5 Cols): BRAND HOUSES (HOUSE MIXES DEFAULT) + PROFILES + DRINKS -->
+          <div class="lg:col-span-3 xl:col-span-3 bg-[#181C24] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
             
-            <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
-              <div class="pb-2 border-b border-white/10 flex justify-between items-center flex-shrink-0">
-                <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Tobacco Houses</span>
-                <span class="text-[10px] font-mono text-zinc-500">Filter Stash</span>
+            <div class="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2.5">
+              
+              <!-- Brand Houses (With Signature House Mixes as Default Option) -->
+              <div class="flex-shrink-0">
+                <div class="pb-1.5 border-b border-white/10 flex justify-between items-center">
+                  <span class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider">Tobacco Houses</span>
+                  <span class="text-[10px] font-mono text-zinc-500">Filter</span>
+                </div>
+
+                <div class="space-y-1 pt-1.5 overflow-y-auto no-scrollbar max-h-[160px]" id="leftBrandList">
+                  <!-- Injected via JS -->
+                </div>
               </div>
 
-              <!-- Brand Buttons (Internal Scroll) -->
-              <div class="space-y-1.5 overflow-y-auto no-scrollbar pr-0.5 flex-1 pt-2" id="leftBrandSelectorList">
-                <!-- Injected via JS -->
+              <!-- Flavor Profiles -->
+              <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
+                <div class="pb-1 border-b border-white/10 flex justify-between items-center flex-shrink-0">
+                  <span class="text-[11px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Flavor Profiles</span>
+                </div>
+
+                <div class="space-y-1 pt-1 overflow-y-auto no-scrollbar flex-1" id="leftProfileList">
+                  <!-- Injected via JS -->
+                </div>
               </div>
+
             </div>
 
-            <!-- LOWER LEFT: PROMINENT DRINKS BUTTON -->
+            <!-- Bottom: Drinks Button -->
             <div class="pt-2 border-t border-white/10 flex-shrink-0">
-              <button onclick="selectCategory('drinks')" id="leftDrinksCategoryBtn" class="w-full py-3 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-lg select-none">
-                <span class="flex items-center gap-2">
-                  <span class="text-base">🥤</span>
-                  <span>CHILLED DRINKS</span>
-                </span>
-                <span class="text-[10px] bg-cyan-500/20 px-2 py-0.5 rounded-lg border border-cyan-500/30">10 Items</span>
+              <button onclick="selectFilterCategory('drinks')" id="leftDrinksBtn" class="w-full py-2.5 bg-[#1A1F2B] hover:bg-[#222838] border border-cyan-500/40 text-cyan-300 rounded-xl font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-between px-3 transition active:scale-95 select-none">
+                <span>🥤 Drinks</span>
+                <span class="text-[10px] bg-cyan-500/15 px-2 py-0.5 rounded-lg">10 Items</span>
               </button>
             </div>
 
           </div>
 
-          <!-- CENTER COLUMN (5 Cols): MIX BENCH WITH LIVE SPECTRUM & RATIO ADJUSTERS (Fixed Height, Scrollable) -->
-          <div class="lg:col-span-5 bg-[#080C14] rounded-2xl border border-amber-500/40 p-3.5 flex flex-col justify-between gap-2.5 overflow-hidden h-full shadow-2xl">
+          <!-- CENTER COLUMN (4.5 Cols): THE BENCH + GRADIENT SPECTRUM + PRELOADED HARDWARE & MEMBER NOTES -->
+          <div class="lg:col-span-5 xl:col-span-5 bg-[#181C24] rounded-2xl border border-[#D4AF37]/35 p-3.5 flex flex-col justify-between gap-2 overflow-hidden h-full shadow-lg">
             
-            <div class="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-3 pr-0.5">
+            <div class="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-2.5 pr-0.5">
               
               <!-- Bench Header & Clear -->
               <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
                 <div>
-                  <h3 class="text-xs font-mono font-bold text-white uppercase tracking-wider">Active Formulation</h3>
-                  <span class="text-[10px] font-mono text-zinc-400" id="centerTraySubtitle">In-Bowl Tobacco Mix</span>
+                  <h3 class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider" id="centerBenchTitle">Active Pack Formulation</h3>
+                  <span class="text-[10px] font-mono text-zinc-400" id="centerBenchSubtitle">Empire Craft Blend</span>
                 </div>
                 <button onclick="clearMixBench()" class="text-xs font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
               </div>
 
-              <!-- LIVE CONTINUOUS MIX SPECTRUM GRADIENT RIBBON -->
-              <div class="space-y-1.5">
+              <!-- LIVE COLOR GRADIENT MIX SPECTRUM -->
+              <div class="space-y-1">
                 <div class="flex justify-between items-center text-[11px] font-mono">
-                  <span class="text-zinc-400">Color Spectrum:</span>
-                  <div class="flex items-center gap-2">
-                    <span class="text-amber-400 font-bold" id="benchBuzzScore">7.6 / 10</span>
-                    <span class="px-1.5 py-0.2 bg-red-950 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK</span>
+                  <span class="text-zinc-400">Flavor Gradient Spectrum:</span>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[#D4AF37] font-bold" id="benchBuzzScore">7.6 / 10</span>
+                    <span class="px-1.5 py-0.2 bg-red-950/80 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK</span>
                   </div>
                 </div>
                 <div id="spectrumRibbon" class="spectrum-track"></div>
               </div>
 
-              <!-- Quick Ratio Splits -->
-              <div class="flex items-center justify-between text-xs font-mono pt-1">
-                <span class="text-[10px] text-zinc-400 font-bold uppercase">Quick Splits:</span>
-                <div class="flex items-center gap-1">
-                  <button onclick="applyRatioSplit([50, 50])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50 / 50</button>
-                  <button onclick="applyRatioSplit([70, 30])" class="px-2 py-0.5 bg-amber-400/20 text-amber-300 rounded-lg border border-amber-400/40 text-[10px] font-bold">70 / 30</button>
-                  <button onclick="applyRatioSplit([60, 40])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">60 / 40</button>
-                  <button onclick="applyRatioSplit([50, 30, 20])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50/30/20</button>
-                </div>
-              </div>
-
-              <!-- Detailed Active Flavor Slots with Fast 1-Tap Percentage Adjusters -->
+              <!-- Formulation Flavor Items & Stepper Adjusters -->
               <div class="space-y-1.5" id="benchActiveSlotsList">
                 <!-- Injected via JS -->
               </div>
 
-              <!-- Hardware & Heat Selection -->
-              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-                <div>
-                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Clay Bowl:</label>
-                  <select id="benchBowlSelect" class="w-full bg-[#05080E] text-white px-2 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
-                    <option value="Russian Clay Phunnel (22g)">Russian Clay Phunnel (22g)</option>
-                    <option value="Alpaca Mini Rook (18g)">Alpaca Mini Rook (18g)</option>
-                    <option value="Oblako Mono (20g)">Oblako Mono (20g)</option>
-                    <option value="Solaris Classic (22g)">Solaris Classic (22g)</option>
-                  </select>
-                </div>
+              <!-- PRELOADED MEMBER HARDWARE DROPDOWNS (Pipe, Bowl, HMD) -->
+              <div class="p-2.5 bg-[#141720] rounded-xl border border-white/5 space-y-2">
+                <span class="text-[10px] font-mono text-[#D4AF37] uppercase font-bold tracking-wider block">Hardware &amp; Smoking Style (Preloaded)</span>
+                
+                <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+                  <div>
+                    <label class="text-[9px] text-zinc-400 uppercase block mb-0.5">Favorite Pipe:</label>
+                    <select id="benchPipeSelect" class="w-full bg-[#1A1F2B] text-white px-2 py-1 rounded-lg border border-white/10 text-[11px] font-mono">
+                      <option value="Steamulation Pro X III">Steamulation Pro X</option>
+                      <option value="Regal King Wood">Regal King Wood</option>
+                      <option value="Alpha Hookah Model X">Alpha Model X</option>
+                      <option value="MIG Armour Stainless">MIG Armour</option>
+                      <option value="Lounge House Pipe">Lounge Standard</option>
+                    </select>
+                  </div>
 
-                <div>
-                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Heat Regulation:</label>
-                  <select id="benchHeatSelect" class="w-full bg-[#05080E] text-white px-2 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
-                    <option value="Kaloud Lotus III (3 Coals)">Kaloud Lotus III (3 Coals)</option>
-                    <option value="Provost HMD (2 Coals)">Provost HMD (2 Coals)</option>
-                    <option value="Direct Foil + Provost">Direct Foil + Provost</option>
-                  </select>
+                  <div>
+                    <label class="text-[9px] text-zinc-400 uppercase block mb-0.5">Clay Bowl:</label>
+                    <select id="benchBowlSelect" class="w-full bg-[#1A1F2B] text-white px-2 py-1 rounded-lg border border-white/10 text-[11px] font-mono">
+                      <option value="Russian Clay Phunnel (22g)">Russian Phunnel</option>
+                      <option value="Alpaca Mini Rook (18g)">Alpaca Rook</option>
+                      <option value="Oblako Mono (20g)">Oblako Mono</option>
+                      <option value="Solaris Classic (22g)">Solaris Classic</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[9px] text-zinc-400 uppercase block mb-0.5">Heat (HMD):</label>
+                    <select id="benchHeatSelect" class="w-full bg-[#1A1F2B] text-white px-2 py-1 rounded-lg border border-white/10 text-[11px] font-mono">
+                      <option value="Kaloud Lotus III (3 Coals)">Kaloud Lotus III</option>
+                      <option value="Provost HMD (2 Coals)">Provost HMD</option>
+                      <option value="Direct Foil + Provost">Direct Foil</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CLEAN CUSTOMER HOSPITALITY & PERSONALITY NOTES -->
+              <div class="p-2.5 bg-[#141720] rounded-xl border border-white/5 space-y-1 font-mono text-xs" id="memberPersonalityNotesBox">
+                <div class="flex justify-between items-center">
+                  <span class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider">Customer Profile &amp; Hospitality Notes:</span>
+                  <span class="text-[10px] text-[#D4AF37] font-bold" id="memberTierText">VIP Black Reserve</span>
+                </div>
+                <p class="text-zinc-300 text-[11px] leading-relaxed" id="memberNotesText">
+                  "Hospital ICU Trauma Nurse at St. Joseph's — unwinds with heavy dark leaf after 12h shifts. Prefers ice in base."
+                </p>
+                <div class="pt-1 flex items-center justify-between text-[10px] text-zinc-400">
+                  <span>Last Bowl: <strong class="text-zinc-200" id="memberLastBowlText">Pink Cane Sensation</strong></span>
+                  <button onclick="reorderLastMemberBowl()" class="text-[#D4AF37] hover:underline font-bold">[1-Tap Re-order]</button>
                 </div>
               </div>
 
@@ -624,17 +586,17 @@
 
           </div>
 
-          <!-- FAR RIGHT COLUMN (4 Cols): CATALOG (Flavors OR Drinks) (Fixed Height, Scrollable) -->
-          <div class="lg:col-span-4 bg-[#080C14] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
+          <!-- FAR RIGHT COLUMN (4 Cols): DYNAMIC CATALOG (House Mixes Default, Flavors, or Drinks) -->
+          <div class="lg:col-span-4 xl:col-span-4 bg-[#181C24] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
             
             <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
               <div class="flex justify-between items-center pb-2 border-b border-white/10 flex-shrink-0">
-                <span class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="rightCatalogTitle">Catalog Flavors</span>
-                <span class="text-[10px] font-mono text-zinc-400" id="rightCatalogCount">12 available</span>
+                <span class="text-xs font-mono font-bold text-[#E8E6E3] uppercase tracking-wider" id="rightCatalogTitle">Signature House Mixes</span>
+                <span class="text-[10px] font-mono text-zinc-400" id="rightCatalogCount">6 recipes</span>
               </div>
 
-              <!-- Scrollable Cards List (Internal Scroll) -->
-              <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 pt-2" id="rightFlavorsCatalogList">
+              <!-- Scrollable Cards List -->
+              <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 pt-2" id="rightCatalogList">
                 <!-- Injected via JS -->
               </div>
             </div>
@@ -643,92 +605,26 @@
 
         </div>
 
-        <!-- ==================== FLOATING BOTTOM ORDER TRAY (UNDERNEATH LAB) ==================== -->
-        <div id="floatingStaffOrderTray" class="w-full bg-[#060A12] border-2 border-amber-500/50 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-2xl flex-shrink-0 backdrop-blur-md">
+        <!-- ==================== FLOATING BOTTOM ORDER TRAY ==================== -->
+        <div id="floatingStaffOrderTray" class="w-full bg-[#151922] border border-[#D4AF37]/40 rounded-2xl p-2.5 md:p-3 flex flex-wrap items-center justify-between gap-3 shadow-xl flex-shrink-0">
           
-          <!-- Left: Staged Chips Summary (Hookah Formulation + Drinks) -->
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-[280px]" id="stagedOrderChipsContainer">
+          <!-- Left: Staged Chips Summary -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-[260px]" id="stagedOrderChipsContainer">
             <!-- Populated dynamically via renderFloatingOrderTray() -->
           </div>
 
-          <!-- Right: Running Subtotal + 1-Tap Send Ticket Button -->
+          <!-- Right: Total + Submit Button -->
           <div class="flex items-center gap-3 flex-shrink-0">
             <div class="text-right font-mono">
-              <span class="text-[10px] text-zinc-400 uppercase block">Order Total</span>
-              <span class="text-xl font-extrabold text-amber-400" id="floatingOrderTotal">$35.00</span>
+              <span class="text-[9px] text-zinc-400 uppercase block">Total</span>
+              <span class="text-lg font-extrabold text-[#D4AF37]" id="floatingOrderTotal">$35.00</span>
             </div>
 
-            <button onclick="dispatchActiveBenchToTable()" class="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl transition active:scale-95 shadow-xl flex items-center gap-2 select-none">
-              <span>✓ SEND TICKET</span>
+            <button onclick="dispatchActiveBenchToTable()" class="px-7 py-3 bg-[#D4AF37] hover:bg-[#E5C158] text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl transition active:scale-95 shadow-md flex items-center gap-1.5 select-none">
+              <span>Submit</span>
             </button>
           </div>
 
-        </div>
-
-      </div>
-
-      <!-- ==================== TAB 3: MEMBER PROFILE & SMOKE PALATE DATA ==================== -->
-      <div id="drawerPanel-member" class="hidden flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-4 max-w-4xl mx-auto w-full">
-        
-        <!-- Member Card Header -->
-        <div class="p-4 bg-[#080C14] rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/40 flex items-center justify-center font-crest font-bold text-lg text-amber-300" id="memberAvatarLetter">
-              A
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 class="font-crest font-bold text-base text-white" id="memberNameText">Alex Mercer</h3>
-                <span class="px-2 py-0.5 bg-amber-400/20 text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40" id="memberTierBadge">VIP BLACK RESERVE</span>
-              </div>
-              <p class="text-xs font-mono text-zinc-400 mt-0.5" id="memberVisitsText">18 Lounge Visits · 2,450 Loyalty Points · Member since 2022</p>
-            </div>
-          </div>
-
-          <div class="text-right font-mono">
-            <span class="text-[10px] text-zinc-400 uppercase block">Preferred Table:</span>
-            <span class="text-xs font-bold text-amber-300">VIP Booth #1 (8P Velvet)</span>
-          </div>
-        </div>
-
-        <!-- Smoke Palate Profile Breakdown -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
-          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
-            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Preferred Leaf</span>
-            <span class="text-white font-bold">Russian Dark Leaf &amp; Burley</span>
-          </div>
-          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
-            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Preferred Buzz Level</span>
-            <span class="text-red-400 font-bold">7.5 - 9.0 (Heavy Nicotine)</span>
-          </div>
-          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
-            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Ice / Mint Level</span>
-            <span class="text-cyan-300 font-bold">Medium Sub-Zero Chill</span>
-          </div>
-          <div class="p-3 bg-black/60 rounded-xl border border-white/5 space-y-1">
-            <span class="text-[10px] text-zinc-500 uppercase tracking-wider block">Favorite Brand</span>
-            <span class="text-amber-400 font-bold">MustHave &amp; Tangiers</span>
-          </div>
-        </div>
-
-        <!-- Past Favorite Formulations (1-Tap Re-order) -->
-        <div class="p-4 bg-[#080C14] rounded-2xl border border-white/10 space-y-3">
-          <div class="flex justify-between items-center pb-2 border-b border-white/10">
-            <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Frequently Ordered Formulations</span>
-            <span class="text-[10px] font-mono text-amber-400">1-Tap Load to Mix Lab</span>
-          </div>
-
-          <div class="space-y-2" id="memberFavoriteBlendsList">
-            <!-- Injected via JS -->
-          </div>
-        </div>
-
-        <!-- Member Preferences & Notes -->
-        <div class="p-4 bg-black/60 rounded-2xl border border-white/5 space-y-1.5 text-xs font-mono">
-          <span class="text-[10px] text-zinc-400 uppercase font-bold tracking-wider block">Server &amp; Sommelier Notes:</span>
-          <p class="text-zinc-300 leading-relaxed">
-            "Prefers Russian Clay Phunnel bowl packed dense with Kaloud Lotus. Always enjoys sparkling water with lemon. Sensitive to strong anise/licorice notes."
-          </p>
         </div>
 
       </div>
@@ -739,45 +635,120 @@
 
   <script>
     // ==========================================================================
-    // ⚡ SERVER & STAFF POS & ERGONOMIC SOMMELIER BENCH ENGINE
+    // ⚡ SERVER & STAFF POS ENGINE (SOFT WARM DARK THEME)
     // ==========================================================================
     let isServerAudioAlerts = true;
     let selectedActiveTableId = null;
     let activeZoneFilter = 'all';
-    let activeDeckViewMode = 'map'; // 'map' or 'grid'
-    let activeMobileTab = 'map'; // 'map', 'alerts', or 'grid'
-    let activeDrawerTab = 'bill'; // 'bill', 'mixlab', or 'member'
-    let activeCategoryMode = 'MustHave'; // 'all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'drinks'
-    let staffScreenGlowTimer = null;
+    let activeDeckViewMode = 'map';
+    let activeMobileTab = 'map';
+    let activeDrawerTab = 'mixlab';
+    let activeFilterType = 'house_mixes'; // 'house_mixes', brand id, profile id, or 'drinks'
 
-    // Master Flavor Catalog with Colors for Spectrum
+    // Master Signature House Mixes
+    const EMPIRE_HOUSE_MIXES = [
+      {
+        id: 'hm-pink-cane',
+        name: 'Pink Cane Sensation',
+        tagline: 'Lounge Signature Blend',
+        desc: 'Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.',
+        buzz: 7.6,
+        price: 38.00,
+        ratios: [
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', percent: 70, color: '#EC4899' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', percent: 30, color: '#10B981' }
+        ]
+      },
+      {
+        id: 'hm-siberian-tea',
+        name: 'Siberian Midnight Tea',
+        tagline: 'Arctic Jasmine & Tannins',
+        desc: 'Jasmine green tea balanced with sub-zero cryo cooling and wild Russian forest berries.',
+        buzz: 8.2,
+        price: 35.00,
+        ratios: [
+          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', percent: 70, color: '#84CC16' },
+          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', percent: 30, color: '#38BDF8' }
+        ]
+      },
+      {
+        id: 'hm-kashmir-velvet',
+        name: 'Kashmir Velvet Cream',
+        tagline: 'Spiced Floral Dessert',
+        desc: 'Exotic Indian florals, juicy peach nectar and warm condensed milk rice pudding.',
+        buzz: 8.0,
+        price: 38.00,
+        ratios: [
+          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', percent: 60, color: '#F59E0B' },
+          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', percent: 40, color: '#FBBF24' }
+        ]
+      },
+      {
+        id: 'hm-citrus-rush',
+        name: 'Valencia Citrus Fizz',
+        tagline: 'Sparkling Orange Soda',
+        desc: 'Fizzy American orange citrus soda spiked with tart candied lemon and ruby grapefruit.',
+        buzz: 7.8,
+        price: 38.00,
+        ratios: [
+          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', percent: 50, color: '#FB923C' },
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', percent: 50, color: '#EC4899' }
+        ]
+      },
+      {
+        id: 'hm-arctic-bliss',
+        name: 'Arctic Sub-Zero Freeze',
+        tagline: 'Intense Cooling & Peppermint',
+        desc: 'Pure crisp sub-zero menthol and cane peppermint for maximum cooling sensation.',
+        buzz: 7.5,
+        price: 38.00,
+        ratios: [
+          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', percent: 50, color: '#06B6D4' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', percent: 50, color: '#10B981' }
+        ]
+      },
+      {
+        id: 'hm-heritage-double',
+        name: 'Old World Two Apples',
+        tagline: 'Classic Middle Eastern',
+        desc: 'Traditional star anise and crisp red apple with a touch of smooth spearmint.',
+        buzz: 4.0,
+        price: 35.00,
+        ratios: [
+          { flavorId: 'af-two-apples', name: 'Al Fakher Two Apples', brand: 'Al Fakher', percent: 80, color: '#EF4444' },
+          { flavorId: 'af-mint', name: 'Al Fakher Mint', brand: 'Al Fakher', percent: 20, color: '#34D399' }
+        ]
+      }
+    ];
+
+    // Master Flavors Catalog
     const FLAVOR_CATALOG = [
       // MustHave (Russian Dark Leaf)
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', color: '#EC4899' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', color: '#06B6D4' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', color: '#FBBF24' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', color: '#F97316' },
-      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', color: '#8B5CF6' },
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'Berries', color: '#EC4899' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'Mint / Ice', color: '#06B6D4' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'Cream / Dessert', color: '#FBBF24' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'Tropical', color: '#F97316' },
+      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'Berries', color: '#8B5CF6' },
 
       // Tangiers (Noir Reserve)
-      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', color: '#10B981' },
-      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', color: '#F59E0B' },
-      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', color: '#FB923C' },
+      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'Mint / Ice', color: '#10B981' },
+      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'Spiced / Floral', color: '#F59E0B' },
+      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'Citrus', color: '#FB923C' },
 
       // Darkside (Burley Dark)
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', color: '#38BDF8' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', color: '#EAB308' },
-      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', color: '#A855F7' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'Mint / Ice', color: '#38BDF8' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'Tropical', color: '#EAB308' },
+      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'Berries', color: '#A855F7' },
 
       // BlackBurn (Overdose)
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', color: '#84CC16' },
-      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', color: '#FACC15' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'Botanical', color: '#84CC16' },
+      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'Citrus', color: '#FACC15' },
 
       // Heritage Blondes
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', color: '#EF4444' },
-      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', color: '#34D399' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', color: '#60A5FA' },
-      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', color: '#F43F5E' }
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'Spiced / Floral', color: '#EF4444' },
+      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'Mint / Ice', color: '#34D399' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'Berries', color: '#60A5FA' },
+      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'Tropical', color: '#F43F5E' }
     ];
 
     // Master Beverages Catalog
@@ -794,46 +765,59 @@
       { id: 'water', name: 'Bottled Mountain Water', price: 3.00, desc: 'Still spring water' }
     ];
 
-    // Current Bench Slots State
+    // Active Bench State
     let benchSlots = [
       { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
       { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
     ];
-
-    // Pending Drinks Tray in Current Order
     let pendingOrderDrinks = [];
 
-    // Member Preset Configurations
-    const MEMBER_PRESETS = {
+    // Precise Hospitality Profiles with Preloaded Hardware Preferences
+    const MEMBER_PROFILES = {
       'mem-101': {
         name: 'Alex Mercer',
-        tier: 'VIP BLACK RESERVE',
-        bowlSetup: 'Russian Clay Phunnel (22g)',
-        hmdSetup: 'Kaloud Lotus III (3 Coals)',
-        defaultFlavors: [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
-        ]
+        tier: 'VIP Black Reserve',
+        personalityNotes: 'Hospital ICU Trauma Nurse at St. Joseph\'s — unwinds with heavy dark leaf after 12h shifts. Prefers ice in base.',
+        pipePref: 'Steamulation Pro X III',
+        bowlPref: 'Russian Clay Phunnel (22g)',
+        hmdPref: 'Kaloud Lotus III (3 Coals)',
+        lastBowl: {
+          name: 'Pink Cane Sensation',
+          ratios: [
+            { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', ratio: 70, color: '#EC4899', buzz: 7 },
+            { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', ratio: 30, color: '#10B981', buzz: 9 }
+          ]
+        }
       },
       'mem-102': {
         name: 'Elena Rostova',
-        tier: 'VIP NOIR RESERVE',
-        bowlSetup: 'Alpaca Mini Rook (18g)',
-        hmdSetup: 'Kaloud Lotus III (3 Coals)',
-        defaultFlavors: [
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' },
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' }
-        ]
+        tier: 'VIP Noir Reserve',
+        personalityNotes: 'Tangiers Club VP & Craft Enthusiast — expects dense pack and precise heat regulation.',
+        pipePref: 'Regal King Wood',
+        bowlPref: 'Alpaca Mini Rook (18g)',
+        hmdPref: 'Kaloud Lotus III (3 Coals)',
+        lastBowl: {
+          name: 'Siberian Midnight Tea',
+          ratios: [
+            { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', ratio: 70, color: '#84CC16', buzz: 8 },
+            { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', ratio: 30, color: '#38BDF8', buzz: 8 }
+          ]
+        }
       },
       'mem-103': {
         name: 'Marcus Vance',
-        tier: 'GOLD MEMBER',
-        bowlSetup: 'Russian Clay Phunnel (22g)',
-        hmdSetup: 'Provost HMD (2 Coals)',
-        defaultFlavors: [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
-        ]
+        tier: 'Gold Member',
+        personalityNotes: 'Local Architecture Director — enjoys peach & tea blends with sparkling water.',
+        pipePref: 'Alpha Hookah Model X',
+        bowlPref: 'Russian Clay Phunnel (22g)',
+        hmdPref: 'Provost HMD (2 Coals)',
+        lastBowl: {
+          name: 'Kashmir Velvet Cream',
+          ratios: [
+            { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', ratio: 60, color: '#F59E0B', buzz: 9 },
+            { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', ratio: 40, color: '#FBBF24', buzz: 7 }
+          ]
+        }
       }
     };
 
@@ -862,8 +846,8 @@
 
     // Live Incoming Kitchen / Bar Orders Queue
     let liveIncomingOrders = [
-      { id: 'ord-1', tableId: 'vip-1', tableName: 'VIP 1', type: 'bowl', details: 'Pink Cane Sensation (MustHave 70% / Tangiers 30%) · Russian Phunnel', guest: 'Alex M. (VIP)', timestamp: Date.now() - (3 * 60 * 1000) },
-      { id: 'ord-2', tableId: 'bar-2', tableName: 'Bar 2', type: 'drink', details: '2x Red Bull Original, 1x Maison Perrier', guest: 'Jordan K.', timestamp: Date.now() - (1 * 60 * 1000) }
+      { id: 'ord-1', tableId: 'vip-1', tableName: 'VIP 1', type: 'bowl', details: 'Pink Cane Sensation · Steamulation Pro X', guest: 'Alex Mercer (VIP)', timestamp: Date.now() - (3 * 60 * 1000) },
+      { id: 'ord-2', tableId: 'bar-2', tableName: 'Bar 2', type: 'drink', details: '2x Red Bull Original, 1x Perrier', guest: 'Jordan K.', timestamp: Date.now() - (1 * 60 * 1000) }
     ];
 
     // Authoritative State for Lounge Tables
@@ -874,14 +858,14 @@
         label: 'VIP Booth 1 (8P Velvet Couch)',
         zone: 'vip',
         status: 'occupied',
-        guest: 'Alex M. (VIP)',
+        guest: 'Alex Mercer',
         memberId: 'mem-101',
         seatedTime: Date.now() - (48 * 60 * 1000),
         lastServiceCheck: Date.now() - (2 * 60 * 1000),
         lastCoalRotation: Date.now() - (27 * 60 * 1000),
         appliedTip: 0,
         tabItems: [
-          { id: 'item-1', name: 'Hookah #1 — Pink Cane Sensation (MustHave 70% / Tangiers 30%)', price: 38.00, type: 'hookah' },
+          { id: 'item-1', name: 'Hookah — Pink Cane Sensation [Russian Phunnel]', price: 38.00, type: 'hookah' },
           { id: 'item-2', name: 'Red Bull Original (x2)', price: 12.00, type: 'drink' },
           { id: 'item-3', name: 'Maison Perrier (x1)', price: 6.00, type: 'drink' }
         ]
@@ -892,14 +876,14 @@
         label: 'VIP Booth 2 (8P Velvet Couch)',
         zone: 'vip',
         status: 'occupied',
-        guest: 'Elena R. (VIP)',
+        guest: 'Elena Rostova',
         memberId: 'mem-102',
         seatedTime: Date.now() - (12 * 60 * 1000),
         lastServiceCheck: Date.now() - (6 * 60 * 1000),
         lastCoalRotation: Date.now() - (12 * 60 * 1000),
         appliedTip: 0,
         tabItems: [
-          { id: 'item-4', name: 'Hookah #1 — Siberian Midnight Tea', price: 35.00, type: 'hookah' }
+          { id: 'item-4', name: 'Hookah — Siberian Midnight Tea [Alpaca Rook]', price: 35.00, type: 'hookah' }
         ]
       },
       {
@@ -922,14 +906,14 @@
         label: 'Table 2 (4-Top Table)',
         zone: 'indoor',
         status: 'occupied',
-        guest: 'Marcus V.',
+        guest: 'Marcus Vance',
         memberId: 'mem-103',
         seatedTime: Date.now() - (22 * 60 * 1000),
         lastServiceCheck: Date.now() - (1 * 60 * 1000),
         lastCoalRotation: Date.now() - (22 * 60 * 1000),
         appliedTip: 0,
         tabItems: [
-          { id: 'item-5', name: 'Hookah #1 — Kashmir Velvet Cream', price: 35.00, type: 'hookah' },
+          { id: 'item-5', name: 'Hookah — Kashmir Velvet Cream', price: 38.00, type: 'hookah' },
           { id: 'item-6', name: 'Mexican Coke (x1)', price: 5.00, type: 'drink' }
         ]
       },
@@ -988,7 +972,7 @@
         lastCoalRotation: Date.now() - (9 * 60 * 1000),
         appliedTip: 0,
         tabItems: [
-          { id: 'item-7', name: 'Hookah #1 — Fizzy Citrus Rush', price: 35.00, type: 'hookah' }
+          { id: 'item-7', name: 'Hookah — Valencia Citrus Fizz', price: 38.00, type: 'hookah' }
         ]
       },
       {
@@ -1025,14 +1009,14 @@
         label: 'Patio Table 2 (4-Top)',
         zone: 'patio',
         status: 'occupied',
-        guest: 'Sarah & Guests',
+        guest: 'Sarah & Party',
         memberId: null,
         seatedTime: Date.now() - (18 * 60 * 1000),
         lastServiceCheck: Date.now() - (2 * 60 * 1000),
         lastCoalRotation: Date.now() - (18 * 60 * 1000),
         appliedTip: 0,
         tabItems: [
-          { id: 'item-8', name: 'Hookah #1 — Empire Royalty', price: 38.00, type: 'hookah' },
+          { id: 'item-8', name: 'Hookah — Arctic Sub-Zero Freeze', price: 38.00, type: 'hookah' },
           { id: 'item-9', name: 'Diet Coke (x2)', price: 8.00, type: 'drink' }
         ]
       }
@@ -1050,7 +1034,7 @@
         setTimeout(() => {
           toast.classList.remove('opacity-100', 'translate-y-0');
           toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-        }, 2800);
+        }, 2600);
       }
     }
 
@@ -1058,7 +1042,7 @@
       isServerAudioAlerts = !isServerAudioAlerts;
       const label = document.getElementById('serverAudioLabel');
       if (label) label.textContent = isServerAudioAlerts ? 'AUDIO: ON' : 'AUDIO: MUTED';
-      showToast(isServerAudioAlerts ? 'Audio Alerts Enabled' : 'Audio Alerts Muted', 'Staff notifications updated.');
+      showToast(isServerAudioAlerts ? 'Audio Alerts Enabled' : 'Audio Alerts Muted', 'Staff notification audio updated.');
     }
 
     function playAudioChime(type) {
@@ -1072,46 +1056,13 @@
         osc.connect(gain);
         gain.connect(ctx.destination);
         
-        if (type === 'red') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(880, ctx.currentTime);
-          osc.frequency.setValueAtTime(440, ctx.currentTime + 0.15);
-          gain.gain.setValueAtTime(0.3, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.35);
-        } else {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, ctx.currentTime);
-          gain.gain.setValueAtTime(0.2, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.3);
-        }
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
       } catch (e) {}
-    }
-
-    function triggerScreenGlow(colorType) {
-      const overlay = document.getElementById('staffScreenGlowOverlay');
-      if (!overlay) return;
-      overlay.className = 'staff-screen-glow-overlay';
-      if (colorType === 'red') overlay.classList.add('glow-red');
-      else if (colorType === 'amber') overlay.classList.add('glow-amber');
-      else if (colorType === 'cyan') overlay.classList.add('glow-cyan');
-
-      playAudioChime(colorType);
-
-      if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
-        try {
-          if (colorType === 'red') navigator.vibrate([200, 100, 200, 100, 300]);
-          else navigator.vibrate([150, 80, 150]);
-        } catch(e) {}
-      }
-
-      if (staffScreenGlowTimer) clearTimeout(staffScreenGlowTimer);
-      staffScreenGlowTimer = setTimeout(() => {
-        if (overlay) overlay.className = 'staff-screen-glow-overlay';
-      }, 4000);
     }
 
     function setMobileActiveTab(tab) {
@@ -1124,11 +1075,9 @@
       ['map', 'alerts', 'grid'].forEach(t => {
         const btn = document.getElementById(`mobTabBtn-${t}`);
         if (btn) {
-          if (t === tab) {
-            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1';
-          } else {
-            btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1';
-          }
+          btn.className = t === tab 
+            ? 'py-2 rounded-xl font-bold bg-[#D4AF37] text-black shadow transition flex items-center justify-center gap-1'
+            : 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-1';
         }
       });
 
@@ -1160,13 +1109,13 @@
       const gridContainer = document.getElementById('tablesDeckGridContainer');
 
       if (mode === 'map') {
-        if (mapBtn) mapBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
+        if (mapBtn) mapBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-[#D4AF37] text-black shadow-sm flex items-center gap-1.5 transition';
         if (gridBtn) gridBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
         mapContainer.classList.remove('hidden');
         gridContainer.classList.add('hidden');
         renderOpenTableFloorplan();
       } else {
-        if (gridBtn) gridBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black shadow-sm flex items-center gap-1.5 transition';
+        if (gridBtn) gridBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-[#D4AF37] text-black shadow-sm flex items-center gap-1.5 transition';
         if (mapBtn) mapBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white flex items-center gap-1.5 transition';
         gridContainer.classList.remove('hidden');
         mapContainer.classList.add('hidden');
@@ -1179,11 +1128,9 @@
       ['all', 'vip', 'indoor', 'bar', 'patio'].forEach(z => {
         const pill = document.getElementById(`zonePill-${z}`);
         if (pill) {
-          if (z === zone) {
-            pill.className = 'px-3 py-1 text-xs font-mono rounded-xl border bg-amber-400/20 text-amber-300 border-amber-400/50 font-bold flex-shrink-0';
-          } else {
-            pill.className = 'px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-400 border-white/10 hover:text-white flex-shrink-0';
-          }
+          pill.className = z === zone
+            ? 'px-3 py-1 text-xs font-mono rounded-xl border bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/50 font-bold flex-shrink-0'
+            : 'px-3 py-1 text-xs font-mono rounded-xl border bg-[#1A1F2B] text-zinc-400 border-white/10 hover:text-white flex-shrink-0';
         }
       });
       renderDeckOverview();
@@ -1192,12 +1139,12 @@
     // ==================== DRAWER TAB SWITCHER ====================
     function setDrawerActiveTab(tab) {
       activeDrawerTab = tab;
-      ['bill', 'mixlab', 'member'].forEach(t => {
+      ['bill', 'mixlab'].forEach(t => {
         const btn = document.getElementById(`drawerTabBtn-${t}`);
         const panel = document.getElementById(`drawerPanel-${t}`);
         if (btn && panel) {
           if (t === tab) {
-            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
+            btn.className = 'py-2 rounded-xl font-bold bg-[#D4AF37] text-black shadow transition flex items-center justify-center gap-2';
             panel.classList.remove('hidden');
           } else {
             btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
@@ -1210,9 +1157,7 @@
         const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
         if (table) renderBillTab(table);
       } else if (tab === 'mixlab') {
-        renderErgonomicServerPOSDeck();
-      } else if (tab === 'member') {
-        renderMemberProfileTab();
+        renderSommelierMixLab();
       }
     }
 
@@ -1257,7 +1202,7 @@
       if (mobAlertCount) mobAlertCount.textContent = totalPending;
     }
 
-    // ==================== TALLER ICON-FREE ALERT CARDS WITH MORE DATA ====================
+    // ==================== TALL ALERT CARDS ====================
     function renderActionRequiredStream() {
       const container = document.getElementById('actionRequiredList');
       if (!container) return;
@@ -1265,7 +1210,6 @@
       const now = Date.now();
       let alerts = [];
 
-      // 1. Live Incoming Bowl & Drink Orders
       liveIncomingOrders.forEach(ord => {
         const elapsedMins = Math.floor((now - ord.timestamp) / 60000);
         alerts.push({
@@ -1273,17 +1217,15 @@
           type: ord.type,
           tableId: ord.tableId,
           tableName: ord.tableName,
-          badgeText: ord.type === 'bowl' ? 'BOWL PREPARATION' : 'BEVERAGE ORDER',
-          badgeClass: ord.type === 'bowl' ? 'bg-amber-400/20 text-amber-300 border-amber-400/40' : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+          badgeText: ord.type === 'bowl' ? 'BOWL PREP' : 'BEVERAGE',
+          badgeClass: ord.type === 'bowl' ? 'bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/40' : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
           title: ord.details,
-          subInfo: `Guest: ${ord.guest || 'Seated Party'} · Placed ${elapsedMins}m ago`,
-          actionLabel: ord.type === 'bowl' ? 'DISPATCH BOWL' : 'RUN DRINKS',
-          actionHandler: `completeIncomingOrder('${ord.id}')`,
-          urgency: 'medium'
+          subInfo: `Guest: ${ord.guest} · Placed ${elapsedMins}m ago`,
+          actionLabel: ord.type === 'bowl' ? 'DISPATCH' : 'RUN DRINK',
+          actionHandler: `completeIncomingOrder('${ord.id}')`
         });
       });
 
-      // 2. Overdue Coal Checks (25m cycle)
       loungeDeckTables.forEach(t => {
         if (t.status === 'occupied' && t.lastCoalRotation) {
           const elapsed = Math.floor((now - t.lastCoalRotation) / 1000);
@@ -1297,38 +1239,20 @@
               type: 'coal',
               tableId: t.id,
               tableName: t.name,
-              badgeText: 'COAL ROTATION DUE',
-              badgeClass: 'bg-red-500/30 text-red-300 border-red-500/50 animate-pulse',
-              title: `25-minute burn cycle expired (${overdueMins}m overdue)`,
-              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
-              actionLabel: 'ROTATE COALS',
-              actionHandler: `dismissActionItem('${t.id}', 'coal')`,
-              urgency: 'high'
-            });
-          } else if (remaining <= 300) {
-            const minsLeft = Math.ceil(remaining / 60);
-            alerts.push({
-              id: `coal-warn-${t.id}`,
-              type: 'coal-warning',
-              tableId: t.id,
-              tableName: t.name,
-              badgeText: 'COALS EXPIRING SOON',
-              badgeClass: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
-              title: `Rotate coals in approximately ${minsLeft} minutes`,
-              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
-              actionLabel: 'ROTATE NOW',
-              actionHandler: `dismissActionItem('${t.id}', 'coal')`,
-              urgency: 'medium'
+              badgeText: 'COALS DUE',
+              badgeClass: 'bg-red-500/30 text-red-300 border-red-500/50',
+              title: `25-min cycle reached (${overdueMins}m overdue)`,
+              subInfo: `Guest: ${t.guest} · Seated ${seatedMins}m`,
+              actionLabel: 'ROTATE',
+              actionHandler: `dismissActionItem('${t.id}', 'coal')`
             });
           }
         }
       });
 
-      // 3. 5-Minute Quality of Service Checks
       loungeDeckTables.forEach(t => {
         if (t.status === 'occupied' && t.lastServiceCheck) {
-          const elapsedService = Math.floor((now - t.lastServiceCheck) / 1000);
-          const remainingService = (5 * 60) - elapsedService;
+          const remainingService = (5 * 60) - Math.floor((now - t.lastServiceCheck) / 1000);
           const seatedMins = Math.floor((now - t.seatedTime) / 60000);
 
           if (remainingService <= 0) {
@@ -1337,13 +1261,12 @@
               type: 'service',
               tableId: t.id,
               tableName: t.name,
-              badgeText: 'QUALITY OF SERVICE CHECK',
-              badgeClass: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
-              title: 'Check cloud density, heat balance & guest satisfaction',
-              subInfo: `Guest: ${t.guest} · Seated: ${seatedMins}m`,
-              actionLabel: 'SERVICE CHECKED',
-              actionHandler: `dismissActionItem('${t.id}', 'service')`,
-              urgency: 'medium'
+              badgeText: 'SERVICE CHECK',
+              badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+              title: '5-minute quality of service check due',
+              subInfo: `Guest: ${t.guest} · Seated ${seatedMins}m`,
+              actionLabel: 'CHECKED',
+              actionHandler: `dismissActionItem('${t.id}', 'service')`
             });
           }
         }
@@ -1351,9 +1274,9 @@
 
       if (alerts.length === 0) {
         container.innerHTML = `
-          <div class="p-6 bg-[#060A12] border border-white/5 rounded-2xl text-center space-y-1.5 shadow-md">
+          <div class="p-6 bg-[#181C24] border border-white/5 rounded-2xl text-center space-y-1 shadow">
             <div class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">Dock Clear</div>
-            <div class="text-[11px] font-mono text-zinc-500">Zero pending orders, coal rotations, or quality checks.</div>
+            <div class="text-[11px] font-mono text-zinc-500">Zero pending orders or coal rotations.</div>
           </div>
         `;
         return;
@@ -1361,35 +1284,28 @@
 
       let html = '';
       alerts.forEach(item => {
-        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 bg-[#12080A] shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border-white/10';
-
         html += `
-          <div onclick="openTableDetailModal('${item.tableId}')" class="alert-card ${borderGlow}">
-            
-            <!-- Card Header: Table Name & Badge -->
+          <div onclick="openTableDetailModal('${item.tableId}')" class="alert-card">
             <div class="flex justify-between items-center">
-              <span class="font-mono text-sm font-extrabold text-white tracking-wide">${item.tableName}</span>
+              <span class="font-mono text-sm font-bold text-white">${item.tableName}</span>
               <span class="px-2 py-0.5 text-[9px] font-mono font-bold uppercase rounded-md border ${item.badgeClass}">
                 ${item.badgeText}
               </span>
             </div>
 
-            <!-- Card Content: Details & Sub-info -->
-            <div class="space-y-1">
+            <div class="space-y-0.5">
               <p class="text-xs font-mono text-zinc-200 font-medium leading-snug">${item.title}</p>
               <p class="text-[11px] font-mono text-zinc-400">${item.subInfo}</p>
             </div>
 
-            <!-- Card Footer: Fast Action Button & Drawer Hint -->
-            <div class="pt-2 border-t border-white/10 flex justify-between items-center" onclick="event.stopPropagation();">
-              <span onclick="openTableDetailModal('${item.tableId}')" class="text-[10px] font-mono text-amber-400/80 hover:text-amber-300 cursor-pointer">
+            <div class="pt-1.5 border-t border-white/10 flex justify-between items-center" onclick="event.stopPropagation();">
+              <span onclick="openTableDetailModal('${item.tableId}')" class="text-[10px] font-mono text-[#D4AF37] hover:underline cursor-pointer">
                 View Deck ➔
               </span>
-              <button onclick="${item.actionHandler}" class="px-3.5 py-1.5 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[10px] uppercase tracking-wider rounded-xl transition active:scale-95 shadow">
+              <button onclick="${item.actionHandler}" class="px-3 py-1 bg-white text-black hover:bg-[#D4AF37] font-mono font-bold text-[10px] uppercase tracking-wider rounded-lg transition active:scale-95 shadow">
                 ${item.actionLabel}
               </button>
             </div>
-
           </div>
         `;
       });
@@ -1402,7 +1318,7 @@
       if (idx !== -1) {
         const ord = liveIncomingOrders[idx];
         liveIncomingOrders.splice(idx, 1);
-        showToast('Order Dispatched', `${ord.tableName}: ${ord.details} marked ready & delivered.`);
+        showToast('Order Ready', `${ord.tableName}: ${ord.details} marked delivered.`);
         renderDeckOverview();
       }
     }
@@ -1443,9 +1359,7 @@
         const table = loungeDeckTables.find(t => t.id === item.id);
         if (!table) return;
 
-        if (activeZoneFilter !== 'all' && table.zone !== activeZoneFilter) {
-          return;
-        }
+        if (activeZoneFilter !== 'all' && table.zone !== activeZoneFilter) return;
 
         const isOccupied = table.status === 'occupied';
         let nodeClass = 'diagram-seat-node';
@@ -1455,14 +1369,13 @@
         if (isOccupied) {
           nodeClass += ' occupied';
           statusDot = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>';
-
           const seatedMins = Math.floor((now - table.seatedTime) / (60 * 1000));
           timerSnippet = `<span class="text-[9px] font-mono text-zinc-300 font-bold mt-0.5">${seatedMins}m</span>`;
 
           if (table.lastCoalRotation && (now - table.lastCoalRotation) >= (25 * 60 * 1000)) {
             nodeClass += ' coals-due';
             statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>';
-            timerSnippet = `<span class="text-[9px] font-mono font-bold text-red-400 mt-0.5 animate-pulse">COALS DUE</span>`;
+            timerSnippet = `<span class="text-[9px] font-mono font-bold text-red-400 mt-0.5">COALS DUE</span>`;
           } else if (table.lastServiceCheck && (now - table.lastServiceCheck) >= (5 * 60 * 1000)) {
             nodeClass += ' service-due';
             statusDot = '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>';
@@ -1476,13 +1389,11 @@
           <div onclick="openTableDetailModal('${table.id}')" 
                class="${nodeClass} ${borderRadius}" 
                style="left: ${item.x}%; top: ${item.y}%; width: ${item.w}px; height: ${item.h}px;"
-               title="${table.name}: ${table.label} (${isOccupied ? table.guest : 'Available'})">
-            
+               title="${table.name}: ${table.label}">
             <div class="flex items-center gap-1.5">
               ${statusDot}
               <span class="font-mono text-xs md:text-sm font-extrabold text-white">${item.name}</span>
             </div>
-            
             ${timerSnippet}
           </div>
         `;
@@ -1506,18 +1417,16 @@
 
       filtered.forEach(t => {
         const isOccupied = t.status === 'occupied';
-        let cardClass = 'stoked-card';
+        let cardClass = 'soft-card';
         let statusBadge = '<span class="px-2.5 py-0.5 bg-zinc-800 text-zinc-400 text-[9px] font-mono rounded-full uppercase">AVAILABLE</span>';
         let tabTotal = 0;
 
         let seatedStr = '—';
         let serviceStr = '—';
         let coalsStr = '—';
-        let serviceStatusClass = 'text-zinc-500';
-        let coalsStatusClass = 'text-zinc-500';
 
         if (isOccupied) {
-          cardClass += ' border-emerald-500/30 bg-[#08121E]';
+          cardClass += ' border-emerald-500/30 bg-[#1A222E]';
           statusBadge = '<span class="px-2.5 py-0.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-mono font-bold rounded-full uppercase">ACTIVE</span>';
           tabTotal = t.tabItems.reduce((sum, it) => sum + (it.price || 0), 0);
 
@@ -1525,39 +1434,18 @@
           seatedStr = `${seatedMins}m`;
 
           if (t.lastServiceCheck) {
-            const serviceElapsed = Math.floor((now - t.lastServiceCheck) / 1000);
-            const serviceRemaining = (5 * 60) - serviceElapsed;
-            if (serviceRemaining <= 0) {
-              serviceStr = 'DUE';
-              serviceStatusClass = 'text-amber-400 font-bold animate-pulse';
-              cardClass = 'stoked-card border-amber-500/60 bg-[#161208]';
-            } else {
-              const mins = Math.floor(serviceRemaining / 60);
-              const secs = serviceRemaining % 60;
-              serviceStr = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
-              serviceStatusClass = 'text-zinc-300';
-            }
+            const sRem = (5 * 60) - Math.floor((now - t.lastServiceCheck) / 1000);
+            serviceStr = sRem <= 0 ? 'DUE' : `${Math.floor(sRem / 60)}m`;
           }
 
           if (t.lastCoalRotation) {
-            const coalElapsed = Math.floor((now - t.lastCoalRotation) / 1000);
-            const coalRemaining = (25 * 60) - coalElapsed;
-            if (coalRemaining <= 0) {
-              coalsStr = 'DUE';
-              coalsStatusClass = 'text-red-400 font-bold animate-pulse';
-              cardClass = 'stoked-card border-red-500/70 bg-[#18080C] shadow-[0_0_16px_rgba(239,68,68,0.2)]';
-            } else {
-              const mins = Math.floor(coalRemaining / 60);
-              const secs = coalRemaining % 60;
-              coalsStr = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
-              coalsStatusClass = 'text-zinc-300';
-            }
+            const cRem = (25 * 60) - Math.floor((now - t.lastCoalRotation) / 1000);
+            coalsStr = cRem <= 0 ? 'DUE' : `${Math.floor(cRem / 60)}m`;
           }
         }
 
         html += `
-          <div onclick="openTableDetailModal('${t.id}')" class="p-4 ${cardClass} cursor-pointer flex flex-col justify-between gap-3 shadow-md select-none">
-            
+          <div onclick="openTableDetailModal('${t.id}')" class="p-4 ${cardClass} cursor-pointer flex flex-col justify-between gap-3 shadow select-none">
             <div>
               <div class="flex justify-between items-start pb-2 border-b border-white/10">
                 <div>
@@ -1568,7 +1456,7 @@
                   <span class="text-[10px] font-mono text-zinc-400 block mt-0.5">${t.label}</span>
                 </div>
                 <div class="text-right font-mono">
-                  <span class="text-sm font-bold text-amber-400">$${tabTotal.toFixed(0)}</span>
+                  <span class="text-sm font-bold text-[#D4AF37]">$${tabTotal.toFixed(0)}</span>
                 </div>
               </div>
 
@@ -1578,26 +1466,20 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-1 p-2 bg-black/60 rounded-xl border border-white/5 text-[10px] font-mono text-center">
+            <div class="grid grid-cols-3 gap-1 p-2 bg-[#141720] rounded-xl border border-white/5 text-[10px] font-mono text-center">
               <div>
                 <span class="text-zinc-500 block text-[8px] uppercase">Seated</span>
                 <span class="text-zinc-300 font-bold">${seatedStr}</span>
               </div>
               <div class="border-x border-white/5">
                 <span class="text-zinc-500 block text-[8px] uppercase">5m Check</span>
-                <span class="${serviceStatusClass}">${serviceStr}</span>
+                <span class="${serviceStr === 'DUE' ? 'text-amber-400 font-bold' : 'text-zinc-300'}">${serviceStr}</span>
               </div>
               <div>
                 <span class="text-zinc-500 block text-[8px] uppercase">25m Coals</span>
-                <span class="${coalsStatusClass}">${coalsStr}</span>
+                <span class="${coalsStr === 'DUE' ? 'text-red-400 font-bold' : 'text-zinc-300'}">${coalsStr}</span>
               </div>
             </div>
-
-            <div class="pt-1 flex justify-between items-center text-[10px] font-mono text-zinc-400">
-              <span>${isOccupied ? `${t.tabItems.length} items on tab` : 'Empty table'}</span>
-              <span class="text-amber-400 hover:underline">Manage ➔</span>
-            </div>
-
           </div>
         `;
       });
@@ -1631,7 +1513,7 @@
       if (table.seatedTime) {
         seatedStr = `${Math.floor((now - table.seatedTime) / 60000)}m`;
       }
-      document.getElementById('drawerTableGuestInfo').textContent = `Guest: ${table.guest} · ${table.tabItems.length} items · Seated ${seatedStr}`;
+      document.getElementById('drawerTableGuestInfo').textContent = `Guest: ${table.guest} · Seated ${seatedStr}`;
 
       if (table.lastServiceCheck) {
         const sRem = (5 * 60) - Math.floor((now - table.lastServiceCheck) / 1000);
@@ -1647,15 +1529,21 @@
         document.getElementById('drawerQuickCoalText').textContent = '—';
       }
 
-      // Auto-load member preferences if available
-      if (table.memberId && MEMBER_PRESETS[table.memberId]) {
-        const mem = MEMBER_PRESETS[table.memberId];
-        document.getElementById('benchBowlSelect').value = mem.bowlSetup;
-        document.getElementById('benchHeatSelect').value = mem.hmdSetup;
-        benchSlots = JSON.parse(JSON.stringify(mem.defaultFlavors));
+      // Preload member hardware & hospitality personality notes
+      if (table.memberId && MEMBER_PROFILES[table.memberId]) {
+        const mem = MEMBER_PROFILES[table.memberId];
+        document.getElementById('benchPipeSelect').value = mem.pipePref;
+        document.getElementById('benchBowlSelect').value = mem.bowlPref;
+        document.getElementById('benchHeatSelect').value = mem.hmdPref;
+        document.getElementById('memberTierText').textContent = mem.tier;
+        document.getElementById('memberNotesText').textContent = `"${mem.personalityNotes}"`;
+        document.getElementById('memberLastBowlText').textContent = mem.lastBowl.name;
+        document.getElementById('memberPersonalityNotesBox').classList.remove('hidden');
+      } else {
+        document.getElementById('memberPersonalityNotesBox').classList.add('hidden');
       }
 
-      setDrawerActiveTab(activeDrawerTab);
+      setDrawerActiveTab('mixlab');
 
       drawer.classList.remove('translate-y-full');
       drawer.classList.add('translate-y-0');
@@ -1681,7 +1569,7 @@
       if (table.tabItems.length === 0) {
         list.innerHTML = `
           <div class="py-12 text-center text-xs font-mono text-zinc-500 italic">
-            No items on this table's tab. Use the "Sommelier Mix Lab" tab to order hookahs or drinks.
+            No items on this table's tab. Use the "Sommelier Mix Lab" tab to order.
           </div>
         `;
         updateBillTotals(0, table.appliedTip || 0);
@@ -1693,13 +1581,13 @@
       table.tabItems.forEach((item, idx) => {
         subtotal += item.price || 0;
         html += `
-          <div class="flex justify-between items-center p-3.5 bg-[#0A0F1A] rounded-xl border border-white/5 text-xs font-mono">
+          <div class="flex justify-between items-center p-3 bg-[#141720] rounded-xl border border-white/5 text-xs font-mono">
             <div class="truncate mr-2">
               <span class="text-white font-bold block truncate text-sm">${item.name}</span>
               <span class="text-[10px] text-zinc-500 uppercase tracking-wider">${item.type}</span>
             </div>
             <div class="flex items-center gap-3 flex-shrink-0">
-              <span class="font-bold text-amber-400 text-sm">$${(item.price || 0).toFixed(2)}</span>
+              <span class="font-bold text-[#D4AF37] text-sm">$${(item.price || 0).toFixed(2)}</span>
               <button onclick="removeBillTabItem(${idx})" class="text-zinc-500 hover:text-red-400 p-1.5 rounded transition">✕</button>
             </div>
           </div>
@@ -1730,7 +1618,7 @@
     }
 
     function updateBillTotals(subtotal, tip) {
-      const tax = subtotal * 0.086; // 8.6% Tax
+      const tax = subtotal * 0.086;
       const grandTotal = subtotal + tax + tip;
 
       document.getElementById('billSubtotal').textContent = `$${subtotal.toFixed(2)}`;
@@ -1778,90 +1666,143 @@
       table.tabItems = [];
       closeTableDetailModal();
       renderDeckOverview();
-      showToast('Table Closed', `${table.name} is now free and available.`);
+      showToast('Table Closed', `${table.name} is now free.`);
     }
 
-    // ==================== TAB 2: SOMMELIER MIX LAB WITH MULTI-STOP SPECTRUM & FLOATING TRAY ====================
-    function renderErgonomicServerPOSDeck() {
-      renderLeftBrandSelectors();
-      renderRightFilteredCatalog();
+    // ==================== TAB 2: SOMMELIER MIX LAB ENGINE ====================
+    function renderSommelierMixLab() {
+      renderLeftFilterSelectors();
+      renderRightCatalogList();
       renderCenterMixBench();
       renderFloatingOrderTray();
     }
 
-    function selectCategory(cat) {
-      activeCategoryMode = cat;
-      renderLeftBrandSelectors();
-      renderRightFilteredCatalog();
+    function selectFilterCategory(filterKey) {
+      activeFilterType = filterKey;
+      renderLeftFilterSelectors();
+      renderRightCatalogList();
     }
 
-    // FAR LEFT: Brands & Lower Drinks Button
-    function renderLeftBrandSelectors() {
-      const list = document.getElementById('leftBrandSelectorList');
-      const drinksBtn = document.getElementById('leftDrinksCategoryBtn');
-      if (!list) return;
+    // LEFT COLUMN: Brand Selection (House Mixes Default) + Profiles + Drinks
+    function renderLeftFilterSelectors() {
+      const brandList = document.getElementById('leftBrandList');
+      const profileList = document.getElementById('leftProfileList');
+      const drinksBtn = document.getElementById('leftDrinksBtn');
+      if (!brandList || !profileList) return;
 
-      const BRANDS = [
-        { id: 'all', name: 'All Tobacco', count: FLAVOR_CATALOG.length, origin: 'Global' },
-        { id: 'MustHave', name: 'MustHave', count: 5, origin: 'Moscow 🇷🇺' },
-        { id: 'Tangiers', name: 'Tangiers Noir', count: 3, origin: 'San Diego 🇺🇸' },
-        { id: 'Darkside', name: 'Darkside Burley', count: 3, origin: 'Moscow 🇷🇺' },
-        { id: 'BlackBurn', name: 'BlackBurn', count: 2, origin: 'Russia 🇷🇺' },
-        { id: 'Al Fakher', name: 'Al Fakher', count: 2, origin: 'Ajman 🇦🇪' },
-        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2, origin: 'Blondes' }
+      // 1. Brand list with 👑 Signature House Mixes as the DEFAULT option
+      const BRANDS_AND_MIXES = [
+        { id: 'house_mixes', name: '👑 Signature House Mixes', count: EMPIRE_HOUSE_MIXES.length, isHouse: true },
+        { id: 'MustHave', name: 'MustHave Dark Leaf', count: 5 },
+        { id: 'Tangiers', name: 'Tangiers Noir', count: 3 },
+        { id: 'Darkside', name: 'Darkside Burley', count: 3 },
+        { id: 'BlackBurn', name: 'BlackBurn Overdose', count: 2 },
+        { id: 'Al Fakher', name: 'Al Fakher Blondes', count: 2 },
+        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2 }
       ];
 
-      let html = '';
-      BRANDS.forEach(b => {
-        const isSel = activeCategoryMode === b.id;
-        const activeClass = isSel ? 'bg-amber-400/20 text-amber-300 border-amber-400/60 font-bold' : 'bg-black/60 text-zinc-400 border-white/10 hover:text-white';
+      let bHtml = '';
+      BRANDS_AND_MIXES.forEach(b => {
+        const isSel = activeFilterType === b.id;
+        const cls = isSel 
+          ? 'bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/60 font-bold' 
+          : 'bg-[#141720] text-zinc-300 border-white/5 hover:text-white';
 
-        html += `
-          <button onclick="selectCategory('${b.id}')" class="w-full text-left p-2.5 rounded-xl border ${activeClass} text-xs font-mono flex justify-between items-center transition select-none">
-            <div>
-              <span class="block font-bold text-white">${b.name}</span>
-              <span class="text-[10px] opacity-70">${b.origin}</span>
-            </div>
-            <span class="text-[11px] font-bold opacity-80">${b.count}</span>
+        bHtml += `
+          <button onclick="selectFilterCategory('${b.id}')" class="w-full text-left p-2 rounded-xl border ${cls} text-xs font-mono flex justify-between items-center transition select-none">
+            <span class="truncate ${b.isHouse ? 'font-bold text-[#D4AF37]' : ''}">${b.name}</span>
+            <span class="text-[10px] opacity-70 ml-1">${b.count}</span>
           </button>
         `;
       });
+      brandList.innerHTML = bHtml;
 
-      list.innerHTML = html;
+      // 2. Flavor Profiles List
+      const PROFILES = ['Berries', 'Citrus', 'Mint / Ice', 'Cream / Dessert', 'Spiced / Floral', 'Tropical', 'Botanical'];
+      let pHtml = '';
+      PROFILES.forEach(p => {
+        const isSel = activeFilterType === `prof-${p}`;
+        const cls = isSel 
+          ? 'bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/60 font-bold' 
+          : 'bg-[#141720] text-zinc-400 border-white/5 hover:text-white';
 
-      // Update Drinks Button active state
+        pHtml += `
+          <button onclick="selectFilterCategory('prof-${p}')" class="w-full text-left p-1.5 rounded-lg border ${cls} text-[11px] font-mono flex justify-between items-center transition select-none">
+            <span>${p}</span>
+          </button>
+        `;
+      });
+      profileList.innerHTML = pHtml;
+
+      // 3. Drinks Button
       if (drinksBtn) {
-        if (activeCategoryMode === 'drinks') {
-          drinksBtn.className = 'w-full py-3 bg-cyan-500 text-black border-2 border-cyan-400 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-xl select-none';
+        if (activeFilterType === 'drinks') {
+          drinksBtn.className = 'w-full py-2.5 bg-cyan-500 text-black border border-cyan-400 rounded-xl font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-between px-3 transition active:scale-95 shadow select-none';
         } else {
-          drinksBtn.className = 'w-full py-3 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-lg select-none';
+          drinksBtn.className = 'w-full py-2.5 bg-[#1A1F2B] hover:bg-[#222838] border border-cyan-500/40 text-cyan-300 rounded-xl font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-between px-3 transition active:scale-95 select-none';
         }
       }
     }
 
-    // FAR RIGHT: Filtered Catalog (Flavors OR Drinks)
-    function renderRightFilteredCatalog() {
-      const list = document.getElementById('rightFlavorsCatalogList');
+    // RIGHT COLUMN: Dynamic Catalog (House Mixes Default, Tobacco Flavors, or Drinks)
+    function renderRightCatalogList() {
+      const list = document.getElementById('rightCatalogList');
       const titleEl = document.getElementById('rightCatalogTitle');
       const countEl = document.getElementById('rightCatalogCount');
       if (!list) return;
 
-      if (activeCategoryMode === 'drinks') {
+      // 1. DEFAULT: Signature House Mixes Cards
+      if (activeFilterType === 'house_mixes') {
+        if (titleEl) titleEl.textContent = '👑 Signature House Mixes';
+        if (countEl) countEl.textContent = `${EMPIRE_HOUSE_MIXES.length} recipes`;
+
+        let html = '';
+        EMPIRE_HOUSE_MIXES.forEach(mix => {
+          let dotsHtml = '';
+          mix.ratios.forEach(r => {
+            dotsHtml += `<span class="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black" style="background: ${r.color};"></span>`;
+          });
+
+          html += `
+            <div onclick="loadHouseMixToBench('${mix.id}')" class="p-3 bg-[#141720] hover:bg-[#1C212E] rounded-xl border border-white/5 hover:border-[#D4AF37]/50 cursor-pointer flex flex-col gap-1.5 transition select-none shadow-sm">
+              <div class="flex justify-between items-start">
+                <div class="flex items-center gap-2">
+                  <div class="flex items-center flex-shrink-0">${dotsHtml}</div>
+                  <div>
+                    <span class="font-mono text-xs font-bold text-white block">${mix.name}</span>
+                    <span class="text-[10px] font-mono text-[#D4AF37]">${mix.tagline}</span>
+                  </div>
+                </div>
+                <span class="font-mono text-xs font-bold text-[#D4AF37]">$${mix.price.toFixed(2)}</span>
+              </div>
+              <p class="text-[10px] font-mono text-zinc-400 leading-snug">${mix.desc}</p>
+              <div class="pt-1 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-zinc-500">
+                <span>⚡ Buzz ${mix.buzz}</span>
+                <span class="text-[#D4AF37] font-bold">1-Tap Load ➔</span>
+              </div>
+            </div>
+          `;
+        });
+        list.innerHTML = html;
+        return;
+      }
+
+      // 2. Drinks Mode
+      if (activeFilterType === 'drinks') {
         if (titleEl) titleEl.textContent = 'Beverages & Samovar Tea';
         if (countEl) countEl.textContent = `${SERVER_BEVERAGES.length} items`;
 
         let html = '';
         SERVER_BEVERAGES.forEach(bev => {
           html += `
-            <div class="p-3 bg-[#0A0F1A] hover:bg-[#111828] rounded-xl border border-white/5 hover:border-cyan-400/40 flex justify-between items-center gap-2 transition select-none">
+            <div class="p-2.5 bg-[#141720] hover:bg-[#1C212E] rounded-xl border border-white/5 flex justify-between items-center gap-2 transition select-none">
               <div class="truncate">
                 <span class="font-mono text-xs font-bold text-white block truncate">${bev.name}</span>
-                <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${bev.desc}</span>
+                <span class="text-[10px] font-mono text-zinc-400 block truncate">${bev.desc}</span>
               </div>
-              
               <div class="flex items-center gap-2 flex-shrink-0">
-                <span class="font-mono text-xs font-bold text-amber-400">$${bev.price.toFixed(2)}</span>
-                <button onclick="addDrinkToOrderTray('${bev.id}')" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-cyan-500/40 transition active:scale-95">
+                <span class="font-mono text-xs font-bold text-[#D4AF37]">$${bev.price.toFixed(2)}</span>
+                <button onclick="addDrinkToOrderTray('${bev.id}')" class="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-cyan-500/40 transition active:scale-95">
                   + ADD
                 </button>
               </div>
@@ -1872,23 +1813,23 @@
         return;
       }
 
-      // Shisha Flavors Mode
+      // 3. Single Tobacco Flavors Mode (Filtered by Brand or Profile)
       let filtered = FLAVOR_CATALOG;
-      if (activeCategoryMode !== 'all') {
-        if (activeCategoryMode === 'Starbuzz') {
-          filtered = FLAVOR_CATALOG.filter(f => f.brand === 'Starbuzz' || f.brand === 'Adalya');
-        } else {
-          filtered = FLAVOR_CATALOG.filter(f => f.brand === activeCategoryMode);
-        }
+      if (activeFilterType.startsWith('prof-')) {
+        const profName = activeFilterType.replace('prof-', '');
+        filtered = FLAVOR_CATALOG.filter(f => f.profile === profName);
+        if (titleEl) titleEl.textContent = `${profName} Flavors`;
+      } else {
+        filtered = FLAVOR_CATALOG.filter(f => f.brand === activeFilterType || (activeFilterType === 'Starbuzz' && (f.brand === 'Starbuzz' || f.brand === 'Adalya')));
+        if (titleEl) titleEl.textContent = `${activeFilterType} Flavors`;
       }
 
-      if (titleEl) titleEl.textContent = activeCategoryMode === 'all' ? 'All Flavors Stash' : `${activeCategoryMode} Stash`;
       if (countEl) countEl.textContent = `${filtered.length} available`;
 
       let html = '';
       filtered.forEach(f => {
         html += `
-          <div class="p-3 bg-[#0A0F1A] hover:bg-[#111828] rounded-xl border border-white/5 hover:border-amber-400/40 flex justify-between items-center gap-2 transition select-none">
+          <div class="p-2.5 bg-[#141720] hover:bg-[#1C212E] rounded-xl border border-white/5 hover:border-[#D4AF37]/40 flex justify-between items-center gap-2 transition select-none">
             <div class="truncate">
               <div class="flex items-center gap-1.5 truncate">
                 <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${f.color};"></span>
@@ -1898,7 +1839,7 @@
               <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${f.brand} · ${f.notes}</span>
             </div>
             
-            <button onclick="addFlavorToBench('${f.id}')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
+            <button onclick="addFlavorToBench('${f.id}')" class="px-2.5 py-1 bg-[#D4AF37]/20 hover:bg-[#D4AF37] hover:text-black text-[#D4AF37] text-[10px] font-mono font-bold uppercase rounded-lg border border-[#D4AF37]/40 transition active:scale-95 flex-shrink-0">
               + ADD
             </button>
           </div>
@@ -1908,18 +1849,37 @@
       list.innerHTML = html;
     }
 
+    function loadHouseMixToBench(houseMixId) {
+      const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === houseMixId);
+      if (!mix) return;
+
+      benchSlots = mix.ratios.map(r => ({
+        flavorId: r.flavorId,
+        name: r.name,
+        brand: r.brand,
+        buzz: mix.buzz,
+        ratio: r.percent,
+        color: r.color
+      }));
+
+      document.getElementById('centerBenchSubtitle').textContent = mix.name;
+      renderCenterMixBench();
+      renderFloatingOrderTray();
+      showToast('Mix Loaded', `Loaded "${mix.name}" into active formulation bench.`);
+    }
+
     function addFlavorToBench(flavorId) {
       if (benchSlots.length >= 4) {
-        showToast('Max Slots Reached', 'A bowl can have up to 4 flavors.');
+        showToast('Max Slots', 'A bowl formulation holds up to 4 flavors.');
         return;
       }
 
       const flavor = FLAVOR_CATALOG.find(f => f.id === flavorId);
       if (!flavor) return;
 
-      const existingIdx = benchSlots.findIndex(s => s.flavorId === flavorId);
-      if (existingIdx !== -1) {
-        showToast('Already in Bowl', `${flavor.name} is already in the mix.`);
+      const exists = benchSlots.find(s => s.flavorId === flavorId);
+      if (exists) {
+        showToast('Already Added', `${flavor.name} is already in formulation.`);
         return;
       }
 
@@ -1933,6 +1893,7 @@
       });
 
       redistributeBenchRatios();
+      document.getElementById('centerBenchSubtitle').textContent = 'Custom Tobacco Formulation';
       renderCenterMixBench();
       renderFloatingOrderTray();
       showToast('Flavor Added', `${flavor.name} added to bench.`);
@@ -1945,54 +1906,13 @@
       renderFloatingOrderTray();
     }
 
-    function addDrinkToOrderTray(drinkId) {
-      const bev = SERVER_BEVERAGES.find(b => b.id === drinkId);
-      if (!bev) return;
-      pendingOrderDrinks.push({
-        id: `drk-${Date.now()}-${Math.random()}`,
-        name: bev.name,
-        price: bev.price
-      });
-      renderFloatingOrderTray();
-      showToast('Drink Added', `${bev.name} added to floating tray.`);
-    }
-
-    function removePendingDrink(idx) {
-      pendingOrderDrinks.splice(idx, 1);
-      renderFloatingOrderTray();
-    }
-
     function redistributeBenchRatios() {
       if (benchSlots.length === 0) return;
       const count = benchSlots.length;
-      if (count === 1) {
-        benchSlots[0].ratio = 100;
-      } else if (count === 2) {
-        benchSlots[0].ratio = 70;
-        benchSlots[1].ratio = 30;
-      } else if (count === 3) {
-        benchSlots[0].ratio = 50;
-        benchSlots[1].ratio = 30;
-        benchSlots[2].ratio = 20;
-      } else if (count === 4) {
-        benchSlots[0].ratio = 40;
-        benchSlots[1].ratio = 20;
-        benchSlots[2].ratio = 20;
-        benchSlots[3].ratio = 20;
-      }
-    }
-
-    function applyRatioSplit(splits) {
-      if (benchSlots.length !== splits.length) {
-        showToast('Split Mismatch', `You have ${benchSlots.length} flavor(s) on the bench. Select matching split or adjust slots.`);
-        return;
-      }
-      benchSlots.forEach((s, idx) => {
-        s.ratio = splits[idx];
-      });
-      renderCenterMixBench();
-      renderFloatingOrderTray();
-      showToast('Ratio Split Applied', `Formulation split set to ${splits.join('/')}%`);
+      if (count === 1) benchSlots[0].ratio = 100;
+      else if (count === 2) { benchSlots[0].ratio = 70; benchSlots[1].ratio = 30; }
+      else if (count === 3) { benchSlots[0].ratio = 50; benchSlots[1].ratio = 30; benchSlots[2].ratio = 20; }
+      else if (count === 4) { benchSlots[0].ratio = 40; benchSlots[1].ratio = 20; benchSlots[2].ratio = 20; benchSlots[3].ratio = 20; }
     }
 
     function adjustSlotRatio(idx, delta) {
@@ -2012,39 +1932,39 @@
       renderFloatingOrderTray();
     }
 
-    // CENTER COLUMN: Mix Bench with Spectrum Gradient
+    // CENTER COLUMN: Mix Bench with Live Gradient Spectrum
     function renderCenterMixBench() {
       const ribbon = document.getElementById('spectrumRibbon');
       const list = document.getElementById('benchActiveSlotsList');
       if (!list) return;
 
       if (benchSlots.length === 0) {
-        if (ribbon) ribbon.style.background = '#1E2533';
+        if (ribbon) ribbon.style.background = '#1E232E';
         list.innerHTML = `
           <div class="py-6 text-center text-xs font-mono text-zinc-500 italic">
-            Bowl is empty. Tap "+ ADD" on flavors from the right catalog.
+            Bowl is empty. Tap a 👑 Signature House Mix or flavors from the catalog.
           </div>
         `;
         updateBenchCalculations();
         return;
       }
 
-      // 1. Multi-Stop Gradient Ribbon Calculation
+      // 1. Smooth Multi-Color Gradient Transition Calculation
       let gradParts = [];
       let cum = 0;
       benchSlots.forEach(slot => {
-        const col = slot.color || '#E5A93C';
+        const col = slot.color || '#D4AF37';
         const start = cum;
         cum += slot.ratio;
         gradParts.push(`${col} ${start}% ${cum}%`);
       });
       if (ribbon) ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
 
-      // 2. Render Active Flavor Rows with Steppers
+      // 2. Active Flavor Rows with clean percentage steppers
       let html = '';
       benchSlots.forEach((slot, idx) => {
         html += `
-          <div class="p-2.5 bg-[#0A0F1A] rounded-xl border border-white/10 flex items-center justify-between gap-2 select-none text-xs font-mono">
+          <div class="p-2 bg-[#141720] rounded-xl border border-white/5 flex items-center justify-between gap-2 select-none text-xs font-mono">
             <div class="flex items-center gap-2 truncate flex-1">
               <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${slot.color};"></span>
               <div class="truncate">
@@ -2054,9 +1974,9 @@
             </div>
 
             <div class="flex items-center gap-2 flex-shrink-0">
-              <div class="flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-lg border border-white/10">
+              <div class="flex items-center gap-1 bg-[#1A1F2B] px-2 py-0.5 rounded-lg border border-white/10">
                 <button onclick="adjustSlotRatio(${idx}, -10)" class="text-zinc-400 hover:text-white px-1 font-bold">-</button>
-                <span class="text-amber-400 font-bold min-w-[32px] text-center">${slot.ratio}%</span>
+                <span class="text-[#D4AF37] font-bold min-w-[32px] text-center">${slot.ratio}%</span>
                 <button onclick="adjustSlotRatio(${idx}, 10)" class="text-zinc-400 hover:text-white px-1 font-bold">+</button>
               </div>
               <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 p-1">✕</button>
@@ -2069,7 +1989,35 @@
       updateBenchCalculations();
     }
 
-    // ==================== FLOATING BOTTOM TRAY (UNDERNEATH LAB) ====================
+    function addDrinkToOrderTray(drinkId) {
+      const bev = SERVER_BEVERAGES.find(b => b.id === drinkId);
+      if (!bev) return;
+      pendingOrderDrinks.push({
+        id: `drk-${Date.now()}-${Math.random()}`,
+        name: bev.name,
+        price: bev.price
+      });
+      renderFloatingOrderTray();
+      showToast('Drink Added', `${bev.name} added to order tray.`);
+    }
+
+    function removePendingDrink(idx) {
+      pendingOrderDrinks.splice(idx, 1);
+      renderFloatingOrderTray();
+    }
+
+    function reorderLastMemberBowl() {
+      const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
+      if (!table || !table.memberId || !MEMBER_PROFILES[table.memberId]) return;
+      const last = MEMBER_PROFILES[table.memberId].lastBowl;
+      benchSlots = JSON.parse(JSON.stringify(last.ratios));
+      document.getElementById('centerBenchSubtitle').textContent = last.name;
+      renderCenterMixBench();
+      renderFloatingOrderTray();
+      showToast('Re-order Loaded', `Loaded "${last.name}" into bench.`);
+    }
+
+    // ==================== FLOATING BOTTOM TRAY ====================
     function renderFloatingOrderTray() {
       const container = document.getElementById('stagedOrderChipsContainer');
       const totalEl = document.getElementById('floatingOrderTotal');
@@ -2078,7 +2026,6 @@
       let hookahPrice = 0;
       let chipsHtml = '';
 
-      // 1. Hookah Formulation Chip
       if (benchSlots.length > 0) {
         const hasReserve = benchSlots.some(s => s.brand === 'Tangiers');
         hookahPrice = hasReserve ? 38.00 : 35.00;
@@ -2090,31 +2037,30 @@
         });
 
         chipsHtml += `
-          <div class="inline-flex items-center gap-2 py-1.5 px-3 bg-black/90 border border-amber-400/50 rounded-xl text-xs font-mono text-zinc-100 flex-shrink-0 shadow">
+          <div class="inline-flex items-center gap-2 py-1 px-2.5 bg-[#141720] border border-[#D4AF37]/50 rounded-xl text-xs font-mono text-zinc-100 flex-shrink-0 shadow">
             <div class="flex items-center flex-shrink-0">${dotsHtml}</div>
-            <span class="text-amber-300 font-bold truncate max-w-[180px]">${recipeSummary}</span>
-            <span class="text-amber-400 font-extrabold font-mono">$${hookahPrice.toFixed(2)}</span>
+            <span class="text-[#D4AF37] font-bold truncate max-w-[180px]">${recipeSummary}</span>
+            <span class="text-[#D4AF37] font-extrabold font-mono">$${hookahPrice.toFixed(2)}</span>
             <button onclick="clearMixBench()" class="text-zinc-500 hover:text-red-400 ml-1">✕</button>
           </div>
         `;
       }
 
-      // 2. Drinks Chips
       let drinksTotal = 0;
       pendingOrderDrinks.forEach((drk, idx) => {
         drinksTotal += drk.price;
         chipsHtml += `
-          <div class="inline-flex items-center gap-2 py-1.5 px-3 bg-[#06101E] border border-cyan-500/30 rounded-xl text-xs font-mono text-cyan-200 flex-shrink-0 shadow">
+          <div class="inline-flex items-center gap-2 py-1 px-2.5 bg-[#141720] border border-cyan-500/30 rounded-xl text-xs font-mono text-cyan-200 flex-shrink-0 shadow">
             <span>🥤</span>
             <span class="font-bold truncate max-w-[140px]">${drk.name}</span>
-            <span class="text-amber-400 font-bold">$${drk.price.toFixed(2)}</span>
+            <span class="text-[#D4AF37] font-bold">$${drk.price.toFixed(2)}</span>
             <button onclick="removePendingDrink(${idx})" class="text-zinc-500 hover:text-red-400 ml-1">✕</button>
           </div>
         `;
       });
 
       if (benchSlots.length === 0 && pendingOrderDrinks.length === 0) {
-        chipsHtml = '<span class="text-xs font-mono text-zinc-500 italic">No items currently staged in order tray. Tap "+ ADD" to build round.</span>';
+        chipsHtml = '<span class="text-xs font-mono text-zinc-500 italic">Order tray empty. Select a Signature House Mix or flavors above.</span>';
       }
 
       container.innerHTML = chipsHtml;
@@ -2134,7 +2080,7 @@
         
         let cat = 'MILD BLONDE';
         if (roundedBuzz >= 8.0) cat = 'NOIR RESERVE';
-        else if (roundedBuzz >= 6.5) cat = 'BOLD DARK LEAF';
+        else if (roundedBuzz >= 6.5) cat = 'BOLD DARK';
         else if (roundedBuzz >= 5.0) cat = 'MEDIUM';
         document.getElementById('benchBuzzCategory').textContent = cat;
       } else {
@@ -2143,57 +2089,21 @@
       }
     }
 
-    function applyBaseSmokerProfile(type) {
-      if (type === 'sweet-berries') {
-        benchSlots = [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
-        ];
-        showToast('Profile Loaded', 'Sweet Berry & Grapefruit preset loaded.');
-      } else if (type === 'russian-burley') {
-        benchSlots = [
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' },
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' }
-        ];
-        showToast('Profile Loaded', 'Heavy Russian Dark Leaf preset loaded.');
-      } else if (type === 'arctic-mint') {
-        benchSlots = [
-          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, color: '#06B6D4' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, color: '#10B981' }
-        ];
-        showToast('Profile Loaded', 'Arctic Ice & Mint preset loaded.');
-      } else if (type === 'spiced-chai') {
-        benchSlots = [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
-        ];
-        showToast('Profile Loaded', 'Spiced Chai & Kashmir preset loaded.');
-      } else if (type === 'citrus-soda') {
-        benchSlots = [
-          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, color: '#FB923C' },
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, color: '#EC4899' }
-        ];
-        showToast('Profile Loaded', 'Valencia Orange Soda preset loaded.');
-      }
-
-      renderCenterMixBench();
-      renderFloatingOrderTray();
-    }
-
     function clearMixBench() {
       benchSlots = [];
       pendingOrderDrinks = [];
+      document.getElementById('centerBenchSubtitle').textContent = 'Blank Formulation';
       renderCenterMixBench();
       renderFloatingOrderTray();
     }
 
-    // LOWER RIGHT DISPATCH ACTION
+    // SUBMIT ACTION (Lower Right)
     function dispatchActiveBenchToTable() {
       const table = loungeDeckTables.find(t => t.id === selectedActiveTableId);
       if (!table) return;
 
       if (benchSlots.length === 0 && pendingOrderDrinks.length === 0) {
-        showToast('Empty Order', 'Please add shisha flavors or drinks before sending ticket.');
+        showToast('Empty Order', 'Please add shisha or drinks before submitting.');
         return;
       }
 
@@ -2203,9 +2113,9 @@
         table.seatedTime = Date.now();
       }
 
-      // Add Hookah to Table Tab
       if (benchSlots.length > 0) {
         const recipeSummary = benchSlots.map(s => `${s.name} ${s.ratio}%`).join(' · ');
+        const pipeType = document.getElementById('benchPipeSelect').value;
         const bowlType = document.getElementById('benchBowlSelect').value;
         const price = benchSlots.some(s => s.brand === 'Tangiers') ? 38.00 : 35.00;
 
@@ -2214,7 +2124,7 @@
 
         table.tabItems.push({
           id: `bowl-${Date.now()}`,
-          name: `Hookah — ${recipeSummary} [${bowlType}]`,
+          name: `Hookah — ${recipeSummary} [${pipeType} / ${bowlType}]`,
           price: price,
           type: 'hookah'
         });
@@ -2224,13 +2134,12 @@
           tableId: table.id,
           tableName: table.name,
           type: 'bowl',
-          details: `${recipeSummary} · ${bowlType}`,
+          details: `${recipeSummary} · ${pipeType}`,
           guest: table.guest,
           timestamp: Date.now()
         });
       }
 
-      // Add Pending Drinks to Table Tab
       pendingOrderDrinks.forEach(drk => {
         table.tabItems.push({
           id: `drink-${Date.now()}-${Math.random()}`,
@@ -2250,76 +2159,11 @@
         });
       });
 
-      // Clear pending drinks
       pendingOrderDrinks = [];
 
-      triggerScreenGlow('amber');
       setDrawerActiveTab('bill');
       renderDeckOverview();
-      showToast('✓ Ticket Sent', `${table.name}: Order dispatched to tab. Kitchen & Bar notified.`);
-    }
-
-    // ==================== TAB 3: MEMBER PROFILE & PALATE ENGINE ====================
-    function renderMemberProfileTab() {
-      const list = document.getElementById('memberFavoriteBlendsList');
-      if (!list) return;
-
-      const PAST_BLENDS = [
-        {
-          name: 'Pink Cane Sensation',
-          ratios: 'MustHave Pinkman 70% · Tangiers Cane Mint 30%',
-          bowl: 'Russian Clay Phunnel',
-          strength: '7.6 BOLD',
-          lastOrdered: '3 days ago'
-        },
-        {
-          name: 'Siberian Midnight Tea',
-          ratios: 'BlackBurn Green Tea 70% · Darkside Supernova 30%',
-          bowl: 'Alpaca Mini Rook',
-          strength: '8.5 BOLD',
-          lastOrdered: '10 days ago'
-        },
-        {
-          name: 'Kashmir Velvet Cream',
-          ratios: 'Tangiers Kashmir Peach 60% · MustHave Milky Rice 40%',
-          bowl: 'Russian Clay Phunnel',
-          strength: '8.0 RICH',
-          lastOrdered: '2 weeks ago'
-        }
-      ];
-
-      let html = '';
-      PAST_BLENDS.forEach(p => {
-        html += `
-          <div class="p-3.5 bg-[#0A0F1A] rounded-xl border border-white/5 flex justify-between items-center gap-2 select-none">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="font-mono text-sm font-bold text-white">${p.name}</span>
-                <span class="text-[10px] font-mono text-amber-400 font-bold">${p.strength}</span>
-              </div>
-              <p class="text-xs font-mono text-zinc-400 mt-0.5">${p.ratios} · ${p.bowl}</p>
-            </div>
-            
-            <button onclick="loadPastBlendToMixLab('${p.name}')" class="px-3.5 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 font-mono text-[10px] font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
-              ⚡ Load to Bench
-            </button>
-          </div>
-        `;
-      });
-
-      list.innerHTML = html;
-    }
-
-    function loadPastBlendToMixLab(blendName) {
-      if (blendName.includes('Pink Cane')) {
-        applyBaseSmokerProfile('sweet-berries');
-      } else if (blendName.includes('Siberian')) {
-        applyBaseSmokerProfile('russian-burley');
-      } else {
-        applyBaseSmokerProfile('spiced-chai');
-      }
-      setDrawerActiveTab('mixlab');
-      showToast('Blend Loaded', `${blendName} loaded into order bench.`);
+      showToast('✓ Submitted', `${table.name}: Order submitted to tab. Prep notified.`);
     }
 
     // ==================== SIMULATE ALERTS & TIMERS ====================
@@ -2336,12 +2180,11 @@
           tableId: target.id,
           tableName: target.name,
           type: 'bowl',
-          details: 'Empire Royalty (Noir Reserve) · Russian Clay Phunnel',
+          details: 'Pink Cane Sensation · Steamulation Pro X',
           guest: target.guest,
           timestamp: Date.now()
         });
-        triggerScreenGlow('amber');
-        showToast('New Bowl Order', `${target.name}: Empire Royalty dispatched from mix lab.`);
+        showToast('New Bowl Order', `${target.name}: Pink Cane Sensation submitted.`);
       } else if (chosen === 'drink') {
         liveIncomingOrders.unshift({
           id: `ord-${Date.now()}`,
@@ -2352,22 +2195,19 @@
           guest: target.guest,
           timestamp: Date.now()
         });
-        triggerScreenGlow('cyan');
         showToast('New Drink Order', `${target.name}: 2x Red Bull, 1x Mexican Coke.`);
       } else if (chosen === 'coal') {
         target.lastCoalRotation = Date.now() - (26 * 60 * 1000);
-        triggerScreenGlow('red');
-        showToast('Coal Alert', `${target.name}: Coals have reached 25-minute cycle.`);
+        showToast('Coal Alert', `${target.name}: 25-minute coal cycle due.`);
       } else {
         target.lastServiceCheck = Date.now() - (6 * 60 * 1000);
-        triggerScreenGlow('amber');
-        showToast('Service Check', `${target.name}: 5-minute quality of service check due.`);
+        showToast('Service Check', `${target.name}: 5-minute quality check due.`);
       }
 
+      playAudioChime();
       renderDeckOverview();
     }
 
-    // Resize listener for responsive tablet/mobile mode
     window.addEventListener('resize', () => {
       if (window.innerWidth >= 768) {
         document.getElementById('staffActionDockColumn')?.classList.remove('hidden');
@@ -2379,7 +2219,7 @@
 
     setInterval(() => {
       renderDeckOverview();
-    }, 2000);
+    }, 2500);
 
     window.addEventListener('DOMContentLoaded', () => {
       renderDeckOverview();
