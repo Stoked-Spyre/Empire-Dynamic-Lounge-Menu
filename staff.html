@@ -64,25 +64,30 @@
       overflow: hidden;
     }
 
-    /* VIBRANT CONTINUOUS FLAVOR SPECTRUM GRADIENT TRACK */
+    /* SEGMENTED FLAVOR SPECTRUM WITH CLEAN DIVIDERS */
     .spectrum-track-container {
       position: relative;
       width: 100%;
-      height: 34px;
-      border-radius: 14px;
-      background: #151922;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      overflow: hidden;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7), 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-    .spectrum-gradient-bar {
-      width: 100%;
-      height: 100%;
+      height: 28px;
       border-radius: 12px;
-      transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #141720;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3px;
+      display: flex;
+      align-items: stretch;
+      gap: 4px;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+    .spectrum-segment {
+      height: 100%;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
     /* OPENTABLE ARCHITECTURAL CANVAS */
@@ -469,7 +474,7 @@
         <!-- 3 FIXED-HEIGHT COLUMNS WITH INTERNAL SCROLLING -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 items-stretch overflow-hidden">
           
-          <!-- FAR LEFT COLUMN (3 Cols): BRAND HOUSES (HOUSE MIXES DEFAULT) + PROFILES + DRINKS -->
+          <!-- FAR LEFT COLUMN (3.5 Cols): BRAND HOUSES (HOUSE MIXES DEFAULT) + PROFILES + DRINKS -->
           <div class="lg:col-span-3 xl:col-span-3 bg-[#181C24] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
             
             <div class="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2.5">
@@ -509,7 +514,7 @@
 
           </div>
 
-          <!-- CENTER COLUMN (5 Cols): THE BENCH + 34px VIBRANT GRADIENT SPECTRUM + HARDWARE & MEMBER NOTES -->
+          <!-- CENTER COLUMN (4.5 Cols): THE BENCH + SEGMENTED FLAVOR GRADIENTS + DIVIDERS -->
           <div class="lg:col-span-5 xl:col-span-5 bg-[#181C24] rounded-2xl border border-[#D4AF37]/35 p-3.5 flex flex-col justify-between gap-2 overflow-hidden h-full shadow-lg">
             
             <div class="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-2.5 pr-0.5">
@@ -523,22 +528,22 @@
                 <button onclick="clearMixBench()" class="text-xs font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
               </div>
 
-              <!-- LIVE VIBRANT MULTI-COLOR FLAVOR GRADIENT MIX SPECTRUM -->
+              <!-- LIVE SEGMENTED FLAVOR GRADIENT SPECTRUM WITH CLEAN DIVIDERS -->
               <div class="space-y-1.5">
                 <div class="flex justify-between items-center text-[11px] font-mono">
-                  <span class="text-zinc-400 font-bold uppercase tracking-wider">Flavor Gradient Spectrum</span>
+                  <span class="text-zinc-400 font-bold uppercase tracking-wider">Flavor Spectrum (Divided by Blend)</span>
                   <div class="flex items-center gap-1.5">
                     <span class="text-[#D4AF37] font-bold text-sm" id="benchBuzzScore">7.6 / 10</span>
                     <span class="px-1.5 py-0.2 bg-red-950/80 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK</span>
                   </div>
                 </div>
 
-                <!-- 34px Gradient Track with Soft Inner Glow -->
-                <div class="spectrum-track-container">
-                  <div id="spectrumRibbon" class="spectrum-gradient-bar"></div>
+                <!-- Segmented Track where each flavor has its own botanical gradient separated by dividers -->
+                <div class="spectrum-track-container" id="spectrumSegmentsTrack">
+                  <!-- Injected via JS -->
                 </div>
 
-                <!-- Flavor Gradient Swatches Underneath Bar -->
+                <!-- Legend of Flavor Gradient Swatches -->
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 text-[10px] font-mono" id="benchGradientSwatches">
                   <!-- Injected via JS -->
                 </div>
@@ -654,7 +659,7 @@
 
   <script>
     // ==========================================================================
-    // ⚡ SERVER & STAFF POS ENGINE (SOFT WARM DARK THEME WITH VIBRANT SPECTRUM)
+    // ⚡ SERVER & STAFF POS ENGINE (SOFT WARM DARK THEME WITH FLAVOR GRADIENTS)
     // ==========================================================================
     let isServerAudioAlerts = true;
     let selectedActiveTableId = null;
@@ -664,7 +669,81 @@
     let activeDrawerTab = 'mixlab';
     let activeFilterType = 'house_mixes';
 
-    // Master Signature House Mixes with True Color Gradient Stops
+    // Botanical Category Colors matching Empire & Stoked
+    const STOKED_CATEGORY_COLORS = {
+      'mints': '#00f0ff',
+      'mint / ice': '#00f0ff',
+      'berries': '#ff3366',
+      'citrus': '#ffcc00',
+      'citruses': '#ffcc00',
+      'tropical': '#ff8c00',
+      'apple': '#22c55e',
+      'orchard fruit': '#fb923c',
+      'orchard': '#fb923c',
+      'desserts': '#c084fc',
+      'cream / dessert': '#c084fc',
+      'dairy / creamy': '#e0e7ff',
+      'warm spices': '#d97706',
+      'spiced / floral': '#f59e0b',
+      'florals': '#ff66b2',
+      'herbal': '#10b981',
+      'botanical': '#84cc16',
+      'beverages': '#3b82f6',
+      'candy': '#ec4899',
+      'sour': '#ccff00'
+    };
+
+    function getProfileColor(profileName) {
+      if (!profileName) return '#ffcc00';
+      const p = profileName.toLowerCase().trim();
+      return STOKED_CATEGORY_COLORS[p] || '#ffcc00';
+    }
+
+    // Function to calculate each individual flavor's botanical color gradient
+    function getFlavorColorGradient(flavor) {
+      if (!flavor) return 'linear-gradient(90deg, #ff3366, #ffcc00)';
+      if (flavor.gradient) return flavor.gradient;
+      
+      const profiles = flavor.profiles || [flavor.profile || 'Craft'];
+      if (profiles.length === 1) {
+        const c1 = getProfileColor(profiles[0]);
+        return `linear-gradient(90deg, ${c1} 0%, ${c1} 100%)`;
+      }
+      const colors = profiles.map(p => getProfileColor(p));
+      return `linear-gradient(90deg, ${colors.join(', ')})`;
+    }
+
+    // Master Flavors Catalog with Botanical Profiles and Individual Gradients
+    const FLAVOR_CATALOG = [
+      // MustHave (Russian Dark Leaf)
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profiles: ['berries', 'citrus', 'candy'], gradient: 'linear-gradient(90deg, #ff3366 0%, #ffcc00 50%, #ec4899 100%)', color: '#EC4899' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profiles: ['mints', 'sour'], gradient: 'linear-gradient(90deg, #00f0ff 0%, #ccff00 100%)', color: '#06B6D4' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profiles: ['dairy / creamy', 'desserts'], gradient: 'linear-gradient(90deg, #e0e7ff 0%, #c084fc 100%)', color: '#FBBF24' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profiles: ['tropical', 'berries'], gradient: 'linear-gradient(90deg, #ff8c00 0%, #ff3366 100%)', color: '#F97316' },
+      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profiles: ['berries', 'sour'], gradient: 'linear-gradient(90deg, #ff3366 0%, #ccff00 100%)', color: '#8B5CF6' },
+
+      // Tangiers (Noir Reserve)
+      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profiles: ['mints', 'herbal'], gradient: 'linear-gradient(90deg, #00f0ff 0%, #10b981 100%)', color: '#10B981' },
+      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profiles: ['warm spices', 'florals', 'orchard'], gradient: 'linear-gradient(90deg, #d97706 0%, #ff66b2 50%, #fb923c 100%)', color: '#F59E0B' },
+      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profiles: ['citrus', 'beverages'], gradient: 'linear-gradient(90deg, #ffcc00 0%, #3b82f6 100%)', color: '#FB923C' },
+
+      // Darkside (Burley Dark)
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profiles: ['mints', 'sour'], gradient: 'linear-gradient(90deg, #00f0ff 0%, #38bdf8 100%)', color: '#38BDF8' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profiles: ['tropical', 'orchard'], gradient: 'linear-gradient(90deg, #ff8c00 0%, #fb923c 100%)', color: '#EAB308' },
+      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profiles: ['berries', 'herbal'], gradient: 'linear-gradient(90deg, #ff3366 0%, #10b981 100%)', color: '#A855F7' },
+
+      // BlackBurn (Overdose)
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profiles: ['herbal', 'florals'], gradient: 'linear-gradient(90deg, #10b981 0%, #ff66b2 100%)', color: '#84CC16' },
+      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profiles: ['citrus', 'sour'], gradient: 'linear-gradient(90deg, #ffcc00 0%, #ccff00 100%)', color: '#FACC15' },
+
+      // Heritage Blondes
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profiles: ['apple', 'warm spices'], gradient: 'linear-gradient(90deg, #22c55e 0%, #d97706 100%)', color: '#EF4444' },
+      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profiles: ['mints', 'herbal'], gradient: 'linear-gradient(90deg, #00f0ff 0%, #10b981 100%)', color: '#34D399' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profiles: ['berries', 'mints'], gradient: 'linear-gradient(90deg, #ff3366 0%, #00f0ff 100%)', color: '#60A5FA' },
+      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profiles: ['tropical', 'mints', 'berries'], gradient: 'linear-gradient(90deg, #ff8c00 0%, #00f0ff 50%, #ff3366 100%)', color: '#F43F5E' }
+    ];
+
+    // Master Signature House Mixes
     const EMPIRE_HOUSE_MIXES = [
       {
         id: 'hm-pink-cane',
@@ -673,10 +752,9 @@
         desc: 'Sweet ruby raspberries, pink grapefruit & strawberry chilled with natural cane peppermint.',
         buzz: 7.6,
         price: 38.00,
-        gradient: 'linear-gradient(90deg, #EC4899 0%, #EC4899 50%, #10B981 85%, #10B981 100%)',
         ratios: [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', percent: 70, color: '#EC4899' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', percent: 30, color: '#10B981' }
+          { flavorId: 'mh-pinkman', percent: 70 },
+          { flavorId: 'tg-cane-mint', percent: 30 }
         ]
       },
       {
@@ -686,10 +764,9 @@
         desc: 'Jasmine green tea balanced with sub-zero cryo cooling and wild Russian forest berries.',
         buzz: 8.2,
         price: 35.00,
-        gradient: 'linear-gradient(90deg, #84CC16 0%, #84CC16 55%, #38BDF8 85%, #38BDF8 100%)',
         ratios: [
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', percent: 70, color: '#84CC16' },
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', percent: 30, color: '#38BDF8' }
+          { flavorId: 'bb-green-tea', percent: 70 },
+          { flavorId: 'ds-supernova', percent: 30 }
         ]
       },
       {
@@ -699,10 +776,9 @@
         desc: 'Exotic Indian florals, juicy peach nectar and warm condensed milk rice pudding.',
         buzz: 8.0,
         price: 38.00,
-        gradient: 'linear-gradient(90deg, #F59E0B 0%, #F59E0B 50%, #FBBF24 85%, #FBBF24 100%)',
         ratios: [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', percent: 60, color: '#F59E0B' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', percent: 40, color: '#FBBF24' }
+          { flavorId: 'tg-kashmir-peach', percent: 60 },
+          { flavorId: 'mh-milky-rice', percent: 40 }
         ]
       },
       {
@@ -712,10 +788,9 @@
         desc: 'Fizzy American orange citrus soda spiked with tart candied lemon and ruby grapefruit.',
         buzz: 7.8,
         price: 38.00,
-        gradient: 'linear-gradient(90deg, #FB923C 0%, #FB923C 50%, #EC4899 85%, #EC4899 100%)',
         ratios: [
-          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', percent: 50, color: '#FB923C' },
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', percent: 50, color: '#EC4899' }
+          { flavorId: 'tg-orange-soda', percent: 50 },
+          { flavorId: 'mh-pinkman', percent: 50 }
         ]
       },
       {
@@ -725,10 +800,9 @@
         desc: 'Pure crisp sub-zero menthol and cane peppermint for maximum cooling sensation.',
         buzz: 7.5,
         price: 38.00,
-        gradient: 'linear-gradient(90deg, #06B6D4 0%, #06B6D4 50%, #10B981 85%, #10B981 100%)',
         ratios: [
-          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', percent: 50, color: '#06B6D4' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', percent: 50, color: '#10B981' }
+          { flavorId: 'mh-frosty', percent: 50 },
+          { flavorId: 'tg-cane-mint', percent: 50 }
         ]
       },
       {
@@ -738,42 +812,11 @@
         desc: 'Traditional star anise and crisp red apple with a touch of smooth spearmint.',
         buzz: 4.0,
         price: 35.00,
-        gradient: 'linear-gradient(90deg, #EF4444 0%, #EF4444 65%, #34D399 90%, #34D399 100%)',
         ratios: [
-          { flavorId: 'af-two-apples', name: 'Al Fakher Two Apples', brand: 'Al Fakher', percent: 80, color: '#EF4444' },
-          { flavorId: 'af-mint', name: 'Al Fakher Mint', brand: 'Al Fakher', percent: 20, color: '#34D399' }
+          { flavorId: 'af-two-apples', percent: 80 },
+          { flavorId: 'af-mint', percent: 20 }
         ]
       }
-    ];
-
-    // Master Flavors Catalog with Vibrant Hex Colors
-    const FLAVOR_CATALOG = [
-      // MustHave (Russian Dark Leaf)
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'Berries', color: '#EC4899' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'Mint / Ice', color: '#06B6D4' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'Cream / Dessert', color: '#FBBF24' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'Tropical', color: '#F97316' },
-      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'Berries', color: '#8B5CF6' },
-
-      // Tangiers (Noir Reserve)
-      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'Mint / Ice', color: '#10B981' },
-      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'Spiced / Floral', color: '#F59E0B' },
-      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'Citrus', color: '#FB923C' },
-
-      // Darkside (Burley Dark)
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'Mint / Ice', color: '#38BDF8' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'Tropical', color: '#EAB308' },
-      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'Berries', color: '#A855F7' },
-
-      // BlackBurn (Overdose)
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'Botanical', color: '#84CC16' },
-      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'Citrus', color: '#FACC15' },
-
-      // Heritage Blondes
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'Spiced / Floral', color: '#EF4444' },
-      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'Mint / Ice', color: '#34D399' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'Berries', color: '#60A5FA' },
-      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'Tropical', color: '#F43F5E' }
     ];
 
     // Master Beverages Catalog
@@ -792,8 +835,8 @@
 
     // Active Bench State
     let benchSlots = [
-      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
-      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
+      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70 },
+      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30 }
     ];
     let pendingOrderDrinks = [];
 
@@ -809,8 +852,8 @@
         lastBowl: {
           name: 'Pink Cane Sensation',
           ratios: [
-            { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', ratio: 70, color: '#EC4899', buzz: 7 },
-            { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', ratio: 30, color: '#10B981', buzz: 9 }
+            { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', ratio: 70, buzz: 7 },
+            { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', ratio: 30, buzz: 9 }
           ]
         }
       },
@@ -824,8 +867,8 @@
         lastBowl: {
           name: 'Siberian Midnight Tea',
           ratios: [
-            { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', ratio: 70, color: '#84CC16', buzz: 8 },
-            { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', ratio: 30, color: '#38BDF8', buzz: 8 }
+            { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', ratio: 70, buzz: 8 },
+            { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', ratio: 30, buzz: 8 }
           ]
         }
       },
@@ -839,8 +882,8 @@
         lastBowl: {
           name: 'Kashmir Velvet Cream',
           ratios: [
-            { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', ratio: 60, color: '#F59E0B', buzz: 9 },
-            { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', ratio: 40, color: '#FBBF24', buzz: 7 }
+            { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', ratio: 60, buzz: 9 },
+            { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', ratio: 40, buzz: 7 }
           ]
         }
       }
@@ -1744,13 +1787,13 @@
 
       // 2. Flavor Profiles List
       const PROFILES = [
-        { name: 'Berries', color: '#EC4899' },
-        { name: 'Citrus', color: '#FB923C' },
-        { name: 'Mint / Ice', color: '#06B6D4' },
-        { name: 'Cream / Dessert', color: '#FBBF24' },
-        { name: 'Spiced / Floral', color: '#F59E0B' },
-        { name: 'Tropical', color: '#F97316' },
-        { name: 'Botanical', color: '#84CC16' }
+        { name: 'Berries', color: '#ff3366' },
+        { name: 'Citrus', color: '#ffcc00' },
+        { name: 'Mint / Ice', color: '#00f0ff' },
+        { name: 'Cream / Dessert', color: '#c084fc' },
+        { name: 'Spiced / Floral', color: '#f59e0b' },
+        { name: 'Tropical', color: '#ff8c00' },
+        { name: 'Botanical', color: '#84cc16' }
       ];
 
       let pHtml = '';
@@ -1763,7 +1806,7 @@
         pHtml += `
           <button onclick="selectFilterCategory('prof-${p.name}')" class="w-full text-left p-1.5 rounded-lg border ${cls} text-[11px] font-mono flex items-center justify-between transition select-none">
             <div class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full" style="background-color: ${p.color};"></span>
+              <span class="w-2 h-2 rounded-full shadow" style="background-color: ${p.color};"></span>
               <span>${p.name}</span>
             </div>
           </button>
@@ -1781,24 +1824,32 @@
       }
     }
 
-    // RIGHT COLUMN: Dynamic Catalog (House Mixes Default with Gradients, Flavors, or Drinks)
+    // RIGHT COLUMN: Dynamic Catalog (House Mixes Default with Segmented Gradients, Flavors, or Drinks)
     function renderRightCatalogList() {
       const list = document.getElementById('rightCatalogList');
       const titleEl = document.getElementById('rightCatalogTitle');
       const countEl = document.getElementById('rightCatalogCount');
       if (!list) return;
 
-      // 1. DEFAULT: Signature House Mixes Cards with Visible Flavor Gradients
+      // 1. DEFAULT: Signature House Mixes Cards with Segmented Flavor Gradients & Dividers
       if (activeFilterType === 'house_mixes') {
         if (titleEl) titleEl.textContent = '👑 Signature House Mixes';
         if (countEl) countEl.textContent = `${EMPIRE_HOUSE_MIXES.length} recipes`;
 
         let html = '';
         EMPIRE_HOUSE_MIXES.forEach(mix => {
-          let dotsHtml = '';
-          mix.ratios.forEach(r => {
-            dotsHtml += `<span class="w-3 h-3 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black shadow" style="background: ${r.color};"></span>`;
-          });
+          // Build segmented gradient bar with dividers for this house mix
+          let segmentsHtml = mix.ratios.map(r => {
+            const flavorObj = FLAVOR_CATALOG.find(f => f.id === r.flavorId);
+            const grad = getFlavorColorGradient(flavorObj);
+            return `<div style="width: ${r.percent}%; background: ${grad};" class="h-full rounded-md shadow" title="${flavorObj?.name || r.flavorId}: ${r.percent}%"></div>`;
+          }).join('');
+
+          let dotsHtml = mix.ratios.map(r => {
+            const flavorObj = FLAVOR_CATALOG.find(f => f.id === r.flavorId);
+            const grad = getFlavorColorGradient(flavorObj);
+            return `<span class="w-3 h-3 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black shadow" style="background: ${grad};"></span>`;
+          }).join('');
 
           html += `
             <div onclick="loadHouseMixToBench('${mix.id}')" class="p-3 bg-[#141720] hover:bg-[#1C212E] rounded-xl border border-white/5 hover:border-[#D4AF37]/50 cursor-pointer flex flex-col gap-2 transition select-none shadow-sm">
@@ -1813,13 +1864,15 @@
                 <span class="font-mono text-xs font-bold text-[#D4AF37]">$${mix.price.toFixed(2)}</span>
               </div>
 
-              <!-- Mini Spectrum Gradient Bar on Card -->
-              <div class="w-full h-2 rounded-full overflow-hidden shadow-inner" style="background: ${mix.gradient};"></div>
+              <!-- Segmented Flavor Gradient Bar on Card with Dividers -->
+              <div class="w-full h-2.5 rounded-lg overflow-hidden bg-black/60 p-0.5 flex gap-1 shadow-inner">
+                ${segmentsHtml}
+              </div>
 
               <p class="text-[10px] font-mono text-zinc-400 leading-snug">${mix.desc}</p>
               
               <div class="pt-1 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-zinc-500">
-                <span>⚡ Buzz ${mix.buzz} · ${mix.ratios.map(r=>`${r.name.split(' ')[1]||r.name} ${r.percent}%`).join(' / ')}</span>
+                <span>⚡ Buzz ${mix.buzz} · ${mix.ratios.map(r => (FLAVOR_CATALOG.find(f=>f.id===r.flavorId)?.name || r.flavorId) + ' ' + r.percent + '%').join(' / ')}</span>
                 <span class="text-[#D4AF37] font-bold">1-Tap Load ➔</span>
               </div>
             </div>
@@ -1855,12 +1908,12 @@
         return;
       }
 
-      // 3. Single Tobacco Flavors Mode with Color Gradient Pill
+      // 3. Single Tobacco Flavors Mode with Flavor Gradient
       let filtered = FLAVOR_CATALOG;
       if (activeFilterType.startsWith('prof-')) {
-        const profName = activeFilterType.replace('prof-', '');
-        filtered = FLAVOR_CATALOG.filter(f => f.profile === profName);
-        if (titleEl) titleEl.textContent = `${profName} Flavors`;
+        const profName = activeFilterType.replace('prof-', '').toLowerCase();
+        filtered = FLAVOR_CATALOG.filter(f => (f.profiles || []).some(p => p.toLowerCase().includes(profName)));
+        if (titleEl) titleEl.textContent = `${activeFilterType.replace('prof-', '')} Flavors`;
       } else {
         filtered = FLAVOR_CATALOG.filter(f => f.brand === activeFilterType || (activeFilterType === 'Starbuzz' && (f.brand === 'Starbuzz' || f.brand === 'Adalya')));
         if (titleEl) titleEl.textContent = `${activeFilterType} Flavors`;
@@ -1870,11 +1923,12 @@
 
       let html = '';
       filtered.forEach(f => {
+        const grad = getFlavorColorGradient(f);
         html += `
           <div class="p-2.5 bg-[#141720] hover:bg-[#1C212E] rounded-xl border border-white/5 hover:border-[#D4AF37]/40 flex justify-between items-center gap-2 transition select-none">
             <div class="truncate">
               <div class="flex items-center gap-1.5 truncate">
-                <span class="w-3 h-3 rounded-full flex-shrink-0 shadow" style="background-color: ${f.color};"></span>
+                <span class="w-3 h-3 rounded-full flex-shrink-0 shadow" style="background: ${grad};"></span>
                 <span class="font-mono text-xs font-bold text-white truncate">${f.name}</span>
                 <span class="text-[9px] font-mono text-red-400 font-bold flex-shrink-0">⚡ ${f.buzz}</span>
               </div>
@@ -1895,14 +1949,16 @@
       const mix = EMPIRE_HOUSE_MIXES.find(m => m.id === houseMixId);
       if (!mix) return;
 
-      benchSlots = mix.ratios.map(r => ({
-        flavorId: r.flavorId,
-        name: r.name,
-        brand: r.brand,
-        buzz: mix.buzz,
-        ratio: r.percent,
-        color: r.color
-      }));
+      benchSlots = mix.ratios.map(r => {
+        const flavor = FLAVOR_CATALOG.find(f => f.id === r.flavorId);
+        return {
+          flavorId: r.flavorId,
+          name: flavor ? `${flavor.brand} ${flavor.name}` : r.flavorId,
+          brand: flavor ? flavor.brand : 'House',
+          buzz: mix.buzz,
+          ratio: r.percent
+        };
+      });
 
       document.getElementById('centerBenchSubtitle').textContent = mix.name;
       renderCenterMixBench();
@@ -1930,8 +1986,7 @@
         name: `${flavor.brand} ${flavor.name}`,
         brand: flavor.brand,
         buzz: flavor.buzz,
-        ratio: 0,
-        color: flavor.color
+        ratio: 0
       });
 
       redistributeBenchRatios();
@@ -1974,45 +2029,20 @@
       renderFloatingOrderTray();
     }
 
-    // ==================== CALCULATION OF TRUE CONTINUOUS COLOR GRADIENT ====================
-    function calculateFlavorGradientString(slots) {
-      if (!slots || slots.length === 0) return '#1E232E';
-      if (slots.length === 1) {
-        const col = slots[0].color || '#D4AF37';
-        return `linear-gradient(90deg, ${col} 0%, ${col} 100%)`;
-      }
-
-      // Smooth proportional gradient stops with soft blending transitions
-      let stops = [];
-      let cum = 0;
-      slots.forEach((s, idx) => {
-        const col = s.color || '#D4AF37';
-        const start = cum;
-        cum += s.ratio;
-        if (idx === 0) {
-          stops.push(`${col} 0%`);
-          stops.push(`${col} ${Math.max(10, cum - 10)}%`);
-        } else if (idx === slots.length - 1) {
-          stops.push(`${col} ${Math.min(90, start + 10)}%`);
-          stops.push(`${col} 100%`);
-        } else {
-          stops.push(`${col} ${start + 5}%`);
-          stops.push(`${col} ${cum - 5}%`);
-        }
-      });
-      return `linear-gradient(90deg, ${stops.join(', ')})`;
-    }
-
-    // CENTER COLUMN: Mix Bench with Live Gradient Spectrum
+    // CENTER COLUMN: Mix Bench with SEGMENTED FLAVOR GRADIENTS & DIVIDERS
     function renderCenterMixBench() {
-      const ribbon = document.getElementById('spectrumRibbon');
+      const track = document.getElementById('spectrumSegmentsTrack');
       const list = document.getElementById('benchActiveSlotsList');
       const swatchesCont = document.getElementById('benchGradientSwatches');
-      if (!list) return;
+      if (!track || !list) return;
 
       if (benchSlots.length === 0) {
-        if (ribbon) ribbon.style.background = '#1E232E';
-        if (swatchesCont) swatchesCont.innerHTML = '<span class="text-zinc-500 italic">No flavors active in bowl spectrum</span>';
+        track.innerHTML = `
+          <div class="w-full h-full flex items-center justify-center text-[10px] font-mono text-zinc-500 italic">
+            Bowl is empty
+          </div>
+        `;
+        if (swatchesCont) swatchesCont.innerHTML = '<span class="text-zinc-500 italic">Select flavors to see botanical gradient spectrum</span>';
         list.innerHTML = `
           <div class="py-6 text-center text-xs font-mono text-zinc-500 italic">
             Bowl is empty. Tap a 👑 Signature House Mix or flavors from the catalog.
@@ -2022,32 +2052,46 @@
         return;
       }
 
-      // 1. Smooth Multi-Color Gradient Transition Calculation
-      const gradStr = calculateFlavorGradientString(benchSlots);
-      if (ribbon) ribbon.style.background = gradStr;
+      // 1. Render Segmented Flavor Gradients with Dividers
+      let segHtml = '';
+      let swHtml = '';
 
-      // 2. Flavor Gradient Swatches Underneath Bar
-      if (swatchesCont) {
-        let swHtml = '';
-        benchSlots.forEach(s => {
-          swHtml += `
-            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[#141720] rounded-lg border border-white/5 flex-shrink-0">
-              <span class="w-2.5 h-2.5 rounded-full shadow" style="background-color: ${s.color};"></span>
-              <span class="text-zinc-200 font-bold">${s.name.split(' ')[1] || s.name}</span>
-              <span class="text-[#D4AF37] font-bold">${s.ratio}%</span>
-            </div>
-          `;
-        });
-        swatchesCont.innerHTML = swHtml;
-      }
+      benchSlots.forEach(slot => {
+        const flavorObj = FLAVOR_CATALOG.find(f => f.id === slot.flavorId);
+        const grad = getFlavorColorGradient(flavorObj);
 
-      // 3. Active Flavor Rows with clean percentage steppers
+        // Segment block in the spectrum track
+        segHtml += `
+          <div style="width: ${slot.ratio}%; background: ${grad};" 
+               class="spectrum-segment" 
+               title="${slot.name}: ${slot.ratio}%">
+            <span class="text-[9px] font-mono font-bold text-black bg-white/70 px-1 py-0.2 rounded shadow-sm">${slot.ratio}%</span>
+          </div>
+        `;
+
+        // Legend swatch
+        swHtml += `
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[#141720] rounded-lg border border-white/5 flex-shrink-0">
+            <span class="w-2.5 h-2.5 rounded-full shadow" style="background: ${grad};"></span>
+            <span class="text-zinc-200 font-bold">${slot.name.split(' ')[1] || slot.name}</span>
+            <span class="text-[#D4AF37] font-bold">${slot.ratio}%</span>
+          </div>
+        `;
+      });
+
+      track.innerHTML = segHtml;
+      if (swatchesCont) swatchesCont.innerHTML = swHtml;
+
+      // 2. Active Flavor Rows with clean percentage steppers
       let html = '';
       benchSlots.forEach((slot, idx) => {
+        const flavorObj = FLAVOR_CATALOG.find(f => f.id === slot.flavorId);
+        const grad = getFlavorColorGradient(flavorObj);
+
         html += `
           <div class="p-2 bg-[#141720] rounded-xl border border-white/5 flex items-center justify-between gap-2 select-none text-xs font-mono">
             <div class="flex items-center gap-2 truncate flex-1">
-              <span class="w-3 h-3 rounded-full flex-shrink-0 shadow" style="background-color: ${slot.color};"></span>
+              <span class="w-3 h-3 rounded-full flex-shrink-0 shadow" style="background: ${grad};"></span>
               <div class="truncate">
                 <span class="font-bold text-white block truncate">${slot.name}</span>
                 <span class="text-[10px] text-zinc-400">⚡ Buzz ${slot.buzz} · ${slot.brand}</span>
@@ -2114,7 +2158,9 @@
         
         let dotsHtml = '';
         benchSlots.forEach(s => {
-          dotsHtml += `<span class="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black shadow" style="background: ${s.color};"></span>`;
+          const flavorObj = FLAVOR_CATALOG.find(f => f.id === s.flavorId);
+          const grad = getFlavorColorGradient(flavorObj);
+          dotsHtml += `<span class="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black shadow" style="background: ${grad};"></span>`;
         });
 
         chipsHtml += `
