@@ -52,7 +52,7 @@
       transform: translateY(-1px);
     }
 
-    /* FULL-SCREEN SLIDE-UP DRAWER */
+    /* FULL-SCREEN MODAL CANVAS */
     .fullscreen-drawer-panel {
       position: fixed;
       inset: 0;
@@ -61,6 +61,18 @@
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* MULTI-STOP SPECTRUM GRADIENT TRACK */
+    .spectrum-track {
+      width: 100%;
+      height: 20px;
+      border-radius: 10px;
+      background: #0A0F1A;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      transition: background 0.2s ease;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.8);
     }
 
     /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
@@ -358,16 +370,16 @@
 
   </main>
 
-  <!-- ==================== 3. TABLE DETAILS FULL-SCREEN SLIDE-UP DRAWER ==================== -->
+  <!-- ==================== 3. TABLE DETAILS FULL-SCREEN MODAL DECK ==================== -->
   <div id="tableFullscreenDrawer" class="fullscreen-drawer-panel transform translate-y-full">
     
-    <!-- Top Nav & Header Bar -->
-    <div class="px-4 md:px-6 py-3 border-b border-white/10 bg-[#05080E] flex flex-col gap-2.5">
+    <!-- Top Nav & Header Bar (Fixed Height) -->
+    <div class="px-4 md:px-6 py-2.5 border-b border-white/10 bg-[#05080E] flex flex-col gap-2 flex-shrink-0">
       
       <!-- Top Title & Quick Actions -->
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-xl font-extrabold text-amber-300 bg-amber-400/10 px-3.5 py-1 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
+          <span class="font-mono text-xl font-extrabold text-amber-300 bg-amber-400/10 px-3.5 py-0.5 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
           <div>
             <div class="flex items-center gap-2">
               <span class="text-sm font-mono font-bold text-white" id="drawerTableZone">VIP Lounge (8P Couch)</span>
@@ -396,24 +408,24 @@
 
       <!-- 3 PRIMARY TABS SWITCHER -->
       <div class="grid grid-cols-3 gap-2 p-1 bg-black/80 rounded-2xl border border-white/10 text-xs font-mono">
-        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2.5 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
           <span>Tab &amp; POS Settlement</span>
         </button>
-        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
           <span>Sommelier Mix Lab</span>
         </button>
-        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
           <span>Member Smoke Profile</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Drawer Body Panels -->
-    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 bg-[#030508]">
+    <!-- Drawer Body Panels (Flex Container with strict boundaries) -->
+    <div class="flex-1 min-h-0 flex flex-col bg-[#030508] overflow-hidden">
       
       <!-- ==================== TAB 1: ITEMIZED BILL & POS SETTLEMENT ==================== -->
-      <div id="drawerPanel-bill" class="space-y-4 max-w-5xl mx-auto">
+      <div id="drawerPanel-bill" class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-4 max-w-5xl mx-auto w-full">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           
@@ -495,49 +507,45 @@
 
       </div>
 
-      <!-- ==================== TAB 2: STREAMLINED ERGONOMIC SERVER POS MIX LAB ==================== -->
-      <div id="drawerPanel-mixlab" class="hidden space-y-3.5">
+      <!-- ==================== TAB 2: SOMMELIER MIX LAB WITH FIXED HEIGHT SCROLLING COLUMNS & FLOATING BOTTOM TRAY ==================== -->
+      <div id="drawerPanel-mixlab" class="flex-1 min-h-0 flex flex-col p-3 md:p-4 gap-2.5 overflow-hidden">
         
-        <!-- Top Smoker Base Preferences Quick Bar -->
-        <div class="p-3 bg-[#080C14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2">
+        <!-- Top Smoker Base Preferences Quick Bar (Fixed Height) -->
+        <div class="p-2.5 bg-[#080C14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
           <div class="flex items-center gap-2">
             <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Base Palate Presets:</span>
-            <span class="text-[10px] font-mono text-zinc-500">1-Tap loads baseline formulation</span>
+            <span class="text-[10px] font-mono text-zinc-500">1-Tap loads baseline</span>
           </div>
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="mixLabBasePalatePills">
-            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Sweet Berry &amp; Grapefruit</button>
-            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Heavy Russian Dark Leaf</button>
-            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Arctic Ice &amp; Mint</button>
-            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Spiced Chai &amp; Kashmir</button>
-            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Valencia Orange Soda</button>
+            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Sweet Berry &amp; Grapefruit</button>
+            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Heavy Russian Dark Leaf</button>
+            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Arctic Ice &amp; Mint</button>
+            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Spiced Chai &amp; Kashmir</button>
+            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-3 py-1 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Valencia Orange Soda</button>
           </div>
         </div>
 
-        <!-- 3-COLUMN ERGONOMIC SERVER POS LAYOUT: 
-             LEFT = BRANDS & DRINKS (Left Thumb)
-             CENTER = LIVE FLOATING ORDER TRAY & BOWL SPECS
-             RIGHT = FILTERED CATALOG (Right Thumb)
-             LOWER RIGHT = SEND TICKET BUTTON -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch min-h-[500px]">
+        <!-- 3 FIXED-HEIGHT COLUMNS WITH INTERNAL SCROLLING -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 flex-1 min-h-0 items-stretch overflow-hidden">
           
-          <!-- FAR LEFT COLUMN (3 Cols): BRAND HOUSES + LOWER DRINKS SELECTOR (Left Hand / Thumb) -->
-          <div class="lg:col-span-3 bg-[#080C14] rounded-2xl border border-white/10 p-3.5 flex flex-col justify-between gap-3">
+          <!-- FAR LEFT COLUMN (3 Cols): BRANDS & DRINKS BUTTON (Fixed Height, Scrollable) -->
+          <div class="lg:col-span-3 bg-[#080C14] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
             
-            <div class="space-y-2">
-              <div class="pb-2 border-b border-white/10 flex justify-between items-center">
+            <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
+              <div class="pb-2 border-b border-white/10 flex justify-between items-center flex-shrink-0">
                 <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Tobacco Houses</span>
-                <span class="text-[10px] font-mono text-zinc-500">Left Thumb</span>
+                <span class="text-[10px] font-mono text-zinc-500">Filter Stash</span>
               </div>
 
-              <!-- Brand Buttons List -->
-              <div class="space-y-1.5 overflow-y-auto no-scrollbar max-h-[300px]" id="leftBrandSelectorList">
+              <!-- Brand Buttons (Internal Scroll) -->
+              <div class="space-y-1.5 overflow-y-auto no-scrollbar pr-0.5 flex-1 pt-2" id="leftBrandSelectorList">
                 <!-- Injected via JS -->
               </div>
             </div>
 
-            <!-- LOWER LEFT: PROMINENT DRINKS CATEGORY SELECTOR -->
-            <div class="pt-2 border-t border-white/10">
-              <button onclick="selectCategory('drinks')" id="leftDrinksCategoryBtn" class="w-full py-3.5 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-4 transition active:scale-95 shadow-lg select-none">
+            <!-- LOWER LEFT: PROMINENT DRINKS BUTTON -->
+            <div class="pt-2 border-t border-white/10 flex-shrink-0">
+              <button onclick="selectCategory('drinks')" id="leftDrinksCategoryBtn" class="w-full py-3 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-lg select-none">
                 <span class="flex items-center gap-2">
                   <span class="text-base">🥤</span>
                   <span>CHILLED DRINKS</span>
@@ -548,61 +556,53 @@
 
           </div>
 
-          <!-- CENTER COLUMN (5 Cols): LIVE FLOATING TRAY & RATIO ADJUSTERS -->
-          <div class="lg:col-span-5 bg-[#080C14] rounded-2xl border border-amber-500/40 p-4 flex flex-col justify-between gap-3 shadow-2xl">
+          <!-- CENTER COLUMN (5 Cols): MIX BENCH WITH LIVE SPECTRUM & RATIO ADJUSTERS (Fixed Height, Scrollable) -->
+          <div class="lg:col-span-5 bg-[#080C14] rounded-2xl border border-amber-500/40 p-3.5 flex flex-col justify-between gap-2.5 overflow-hidden h-full shadow-2xl">
             
-            <div class="space-y-3.5">
+            <div class="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-3 pr-0.5">
               
-              <!-- Center Header & Clear -->
-              <div class="flex items-center justify-between pb-2 border-b border-white/10">
+              <!-- Bench Header & Clear -->
+              <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
                 <div>
-                  <h3 class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="centerTrayTitle">Current Formulation Tray</h3>
-                  <span class="text-[10px] font-mono text-zinc-400" id="centerTraySubtitle">Custom Shisha Blend</span>
+                  <h3 class="text-xs font-mono font-bold text-white uppercase tracking-wider">Active Formulation</h3>
+                  <span class="text-[10px] font-mono text-zinc-400" id="centerTraySubtitle">In-Bowl Tobacco Mix</span>
                 </div>
                 <button onclick="clearMixBench()" class="text-xs font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
               </div>
 
-              <!-- Buzz Rating & Category Strip -->
-              <div class="p-3 bg-black/80 rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
-                <div>
-                  <span class="text-[10px] text-zinc-400 uppercase block">Calculated Buzz Score:</span>
-                  <div class="flex items-center gap-2 mt-0.5">
-                    <span class="text-base font-extrabold text-amber-400" id="benchBuzzScore">7.6 / 10</span>
-                    <span class="px-2 py-0.5 bg-red-950 text-red-300 text-[10px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK LEAF</span>
+              <!-- LIVE CONTINUOUS MIX SPECTRUM GRADIENT RIBBON -->
+              <div class="space-y-1.5">
+                <div class="flex justify-between items-center text-[11px] font-mono">
+                  <span class="text-zinc-400">Color Spectrum:</span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-amber-400 font-bold" id="benchBuzzScore">7.6 / 10</span>
+                    <span class="px-1.5 py-0.2 bg-red-950 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK</span>
                   </div>
                 </div>
-                <div class="text-right">
-                  <span class="text-[10px] text-zinc-400 uppercase block">Pack Specification:</span>
-                  <span class="text-xs text-white font-bold">Standard 22g Pack</span>
-                </div>
+                <div id="spectrumRibbon" class="spectrum-track"></div>
               </div>
 
-              <!-- Ratio Quick Presets (50/50, 70/30, 60/40) -->
-              <div class="flex items-center justify-between text-xs font-mono">
-                <span class="text-[11px] text-zinc-400 font-bold uppercase">Quick Splits:</span>
-                <div class="flex items-center gap-1.5">
-                  <button onclick="applyRatioSplit([50, 50])" class="px-2.5 py-1 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50 / 50</button>
-                  <button onclick="applyRatioSplit([70, 30])" class="px-2.5 py-1 bg-amber-400/20 text-amber-300 rounded-lg border border-amber-400/40 text-[10px] font-bold">70 / 30</button>
-                  <button onclick="applyRatioSplit([60, 40])" class="px-2.5 py-1 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">60 / 40</button>
-                  <button onclick="applyRatioSplit([50, 30, 20])" class="px-2.5 py-1 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50/30/20</button>
+              <!-- Quick Ratio Splits -->
+              <div class="flex items-center justify-between text-xs font-mono pt-1">
+                <span class="text-[10px] text-zinc-400 font-bold uppercase">Quick Splits:</span>
+                <div class="flex items-center gap-1">
+                  <button onclick="applyRatioSplit([50, 50])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50 / 50</button>
+                  <button onclick="applyRatioSplit([70, 30])" class="px-2 py-0.5 bg-amber-400/20 text-amber-300 rounded-lg border border-amber-400/40 text-[10px] font-bold">70 / 30</button>
+                  <button onclick="applyRatioSplit([60, 40])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">60 / 40</button>
+                  <button onclick="applyRatioSplit([50, 30, 20])" class="px-2 py-0.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10 text-[10px] font-bold">50/30/20</button>
                 </div>
               </div>
 
               <!-- Detailed Active Flavor Slots with Fast 1-Tap Percentage Adjusters -->
-              <div class="space-y-2 max-h-52 overflow-y-auto no-scrollbar pr-0.5" id="benchActiveSlotsList">
+              <div class="space-y-1.5" id="benchActiveSlotsList">
                 <!-- Injected via JS -->
               </div>
 
-              <!-- Also show pending Drinks added to this order tray -->
-              <div class="space-y-1.5 max-h-28 overflow-y-auto no-scrollbar pr-0.5" id="pendingDrinksTrayList">
-                <!-- Injected via JS -->
-              </div>
-
-              <!-- Hardware & Heat Selection (Auto-populated from Member or Manual Dropdowns) -->
-              <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
+              <!-- Hardware & Heat Selection -->
+              <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
                 <div>
-                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Clay Bowl Setup:</label>
-                  <select id="benchBowlSelect" class="w-full bg-[#05080E] text-white px-2.5 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
+                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Clay Bowl:</label>
+                  <select id="benchBowlSelect" class="w-full bg-[#05080E] text-white px-2 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
                     <option value="Russian Clay Phunnel (22g)">Russian Clay Phunnel (22g)</option>
                     <option value="Alpaca Mini Rook (18g)">Alpaca Mini Rook (18g)</option>
                     <option value="Oblako Mono (20g)">Oblako Mono (20g)</option>
@@ -611,8 +611,8 @@
                 </div>
 
                 <div>
-                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Heat Regulation (HMD):</label>
-                  <select id="benchHeatSelect" class="w-full bg-[#05080E] text-white px-2.5 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
+                  <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Heat Regulation:</label>
+                  <select id="benchHeatSelect" class="w-full bg-[#05080E] text-white px-2 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
                     <option value="Kaloud Lotus III (3 Coals)">Kaloud Lotus III (3 Coals)</option>
                     <option value="Provost HMD (2 Coals)">Provost HMD (2 Coals)</option>
                     <option value="Direct Foil + Provost">Direct Foil + Provost</option>
@@ -622,36 +622,45 @@
 
             </div>
 
-            <!-- Floating Tray Summary (Bottom Center) -->
-            <div class="pt-2.5 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-              <span class="text-zinc-400">Order Subtotal (Hookah + Drinks):</span>
-              <span class="text-lg font-extrabold text-amber-400 font-mono" id="benchTotalPrice">$35.00</span>
-            </div>
-
           </div>
 
-          <!-- FAR RIGHT COLUMN (4 Cols): FILTERED CATALOG (Right Hand / Thumb) + LOWER RIGHT SEND TICKET -->
-          <div class="lg:col-span-4 bg-[#080C14] rounded-2xl border border-white/10 p-3.5 flex flex-col justify-between gap-2.5">
+          <!-- FAR RIGHT COLUMN (4 Cols): CATALOG (Flavors OR Drinks) (Fixed Height, Scrollable) -->
+          <div class="lg:col-span-4 bg-[#080C14] rounded-2xl border border-white/10 p-3 flex flex-col justify-between gap-2 overflow-hidden h-full">
             
-            <div class="flex-1 flex flex-col min-h-0 space-y-2">
-              <div class="flex justify-between items-center pb-2 border-b border-white/10">
+            <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
+              <div class="flex justify-between items-center pb-2 border-b border-white/10 flex-shrink-0">
                 <span class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="rightCatalogTitle">Catalog Flavors</span>
                 <span class="text-[10px] font-mono text-zinc-400" id="rightCatalogCount">12 available</span>
               </div>
 
-              <!-- Scrollable Cards List (Flavors or Drinks depending on left selection) -->
-              <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 max-h-[380px]" id="rightFlavorsCatalogList">
+              <!-- Scrollable Cards List (Internal Scroll) -->
+              <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 pt-2" id="rightFlavorsCatalogList">
                 <!-- Injected via JS -->
               </div>
             </div>
 
-            <!-- LOWER RIGHT CORNER: PROMINENT 1-TAP SEND TICKET BUTTON -->
-            <div class="pt-2 border-t border-white/10">
-              <button onclick="dispatchActiveBenchToTable()" class="w-full py-4 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-sm uppercase tracking-wider rounded-2xl transition active:scale-95 shadow-2xl flex items-center justify-center gap-2 select-none">
-                <span>✓ SEND TICKET / DISPATCH TO TAB</span>
-              </button>
+          </div>
+
+        </div>
+
+        <!-- ==================== FLOATING BOTTOM ORDER TRAY (UNDERNEATH LAB) ==================== -->
+        <div id="floatingStaffOrderTray" class="w-full bg-[#060A12] border-2 border-amber-500/50 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-2xl flex-shrink-0 backdrop-blur-md">
+          
+          <!-- Left: Staged Chips Summary (Hookah Formulation + Drinks) -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 flex-1 min-w-[280px]" id="stagedOrderChipsContainer">
+            <!-- Populated dynamically via renderFloatingOrderTray() -->
+          </div>
+
+          <!-- Right: Running Subtotal + 1-Tap Send Ticket Button -->
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <div class="text-right font-mono">
+              <span class="text-[10px] text-zinc-400 uppercase block">Order Total</span>
+              <span class="text-xl font-extrabold text-amber-400" id="floatingOrderTotal">$35.00</span>
             </div>
 
+            <button onclick="dispatchActiveBenchToTable()" class="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl transition active:scale-95 shadow-xl flex items-center gap-2 select-none">
+              <span>✓ SEND TICKET</span>
+            </button>
           </div>
 
         </div>
@@ -659,7 +668,7 @@
       </div>
 
       <!-- ==================== TAB 3: MEMBER PROFILE & SMOKE PALATE DATA ==================== -->
-      <div id="drawerPanel-member" class="hidden space-y-4 max-w-4xl mx-auto">
+      <div id="drawerPanel-member" class="hidden flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 space-y-4 max-w-4xl mx-auto w-full">
         
         <!-- Member Card Header -->
         <div class="p-4 bg-[#080C14] rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
@@ -741,34 +750,34 @@
     let activeCategoryMode = 'MustHave'; // 'all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher', 'Starbuzz', 'drinks'
     let staffScreenGlowTimer = null;
 
-    // Master Flavor Catalog
+    // Master Flavor Catalog with Colors for Spectrum
     const FLAVOR_CATALOG = [
       // MustHave (Russian Dark Leaf)
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'Berries' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'Ice / Mint' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'Cream / Dessert' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'Tropical' },
-      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'Berries' },
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', color: '#EC4899' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', color: '#06B6D4' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', color: '#FBBF24' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', color: '#F97316' },
+      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', color: '#8B5CF6' },
 
       // Tangiers (Noir Reserve)
-      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'Peppermint' },
-      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'Spiced / Floral' },
-      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'Citrus' },
+      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', color: '#10B981' },
+      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', color: '#F59E0B' },
+      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', color: '#FB923C' },
 
       // Darkside (Burley Dark)
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'Arctic Ice' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'Tropical' },
-      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'Berries' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', color: '#38BDF8' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', color: '#EAB308' },
+      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', color: '#A855F7' },
 
       // BlackBurn (Overdose)
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'Botanical' },
-      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'Citrus' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', color: '#84CC16' },
+      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', color: '#FACC15' },
 
       // Heritage Blondes
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'Spiced Apple' },
-      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'Mint' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'Berries' },
-      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'Tropical Melon' }
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', color: '#EF4444' },
+      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', color: '#34D399' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', color: '#60A5FA' },
+      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', color: '#F43F5E' }
     ];
 
     // Master Beverages Catalog
@@ -787,8 +796,8 @@
 
     // Current Bench Slots State
     let benchSlots = [
-      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, profile: 'Berries' },
-      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, profile: 'Peppermint' }
+      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
+      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
     ];
 
     // Pending Drinks Tray in Current Order
@@ -802,8 +811,8 @@
         bowlSetup: 'Russian Clay Phunnel (22g)',
         hmdSetup: 'Kaloud Lotus III (3 Coals)',
         defaultFlavors: [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, profile: 'Berries' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, profile: 'Peppermint' }
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
         ]
       },
       'mem-102': {
@@ -812,8 +821,8 @@
         bowlSetup: 'Alpaca Mini Rook (18g)',
         hmdSetup: 'Kaloud Lotus III (3 Coals)',
         defaultFlavors: [
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, profile: 'Botanical' },
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, profile: 'Arctic Ice' }
+          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' },
+          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' }
         ]
       },
       'mem-103': {
@@ -822,8 +831,8 @@
         bowlSetup: 'Russian Clay Phunnel (22g)',
         hmdSetup: 'Provost HMD (2 Coals)',
         defaultFlavors: [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, profile: 'Spiced / Floral' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, profile: 'Cream / Dessert' }
+          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
+          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
         ]
       }
     };
@@ -1188,10 +1197,10 @@
         const panel = document.getElementById(`drawerPanel-${t}`);
         if (btn && panel) {
           if (t === tab) {
-            btn.className = 'py-2.5 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
+            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
             panel.classList.remove('hidden');
           } else {
-            btn.className = 'py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
+            btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
             panel.classList.add('hidden');
           }
         }
@@ -1596,7 +1605,7 @@
       grid.innerHTML = html;
     }
 
-    // ==================== FULL-SCREEN DRAWER CONTROLLER ====================
+    // ==================== FULL-SCREEN MODAL DECK CONTROLLER ====================
     function openTableDetailModal(tableId) {
       selectedActiveTableId = tableId;
       const table = loungeDeckTables.find(t => t.id === tableId);
@@ -1772,11 +1781,12 @@
       showToast('Table Closed', `${table.name} is now free and available.`);
     }
 
-    // ==================== TAB 2: STREAMLINED ERGONOMIC SERVER POS DECK ====================
+    // ==================== TAB 2: SOMMELIER MIX LAB WITH MULTI-STOP SPECTRUM & FLOATING TRAY ====================
     function renderErgonomicServerPOSDeck() {
       renderLeftBrandSelectors();
       renderRightFilteredCatalog();
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
     }
 
     function selectCategory(cat) {
@@ -1822,9 +1832,9 @@
       // Update Drinks Button active state
       if (drinksBtn) {
         if (activeCategoryMode === 'drinks') {
-          drinksBtn.className = 'w-full py-3.5 bg-cyan-500 text-black border-2 border-cyan-400 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-4 transition active:scale-95 shadow-xl select-none';
+          drinksBtn.className = 'w-full py-3 bg-cyan-500 text-black border-2 border-cyan-400 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-xl select-none';
         } else {
-          drinksBtn.className = 'w-full py-3.5 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-4 transition active:scale-95 shadow-lg select-none';
+          drinksBtn.className = 'w-full py-3 bg-cyan-950/60 hover:bg-cyan-900 border-2 border-cyan-500/50 hover:border-cyan-400 text-cyan-300 rounded-2xl font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between px-3.5 transition active:scale-95 shadow-lg select-none';
         }
       }
     }
@@ -1881,6 +1891,7 @@
           <div class="p-3 bg-[#0A0F1A] hover:bg-[#111828] rounded-xl border border-white/5 hover:border-amber-400/40 flex justify-between items-center gap-2 transition select-none">
             <div class="truncate">
               <div class="flex items-center gap-1.5 truncate">
+                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${f.color};"></span>
                 <span class="font-mono text-xs font-bold text-white truncate">${f.name}</span>
                 <span class="text-[9px] font-mono text-red-400 font-bold flex-shrink-0">⚡ ${f.buzz}</span>
               </div>
@@ -1918,35 +1929,37 @@
         brand: flavor.brand,
         buzz: flavor.buzz,
         ratio: 0,
-        profile: flavor.profile
+        color: flavor.color
       });
 
       redistributeBenchRatios();
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
       showToast('Flavor Added', `${flavor.name} added to bench.`);
     }
 
     function removeFlavorFromBench(idx) {
       benchSlots.splice(idx, 1);
       redistributeBenchRatios();
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
     }
 
     function addDrinkToOrderTray(drinkId) {
       const bev = SERVER_BEVERAGES.find(b => b.id === drinkId);
       if (!bev) return;
       pendingOrderDrinks.push({
-        id: `drk-${Date.now()}`,
+        id: `drk-${Date.now()}-${Math.random()}`,
         name: bev.name,
         price: bev.price
       });
-      renderCenterOrderTray();
+      renderFloatingOrderTray();
       showToast('Drink Added', `${bev.name} added to floating tray.`);
     }
 
     function removePendingDrink(idx) {
       pendingOrderDrinks.splice(idx, 1);
-      renderCenterOrderTray();
+      renderFloatingOrderTray();
     }
 
     function redistributeBenchRatios() {
@@ -1977,7 +1990,8 @@
       benchSlots.forEach((s, idx) => {
         s.ratio = splits[idx];
       });
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
       showToast('Ratio Split Applied', `Formulation split set to ${splits.join('/')}%`);
     }
 
@@ -1994,76 +2008,123 @@
         o.ratio = Math.round((o.ratio / totalOther) * remaining);
       });
 
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
     }
 
-    // CENTER COLUMN: Live Floating Order Tray
-    function renderCenterOrderTray() {
+    // CENTER COLUMN: Mix Bench with Spectrum Gradient
+    function renderCenterMixBench() {
+      const ribbon = document.getElementById('spectrumRibbon');
       const list = document.getElementById('benchActiveSlotsList');
-      const drinksList = document.getElementById('pendingDrinksTrayList');
       if (!list) return;
 
-      // 1. Shisha Flavors Tray
       if (benchSlots.length === 0) {
+        if (ribbon) ribbon.style.background = '#1E2533';
         list.innerHTML = `
           <div class="py-6 text-center text-xs font-mono text-zinc-500 italic">
             Bowl is empty. Tap "+ ADD" on flavors from the right catalog.
           </div>
         `;
-      } else {
-        let html = '';
-        benchSlots.forEach((slot, idx) => {
-          html += `
-            <div class="p-2.5 bg-[#0A0F1A] rounded-xl border border-white/10 flex items-center justify-between gap-2 select-none text-xs font-mono">
-              <div class="truncate flex-1">
+        updateBenchCalculations();
+        return;
+      }
+
+      // 1. Multi-Stop Gradient Ribbon Calculation
+      let gradParts = [];
+      let cum = 0;
+      benchSlots.forEach(slot => {
+        const col = slot.color || '#E5A93C';
+        const start = cum;
+        cum += slot.ratio;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+      });
+      if (ribbon) ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+      // 2. Render Active Flavor Rows with Steppers
+      let html = '';
+      benchSlots.forEach((slot, idx) => {
+        html += `
+          <div class="p-2.5 bg-[#0A0F1A] rounded-xl border border-white/10 flex items-center justify-between gap-2 select-none text-xs font-mono">
+            <div class="flex items-center gap-2 truncate flex-1">
+              <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${slot.color};"></span>
+              <div class="truncate">
                 <span class="font-bold text-white block truncate">${slot.name}</span>
                 <span class="text-[10px] text-zinc-400">⚡ Buzz ${slot.buzz} · ${slot.brand}</span>
               </div>
-
-              <div class="flex items-center gap-2 flex-shrink-0">
-                <div class="flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-lg border border-white/10">
-                  <button onclick="adjustSlotRatio(${idx}, -10)" class="text-zinc-400 hover:text-white px-1 font-bold">-</button>
-                  <span class="text-amber-400 font-bold min-w-[32px] text-center">${slot.ratio}%</span>
-                  <button onclick="adjustSlotRatio(${idx}, 10)" class="text-zinc-400 hover:text-white px-1 font-bold">+</button>
-                </div>
-                <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 p-1">✕</button>
-              </div>
             </div>
-          `;
-        });
-        list.innerHTML = html;
-      }
 
-      // 2. Pending Drinks Tray
-      if (drinksList) {
-        if (pendingOrderDrinks.length === 0) {
-          drinksList.innerHTML = '';
-        } else {
-          let dHtml = '<span class="text-[10px] font-mono text-cyan-400 uppercase font-bold tracking-wider block pt-1">Pending Drinks:</span>';
-          pendingOrderDrinks.forEach((drk, idx) => {
-            dHtml += `
-              <div class="p-2 bg-[#06101E] rounded-xl border border-cyan-500/20 flex justify-between items-center text-xs font-mono">
-                <span class="text-cyan-200 font-bold">${drk.name}</span>
-                <div class="flex items-center gap-2">
-                  <span class="text-amber-400 font-bold">$${drk.price.toFixed(2)}</span>
-                  <button onclick="removePendingDrink(${idx})" class="text-zinc-500 hover:text-red-400 p-1">✕</button>
-                </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <div class="flex items-center gap-1 bg-black/70 px-2 py-0.5 rounded-lg border border-white/10">
+                <button onclick="adjustSlotRatio(${idx}, -10)" class="text-zinc-400 hover:text-white px-1 font-bold">-</button>
+                <span class="text-amber-400 font-bold min-w-[32px] text-center">${slot.ratio}%</span>
+                <button onclick="adjustSlotRatio(${idx}, 10)" class="text-zinc-400 hover:text-white px-1 font-bold">+</button>
               </div>
-            `;
-          });
-          drinksList.innerHTML = dHtml;
-        }
-      }
+              <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 p-1">✕</button>
+            </div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
 
       updateBenchCalculations();
     }
 
-    function updateBenchCalculations() {
+    // ==================== FLOATING BOTTOM TRAY (UNDERNEATH LAB) ====================
+    function renderFloatingOrderTray() {
+      const container = document.getElementById('stagedOrderChipsContainer');
+      const totalEl = document.getElementById('floatingOrderTotal');
+      if (!container) return;
+
       let hookahPrice = 0;
+      let chipsHtml = '';
+
+      // 1. Hookah Formulation Chip
       if (benchSlots.length > 0) {
         const hasReserve = benchSlots.some(s => s.brand === 'Tangiers');
         hookahPrice = hasReserve ? 38.00 : 35.00;
+        const recipeSummary = benchSlots.map(s => `${s.name.split(' ')[1] || s.name} ${s.ratio}%`).join('/');
+        
+        let dotsHtml = '';
+        benchSlots.forEach(s => {
+          dotsHtml += `<span class="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0 -mr-1 ring-1 ring-black" style="background: ${s.color};"></span>`;
+        });
 
+        chipsHtml += `
+          <div class="inline-flex items-center gap-2 py-1.5 px-3 bg-black/90 border border-amber-400/50 rounded-xl text-xs font-mono text-zinc-100 flex-shrink-0 shadow">
+            <div class="flex items-center flex-shrink-0">${dotsHtml}</div>
+            <span class="text-amber-300 font-bold truncate max-w-[180px]">${recipeSummary}</span>
+            <span class="text-amber-400 font-extrabold font-mono">$${hookahPrice.toFixed(2)}</span>
+            <button onclick="clearMixBench()" class="text-zinc-500 hover:text-red-400 ml-1">✕</button>
+          </div>
+        `;
+      }
+
+      // 2. Drinks Chips
+      let drinksTotal = 0;
+      pendingOrderDrinks.forEach((drk, idx) => {
+        drinksTotal += drk.price;
+        chipsHtml += `
+          <div class="inline-flex items-center gap-2 py-1.5 px-3 bg-[#06101E] border border-cyan-500/30 rounded-xl text-xs font-mono text-cyan-200 flex-shrink-0 shadow">
+            <span>🥤</span>
+            <span class="font-bold truncate max-w-[140px]">${drk.name}</span>
+            <span class="text-amber-400 font-bold">$${drk.price.toFixed(2)}</span>
+            <button onclick="removePendingDrink(${idx})" class="text-zinc-500 hover:text-red-400 ml-1">✕</button>
+          </div>
+        `;
+      });
+
+      if (benchSlots.length === 0 && pendingOrderDrinks.length === 0) {
+        chipsHtml = '<span class="text-xs font-mono text-zinc-500 italic">No items currently staged in order tray. Tap "+ ADD" to build round.</span>';
+      }
+
+      container.innerHTML = chipsHtml;
+
+      const grandTotal = hookahPrice + drinksTotal;
+      if (totalEl) totalEl.textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    function updateBenchCalculations() {
+      if (benchSlots.length > 0) {
         let totalBuzz = 0;
         benchSlots.forEach(s => {
           totalBuzz += (s.buzz * (s.ratio / 100));
@@ -2080,53 +2141,50 @@
         document.getElementById('benchBuzzScore').textContent = '0.0 / 10';
         document.getElementById('benchBuzzCategory').textContent = 'BLANK BOWL';
       }
-
-      const drinksTotal = pendingOrderDrinks.reduce((s, d) => s + d.price, 0);
-      const grandTotal = hookahPrice + drinksTotal;
-
-      document.getElementById('benchTotalPrice').textContent = `$${grandTotal.toFixed(2)}`;
     }
 
     function applyBaseSmokerProfile(type) {
       if (type === 'sweet-berries') {
         benchSlots = [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, profile: 'Berries' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, profile: 'Peppermint' }
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
         ];
         showToast('Profile Loaded', 'Sweet Berry & Grapefruit preset loaded.');
       } else if (type === 'russian-burley') {
         benchSlots = [
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, profile: 'Arctic Ice' },
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, profile: 'Botanical' }
+          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' },
+          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' }
         ];
         showToast('Profile Loaded', 'Heavy Russian Dark Leaf preset loaded.');
       } else if (type === 'arctic-mint') {
         benchSlots = [
-          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, profile: 'Ice / Mint' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, profile: 'Peppermint' }
+          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, color: '#06B6D4' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, color: '#10B981' }
         ];
         showToast('Profile Loaded', 'Arctic Ice & Mint preset loaded.');
       } else if (type === 'spiced-chai') {
         benchSlots = [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, profile: 'Spiced / Floral' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, profile: 'Cream / Dessert' }
+          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
+          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
         ];
         showToast('Profile Loaded', 'Spiced Chai & Kashmir preset loaded.');
       } else if (type === 'citrus-soda') {
         benchSlots = [
-          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, profile: 'Citrus' },
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, profile: 'Berries' }
+          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, color: '#FB923C' },
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, color: '#EC4899' }
         ];
         showToast('Profile Loaded', 'Valencia Orange Soda preset loaded.');
       }
 
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
     }
 
     function clearMixBench() {
       benchSlots = [];
       pendingOrderDrinks = [];
-      renderCenterOrderTray();
+      renderCenterMixBench();
+      renderFloatingOrderTray();
     }
 
     // LOWER RIGHT DISPATCH ACTION
