@@ -23,19 +23,19 @@
 
     /* STOKED LUXURY THEME CARDS */
     .stoked-card {
-      background: #090D14;
+      background: #080C14;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .stoked-card:hover {
       border-color: rgba(229, 169, 60, 0.35);
-      background: #0F1420;
+      background: #0E1320;
     }
 
-    /* TALL ALERT CARD STYLING (NO ICONS) */
+    /* TALL ALERT CARD STYLING */
     .alert-card {
-      background: #090D14;
+      background: #080C14;
       border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 16px;
       padding: 14px;
@@ -48,33 +48,64 @@
     }
     .alert-card:hover {
       border-color: rgba(229, 169, 60, 0.4);
-      background: #0E131E;
+      background: #0D121F;
       transform: translateY(-1px);
     }
 
-    /* BOTTOM SLIDE-UP DRAWER */
-    .bottom-drawer-overlay {
+    /* FULL-SCREEN SLIDE-UP DRAWER */
+    .fullscreen-drawer-panel {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 60;
-      transition: opacity 0.3s ease;
-    }
-    .bottom-drawer-panel {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      max-height: 92vh;
-      background: #070B11;
-      border-top: 2px solid rgba(229, 169, 60, 0.4);
-      border-radius: 28px 28px 0 0;
-      box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.95);
+      background: #030508;
       z-index: 70;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
+    }
+
+    /* STOKED CONTINUOUS MIX SPECTRUM SYSTEM */
+    .spectrum-drag-area {
+      position: relative;
+      width: 100%;
+      height: 36px;
+      border-radius: 14px;
+      background: #0A0F1A;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+    }
+    .spectrum-track {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      transition: background 0.1s ease;
+    }
+    .spectrum-drag-thumb {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 22px;
+      margin-left: -11px;
+      background: #E5A93C;
+      border: 2px solid #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 0 14px rgba(229, 169, 60, 0.8), 0 2px 8px rgba(0,0,0,0.8);
+      cursor: ew-resize;
+      z-index: 20;
+      pointer-events: auto;
+      touch-action: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .spectrum-drag-thumb::after {
+      content: '';
+      width: 2px;
+      height: 14px;
+      background: #000000;
+      border-radius: 1px;
     }
 
     /* OPENTABLE ARCHITECTURAL LOUNGE CANVAS */
@@ -115,7 +146,7 @@
       justify-content: center;
       cursor: pointer;
       border-radius: 16px;
-      background: #0B0F17;
+      background: #080C14;
       border: 1.5px solid rgba(255, 255, 255, 0.12);
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 10;
@@ -132,7 +163,7 @@
     }
 
     .diagram-seat-node.occupied {
-      background: #111722 !important;
+      background: #0F1626 !important;
       border-color: #E5A93C !important;
       box-shadow: 0 0 16px rgba(229, 169, 60, 0.25);
     }
@@ -214,13 +245,13 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 select-none">
+<body class="min-h-screen flex flex-col items-center justify-start pb-20 md:pb-10 select-none bg-[#030508]">
 
   <!-- Screen Edge Glow Alert Overlay -->
   <div id="staffScreenGlowOverlay" class="staff-screen-glow-overlay"></div>
 
   <!-- Toast Notification Container -->
-  <div id="staffToast" class="fixed top-4 right-4 z-50 bg-[#0B0F17]/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2.5 text-xs font-mono backdrop-blur-md">
+  <div id="staffToast" class="fixed top-4 right-4 z-90 bg-[#080C14]/95 border border-amber-500/40 text-white px-4 py-2.5 rounded-2xl shadow-2xl transition-all duration-300 transform -translate-y-4 opacity-0 pointer-events-none flex items-center gap-2.5 text-xs font-mono backdrop-blur-md">
     <div>
       <div id="staffToastTitle" class="font-bold text-amber-300 uppercase tracking-wider">Alert</div>
       <div id="staffToastMsg" class="text-zinc-300 text-[11px]">Message details</div>
@@ -228,7 +259,7 @@
   </div>
 
   <!-- ==================== 1. TOP SERVER APP BAR ==================== -->
-  <header class="w-full bg-[#06090E]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
+  <header class="w-full bg-[#05080E]/95 border-b border-white/10 sticky top-0 z-40 px-3 md:px-6 py-2.5 flex items-center justify-between gap-3 shadow-2xl backdrop-blur-md">
     
     <!-- Left: Station Brand & Live Status -->
     <div class="flex items-center gap-3">
@@ -246,19 +277,19 @@
 
     <!-- Center: Operational Stats Strip -->
     <div class="hidden md:flex items-center gap-2 font-mono text-xs">
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-white/5 text-zinc-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-white/5 text-zinc-300">
         <span class="text-zinc-400">Active:</span>
         <strong id="statActiveTablesCount" class="text-emerald-400">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-red-500/20 text-red-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-red-500/20 text-red-300">
         <span>Coals:</span>
         <strong id="statCoalsDueCount" class="text-red-400 font-bold">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-amber-500/20 text-amber-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-amber-500/20 text-amber-300">
         <span>Service:</span>
         <strong id="statServiceDueCount" class="text-amber-400 font-bold">0</strong>
       </div>
-      <div class="flex items-center gap-1.5 px-3 py-1 bg-zinc-900/80 rounded-xl border border-cyan-500/20 text-cyan-300">
+      <div class="flex items-center gap-1.5 px-3 py-1 bg-[#090D18] rounded-xl border border-cyan-500/20 text-cyan-300">
         <span>Orders:</span>
         <strong id="statOrdersDueCount" class="text-cyan-400 font-bold">0</strong>
       </div>
@@ -266,7 +297,7 @@
 
     <!-- Right: Audio Alert Toggle & Simulator -->
     <div class="flex items-center gap-2">
-      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-zinc-900/90 border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
+      <button onclick="toggleServerAudioAlerts()" id="serverAudioBtn" class="px-2.5 sm:px-3 py-1.5 bg-[#090D18] border border-white/10 rounded-xl text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5 transition active:scale-95">
         <span id="serverAudioLabel">AUDIO: ON</span>
       </button>
 
@@ -279,7 +310,7 @@
 
   <!-- ==================== MOBILE SEGMENTED VIEW SWITCHER ==================== -->
   <div class="md:hidden w-full px-3 pt-2.5">
-    <div class="grid grid-cols-3 gap-1 bg-[#080C12] p-1 rounded-2xl border border-white/10 text-xs font-mono">
+    <div class="grid grid-cols-3 gap-1 bg-[#06090E] p-1 rounded-2xl border border-white/10 text-xs font-mono">
       <button onclick="setMobileActiveTab('map')" id="mobTabBtn-map" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-1">
         <span>Floor Map</span>
       </button>
@@ -301,7 +332,7 @@
       <aside id="staffActionDockColumn" class="md:col-span-5 lg:col-span-4 xl:col-span-3 flex flex-col gap-2.5">
         
         <!-- Header -->
-        <div class="p-3 bg-[#080C12] border border-white/10 rounded-2xl flex justify-between items-center shadow-lg">
+        <div class="p-3 bg-[#060A12] border border-white/10 rounded-2xl flex justify-between items-center shadow-lg">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
             <h2 class="text-xs font-mono font-bold text-white uppercase tracking-wider">LIVE ACTION DOCK</h2>
@@ -322,7 +353,7 @@
       <section id="staffFloorplanColumn" class="md:col-span-7 lg:col-span-8 xl:col-span-9 flex flex-col gap-3">
         
         <!-- Top Controller Strip: View Toggle + Zone Pills -->
-        <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#080C12] border border-white/10 rounded-2xl shadow-lg">
+        <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-[#060A12] border border-white/10 rounded-2xl shadow-lg">
           
           <!-- View Mode Toggle (Tablet/Desktop) -->
           <div class="hidden md:flex items-center gap-1 bg-black/80 p-1 border border-white/10 rounded-xl">
@@ -349,7 +380,7 @@
         <div id="floorplanCanvasContainer" class="stoked-card p-3 md:p-4 shadow-2xl">
           <div class="flex justify-between items-center mb-2 px-1 text-xs font-mono text-zinc-400">
             <span class="text-zinc-300">
-              Click any physical table or booth to open bottom drawer
+              Click any physical table or booth to open full-screen deck
             </span>
             <span class="text-[11px] text-amber-400/80">● Real-Time Seating</span>
           </div>
@@ -372,60 +403,59 @@
 
   </main>
 
-  <!-- ==================== 3. TABLE DETAILS BOTTOM SLIDE-UP DRAWER ==================== -->
-  <div id="tableDrawerOverlay" class="bottom-drawer-overlay hidden" onclick="closeTableDetailModal()"></div>
-  <div id="tableBottomDrawer" class="bottom-drawer-panel transform translate-y-full">
+  <!-- ==================== 3. TABLE DETAILS FULL-SCREEN SLIDE-UP DRAWER ==================== -->
+  <div id="tableFullscreenDrawer" class="fullscreen-drawer-panel transform translate-y-full">
     
-    <!-- Drawer Handle & Header Bar -->
-    <div class="px-5 pt-3 pb-3 border-b border-white/10 bg-[#05080E] flex flex-col gap-2 rounded-t-[28px]">
+    <!-- Top Nav & Header Bar -->
+    <div class="px-4 md:px-6 py-3 border-b border-white/10 bg-[#05080E] flex flex-col gap-2.5">
       
-      <!-- Top Handle Bar & Quick Timers -->
+      <!-- Top Title & Quick Actions -->
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-lg font-extrabold text-amber-300 bg-amber-400/10 px-3 py-0.5 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
+          <span class="font-mono text-xl font-extrabold text-amber-300 bg-amber-400/10 px-3.5 py-1 rounded-xl border border-amber-400/40" id="drawerTableId">VIP 1</span>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xs font-mono font-bold text-white" id="drawerTableZone">VIP Lounge (8P Couch)</span>
+              <span class="text-sm font-mono font-bold text-white" id="drawerTableZone">VIP Lounge (8P Couch)</span>
               <span class="px-2 py-0.2 text-[9px] font-mono rounded-full border" id="drawerTableStatusBadge">ACTIVE</span>
             </div>
-            <span class="text-[11px] font-mono text-zinc-400" id="drawerTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · Seated 48m</span>
+            <span class="text-xs font-mono text-zinc-400" id="drawerTableGuestInfo">Guest: Alex M. (VIP) · 2 Guests · Seated 48m</span>
           </div>
         </div>
 
-        <!-- Quick Timers & Close Action -->
-        <div class="flex items-center gap-2">
+        <!-- Timers & Exit -->
+        <div class="flex items-center gap-2.5">
           <div class="hidden sm:flex items-center gap-2 text-xs font-mono">
-            <button onclick="resetTableServiceCheck()" class="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400 hover:text-black border border-amber-400/30 rounded-xl text-amber-300 transition text-[11px] font-bold">
+            <button onclick="resetTableServiceCheck()" class="px-3 py-1.5 bg-amber-400/10 hover:bg-amber-400 hover:text-black border border-amber-400/30 rounded-xl text-amber-300 transition font-bold">
               Service: <span id="drawerQuickServiceText">OK</span> [Reset 5m]
             </button>
-            <button onclick="resetTableCoalTimer()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl text-red-300 transition text-[11px] font-bold">
+            <button onclick="resetTableCoalTimer()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500 hover:text-white border border-red-500/30 rounded-xl text-red-300 transition font-bold">
               Coals: <span id="drawerQuickCoalText">18m left</span> [Reset 25m]
             </button>
           </div>
 
-          <button onclick="closeTableDetailModal()" class="px-3 py-1.5 bg-zinc-900 border border-white/15 text-zinc-300 hover:text-white text-xs font-mono font-bold rounded-xl transition">
-            ✕ CLOSE
+          <button onclick="closeTableDetailModal()" class="px-4 py-2 bg-zinc-900 border border-white/20 text-zinc-200 hover:text-white text-xs font-mono font-bold rounded-xl transition shadow active:scale-95">
+            ✕ CLOSE DECK
           </button>
         </div>
       </div>
 
-      <!-- 3 MAIN TABS SWITCHER -->
-      <div class="grid grid-cols-3 gap-2 p-1 bg-black/70 rounded-2xl border border-white/10 text-xs font-mono mt-1">
-        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
-          <span>Tab &amp; POS Settle</span>
+      <!-- 3 PRIMARY TABS SWITCHER -->
+      <div class="grid grid-cols-3 gap-2 p-1 bg-black/80 rounded-2xl border border-white/10 text-xs font-mono">
+        <button onclick="setDrawerActiveTab('bill')" id="drawerTabBtn-bill" class="py-2.5 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2">
+          <span>Tab &amp; POS Settlement</span>
         </button>
-        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('mixlab')" id="drawerTabBtn-mixlab" class="py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
           <span>Sommelier Mix Lab</span>
         </button>
-        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+        <button onclick="setDrawerActiveTab('member')" id="drawerTabBtn-member" class="py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
           <span>Member Smoke Profile</span>
         </button>
       </div>
 
     </div>
 
-    <!-- Drawer Content Panels -->
-    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 bg-[#070B11]">
+    <!-- Drawer Body Panels -->
+    <div class="flex-1 overflow-y-auto no-scrollbar p-4 md:p-6 bg-[#030508]">
       
       <!-- ==================== TAB 1: ITEMIZED BILL & POS SETTLEMENT ==================== -->
       <div id="drawerPanel-bill" class="space-y-4 max-w-5xl mx-auto">
@@ -434,32 +464,32 @@
           
           <!-- Left 7 Cols: Itemized Tab Table -->
           <div class="lg:col-span-7 space-y-3">
-            <div class="p-4 bg-[#090D14] rounded-2xl border border-white/10 space-y-3">
+            <div class="p-4 bg-[#080C14] rounded-2xl border border-white/10 space-y-3">
               <div class="flex justify-between items-center pb-2 border-b border-white/10">
                 <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Active Tab Items</span>
                 <span class="text-xs font-mono text-zinc-400" id="billTabItemCount">3 items</span>
               </div>
 
-              <div class="space-y-2 max-h-72 overflow-y-auto no-scrollbar pr-0.5" id="billTabItemsList">
+              <div class="space-y-2 max-h-80 overflow-y-auto no-scrollbar pr-0.5" id="billTabItemsList">
                 <!-- Injected via JS -->
               </div>
             </div>
 
             <!-- Quick Add Drinks Shortcut -->
-            <div class="p-3 bg-black/40 rounded-2xl border border-white/5 flex items-center justify-between text-xs font-mono">
-              <span class="text-zinc-400">Need to add drinks or snacks?</span>
-              <button onclick="setDrawerActiveTab('mixlab'); setMixLabSubTab('drinks');" class="px-3 py-1.5 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black font-bold rounded-xl border border-cyan-500/40 transition">
-                + Open Drink Stash
+            <div class="p-3.5 bg-[#080C14] rounded-2xl border border-white/5 flex items-center justify-between text-xs font-mono">
+              <span class="text-zinc-400">Add beverages or artisan samovar teapots?</span>
+              <button onclick="setDrawerActiveTab('mixlab'); setMixLabSubTab('drinks');" class="px-3.5 py-1.5 bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500 hover:text-black font-bold rounded-xl border border-cyan-500/40 transition">
+                + Open Drink Catalog
               </button>
             </div>
           </div>
 
           <!-- Right 5 Cols: Calculations & POS Settlement -->
           <div class="lg:col-span-5 space-y-3">
-            <div class="p-4 bg-[#090D14] rounded-2xl border border-amber-500/30 space-y-3">
+            <div class="p-4 bg-[#080C14] rounded-2xl border border-amber-500/30 space-y-3.5 shadow-xl">
               <h3 class="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider pb-2 border-b border-white/10">Bill Summary &amp; Taxes</h3>
 
-              <div class="space-y-1.5 text-xs font-mono">
+              <div class="space-y-2 text-xs font-mono">
                 <div class="flex justify-between text-zinc-400">
                   <span>Subtotal</span>
                   <span class="text-white font-bold" id="billSubtotal">$0.00</span>
@@ -472,9 +502,9 @@
                   <span>Tip / Gratuity</span>
                   <span class="text-emerald-400 font-bold" id="billTip">$0.00</span>
                 </div>
-                <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+                <div class="pt-2.5 border-t border-white/10 flex justify-between items-baseline">
                   <span class="text-sm font-bold text-white uppercase">Total Amount</span>
-                  <span class="text-xl font-extrabold text-amber-400 font-mono" id="billGrandTotal">$0.00</span>
+                  <span class="text-2xl font-extrabold text-amber-400 font-mono" id="billGrandTotal">$0.00</span>
                 </div>
               </div>
 
@@ -482,10 +512,10 @@
               <div class="pt-1">
                 <span class="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">Tip Presets:</span>
                 <div class="grid grid-cols-4 gap-1.5 text-xs font-mono">
-                  <button onclick="applyTipPercent(18)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10">18%</button>
-                  <button onclick="applyTipPercent(20)" class="py-1.5 bg-amber-400/20 text-amber-300 font-bold rounded-lg border border-amber-400/40">20%</button>
-                  <button onclick="applyTipPercent(25)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-lg border border-white/10">25%</button>
-                  <button onclick="applyTipPercent(0)" class="py-1.5 bg-black/60 hover:bg-white/10 text-zinc-400 rounded-lg border border-white/10">None</button>
+                  <button onclick="applyTipPercent(18)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">18%</button>
+                  <button onclick="applyTipPercent(20)" class="py-2 bg-amber-400/20 text-amber-300 font-bold rounded-xl border border-amber-400/40">20%</button>
+                  <button onclick="applyTipPercent(25)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-300 rounded-xl border border-white/10">25%</button>
+                  <button onclick="applyTipPercent(0)" class="py-2 bg-black/60 hover:bg-white/10 text-zinc-400 rounded-xl border border-white/10">None</button>
                 </div>
               </div>
 
@@ -510,82 +540,101 @@
 
       </div>
 
-      <!-- ==================== TAB 2: ERGONOMIC SPLIT MIX LAB ==================== -->
-      <div id="drawerPanel-mixlab" class="hidden space-y-3">
+      <!-- ==================== TAB 2: FLIPPED ERGONOMIC SOMMELIER MIX LAB WITH SPECTRUM ==================== -->
+      <div id="drawerPanel-mixlab" class="hidden space-y-3.5">
         
-        <!-- Top Smoker Base Preferences Quick Strip -->
-        <div class="p-3 bg-[#090D14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2">
+        <!-- Top Smoker Base Preferences Quick Bar -->
+        <div class="p-3 bg-[#080C14] rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <span class="text-[11px] font-mono font-bold text-amber-400 uppercase tracking-wider">Base Palate Presets:</span>
-            <span class="text-[10px] font-mono text-zinc-500">Tap to load baseline profile</span>
+            <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Base Palate Presets:</span>
+            <span class="text-[10px] font-mono text-zinc-500">1-Tap loads baseline formulation to spectrum</span>
           </div>
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5" id="mixLabBasePalatePills">
-            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Sweet Berry &amp; Grapefruit</button>
-            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Heavy Russian Dark Leaf</button>
-            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Arctic Ice &amp; Mint</button>
-            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Spiced Chai &amp; Kashmir</button>
-            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-2.5 py-1 text-xs font-mono rounded-lg border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400">Valencia Orange Soda</button>
+            <button onclick="applyBaseSmokerProfile('sweet-berries')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Sweet Berry &amp; Grapefruit</button>
+            <button onclick="applyBaseSmokerProfile('russian-burley')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Heavy Russian Dark Leaf</button>
+            <button onclick="applyBaseSmokerProfile('arctic-mint')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Arctic Ice &amp; Mint</button>
+            <button onclick="applyBaseSmokerProfile('spiced-chai')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Spiced Chai &amp; Kashmir</button>
+            <button onclick="applyBaseSmokerProfile('citrus-soda')" class="px-3 py-1.5 text-xs font-mono rounded-xl border bg-black/60 text-zinc-300 border-white/10 hover:border-amber-400 flex-shrink-0">Valencia Orange Soda</button>
           </div>
         </div>
 
-        <!-- 3-COLUMN ERGONOMIC SPLIT DECK -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch min-h-[460px]">
+        <!-- 3-COLUMN ERGONOMIC SPLIT: LEFT=BRANDS, CENTER=SPECTRUM BENCH, RIGHT=FLAVORS -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch min-h-[500px]">
           
-          <!-- FAR LEFT COLUMN (3 Cols): FLAVORS CATALOG (Filtered by Brand/Profile) -->
-          <div class="lg:col-span-4 bg-[#090D14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
-            <div class="flex justify-between items-center pb-2 border-b border-white/10">
-              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="leftCatalogTitle">Catalog Flavors</span>
-              <span class="text-[10px] font-mono text-zinc-400" id="leftCatalogCount">12 available</span>
+          <!-- FAR LEFT COLUMN (3 Cols): BRANDS & PROFILE SELECTORS (Left Hand / Thumb) -->
+          <div class="lg:col-span-3 bg-[#080C14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
+            <div class="pb-2 border-b border-white/10 flex justify-between items-center">
+              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Brand Houses</span>
+              <span class="text-[10px] font-mono text-zinc-500">Filter Stash</span>
             </div>
 
-            <!-- Scrollable Flavor Cards List -->
-            <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 max-h-[380px]" id="leftFlavorsCatalogList">
+            <!-- Brand Buttons -->
+            <div class="space-y-1.5 overflow-y-auto no-scrollbar max-h-[420px]" id="leftBrandSelectorList">
               <!-- Injected via JS -->
             </div>
           </div>
 
-          <!-- CENTER COLUMN (5 Cols): ACTIVE BENCH / DRINKS SUB-TABS & DISPATCH -->
-          <div class="lg:col-span-5 bg-[#090D14] rounded-2xl border border-amber-500/30 p-3.5 flex flex-col justify-between gap-3 shadow-xl">
+          <!-- CENTER COLUMN (5 Cols): CONTINUOUS MIX SPECTRUM BENCH & DRINKS -->
+          <div class="lg:col-span-5 bg-[#080C14] rounded-2xl border border-amber-500/40 p-4 flex flex-col justify-between gap-3 shadow-2xl">
             
-            <div class="space-y-3">
+            <div class="space-y-3.5">
+              
               <!-- Center Sub-Tabs Switcher -->
               <div class="flex items-center justify-between pb-2 border-b border-white/10">
                 <div class="flex items-center gap-1 bg-black/80 p-1 rounded-xl border border-white/10">
-                  <button onclick="setMixLabSubTab('shisha')" id="subTabBtn-shisha" class="px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition">
-                    Shisha Mix Bench
+                  <button onclick="setMixLabSubTab('shisha')" id="subTabBtn-shisha" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition">
+                    Shisha Spectrum Bench
                   </button>
-                  <button onclick="setMixLabSubTab('drinks')" id="subTabBtn-drinks" class="px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition">
+                  <button onclick="setMixLabSubTab('drinks')" id="subTabBtn-drinks" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition">
                     Chilled Drinks
                   </button>
                 </div>
-                <button onclick="clearMixBench()" class="text-[10px] font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
+                <button onclick="clearMixBench()" class="text-xs font-mono text-zinc-500 hover:text-red-400 uppercase">Clear [✕]</button>
               </div>
 
-              <!-- VIEW A: ACTIVE SHISHA BENCH -->
+              <!-- VIEW A: ACTIVE SHISHA SPECTRUM BENCH -->
               <div id="mixLabBenchView" class="space-y-3">
                 
-                <!-- Buzz & Ratios Calculation Strip -->
-                <div class="p-2.5 bg-black/70 rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
+                <!-- Buzz Rating & Category Strip -->
+                <div class="p-3 bg-black/80 rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
                   <div>
-                    <span class="text-[10px] text-zinc-400 uppercase block">Buzz Strength:</span>
-                    <div class="flex items-center gap-1.5 mt-0.5">
-                      <span class="text-sm font-extrabold text-amber-400" id="benchBuzzScore">7.6 / 10</span>
-                      <span class="px-1.5 py-0.2 bg-red-950 text-red-300 text-[9px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD</span>
+                    <span class="text-[10px] text-zinc-400 uppercase block">Formulation Buzz Score:</span>
+                    <div class="flex items-center gap-2 mt-0.5">
+                      <span class="text-base font-extrabold text-amber-400" id="benchBuzzScore">7.6 / 10</span>
+                      <span class="px-2 py-0.5 bg-red-950 text-red-300 text-[10px] font-bold uppercase rounded border border-red-800/60" id="benchBuzzCategory">BOLD DARK LEAF</span>
                     </div>
                   </div>
                   <div class="text-right">
-                    <span class="text-[10px] text-zinc-400 uppercase block">Pack Weight:</span>
-                    <span class="text-xs text-white font-bold">Standard 22g</span>
+                    <span class="text-[10px] text-zinc-400 uppercase block">Pack Specification:</span>
+                    <span class="text-xs text-white font-bold">Standard 22g Pack</span>
                   </div>
                 </div>
 
-                <!-- Active Slots List with Ratio Steppers -->
-                <div class="space-y-2" id="benchActiveSlotsList">
+                <!-- STOKED MULTI-STOP SPECTRUM GRADIENT RIBBON WITH DRAGGABLE THUMBS -->
+                <div class="space-y-1.5">
+                  <div class="flex justify-between text-[11px] font-mono text-zinc-400">
+                    <span>Continuous Flavor Ratio Spectrum</span>
+                    <span class="text-amber-400 font-bold">Drag gold handle to balance</span>
+                  </div>
+
+                  <div class="spectrum-drag-area" id="spectrumDraggableArea">
+                    <div id="spectrumRibbon" class="spectrum-track bg-zinc-900"></div>
+                    <div id="spectrumHandlesContainer" class="absolute inset-0 pointer-events-none"></div>
+                  </div>
+                </div>
+
+                <!-- Detailed Active Flavor Slots -->
+                <div class="space-y-2 max-h-48 overflow-y-auto no-scrollbar pr-0.5" id="benchActiveSlotsList">
+                  <!-- Injected via JS -->
+                </div>
+
+                <!-- Dynamic Flavor Profile Radar Tags -->
+                <div class="flex items-center gap-1.5 flex-wrap pt-1" id="benchProfileBadges">
                   <!-- Injected via JS -->
                 </div>
 
                 <!-- Hardware & Heat Selection -->
-                <div class="grid grid-cols-2 gap-2 pt-1">
+                <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
                   <div>
                     <label class="text-[10px] font-mono text-zinc-400 uppercase block mb-1">Clay Bowl:</label>
                     <select id="benchBowlSelect" class="w-full bg-[#05080E] text-white px-2.5 py-1.5 rounded-xl border border-white/15 text-xs font-mono">
@@ -609,32 +658,33 @@
               </div>
 
               <!-- VIEW B: CHILLED DRINKS LIST -->
-              <div id="mixLabDrinksView" class="hidden space-y-2 max-h-[340px] overflow-y-auto no-scrollbar">
+              <div id="mixLabDrinksView" class="hidden space-y-2 max-h-[380px] overflow-y-auto no-scrollbar">
                 <!-- Injected via JS -->
               </div>
             </div>
 
             <!-- Center Bottom Dispatch Bar -->
-            <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
               <div>
-                <span class="text-[10px] font-mono text-zinc-400 uppercase block">Total Add-on</span>
-                <span class="text-base font-extrabold text-amber-400 font-mono" id="benchTotalPrice">$35.00</span>
+                <span class="text-[10px] font-mono text-zinc-400 uppercase block">Bowl Rate</span>
+                <span class="text-xl font-extrabold text-amber-400 font-mono" id="benchTotalPrice">$35.00</span>
               </div>
-              <button onclick="dispatchActiveBenchToTable()" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-xl transition active:scale-95 shadow-lg">
+              <button onclick="dispatchActiveBenchToTable()" class="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-black font-mono font-extrabold text-xs uppercase tracking-wider rounded-2xl transition active:scale-95 shadow-xl">
                 ✓ Dispatch to Table Tab
               </button>
             </div>
 
           </div>
 
-          <!-- FAR RIGHT COLUMN (3 Cols): BRAND HOUSES & PROFILE SELECTORS -->
-          <div class="lg:col-span-3 bg-[#090D14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
-            <div class="pb-2 border-b border-white/10">
-              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Brands &amp; Profiles</span>
+          <!-- FAR RIGHT COLUMN (4 Cols): FLAVORS CATALOG (Filtered by Brand/Profile) (Right Hand / Thumb) -->
+          <div class="lg:col-span-4 bg-[#080C14] rounded-2xl border border-white/10 p-3.5 flex flex-col gap-2.5">
+            <div class="flex justify-between items-center pb-2 border-b border-white/10">
+              <span class="text-xs font-mono font-bold text-white uppercase tracking-wider" id="rightCatalogTitle">Catalog Flavors</span>
+              <span class="text-[10px] font-mono text-zinc-400" id="rightCatalogCount">12 available</span>
             </div>
 
-            <!-- Brand House Buttons -->
-            <div class="space-y-1 overflow-y-auto no-scrollbar max-h-[380px]" id="rightBrandSelectorList">
+            <!-- Scrollable Flavor Cards List -->
+            <div class="flex-1 space-y-2 overflow-y-auto no-scrollbar pr-0.5 max-h-[420px]" id="rightFlavorsCatalogList">
               <!-- Injected via JS -->
             </div>
           </div>
@@ -647,7 +697,7 @@
       <div id="drawerPanel-member" class="hidden space-y-4 max-w-4xl mx-auto">
         
         <!-- Member Card Header -->
-        <div class="p-4 bg-[#090D14] rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
+        <div class="p-4 bg-[#080C14] rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/40 flex items-center justify-center font-crest font-bold text-lg text-amber-300" id="memberAvatarLetter">
               A
@@ -688,10 +738,10 @@
         </div>
 
         <!-- Past Favorite Formulations (1-Tap Re-order) -->
-        <div class="p-4 bg-[#090D14] rounded-2xl border border-white/10 space-y-3">
+        <div class="p-4 bg-[#080C14] rounded-2xl border border-white/10 space-y-3">
           <div class="flex justify-between items-center pb-2 border-b border-white/10">
             <span class="text-xs font-mono font-bold text-white uppercase tracking-wider">Frequently Ordered Formulations</span>
-            <span class="text-[10px] font-mono text-amber-400">1-Tap Load to Mix Lab</span>
+            <span class="text-[10px] font-mono text-amber-400">1-Tap Load to Spectrum Bench</span>
           </div>
 
           <div class="space-y-2" id="memberFavoriteBlendsList">
@@ -724,36 +774,38 @@
     let activeMobileTab = 'map'; // 'map', 'alerts', or 'grid'
     let activeDrawerTab = 'bill'; // 'bill', 'mixlab', or 'member'
     let activeMixLabSubTab = 'shisha'; // 'shisha' or 'drinks'
+    let activeBrandFilter = 'all';
+    let activeSpectrumDragHandleIndex = null;
     let staffScreenGlowTimer = null;
 
     // Master Flavor Catalog with Brand & Profile Metadata
     const FLAVOR_CATALOG = [
       // MustHave (Russian Dark Leaf)
-      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'fruit', color: '#EC4899' },
-      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'mint', color: '#06B6D4' },
-      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'cream', color: '#FBBF24' },
-      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'fruit', color: '#F97316' },
-      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'fruit', color: '#8B5CF6' },
+      { id: 'mh-pinkman', name: 'Pinkman', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Raspberry, Pink Grapefruit & Strawberry', profile: 'Berries', color: '#EC4899' },
+      { id: 'mh-frosty', name: 'Frosty', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 6, notes: 'Sub-Zero Siberian Chill & Clean Ice', profile: 'Ice / Mint', color: '#06B6D4' },
+      { id: 'mh-milky-rice', name: 'Milky Rice', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Warm Sweet Rice Pudding & Condensed Milk', profile: 'Cream / Dessert', color: '#FBBF24' },
+      { id: 'mh-space-flavour', name: 'Space Flavour', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Mango Passion & Tropical Lychee', profile: 'Tropical', color: '#F97316' },
+      { id: 'mh-black-currant', name: 'Black Currant', brand: 'MustHave', origin: 'Moscow 🇷🇺', leaf: 'Dark Leaf', buzz: 7, notes: 'Tart Wild Russian Forest Berries', profile: 'Berries', color: '#8B5CF6' },
 
       // Tangiers (Noir Reserve)
-      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'mint', color: '#10B981' },
-      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'spiced', color: '#F59E0B' },
-      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'citrus', color: '#FB923C' },
+      { id: 'tg-cane-mint', name: 'Cane Mint (Noir 96)', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Natural Sweet Cane Peppermint & Heavy Nicotine', profile: 'Peppermint', color: '#10B981' },
+      { id: 'tg-kashmir-peach', name: 'Kashmir Peach', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 9, notes: 'Spiced Indian Florals & Sweet Juicy Peach', profile: 'Spiced / Floral', color: '#F59E0B' },
+      { id: 'tg-orange-soda', name: 'Orange Soda', brand: 'Tangiers', origin: 'San Diego 🇺🇸', leaf: 'Noir Dark', buzz: 8, notes: 'Fizzy Valencia Citrus Soda', profile: 'Citrus', color: '#FB923C' },
 
       // Darkside (Burley Dark)
-      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'mint', color: '#38BDF8' },
-      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'fruit', color: '#EAB308' },
-      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'fruit', color: '#A855F7' },
+      { id: 'ds-supernova', name: 'Supernova', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Extreme Cryo Arctic Freeze', profile: 'Arctic Ice', color: '#38BDF8' },
+      { id: 'ds-falling-star', name: 'Falling Star', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Tropical Mango Passionfruit Smoothie', profile: 'Tropical', color: '#EAB308' },
+      { id: 'ds-wild-forest', name: 'Wild Forest', brand: 'Darkside', origin: 'Moscow 🇷🇺', leaf: 'Burley Dark', buzz: 8, notes: 'Fresh Wood Berries & Pine Strawberries', profile: 'Berries', color: '#A855F7' },
 
       // BlackBurn (Overdose)
-      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'spiced', color: '#84CC16' },
-      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'citrus', color: '#FACC15' },
+      { id: 'bb-green-tea', name: 'Green Tea', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Dark Burley', buzz: 8, notes: 'Subtle Jasmine Green Tea & Herbal Tannins', profile: 'Botanical', color: '#84CC16' },
+      { id: 'bb-overdose', name: 'Overdose (Lemon)', brand: 'BlackBurn', origin: 'Russia 🇷🇺', leaf: 'Heavy Nicotine', buzz: 10, notes: 'Hyper-Sour Candied Lemon Blast', profile: 'Citrus', color: '#FACC15' },
 
       // Heritage Blondes
-      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'spiced', color: '#EF4444' },
-      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'mint', color: '#34D399' },
-      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'fruit', color: '#60A5FA' },
-      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'fruit', color: '#F43F5E' }
+      { id: 'af-two-apples', name: 'Two Apples', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Traditional Star Anise & Crisp Red Apple', profile: 'Spiced Apple', color: '#EF4444' },
+      { id: 'af-mint', name: 'Classic Mint', brand: 'Al Fakher', origin: 'Ajman 🇦🇪', leaf: 'Blonde Leaf', buzz: 4, notes: 'Smooth Spearmint Classic', profile: 'Mint', color: '#34D399' },
+      { id: 'sb-blue-mist', name: 'Blue Mist', brand: 'Starbuzz', origin: 'USA 🇺🇸', leaf: 'Blonde Leaf', buzz: 3, notes: 'Candied Sweet Blueberry & Soft Mint', profile: 'Berries', color: '#60A5FA' },
+      { id: 'ad-love66', name: 'Love 66', brand: 'Adalya', origin: 'Izmir 🇹🇷', leaf: 'Blonde Leaf', buzz: 4, notes: 'Honeydew Melon, Watermelon & Passion Mint', profile: 'Tropical Melon', color: '#F43F5E' }
     ];
 
     // Master Beverages
@@ -770,13 +822,11 @@
       { id: 'water', name: 'Bottled Mountain Water', price: 3.00, desc: 'Still spring water' }
     ];
 
-    // Current Bench Slots State (1 to 4 flavors)
+    // Current Spectrum Bench State (1 to 4 flavors)
     let benchSlots = [
-      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
-      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
+      { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899', profile: 'Berries' },
+      { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981', profile: 'Peppermint' }
     ];
-
-    let activeBrandFilter = 'all'; // 'all', 'MustHave', 'Tangiers', 'Darkside', 'BlackBurn', 'Al Fakher'
 
     // Physical Seating Coordinates for OpenTable Canvas
     const PHYSICAL_FLOORPLAN_PRESET = [
@@ -1138,10 +1188,10 @@
         const panel = document.getElementById(`drawerPanel-${t}`);
         if (btn && panel) {
           if (t === tab) {
-            btn.className = 'py-2 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
+            btn.className = 'py-2.5 rounded-xl font-bold bg-amber-400 text-black shadow transition flex items-center justify-center gap-2';
             panel.classList.remove('hidden');
           } else {
-            btn.className = 'py-2 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
+            btn.className = 'py-2.5 rounded-xl font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
             panel.classList.add('hidden');
           }
         }
@@ -1165,13 +1215,13 @@
       const drinksView = document.getElementById('mixLabDrinksView');
 
       if (sub === 'shisha') {
-        if (shishaBtn) shishaBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
-        if (drinksBtn) drinksBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
+        if (shishaBtn) shishaBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
+        if (drinksBtn) drinksBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
         if (benchView) benchView.classList.remove('hidden');
         if (drinksView) drinksView.classList.add('hidden');
       } else {
-        if (drinksBtn) drinksBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
-        if (shishaBtn) shishaBtn.className = 'px-3 py-1 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
+        if (drinksBtn) drinksBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-amber-400 text-black transition';
+        if (shishaBtn) shishaBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold text-zinc-400 hover:text-white transition';
         if (drinksView) drinksView.classList.remove('hidden');
         if (benchView) benchView.classList.add('hidden');
         renderDrinksSubView();
@@ -1313,7 +1363,7 @@
 
       if (alerts.length === 0) {
         container.innerHTML = `
-          <div class="p-6 bg-[#080C12] border border-white/5 rounded-2xl text-center space-y-1.5 shadow-md">
+          <div class="p-6 bg-[#060A12] border border-white/5 rounded-2xl text-center space-y-1.5 shadow-md">
             <div class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">Dock Clear</div>
             <div class="text-[11px] font-mono text-zinc-500">Zero pending orders, coal rotations, or quality checks.</div>
           </div>
@@ -1323,7 +1373,7 @@
 
       let html = '';
       alerts.forEach(item => {
-        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 bg-[#14080A] shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border-white/10';
+        let borderGlow = item.urgency === 'high' ? 'border-red-500/60 bg-[#12080A] shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'border-white/10';
 
         html += `
           <div onclick="openTableDetailModal('${item.tableId}')" class="alert-card ${borderGlow}">
@@ -1345,7 +1395,7 @@
             <!-- Card Footer: Fast Action Button & Drawer Hint -->
             <div class="pt-2 border-t border-white/10 flex justify-between items-center" onclick="event.stopPropagation();">
               <span onclick="openTableDetailModal('${item.tableId}')" class="text-[10px] font-mono text-amber-400/80 hover:text-amber-300 cursor-pointer">
-                View Details ➔
+                View Deck ➔
               </span>
               <button onclick="${item.actionHandler}" class="px-3.5 py-1.5 bg-white text-black hover:bg-amber-300 font-mono font-bold text-[10px] uppercase tracking-wider rounded-xl transition active:scale-95 shadow">
                 ${item.actionLabel}
@@ -1479,7 +1529,7 @@
         let coalsStatusClass = 'text-zinc-500';
 
         if (isOccupied) {
-          cardClass += ' border-emerald-500/30 bg-[#08120E]';
+          cardClass += ' border-emerald-500/30 bg-[#08121E]';
           statusBadge = '<span class="px-2.5 py-0.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-mono font-bold rounded-full uppercase">ACTIVE</span>';
           tabTotal = t.tabItems.reduce((sum, it) => sum + (it.price || 0), 0);
 
@@ -1492,7 +1542,7 @@
             if (serviceRemaining <= 0) {
               serviceStr = 'DUE';
               serviceStatusClass = 'text-amber-400 font-bold animate-pulse';
-              cardClass = 'stoked-card border-amber-500/60 bg-[#141007]';
+              cardClass = 'stoked-card border-amber-500/60 bg-[#161208]';
             } else {
               const mins = Math.floor(serviceRemaining / 60);
               const secs = serviceRemaining % 60;
@@ -1507,7 +1557,7 @@
             if (coalRemaining <= 0) {
               coalsStr = 'DUE';
               coalsStatusClass = 'text-red-400 font-bold animate-pulse';
-              cardClass = 'stoked-card border-red-500/70 bg-[#16080A] shadow-[0_0_16px_rgba(239,68,68,0.2)]';
+              cardClass = 'stoked-card border-red-500/70 bg-[#18080C] shadow-[0_0_16px_rgba(239,68,68,0.2)]';
             } else {
               const mins = Math.floor(coalRemaining / 60);
               const secs = coalRemaining % 60;
@@ -1567,14 +1617,13 @@
       grid.innerHTML = html;
     }
 
-    // ==================== BOTTOM SLIDE-UP DRAWER CONTROLLER ====================
+    // ==================== FULL-SCREEN DRAWER CONTROLLER ====================
     function openTableDetailModal(tableId) {
       selectedActiveTableId = tableId;
       const table = loungeDeckTables.find(t => t.id === tableId);
       if (!table) return;
 
-      const overlay = document.getElementById('tableDrawerOverlay');
-      const drawer = document.getElementById('tableBottomDrawer');
+      const drawer = document.getElementById('tableFullscreenDrawer');
       if (!drawer) return;
 
       document.getElementById('drawerTableId').textContent = table.name;
@@ -1596,7 +1645,6 @@
       }
       document.getElementById('drawerTableGuestInfo').textContent = `Guest: ${table.guest} · ${table.tabItems.length} items · Seated ${seatedStr}`;
 
-      // Update Quick Header Timers
       if (table.lastServiceCheck) {
         const sRem = (5 * 60) - Math.floor((now - table.lastServiceCheck) / 1000);
         document.getElementById('drawerQuickServiceText').textContent = sRem <= 0 ? 'DUE' : `${Math.floor(sRem / 60)}m`;
@@ -1611,23 +1659,19 @@
         document.getElementById('drawerQuickCoalText').textContent = '—';
       }
 
-      // Default to Bill Tab
       setDrawerActiveTab(activeDrawerTab);
+      setupSpectrumDragListeners();
 
-      // Slide up from bottom
-      if (overlay) overlay.classList.remove('hidden');
       drawer.classList.remove('translate-y-full');
       drawer.classList.add('translate-y-0');
     }
 
     function closeTableDetailModal() {
-      const overlay = document.getElementById('tableDrawerOverlay');
-      const drawer = document.getElementById('tableBottomDrawer');
+      const drawer = document.getElementById('tableFullscreenDrawer');
       if (drawer) {
         drawer.classList.remove('translate-y-0');
         drawer.classList.add('translate-y-full');
       }
-      if (overlay) overlay.classList.add('hidden');
       selectedActiveTableId = null;
     }
 
@@ -1641,7 +1685,7 @@
 
       if (table.tabItems.length === 0) {
         list.innerHTML = `
-          <div class="py-8 text-center text-xs font-mono text-zinc-500 italic">
+          <div class="py-12 text-center text-xs font-mono text-zinc-500 italic">
             No items on this table's tab. Use the "Sommelier Mix Lab" tab to order hookahs or drinks.
           </div>
         `;
@@ -1654,14 +1698,14 @@
       table.tabItems.forEach((item, idx) => {
         subtotal += item.price || 0;
         html += `
-          <div class="flex justify-between items-center p-3 bg-[#0B0F17] rounded-xl border border-white/5 text-xs font-mono">
+          <div class="flex justify-between items-center p-3.5 bg-[#0A0F1A] rounded-xl border border-white/5 text-xs font-mono">
             <div class="truncate mr-2">
-              <span class="text-white font-bold block truncate">${item.name}</span>
+              <span class="text-white font-bold block truncate text-sm">${item.name}</span>
               <span class="text-[10px] text-zinc-500 uppercase tracking-wider">${item.type}</span>
             </div>
             <div class="flex items-center gap-3 flex-shrink-0">
-              <span class="font-bold text-amber-400">$${(item.price || 0).toFixed(2)}</span>
-              <button onclick="removeBillTabItem(${idx})" class="text-zinc-500 hover:text-red-400 p-1 rounded transition">✕</button>
+              <span class="font-bold text-amber-400 text-sm">$${(item.price || 0).toFixed(2)}</span>
+              <button onclick="removeBillTabItem(${idx})" class="text-zinc-500 hover:text-red-400 p-1.5 rounded transition">✕</button>
             </div>
           </div>
         `;
@@ -1742,25 +1786,26 @@
       showToast('Table Closed', `${table.name} is now free and available.`);
     }
 
-    // ==================== TAB 2: ERGONOMIC SPLIT MIX LAB ENGINE ====================
+    // ==================== TAB 2: FLIPPED ERGONOMIC SOMMELIER MIX LAB WITH SPECTRUM ====================
     function renderErgonomicMixLab() {
-      renderRightBrandSelectors();
-      renderLeftFlavorsCatalog();
-      renderBenchActiveSlots();
+      renderLeftBrandSelectors();
+      renderRightFlavorsCatalog();
+      renderMixSpectrumBench();
     }
 
-    function renderRightBrandSelectors() {
-      const list = document.getElementById('rightBrandSelectorList');
+    // FAR LEFT COLUMN: Brands & Categories (Left Hand)
+    function renderLeftBrandSelectors() {
+      const list = document.getElementById('leftBrandSelectorList');
       if (!list) return;
 
       const BRANDS = [
-        { id: 'all', name: 'All Brands & Flavors', count: FLAVOR_CATALOG.length },
-        { id: 'MustHave', name: 'MustHave (Russian Dark)', count: 5 },
-        { id: 'Tangiers', name: 'Tangiers (Noir Reserve)', count: 3 },
-        { id: 'Darkside', name: 'Darkside (Burley Dark)', count: 3 },
-        { id: 'BlackBurn', name: 'BlackBurn (Overdose)', count: 2 },
-        { id: 'Al Fakher', name: 'Al Fakher (Blondes)', count: 2 },
-        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2 }
+        { id: 'all', name: 'All Craft Brands', count: FLAVOR_CATALOG.length, origin: 'Global' },
+        { id: 'MustHave', name: 'MustHave', count: 5, origin: 'Moscow 🇷🇺' },
+        { id: 'Tangiers', name: 'Tangiers Noir', count: 3, origin: 'San Diego 🇺🇸' },
+        { id: 'Darkside', name: 'Darkside Burley', count: 3, origin: 'Moscow 🇷🇺' },
+        { id: 'BlackBurn', name: 'BlackBurn Overdose', count: 2, origin: 'Russia 🇷🇺' },
+        { id: 'Al Fakher', name: 'Al Fakher Blondes', count: 2, origin: 'Ajman 🇦🇪' },
+        { id: 'Starbuzz', name: 'Starbuzz / Adalya', count: 2, origin: 'Blondes' }
       ];
 
       let html = '';
@@ -1769,9 +1814,12 @@
         const activeClass = isSel ? 'bg-amber-400/20 text-amber-300 border-amber-400/60 font-bold' : 'bg-black/60 text-zinc-400 border-white/10 hover:text-white';
 
         html += `
-          <button onclick="setMixLabBrandFilter('${b.id}')" class="w-full text-left p-2.5 rounded-xl border ${activeClass} text-xs font-mono flex justify-between items-center transition select-none">
-            <span>${b.name}</span>
-            <span class="text-[10px] opacity-70">${b.count}</span>
+          <button onclick="setMixLabBrandFilter('${b.id}')" class="w-full text-left p-3 rounded-xl border ${activeClass} text-xs font-mono flex justify-between items-center transition select-none">
+            <div>
+              <span class="block font-bold text-white">${b.name}</span>
+              <span class="text-[10px] opacity-70">${b.origin}</span>
+            </div>
+            <span class="text-[11px] font-bold opacity-80">${b.count}</span>
           </button>
         `;
       });
@@ -1781,14 +1829,15 @@
 
     function setMixLabBrandFilter(brand) {
       activeBrandFilter = brand;
-      renderRightBrandSelectors();
-      renderLeftFlavorsCatalog();
+      renderLeftBrandSelectors();
+      renderRightFlavorsCatalog();
     }
 
-    function renderLeftFlavorsCatalog() {
-      const list = document.getElementById('leftFlavorsCatalogList');
-      const titleEl = document.getElementById('leftCatalogTitle');
-      const countEl = document.getElementById('leftCatalogCount');
+    // FAR RIGHT COLUMN: Flavors Stash (Right Hand)
+    function renderRightFlavorsCatalog() {
+      const list = document.getElementById('rightFlavorsCatalogList');
+      const titleEl = document.getElementById('rightCatalogTitle');
+      const countEl = document.getElementById('rightCatalogCount');
       if (!list) return;
 
       let filtered = FLAVOR_CATALOG;
@@ -1806,17 +1855,17 @@
       let html = '';
       filtered.forEach(f => {
         html += `
-          <div class="p-2.5 bg-[#0B0F17] hover:bg-[#111722] rounded-xl border border-white/5 hover:border-amber-400/40 flex justify-between items-center gap-2 transition select-none">
+          <div class="p-3 bg-[#0A0F1A] hover:bg-[#111828] rounded-xl border border-white/5 hover:border-amber-400/40 flex justify-between items-center gap-2 transition select-none">
             <div class="truncate">
               <div class="flex items-center gap-1.5 truncate">
-                <span class="w-2 h-2 rounded-full flex-shrink-0" style="background-color: ${f.color};"></span>
+                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${f.color};"></span>
                 <span class="font-mono text-xs font-bold text-white truncate">${f.name}</span>
                 <span class="text-[9px] font-mono text-red-400 font-bold flex-shrink-0">⚡ ${f.buzz}</span>
               </div>
               <span class="text-[10px] font-mono text-zinc-400 block truncate mt-0.5">${f.brand} · ${f.notes}</span>
             </div>
             
-            <button onclick="addFlavorToBench('${f.id}')" class="px-2.5 py-1 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
+            <button onclick="addFlavorToBench('${f.id}')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 text-[10px] font-mono font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
               + ADD
             </button>
           </div>
@@ -1837,7 +1886,7 @@
 
       const existingIdx = benchSlots.findIndex(s => s.flavorId === flavorId);
       if (existingIdx !== -1) {
-        showToast('Flavor Already Added', `${flavor.name} is already in the bowl.`);
+        showToast('Already in Bowl', `${flavor.name} is already in the mix.`);
         return;
       }
 
@@ -1847,18 +1896,19 @@
         brand: flavor.brand,
         buzz: flavor.buzz,
         ratio: 0,
-        color: flavor.color
+        color: flavor.color,
+        profile: flavor.profile
       });
 
       redistributeBenchRatios();
-      renderBenchActiveSlots();
-      showToast('Flavor Added', `${flavor.name} added to bench.`);
+      renderMixSpectrumBench();
+      showToast('Flavor Added', `${flavor.name} added to spectrum bench.`);
     }
 
     function removeFlavorFromBench(idx) {
       benchSlots.splice(idx, 1);
       redistributeBenchRatios();
-      renderBenchActiveSlots();
+      renderMixSpectrumBench();
     }
 
     function redistributeBenchRatios() {
@@ -1881,94 +1931,193 @@
       }
     }
 
-    function adjustSlotRatio(idx, delta) {
-      if (benchSlots.length <= 1) return;
-      const current = benchSlots[idx].ratio;
-      const newRatio = Math.max(10, Math.min(90, current + delta));
-      benchSlots[idx].ratio = newRatio;
-      
-      // Balance remaining
-      let remaining = 100 - newRatio;
-      let others = benchSlots.filter((_, i) => i !== idx);
-      let totalOther = others.reduce((s, o) => s + o.ratio, 0) || 1;
-      others.forEach(o => {
-        o.ratio = Math.round((o.ratio / totalOther) * remaining);
-      });
-
-      renderBenchActiveSlots();
-    }
-
-    function renderBenchActiveSlots() {
+    // CONTINUOUS MIX SPECTRUM RENDERING & DRAGGING
+    function renderMixSpectrumBench() {
+      const ribbon = document.getElementById('spectrumRibbon');
+      const handlesCont = document.getElementById('spectrumHandlesContainer');
       const list = document.getElementById('benchActiveSlotsList');
-      if (!list) return;
+      const profileBadges = document.getElementById('benchProfileBadges');
+      if (!ribbon || !list) return;
+
+      if (handlesCont) handlesCont.innerHTML = '';
 
       if (benchSlots.length === 0) {
+        ribbon.style.background = '#1E2533';
         list.innerHTML = `
-          <div class="py-6 text-center text-xs font-mono text-zinc-500 italic">
-            Bowl is empty. Tap "+ ADD" on any flavor from the left stash.
+          <div class="py-8 text-center text-xs font-mono text-zinc-500 italic">
+            Bowl is empty. Tap "+ ADD" on any flavor from the right catalog stash.
           </div>
         `;
+        if (profileBadges) profileBadges.innerHTML = '<span class="text-xs text-zinc-500 font-mono italic">Select flavors to see botanical notes.</span>';
         updateBenchCalculations();
         return;
       }
 
+      // 1. Build Gradient Ribbon
+      let gradParts = [];
+      let cum = 0;
+      let totalStrength = 0;
+      let activeProfiles = new Set();
+
+      benchSlots.forEach(slot => {
+        const col = slot.color || '#E5A93C';
+        const start = cum;
+        cum += slot.ratio;
+        gradParts.push(`${col} ${start}% ${cum}%`);
+        totalStrength += (slot.buzz * (slot.ratio / 100));
+        if (slot.profile) activeProfiles.add(slot.profile);
+      });
+
+      ribbon.style.background = `linear-gradient(90deg, ${gradParts.join(', ')})`;
+
+      // 2. Render Draggable Splitter Thumbs
+      if (handlesCont && benchSlots.length > 1) {
+        let handleCum = 0;
+        for (let i = 0; i < benchSlots.length - 1; i++) {
+          handleCum += benchSlots[i].ratio;
+          const thumb = document.createElement('div');
+          thumb.className = 'spectrum-drag-thumb';
+          thumb.style.left = `${handleCum}%`;
+          thumb.onmousedown = (e) => startSpectrumDrag(e, i);
+          thumb.ontouchstart = (e) => startSpectrumDrag(e, i);
+          handlesCont.appendChild(thumb);
+        }
+      }
+
+      // 3. Render Itemized Flavor Rows
       let html = '';
       benchSlots.forEach((slot, idx) => {
+        const grams = ((22 * slot.ratio) / 100).toFixed(1);
         html += `
-          <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/10 space-y-1.5">
-            <div class="flex justify-between items-center text-xs font-mono">
-              <div class="flex items-center gap-1.5 truncate">
-                <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${slot.color};"></span>
-                <span class="font-bold text-white truncate">${slot.name}</span>
-                <span class="text-[10px] text-red-400 font-bold">⚡ ${slot.buzz}</span>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <div class="flex items-center gap-1 bg-black/60 px-2 py-0.5 rounded-lg border border-white/10">
-                  <button onclick="adjustSlotRatio(${idx}, -10)" class="text-zinc-400 hover:text-white px-1 text-xs">-</button>
-                  <span class="text-amber-400 font-bold text-xs min-w-[32px] text-center">${slot.ratio}%</span>
-                  <button onclick="adjustSlotRatio(${idx}, 10)" class="text-zinc-400 hover:text-white px-1 text-xs">+</button>
-                </div>
-                <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 px-1">✕</button>
+          <div class="p-3 bg-[#0A0F1A] rounded-xl border border-white/10 flex items-center justify-between gap-3 select-none">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1 truncate">
+              <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${slot.color};"></span>
+              <div class="truncate">
+                <span class="font-mono text-xs font-bold text-white block truncate">${slot.name}</span>
+                <span class="text-[10px] text-zinc-400 font-mono">⚡ Buzz ${slot.buzz}/10 · ${slot.brand}</span>
               </div>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-              <div class="h-full rounded-full" style="width: ${slot.ratio}%; background-color: ${slot.color};"></div>
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <div class="text-right font-mono">
+                <span class="text-xs font-bold text-amber-400">${slot.ratio}%</span>
+                <span class="text-[10px] text-zinc-400 block">${grams}g</span>
+              </div>
+              <button onclick="removeFlavorFromBench(${idx})" class="text-zinc-500 hover:text-red-400 p-1 transition">✕</button>
             </div>
           </div>
         `;
       });
-
       list.innerHTML = html;
+
+      // 4. Render Profile Badges
+      if (profileBadges) {
+        profileBadges.innerHTML = '';
+        activeProfiles.forEach(p => {
+          const badge = document.createElement('span');
+          badge.className = 'text-[10px] font-mono text-zinc-300 bg-black px-2.5 py-0.5 rounded-full border border-white/10';
+          badge.textContent = p;
+          profileBadges.appendChild(badge);
+        });
+      }
+
       updateBenchCalculations();
+    }
+
+    function startSpectrumDrag(e, handleIdx) {
+      if (e.cancelable) e.preventDefault();
+      e.stopPropagation();
+      activeSpectrumDragHandleIndex = handleIdx;
+      window.addEventListener('mousemove', handleSpectrumDragMove);
+      window.addEventListener('touchmove', handleSpectrumDragMove, { passive: false });
+      window.addEventListener('mouseup', handleSpectrumDragEnd);
+      window.addEventListener('touchend', handleSpectrumDragEnd);
+      window.addEventListener('touchcancel', handleSpectrumDragEnd);
+    }
+
+    function handleSpectrumDragMove(e) {
+      if (activeSpectrumDragHandleIndex === null) return;
+      const container = document.getElementById('spectrumDraggableArea');
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      let pct = Math.round(((clientX - rect.left) / rect.width) * 100);
+      pct = Math.max(5, Math.min(95, pct));
+
+      // Calculate cumulative bounds
+      let leftBound = 0;
+      for (let i = 0; i < activeSpectrumDragHandleIndex; i++) {
+        leftBound += benchSlots[i].ratio;
+      }
+      let rightBound = 100;
+      for (let i = activeSpectrumDragHandleIndex + 2; i < benchSlots.length; i++) {
+        rightBound -= benchSlots[i].ratio;
+      }
+
+      pct = Math.max(leftBound + 5, Math.min(rightBound - 5, pct));
+
+      const leftSlotRatio = pct - leftBound;
+      const rightSlotRatio = (rightBound - pct);
+
+      benchSlots[activeSpectrumDragHandleIndex].ratio = leftSlotRatio;
+      benchSlots[activeSpectrumDragHandleIndex + 1].ratio = rightSlotRatio;
+
+      renderMixSpectrumBench();
+    }
+
+    function handleSpectrumDragEnd() {
+      activeSpectrumDragHandleIndex = null;
+      window.removeEventListener('mousemove', handleSpectrumDragMove);
+      window.removeEventListener('touchmove', handleSpectrumDragMove);
+      window.removeEventListener('mouseup', handleSpectrumDragEnd);
+      window.removeEventListener('touchend', handleSpectrumDragEnd);
+      window.removeEventListener('touchcancel', handleSpectrumDragEnd);
+    }
+
+    function setupSpectrumDragListeners() {
+      const container = document.getElementById('spectrumDraggableArea');
+      if (!container) return;
+
+      container.onpointerdown = (e) => {
+        if (e.target.classList.contains('spectrum-drag-thumb')) return;
+        if (benchSlots.length <= 1) return;
+        const rect = container.getBoundingClientRect();
+        const clickPct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+        let cum = 0;
+        let closestIdx = 0;
+        let minDiff = 999;
+        for (let i = 0; i < benchSlots.length - 1; i++) {
+          cum += benchSlots[i].ratio;
+          const diff = Math.abs(clickPct - cum);
+          if (diff < minDiff) { minDiff = diff; closestIdx = i; }
+        }
+        startSpectrumDrag(e, closestIdx);
+      };
     }
 
     function updateBenchCalculations() {
       if (benchSlots.length === 0) {
         document.getElementById('benchBuzzScore').textContent = '0.0 / 10';
-        document.getElementById('benchBuzzCategory').textContent = 'EMPTY';
+        document.getElementById('benchBuzzCategory').textContent = 'BLANK BOWL';
         document.getElementById('benchTotalPrice').textContent = '$0.00';
         return;
       }
 
       let totalBuzz = 0;
-      let totalRatio = 0;
       let hasReserve = false;
 
       benchSlots.forEach(s => {
         totalBuzz += (s.buzz * (s.ratio / 100));
-        totalRatio += s.ratio;
         if (s.brand === 'Tangiers') hasReserve = true;
       });
 
       const roundedBuzz = totalBuzz.toFixed(1);
       document.getElementById('benchBuzzScore').textContent = `${roundedBuzz} / 10`;
       
-      let cat = 'MILD';
+      let cat = 'MILD BLONDE';
       if (roundedBuzz >= 8.0) cat = 'NOIR RESERVE';
-      else if (roundedBuzz >= 6.5) cat = 'BOLD DARK';
+      else if (roundedBuzz >= 6.5) cat = 'BOLD DARK LEAF';
       else if (roundedBuzz >= 5.0) cat = 'MEDIUM';
       document.getElementById('benchBuzzCategory').textContent = cat;
 
@@ -1979,42 +2128,42 @@
     function applyBaseSmokerProfile(type) {
       if (type === 'sweet-berries') {
         benchSlots = [
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981' }
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 70, color: '#EC4899', profile: 'Berries' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 30, color: '#10B981', profile: 'Peppermint' }
         ];
         showToast('Profile Loaded', 'Sweet Berry & Grapefruit preset loaded.');
       } else if (type === 'russian-burley') {
         benchSlots = [
-          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8' },
-          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16' }
+          { flavorId: 'ds-supernova', name: 'Darkside Supernova', brand: 'Darkside', buzz: 8, ratio: 30, color: '#38BDF8', profile: 'Arctic Ice' },
+          { flavorId: 'bb-green-tea', name: 'BlackBurn Green Tea', brand: 'BlackBurn', buzz: 8, ratio: 70, color: '#84CC16', profile: 'Botanical' }
         ];
         showToast('Profile Loaded', 'Heavy Russian Dark Leaf preset loaded.');
       } else if (type === 'arctic-mint') {
         benchSlots = [
-          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, color: '#06B6D4' },
-          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, color: '#10B981' }
+          { flavorId: 'mh-frosty', name: 'MustHave Frosty', brand: 'MustHave', buzz: 6, ratio: 50, color: '#06B6D4', profile: 'Ice / Mint' },
+          { flavorId: 'tg-cane-mint', name: 'Tangiers Cane Mint', brand: 'Tangiers', buzz: 9, ratio: 50, color: '#10B981', profile: 'Peppermint' }
         ];
         showToast('Profile Loaded', 'Arctic Ice & Mint preset loaded.');
       } else if (type === 'spiced-chai') {
         benchSlots = [
-          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B' },
-          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24' }
+          { flavorId: 'tg-kashmir-peach', name: 'Tangiers Kashmir Peach', brand: 'Tangiers', buzz: 9, ratio: 60, color: '#F59E0B', profile: 'Spiced / Floral' },
+          { flavorId: 'mh-milky-rice', name: 'MustHave Milky Rice', brand: 'MustHave', buzz: 7, ratio: 40, color: '#FBBF24', profile: 'Cream / Dessert' }
         ];
         showToast('Profile Loaded', 'Spiced Chai & Kashmir preset loaded.');
       } else if (type === 'citrus-soda') {
         benchSlots = [
-          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, color: '#FB923C' },
-          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, color: '#EC4899' }
+          { flavorId: 'tg-orange-soda', name: 'Tangiers Orange Soda', brand: 'Tangiers', buzz: 8, ratio: 50, color: '#FB923C', profile: 'Citrus' },
+          { flavorId: 'mh-pinkman', name: 'MustHave Pinkman', brand: 'MustHave', buzz: 7, ratio: 50, color: '#EC4899', profile: 'Berries' }
         ];
         showToast('Profile Loaded', 'Valencia Orange Soda preset loaded.');
       }
 
-      renderBenchActiveSlots();
+      renderMixSpectrumBench();
     }
 
     function clearMixBench() {
       benchSlots = [];
-      renderBenchActiveSlots();
+      renderMixSpectrumBench();
     }
 
     function dispatchActiveBenchToTable() {
@@ -2047,7 +2196,6 @@
         type: 'hookah'
       });
 
-      // Add to universal alert dock
       liveIncomingOrders.unshift({
         id: `ord-${Date.now()}`,
         tableId: table.id,
@@ -2072,14 +2220,14 @@
       let html = '';
       SERVER_BEVERAGES.forEach(bev => {
         html += `
-          <div class="p-2.5 bg-[#0B0F17] rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
+          <div class="p-3 bg-[#0A0F1A] rounded-xl border border-white/10 flex justify-between items-center text-xs font-mono">
             <div>
-              <span class="text-white font-bold block">${bev.name}</span>
+              <span class="text-white font-bold block text-sm">${bev.name}</span>
               <span class="text-[10px] text-zinc-400">${bev.desc}</span>
             </div>
             <div class="flex items-center gap-3">
-              <span class="text-amber-400 font-bold">$${bev.price.toFixed(2)}</span>
-              <button onclick="addDrinkToTableDirect('${bev.name}', ${bev.price})" class="px-2.5 py-1 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 font-bold text-[10px] uppercase rounded-lg border border-cyan-500/40 transition active:scale-95">
+              <span class="text-amber-400 font-bold text-sm">$${bev.price.toFixed(2)}</span>
+              <button onclick="addDrinkToTableDirect('${bev.name}', ${bev.price})" class="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500 hover:text-black text-cyan-300 font-bold text-[10px] uppercase rounded-lg border border-cyan-500/40 transition active:scale-95">
                 + ADD
               </button>
             </div>
@@ -2155,17 +2303,17 @@
       let html = '';
       PAST_BLENDS.forEach(p => {
         html += `
-          <div class="p-3 bg-[#0B0F17] rounded-xl border border-white/5 flex justify-between items-center gap-2 select-none">
+          <div class="p-3.5 bg-[#0A0F1A] rounded-xl border border-white/5 flex justify-between items-center gap-2 select-none">
             <div>
               <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-bold text-white">${p.name}</span>
-                <span class="text-[9px] font-mono text-amber-400 font-bold">${p.strength}</span>
+                <span class="font-mono text-sm font-bold text-white">${p.name}</span>
+                <span class="text-[10px] font-mono text-amber-400 font-bold">${p.strength}</span>
               </div>
-              <p class="text-[10px] font-mono text-zinc-400 mt-0.5">${p.ratios} · ${p.bowl}</p>
+              <p class="text-xs font-mono text-zinc-400 mt-0.5">${p.ratios} · ${p.bowl}</p>
             </div>
             
-            <button onclick="loadPastBlendToMixLab('${p.name}')" class="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 font-mono text-[10px] font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
-              ⚡ Load to Bench
+            <button onclick="loadPastBlendToMixLab('${p.name}')" class="px-3.5 py-1.5 bg-amber-400/20 hover:bg-amber-400 hover:text-black text-amber-300 font-mono text-[10px] font-bold uppercase rounded-lg border border-amber-400/40 transition active:scale-95 flex-shrink-0">
+              ⚡ Load to Spectrum
             </button>
           </div>
         `;
@@ -2183,7 +2331,7 @@
         applyBaseSmokerProfile('spiced-chai');
       }
       setDrawerActiveTab('mixlab');
-      showToast('Blend Loaded', `${blendName} loaded into Mix Lab bench.`);
+      showToast('Blend Loaded', `${blendName} loaded into Mix Spectrum.`);
     }
 
     // ==================== SIMULATE ALERTS & TIMERS ====================
